@@ -1,0 +1,1582 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src 'unsafe-inline' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Youzan Consolidation Case</title>
+<style>:root{color-scheme:light dark;background:light-dark(rgb(255 255 255), rgb(24 24 24))}html,body{margin:0}body{box-sizing:border-box;padding:1rem;background:inherit}iframe{display:block;width:100%;max-width:736px;height:calc(100vh - 2rem);margin:0 auto;border:0}</style>
+</head>
+<body>
+<iframe sandbox="allow-scripts" referrerpolicy="no-referrer" title="Youzan Consolidation Case" srcdoc="&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
+&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &#x27;none&#x27;; script-src &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27; &#x27;wasm-unsafe-eval&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src &#x27;unsafe-inline&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src &#x27;none&#x27;; object-src &#x27;none&#x27;; base-uri &#x27;none&#x27;; form-action &#x27;none&#x27;&quot;&gt;
+&lt;title&gt;Youzan Consolidation Case&lt;/title&gt;
+&lt;style&gt;:root {
+  color-scheme: light dark;
+  background-color: var(--background) !important;
+
+  /* Agent-facing contract; keep in sync with SKILL.md. */
+  --background: light-dark(rgb(255 255 255), rgb(24 24 24));
+  --foreground: light-dark(rgb(26 28 31), rgb(255 255 255));
+  --card: color-mix(in oklab, var(--foreground) 5%, transparent);
+  --card-foreground: var(--foreground);
+  --popover: light-dark(rgb(255 255 255), rgb(45 45 45));
+  --popover-foreground: var(--foreground);
+  --primary: light-dark(rgb(51 156 255), rgb(131 195 255));
+  --primary-foreground: light-dark(rgb(255 255 255), rgb(13 13 13));
+  --secondary: light-dark(rgb(255 255 255 / 96%), rgb(54 54 54 / 96%));
+  --secondary-foreground: var(--foreground);
+  --muted: color-mix(in srgb, var(--foreground) 10%, transparent);
+  --muted-foreground: light-dark(
+    rgb(26 28 31 / 49.4%),
+    rgb(255 255 255 / 49.8%)
+  );
+  --accent: light-dark(rgb(229 242 255), rgb(13 39 63));
+  --accent-foreground: var(--primary);
+  --destructive: light-dark(rgb(226 85 7), rgb(255 133 73));
+  --border: light-dark(rgb(26 28 31 / 8%), rgb(255 255 255 / 8.2%));
+  --input: light-dark(
+    rgb(26 28 31 / 11.8%),
+    color-mix(in oklab, rgb(0 0 0) 10%, transparent)
+  );
+  --ring: light-dark(rgb(51 156 255), rgb(131 195 255 / 76%));
+  --font-size-base: 14px;
+  --viz-series-1: var(--primary);
+  --viz-series-2: light-dark(rgb(243 136 59), rgb(245 154 86));
+  --viz-series-3: light-dark(rgb(93 201 119), rgb(116 213 139));
+  --viz-series-4: light-dark(rgb(235 119 177), rgb(240 143 192));
+  --viz-series-5: light-dark(rgb(155 121 236), rgb(170 145 239));
+  --viz-series-6: light-dark(rgb(58 185 177), rgb(90 203 194));
+
+  /* Internal implementation variables; not part of the agent contract. */
+  --font-sans: -apple-system, system-ui, &quot;Segoe UI&quot;, sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas, &quot;Liberation Mono&quot;,
+    monospace;
+  --font-size-normal: max(11px, var(--font-size-base));
+  --font-size-tooltip: calc(var(--font-size-base) - 1px);
+  --font-size-small: max(11px, calc(var(--font-size-base) - 2px));
+  --font-size-h1: calc(var(--font-size-normal) * 1.7142857143);
+  --font-size-h2: calc(var(--font-size-normal) * 1.4285714286);
+  --font-size-h3: calc(var(--font-size-normal) * 1.2857142857);
+  --font-weight-normal: 430;
+  --font-weight-medium: 500;
+  --line-height-normal: calc(var(--font-size-normal) * 1.5);
+  --line-height-tooltip: calc(var(--font-size-tooltip) * 1.4285714286);
+  --line-height-small: calc(var(--font-size-small) + 4px);
+  --radius: 12.5px;
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-2xl: calc(var(--radius) * 1.6);
+  --radius-full: 9999px;
+  --shadow-sm: 0 1px 2px -1px rgb(0 0 0 / 8%);
+  --checkmark-image: url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 17 17&#x27;%3E%3Cpath d=&#x27;M12.8961 3.64101C13.1297 3.41418 13.4984 3.37523 13.7779 3.56581C14.0571 3.75635 14.1554 4.11331 14.0299 4.41347L13.9615 4.53847L7.71151 13.7045C7.59411 13.8767 7.4063 13.9877 7.19881 14.0072C6.99136 14.0267 6.78564 13.9533 6.63826 13.806L2.88826 10.056L2.79842 9.9457C2.6192 9.67407 2.64927 9.30496 2.88826 9.06581C3.12738 8.82669 3.49647 8.79676 3.76815 8.97597L3.8785 9.06581L7.03084 12.2182L12.8053 3.74941L12.8961 3.64101Z&#x27;/%3E%3C/svg%3E&quot;);
+
+  /* Legacy aliases; not part of the current agent contract. */
+  --viz-bg: transparent;
+  --viz-panel: var(--card);
+  --viz-border: var(--border);
+  --viz-text: var(--foreground);
+  --viz-muted: var(--muted-foreground);
+  --viz-accent: var(--primary);
+  --viz-accent-text: var(--primary-foreground);
+  --viz-accent-bg: var(--accent);
+  --viz-font-size: var(--font-size-base);
+  --viz-warning: var(--destructive);
+  --color-background-primary: var(--background);
+  --color-text-primary: var(--foreground);
+  --color-border-secondary: var(--border);
+}
+
+:root[data-theme=&quot;light&quot;] {
+  color-scheme: light;
+}
+
+:root[data-theme=&quot;dark&quot;] {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html &gt; body {
+  margin: 0;
+  padding: 5px;
+  color: var(--foreground);
+  background: transparent !important;
+  font-family: var(--font-sans);
+  font-size: var(--font-size-normal);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
+}
+
+a {
+  color: color-mix(in srgb, var(--viz-accent) 80%, var(--viz-text) 20%);
+  cursor: pointer;
+  font-weight: var(--viz-font-weight-medium);
+  text-decoration: none;
+  text-underline-offset: 2px;
+}
+
+a:is(:hover, :focus-visible) {
+  text-decoration-line: underline;
+  text-decoration-style: dashed;
+  text-decoration-thickness: 0.5px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin-block: 0;
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+h3,
+h4,
+h5,
+h6 {
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.3;
+}
+
+b,
+strong,
+th {
+  font-weight: var(--font-weight-medium);
+}
+
+code:not(pre code) {
+  display: inline;
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  corner-shape: superellipse(1.5);
+  background: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  overflow-wrap: anywhere;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  word-break: break-word;
+}
+
+#widget {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  padding: 0;
+  background: transparent !important;
+}
+
+.card {
+  min-width: 0;
+  padding: 12px;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  border-radius: var(--radius-2xl);
+  corner-shape: superellipse(1.5);
+  color: var(--card-foreground);
+  background: var(--card);
+}
+
+#widget &gt; :not(.card) {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.tooltip {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  left: 0;
+  width: max-content;
+  max-width: min(
+    20rem,
+    var(--tooltip-available-width, calc(100vw - 10px)),
+    calc(100vw - 10px)
+  );
+  max-height: min(
+    var(--tooltip-available-height, calc(100vh - 10px)),
+    calc(100vh - 10px)
+  );
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--popover-foreground);
+  background: var(--popover);
+  box-shadow: none;
+  font-size: var(--font-size-tooltip);
+  line-height: var(--line-height-tooltip);
+  overflow-wrap: break-word;
+  white-space: normal;
+  pointer-events: none;
+  user-select: none;
+}
+
+.viz-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(max(180px, 24%), 1fr));
+  gap: 10px;
+}
+
+.viz-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.viz-stat-value {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+.viz-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.viz-badge {
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  color: var(--accent-foreground);
+  background: var(--accent);
+  font-weight: var(--font-weight-medium);
+}
+
+small,
+.text-small,
+.viz-badge {
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
+}
+
+.text-muted {
+  color: var(--muted-foreground);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.viz-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.viz-controls &gt; .form-label {
+  display: grid;
+  min-width: min(100%, 260px);
+  flex: 1 1 280px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 2px 12px;
+  margin-bottom: 0;
+}
+
+.viz-controls &gt; .form-label &gt; :is(.form-control, .form-range, .form-select) {
+  grid-column: 1 / -1;
+}
+
+.btn,
+.form-check-input,
+.form-control,
+.form-range,
+.form-select {
+  font: inherit;
+}
+
+.btn {
+  appearance: button;
+  display: inline-flex;
+  inline-size: fit-content;
+  max-inline-size: 100%;
+  min-height: 28px;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0 8px;
+  -webkit-app-region: no-drag;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--secondary-foreground);
+  background: var(--secondary);
+  cursor: var(--cursor-interaction, pointer);
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+.btn:is(.btn-block, .viz-tile) {
+  inline-size: 100%;
+}
+
+.btn.viz-tile {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+a.btn {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn:not(:disabled):hover {
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.btn-primary {
+  border-color: transparent;
+  color: var(--primary-foreground);
+  background: var(--foreground);
+  background-clip: padding-box;
+}
+
+.btn-primary .text-muted {
+  color: color-mix(in srgb, var(--primary-foreground) 50%, transparent);
+}
+
+.btn-primary:not(:disabled):hover {
+  background: color-mix(in srgb, var(--foreground) 80%, transparent);
+  background-clip: padding-box;
+}
+
+.btn-ghost {
+  border-color: transparent;
+  color: var(--muted-foreground);
+  background: transparent;
+}
+
+.btn-ghost:not(:disabled):hover {
+  color: var(--foreground);
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+[data-lucide] {
+  stroke-width: 1.6;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--foreground);
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  padding: 0 8px;
+  outline: none;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--foreground);
+  background: var(--secondary);
+}
+
+.form-control::placeholder {
+  color: var(--muted-foreground);
+}
+
+.form-control[type=&quot;file&quot;] {
+  padding: 0;
+  overflow: hidden;
+  cursor: var(--cursor-interaction, pointer);
+}
+
+.form-control[type=&quot;file&quot;]::file-selector-button {
+  min-height: 26px;
+  margin-right: 8px;
+  padding: 0 8px;
+  border: 0;
+  border-right: 1px solid var(--input);
+  color: var(--secondary-foreground);
+  background: var(--secondary);
+  cursor: inherit;
+  font: inherit;
+}
+
+.form-control[type=&quot;file&quot;]:not(:disabled):hover::file-selector-button {
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.form-control-color[type=&quot;color&quot;] {
+  width: 40px;
+  height: 28px;
+  padding: 3px;
+  cursor: var(--cursor-interaction, pointer);
+}
+
+.form-control-color[type=&quot;color&quot;]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.form-control-color[type=&quot;color&quot;]::-webkit-color-swatch {
+  border: 0;
+  border-radius: calc(var(--radius-lg) - 4px);
+  corner-shape: superellipse(1.5);
+}
+
+textarea.form-control {
+  height: auto;
+  min-height: 72px;
+  padding: 8px 10px;
+  resize: vertical;
+}
+
+.form-control:focus-visible {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-control:disabled,
+.form-select:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.form-select {
+  appearance: none;
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  margin: 0;
+  padding: 0 32px 0 8px;
+  outline: none;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--foreground);
+  background-color: var(--secondary);
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--muted-foreground) 50%),
+    linear-gradient(135deg, var(--muted-foreground) 50%, transparent 50%);
+  background-position:
+    calc(100% - 14px) 50%,
+    calc(100% - 10px) 50%;
+  background-repeat: no-repeat;
+  background-size: 4px 4px;
+  cursor: var(--cursor-interaction, default);
+}
+
+.form-select:not(:disabled):hover {
+  background-color: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.form-select:focus-visible {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-check {
+  display: flex;
+  min-height: 20px;
+  align-items: center;
+  gap: 6px;
+}
+
+.form-check-input {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  margin: 0;
+  border: 1px solid var(--input);
+  color: var(--primary-foreground);
+  background-color: transparent;
+  cursor: var(--cursor-interaction, default);
+  transition:
+    background-color 150ms,
+    border-color 150ms,
+    box-shadow 150ms;
+}
+
+.form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;] {
+  border-color: var(--input);
+  border-radius: var(--radius-sm);
+  corner-shape: superellipse(1.5);
+  background-color: var(--secondary);
+  box-shadow: var(--shadow-sm);
+}
+
+.form-check:not(.form-switch)
+  .form-check-input:not(:disabled):not(:checked):hover {
+  background-color: var(--card);
+}
+
+.form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;]:checked {
+  border-color: var(--primary);
+  background-color: var(--primary);
+}
+
+.form-check:not(.form-switch)
+  .form-check-input[type=&quot;checkbox&quot;]:checked::before {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--primary-foreground);
+  content: &quot;&quot;;
+  mask: var(--checkmark-image) center / 12px 12px no-repeat;
+}
+
+.form-check-input[type=&quot;radio&quot;] {
+  width: 14px;
+  height: 14px;
+  border-radius: var(--radius-full);
+}
+
+.form-check-input[type=&quot;radio&quot;]:checked {
+  border: 2px solid var(--primary);
+  background:
+    radial-gradient(circle, var(--primary-foreground) 0 2.5px, transparent 3px),
+    var(--primary);
+}
+
+.form-check:not(.form-switch) .form-check-input:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.form-check:not(.form-switch) .form-check-input:disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.form-check:not(.form-switch) .form-check-input:disabled + .form-check-label {
+  cursor: not-allowed;
+}
+
+.form-switch .form-check-input:disabled,
+.form-switch .form-check-input:disabled + .form-check-label {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.form-check-label {
+  color: var(--foreground);
+  cursor: var(--cursor-interaction, default);
+}
+
+.form-switch .form-check-input {
+  position: relative;
+  width: 32px;
+  height: 20px;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--muted);
+  box-shadow: none;
+  transition: background-color 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.form-switch .form-check-input::before {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  box-sizing: border-box;
+  border: 1px solid light-dark(var(--primary-foreground), var(--foreground));
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+  box-shadow: var(--shadow-sm);
+  content: &quot;&quot;;
+  transform: translate(2px, -50%);
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.form-switch .form-check-input:checked {
+  background: var(--primary);
+}
+
+.form-switch .form-check-input:checked::before {
+  transform: translate(14px, -50%);
+}
+
+.form-switch .form-check-input:focus-visible {
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.form-range {
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 28px;
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  outline: none;
+  border: 0;
+  accent-color: var(--primary);
+  background: linear-gradient(
+      color-mix(in srgb, var(--foreground) 7%, transparent),
+      color-mix(in srgb, var(--foreground) 7%, transparent)
+    )
+    center / 100% 2px no-repeat;
+}
+
+.form-range::-webkit-slider-runnable-track {
+  height: 28px;
+  background: transparent;
+}
+
+.form-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 4px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+}
+
+.form-range:focus-visible::-webkit-slider-thumb {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-range::-moz-range-track {
+  height: 28px;
+  background: transparent;
+}
+
+.form-range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+}
+
+.form-range:focus-visible::-moz-range-thumb {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-range:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.btn:not(.btn-primary, .viz-tile):is(
+    [aria-pressed=&quot;true&quot;],
+    [aria-selected=&quot;true&quot;],
+    .is-selected
+  ) {
+  border-color: var(--primary);
+  color: var(--primary-foreground);
+  background: var(--primary);
+}
+
+.btn.viz-tile:is([aria-pressed=&quot;true&quot;], [aria-selected=&quot;true&quot;], .is-selected) {
+  border-color: var(--primary);
+  box-shadow: inset 0 0 0 1px var(--primary);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+#widget &gt; svg {
+  width: 100%;
+}
+
+.text-warning,
+.text-destructive {
+  color: var(--destructive);
+}
+
+html&gt;body{padding:0}&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;style&gt;
+
+    #youzan-consolidation-case {
+      --ink: var(--foreground);
+      --muted-text: var(--muted-foreground);
+      --muted-surface: var(--muted);
+      --muted: var(--muted-text);
+      --line: var(--border);
+      --paper: var(--background);
+      --surface: var(--card);
+      --teal: var(--viz-series-1);
+      --teal-soft: color-mix(in srgb, var(--viz-series-1) 11%, var(--card));
+      --amber: var(--viz-series-2);
+      --amber-soft: color-mix(in srgb, var(--viz-series-2) 12%, var(--card));
+      --burgundy: var(--viz-series-3);
+      --burgundy-soft: color-mix(in srgb, var(--viz-series-3) 10%, var(--card));
+      --green: var(--viz-series-4);
+      --green-soft: color-mix(in srgb, var(--viz-series-4) 12%, var(--card));
+      --red: var(--destructive);
+      --red-soft: color-mix(in srgb, var(--destructive) 10%, var(--card));
+      --shadow: none;
+    }
+    * { box-sizing: border-box; letter-spacing: 0; }
+    
+    #youzan-consolidation-case {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Arial, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    a { color: var(--teal); text-underline-offset: 3px; }
+    [hidden] { display: none !important; }
+    .shell { width: min(1480px, calc(100% - 40px)); margin: 0 auto; }
+    .topbar { background: var(--primary); color: var(--primary-foreground); border-bottom: 4px solid var(--teal); }
+    .topbar-inner { padding: 26px 0 24px; display: grid; gap: 18px; }
+    .title-line { display: flex; justify-content: space-between; gap: 24px; align-items: end; }
+    h1 { margin: 0; font-size: 28px; line-height: 1.2; font-weight: 700; }
+    .subtitle { margin: 7px 0 0; color: color-mix(in srgb, var(--primary-foreground) 76%, transparent); max-width: 78ch; }
+    .codes { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+    .code-chip { border: 1px solid color-mix(in srgb, var(--primary-foreground) 35%, transparent); padding: 7px 10px; border-radius: 4px; color: var(--primary-foreground); white-space: nowrap; }
+    .facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid color-mix(in srgb, var(--primary-foreground) 24%, transparent); }
+    .fact { padding: 14px 18px 0 0; }
+    .fact span { display: block; color: color-mix(in srgb, var(--primary-foreground) 72%, transparent); font-size: 12px; }
+    .fact strong { display: block; margin-top: 2px; font-size: 16px; }
+    main { padding: 24px 0 48px; }
+    .tabs { display: flex; align-items: center; gap: 4px; border-bottom: 1px solid var(--line); margin-bottom: 18px; overflow-x: auto; }
+    .tab {
+      border: 0;
+      border-bottom: 3px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      padding: 11px 16px 10px;
+      white-space: nowrap;
+      font-weight: 700;
+    }
+    .tab[aria-selected=&quot;true&quot;] { color: var(--ink); border-bottom-color: var(--teal); }
+    .panel { display: grid; gap: 18px; }
+    .panel-heading { display: flex; align-items: end; justify-content: space-between; gap: 18px; }
+    h2 { font-size: 20px; margin: 0; line-height: 1.25; }
+    .panel-heading p { margin: 5px 0 0; color: var(--muted); }
+    .filters { display: inline-flex; gap: 2px; padding: 3px; background: var(--muted-surface); border-radius: 6px; }
+    .filter {
+      border: 0;
+      background: transparent;
+      padding: 7px 11px;
+      border-radius: 4px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .filter[aria-pressed=&quot;true&quot;] { background: var(--surface); color: var(--ink); box-shadow: none; }
+    .metrics { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+    .metric { min-height: 92px; padding: 15px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; }
+    .metric span { display: block; color: var(--muted); font-size: 12px; }
+    .metric strong { display: block; margin-top: 9px; font-size: 21px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+    .metric.teal { border-top: 3px solid var(--teal); }
+    .metric.amber { border-top: 3px solid var(--amber); }
+    .metric.burgundy { border-top: 3px solid var(--burgundy); }
+    .metric.green { border-top: 3px solid var(--green); }
+    .table-wrap { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; box-shadow: var(--shadow); overflow: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 1640px; }
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: var(--primary);
+      color: var(--primary-foreground);
+      text-align: left;
+      font-size: 12px;
+      padding: 11px 12px;
+      white-space: nowrap;
+    }
+    thead th.number { text-align: right; }
+    tbody td { padding: 11px 12px; border-top: 1px solid var(--line); vertical-align: top; }
+    tbody tr:first-child td { border-top: 0; }
+    tbody tr:hover td { background: var(--accent); }
+    tbody tr[data-kind=&quot;ca&quot;] td:first-child { box-shadow: inset 4px 0 0 var(--amber); }
+    tbody tr[data-kind=&quot;trade&quot;] td:first-child { box-shadow: inset 4px 0 0 var(--teal); }
+    tbody tr[data-kind=&quot;status&quot;] td:first-child { box-shadow: inset 4px 0 0 var(--muted-text); }
+    td.number { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+    th.calculation, td.calculation { min-width: 430px; max-width: 520px; white-space: normal; }
+    td.calculation { color: var(--ink); background: var(--paper); }
+    .phase, .row-note { display: block; color: var(--muted); font-size: 12px; margin-top: 3px; }
+    .row-note { max-width: 38ch; }
+    .value-positive { color: var(--green); background: var(--green-soft); }
+    .value-negative { color: var(--red); background: var(--red-soft); }
+    .method-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 18px; }
+    .method-section { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 20px; }
+    .method-section h3 { margin: 0 0 14px; font-size: 16px; }
+    .definition-list { margin: 0; display: grid; grid-template-columns: 160px 1fr; }
+    .definition-list dt, .definition-list dd { margin: 0; padding: 10px 0; border-top: 1px solid var(--line); }
+    .definition-list dt { color: var(--muted); }
+    .definition-list dd { font-weight: 600; }
+    .notice { border-left: 4px solid var(--amber); background: var(--amber-soft); padding: 14px 16px; }
+    .notice p { margin: 0; }
+    .source-link { overflow-wrap: anywhere; }
+    footer { padding: 20px 0 34px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--line); }
+    @media (max-width: 980px) {
+      .title-line { align-items: start; flex-direction: column; }
+      .codes { justify-content: flex-start; }
+      .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .method-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 760px) {
+      .shell { width: min(100% - 24px, 1480px); }
+      .topbar-inner { padding: 20px 0; }
+      h1 { font-size: 23px; }
+      .facts { grid-template-columns: 1fr 1fr; }
+      .fact strong { font-size: 14px; }
+      main { padding-top: 16px; }
+      .panel-heading { align-items: stretch; flex-direction: column; }
+      .filters { align-self: flex-start; max-width: 100%; overflow-x: auto; }
+      .metrics { grid-template-columns: 1fr 1fr; }
+      .metric { min-height: 82px; }
+      .metric strong { font-size: 18px; }
+      .table-wrap { overflow: visible; background: transparent; border: 0; box-shadow: none; }
+      table { min-width: 0; display: block; }
+      thead { display: none; }
+      tbody { display: grid; gap: 10px; }
+      tbody tr { display: grid; grid-template-columns: 1fr 1fr; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+      tbody td { display: grid; grid-template-columns: 124px 1fr; gap: 8px; padding: 9px 11px; border-top: 1px solid var(--line); text-align: left !important; white-space: normal !important; }
+      tbody td::before { content: attr(data-label); color: var(--muted); font-size: 12px; font-weight: 400; }
+      tbody td:nth-child(1), tbody td:nth-child(2), tbody td:nth-child(3), tbody td.calculation { grid-column: 1 / -1; }
+      tbody tr td:first-child { border-top: 0; }
+      .row-note { max-width: none; }
+      .definition-list { grid-template-columns: 1fr; }
+      .definition-list dt { padding-bottom: 2px; }
+      .definition-list dd { border-top: 0; padding-top: 0; }
+    }
+    @media (max-width: 500px) {
+      .facts, .metrics { grid-template-columns: 1fr; }
+      tbody tr { grid-template-columns: 1fr; }
+      tbody td { grid-column: 1 / -1; grid-template-columns: 118px 1fr; }
+    }
+    @media print {
+      #youzan-consolidation-case { background: var(--background); }
+      .topbar { background: var(--background); color: var(--ink); border-bottom: 2px solid var(--ink); }
+      .subtitle, .fact span { color: var(--muted); }
+      .code-chip { border-color: var(--line); color: var(--ink); }
+      .tabs, .filters { display: none; }
+      .panel[hidden] { display: grid !important; break-before: page; }
+      .table-wrap { box-shadow: none; overflow: visible; }
+      table { min-width: 0; font-size: 10px; }
+      thead th { position: static; }
+    }
+  
+&lt;/style&gt;
+&lt;div id=&quot;youzan-consolidation-case&quot;&gt;
+
+  &lt;header class=&quot;topbar&quot;&gt;
+    &lt;div class=&quot;shell topbar-inner&quot;&gt;
+      &lt;div class=&quot;title-line&quot;&gt;
+        &lt;div&gt;
+          &lt;h1&gt;有赞科技拆并股持仓案例&lt;/h1&gt;
+          &lt;p class=&quot;subtitle&quot;&gt;主代码与临时代码在并行交易期分别核算，临时代码持仓及空头义务于 8 月 10 日按 1:1 并入主代码。&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;codes&quot; aria-label=&quot;证券代码&quot;&gt;
+          &lt;span class=&quot;code-chip&quot;&gt;主代码 06051&lt;/span&gt;
+          &lt;span class=&quot;code-chip&quot;&gt;临时代码 02975&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;facts&quot; aria-label=&quot;公司行动要点&quot;&gt;
+        &lt;div class=&quot;fact&quot;&gt;&lt;span&gt;股份合并比例&lt;/span&gt;&lt;strong&gt;20 旧股 : 1 新股&lt;/strong&gt;&lt;/div&gt;
+        &lt;div class=&quot;fact&quot;&gt;&lt;span&gt;临时柜台开始&lt;/span&gt;&lt;strong&gt;2026-07-03&lt;/strong&gt;&lt;/div&gt;
+        &lt;div class=&quot;fact&quot;&gt;&lt;span&gt;并行买卖期间&lt;/span&gt;&lt;strong&gt;2026-07-17 至 2026-08-06&lt;/strong&gt;&lt;/div&gt;
+        &lt;div class=&quot;fact&quot;&gt;&lt;span&gt;统一并回主代码&lt;/span&gt;&lt;strong&gt;2026-08-10&lt;/strong&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/header&gt;
+
+  &lt;main class=&quot;shell&quot;&gt;
+    &lt;nav class=&quot;tabs&quot; aria-label=&quot;报告视图&quot; role=&quot;tablist&quot;&gt;
+      &lt;button class=&quot;tab&quot; id=&quot;tab-long&quot; role=&quot;tab&quot; aria-selected=&quot;true&quot; aria-controls=&quot;panel-long&quot; data-tab=&quot;long&quot;&gt;持仓时间轴&lt;/button&gt;
+      &lt;button class=&quot;tab&quot; id=&quot;tab-short&quot; role=&quot;tab&quot; aria-selected=&quot;false&quot; aria-controls=&quot;panel-short&quot; data-tab=&quot;short&quot;&gt;做空场景&lt;/button&gt;
+      &lt;button class=&quot;tab&quot; id=&quot;tab-method&quot; role=&quot;tab&quot; aria-selected=&quot;false&quot; aria-controls=&quot;panel-method&quot; data-tab=&quot;method&quot;&gt;口径与来源&lt;/button&gt;
+    &lt;/nav&gt;
+
+    &lt;section class=&quot;panel&quot; id=&quot;panel-long&quot; role=&quot;tabpanel&quot; aria-labelledby=&quot;tab-long&quot; data-panel=&quot;long&quot;&gt;
+      &lt;div class=&quot;panel-heading&quot;&gt;
+        &lt;div&gt;&lt;h2&gt;客户持仓与盈亏&lt;/h2&gt;&lt;p&gt;移动平均成本法；右侧“计算逻辑”按每一步交易前状态代入计算。&lt;/p&gt;&lt;/div&gt;
+        &lt;div class=&quot;filters&quot; aria-label=&quot;筛选持仓事件&quot;&gt;
+          &lt;button class=&quot;filter&quot; aria-pressed=&quot;true&quot; data-table=&quot;long&quot; data-filter=&quot;all&quot;&gt;全部&lt;/button&gt;
+          &lt;button class=&quot;filter&quot; aria-pressed=&quot;false&quot; data-table=&quot;long&quot; data-filter=&quot;trade&quot;&gt;交易&lt;/button&gt;
+          &lt;button class=&quot;filter&quot; aria-pressed=&quot;false&quot; data-table=&quot;long&quot; data-filter=&quot;ca&quot;&gt;换码&lt;/button&gt;
+          &lt;button class=&quot;filter&quot; aria-pressed=&quot;false&quot; data-table=&quot;long&quot; data-filter=&quot;status&quot;&gt;状态&lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;metrics&quot; aria-label=&quot;持仓最终结果&quot;&gt;
+        &lt;div class=&quot;metric teal&quot;&gt;&lt;span&gt;最终持仓数量&lt;/span&gt;&lt;strong&gt;6,000 股&lt;/strong&gt;&lt;/div&gt;
+        &lt;div class=&quot;metric amber&quot;&gt;&lt;span&gt;最终平均成本&lt;/span&gt;&lt;strong&gt;HK$2.0078&lt;/strong&gt;&lt;/div&gt;
+        &lt;div class=&quot;metric burgundy&quot;&gt;&lt;span&gt;最终未实现盈亏&lt;/span&gt;&lt;strong class=&quot;value-positive&quot;&gt;HK$1,152.92&lt;/strong&gt;&lt;/div&gt;
+        &lt;div class=&quot;metric green&quot;&gt;&lt;span&gt;累计已实现盈亏&lt;/span&gt;&lt;strong class=&quot;value-positive&quot;&gt;HK$1,295.08&lt;/strong&gt;&lt;/div&gt;
+        &lt;div class=&quot;metric green&quot;&gt;&lt;span&gt;最终持仓盈亏&lt;/span&gt;&lt;strong class=&quot;value-positive&quot;&gt;HK$2,448.00&lt;/strong&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;table-wrap&quot;&gt;
+        &lt;table id=&quot;table-long&quot;&gt;
+          &lt;thead&gt;&lt;tr&gt;&lt;th&gt;日期 / 阶段&lt;/th&gt;&lt;th&gt;事件 / 说明&lt;/th&gt;&lt;th&gt;交易&lt;/th&gt;&lt;th class=&quot;number&quot;&gt;主代码持仓&lt;/th&gt;&lt;th class=&quot;number&quot;&gt;临时代码持仓&lt;/th&gt;&lt;th class=&quot;number&quot;&gt;主代码平均成本&lt;/th&gt;&lt;th class=&quot;number&quot;&gt;临时代码平均成本&lt;/th&gt;&lt;th class=&quot;number&quot;&gt;未实现盈亏&lt;/th&gt;&lt;th class=&quot;number&quot;&gt;累计已实现盈亏&lt;/th&gt;&lt;th class=&quot;number&quot;&gt;持仓盈亏&lt;/th&gt;&lt;th class=&quot;calculation&quot;&gt;计算逻辑&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+          &lt;tbody&gt;
+  &lt;tr data-kind=&quot;status&quot;&gt;
+    &lt;td data-label=&quot;日期&quot;&gt;&lt;time datetime=&quot;2026-06-25&quot;&gt;2026-06-25&lt;/time&gt;&lt;span class=&quot;phase&quot;&gt;拆股前&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;事件&quot;&gt;&lt;strong&gt;期初&lt;/strong&gt;&lt;span class=&quot;row-note&quot;&gt;建立期初零持仓&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;交易&quot;&gt;-&lt;span class=&quot;row-note&quot;&gt;无&lt;/span&gt;&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码持仓&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码持仓&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码平均成本&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码平均成本&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number &quot; data-label=&quot;未实现盈亏&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number &quot; data-label=&quot;累计已实现盈亏&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number &quot; data-label=&quot;持仓盈亏&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;calculation&quot; data-label=&quot;计算逻辑&quot;&gt;本步骤不改变持仓数量或建仓市值（成本基数）；当前市值：0 × HK$0.0900 + 0 × HK$0.0000 = HK$0.00；未实现盈亏 = 当前市值 HK$0.00 − 建仓市值（成本基数）HK$0.00 = HK$0.00；持仓盈亏 = 累计已实现 HK$0.00 + 未实现 HK$0.00 = HK$0.00。&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr data-kind=&quot;trade&quot;&gt;
+    &lt;td data-label=&quot;日期&quot;&gt;&lt;time datetime=&quot;2026-06-26&quot;&gt;2026-06-26&lt;/time&gt;&lt;span class=&quot;phase&quot;&gt;拆股前&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;事件&quot;&gt;&lt;strong&gt;买入旧主代码&lt;/strong&gt;&lt;span class=&quot;row-note&quot;&gt;以旧股口径买入20手（每手4,000股）&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;交易&quot;&gt;06051&lt;span class=&quot;row-note&quot;&gt;买入 80,000 股 @ HK$0.0950&lt;/span&gt;&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码持仓&quot;&gt;80,000&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码持仓&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码平均成本&quot;&gt;HK$0.0950&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码平均成本&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;未实现盈亏&quot;&gt;HK$400.00&lt;/td&gt;
+    &lt;td class=&quot;number &quot; data-label=&quot;累计已实现盈亏&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;持仓盈亏&quot;&gt;HK$400.00&lt;/td&gt;
+    &lt;td class=&quot;calculation&quot; data-label=&quot;计算逻辑&quot;&gt;主代码持仓：0 + 80,000 = 80,000；建仓市值（成本基数）：HK$0.00 + 80,000 × HK$0.0950 = HK$7,600.00；平均成本 = HK$7,600.00 ÷ 80,000 = HK$0.0950。当前市值：80,000 × HK$0.1000 + 0 × HK$0.0000 = HK$8,000.00；未实现盈亏 = 当前市值 HK$8,000.00 − 建仓市值（成本基数）HK$7,600.00 = HK$400.00；持仓盈亏 = 累计已实现 HK$0.00 + 未实现 HK$400.00 = HK$400.00。&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr data-kind=&quot;trade&quot;&gt;
+    &lt;td data-label=&quot;日期&quot;&gt;&lt;time datetime=&quot;2026-07-02&quot;&gt;2026-07-02&lt;/time&gt;&lt;span class=&quot;phase&quot;&gt;拆股前&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;事件&quot;&gt;&lt;strong&gt;加仓旧主代码&lt;/strong&gt;&lt;span class=&quot;row-note&quot;&gt;再次买入10手旧股&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;交易&quot;&gt;06051&lt;span class=&quot;row-note&quot;&gt;买入 40,000 股 @ HK$0.1050&lt;/span&gt;&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码持仓&quot;&gt;120,000&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码持仓&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码平均成本&quot;&gt;HK$0.0983&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码平均成本&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;未实现盈亏&quot;&gt;HK$1,400.00&lt;/td&gt;
+    &lt;td class=&quot;number &quot; data-label=&quot;累计已实现盈亏&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;持仓盈亏&quot;&gt;HK$1,400.00&lt;/td&gt;
+    &lt;td class=&quot;calculation&quot; data-label=&quot;计算逻辑&quot;&gt;主代码持仓：80,000 + 40,000 = 120,000；建仓市值（成本基数）：HK$7,600.00 + 40,000 × HK$0.1050 = HK$11,800.00；平均成本 = HK$11,800.00 ÷ 120,000 = HK$0.0983。当前市值：120,000 × HK$0.1100 + 0 × HK$0.0000 = HK$13,200.00；未实现盈亏 = 当前市值 HK$13,200.00 − 建仓市值（成本基数）HK$11,800.00 = HK$1,400.00；持仓盈亏 = 累计已实现 HK$0.00 + 未实现 HK$1,400.00 = HK$1,400.00。&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr data-kind=&quot;status&quot;&gt;
+    &lt;td data-label=&quot;日期&quot;&gt;&lt;time datetime=&quot;2026-07-03&quot;&gt;2026-07-03&lt;/time&gt;&lt;span class=&quot;phase&quot;&gt;临时柜台已开/待换码&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;事件&quot;&gt;&lt;strong&gt;临时柜台开始交易&lt;/strong&gt;&lt;span class=&quot;row-note&quot;&gt;临时代码已可交易；客户旧股等待首轮CCASS换码&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;交易&quot;&gt;02975&lt;span class=&quot;row-note&quot;&gt;无&lt;/span&gt;&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码持仓&quot;&gt;120,000&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码持仓&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码平均成本&quot;&gt;HK$0.0983&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码平均成本&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;未实现盈亏&quot;&gt;HK$1,400.00&lt;/td&gt;
+    &lt;td class=&quot;number &quot; data-label=&quot;累计已实现盈亏&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;持仓盈亏&quot;&gt;HK$1,400.00&lt;/td&gt;
+    &lt;td class=&quot;calculation&quot; data-label=&quot;计算逻辑&quot;&gt;本步骤不改变持仓数量或建仓市值（成本基数）；当前市值：120,000 × HK$0.1100 + 0 × HK$2.1800 = HK$13,200.00；未实现盈亏 = 当前市值 HK$13,200.00 − 建仓市值（成本基数）HK$11,800.00 = HK$1,400.00；持仓盈亏 = 累计已实现 HK$0.00 + 未实现 HK$1,400.00 = HK$1,400.00。&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr data-kind=&quot;ca&quot;&gt;
+    &lt;td data-label=&quot;日期&quot;&gt;&lt;time datetime=&quot;2026-07-06&quot;&gt;2026-07-06&lt;/time&gt;&lt;span class=&quot;phase&quot;&gt;仅临时代码&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;事件&quot;&gt;&lt;strong&gt;首轮CA：20:1换码&lt;/strong&gt;&lt;span class=&quot;row-note&quot;&gt;120,000股旧股转为6,000股新股；总成本不变&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;交易&quot;&gt;06051 -&amp;gt; 02975&lt;span class=&quot;row-note&quot;&gt;CA20&lt;/span&gt;&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码持仓&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码持仓&quot;&gt;6,000&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码平均成本&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码平均成本&quot;&gt;HK$1.9667&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;未实现盈亏&quot;&gt;HK$800.00&lt;/td&gt;
+    &lt;td class=&quot;number &quot; data-label=&quot;累计已实现盈亏&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;持仓盈亏&quot;&gt;HK$800.00&lt;/td&gt;
+    &lt;td class=&quot;calculation&quot; data-label=&quot;计算逻辑&quot;&gt;换码数量：120,000 ÷ 20 = 6,000；建仓市值（成本基数）HK$11,800.00 原额转入临时代码，主代码清零；临时代码平均成本 = HK$11,800.00 ÷ 6,000 = HK$1.9667。当前市值：0 × HK$0.0000 + 6,000 × HK$2.1000 = HK$12,600.00；未实现盈亏 = 当前市值 HK$12,600.00 − 建仓市值（成本基数）HK$11,800.00 = HK$800.00；持仓盈亏 = 累计已实现 HK$0.00 + 未实现 HK$800.00 = HK$800.00。&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr data-kind=&quot;trade&quot;&gt;
+    &lt;td data-label=&quot;日期&quot;&gt;&lt;time datetime=&quot;2026-07-08&quot;&gt;2026-07-08&lt;/time&gt;&lt;span class=&quot;phase&quot;&gt;仅临时代码&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;事件&quot;&gt;&lt;strong&gt;卖出临时代码&lt;/strong&gt;&lt;span class=&quot;row-note&quot;&gt;仅临时柜台开放期间卖出5手临时柜台股份&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;交易&quot;&gt;02975&lt;span class=&quot;row-note&quot;&gt;卖出 1,000 股 @ HK$2.2000&lt;/span&gt;&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码持仓&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码持仓&quot;&gt;5,000&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码平均成本&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码平均成本&quot;&gt;HK$1.9667&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;未实现盈亏&quot;&gt;HK$666.67&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;累计已实现盈亏&quot;&gt;HK$233.33&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;持仓盈亏&quot;&gt;HK$900.00&lt;/td&gt;
+    &lt;td class=&quot;calculation&quot; data-label=&quot;计算逻辑&quot;&gt;临时代码持仓：6,000 − 1,000 = 5,000；建仓市值（成本基数）：HK$11,800.00 − 1,000 × HK$1.9667 = HK$9,833.33；本次已实现盈亏 = 1,000 × (HK$2.2000 − HK$1.9667) = HK$233.33。当前市值：0 × HK$0.0000 + 5,000 × HK$2.1000 = HK$10,500.00；未实现盈亏 = 当前市值 HK$10,500.00 − 建仓市值（成本基数）HK$9,833.33 = HK$666.67；持仓盈亏 = 累计已实现 HK$233.33 + 未实现 HK$666.67 = HK$900.00。&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr data-kind=&quot;trade&quot;&gt;
+    &lt;td data-label=&quot;日期&quot;&gt;&lt;time datetime=&quot;2026-07-13&quot;&gt;2026-07-13&lt;/time&gt;&lt;span class=&quot;phase&quot;&gt;仅临时代码&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;事件&quot;&gt;&lt;strong&gt;买入临时代码&lt;/strong&gt;&lt;span class=&quot;row-note&quot;&gt;临时柜台补仓2手，降低综合平均成本&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;交易&quot;&gt;02975&lt;span class=&quot;row-note&quot;&gt;买入 400 股 @ HK$2.0000&lt;/span&gt;&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码持仓&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码持仓&quot;&gt;5,400&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码平均成本&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码平均成本&quot;&gt;HK$1.9691&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;未实现盈亏&quot;&gt;HK$598.67&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;累计已实现盈亏&quot;&gt;HK$233.33&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;持仓盈亏&quot;&gt;HK$832.00&lt;/td&gt;
+    &lt;td class=&quot;calculation&quot; data-label=&quot;计算逻辑&quot;&gt;临时代码持仓：5,000 + 400 = 5,400；建仓市值（成本基数）：HK$9,833.33 + 400 × HK$2.0000 = HK$10,633.33；平均成本 = HK$10,633.33 ÷ 5,400 = HK$1.9691。当前市值：0 × HK$0.0000 + 5,400 × HK$2.0800 = HK$11,232.00；未实现盈亏 = 当前市值 HK$11,232.00 − 建仓市值（成本基数）HK$10,633.33 = HK$598.67；持仓盈亏 = 累计已实现 HK$233.33 + 未实现 HK$598.67 = HK$832.00。&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr data-kind=&quot;trade&quot;&gt;
+    &lt;td data-label=&quot;日期&quot;&gt;&lt;time datetime=&quot;2026-07-17&quot;&gt;2026-07-17&lt;/time&gt;&lt;span class=&quot;phase&quot;&gt;并行买卖&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;事件&quot;&gt;&lt;strong&gt;主代码重新开放并买入&lt;/strong&gt;&lt;span class=&quot;row-note&quot;&gt;主柜台与临时柜台同时开放；买入1手新主柜台&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;交易&quot;&gt;06051&lt;span class=&quot;row-note&quot;&gt;买入 5,000 股 @ HK$2.0600&lt;/span&gt;&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码持仓&quot;&gt;5,000&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码持仓&quot;&gt;5,400&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码平均成本&quot;&gt;HK$2.0600&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码平均成本&quot;&gt;HK$1.9691&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;未实现盈亏&quot;&gt;HK$806.67&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;累计已实现盈亏&quot;&gt;HK$233.33&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;持仓盈亏&quot;&gt;HK$1,040.00&lt;/td&gt;
+    &lt;td class=&quot;calculation&quot; data-label=&quot;计算逻辑&quot;&gt;主代码持仓：0 + 5,000 = 5,000；建仓市值（成本基数）：HK$0.00 + 5,000 × HK$2.0600 = HK$10,300.00；平均成本 = HK$10,300.00 ÷ 5,000 = HK$2.0600。当前市值：5,000 × HK$2.0800 + 5,400 × HK$2.1000 = HK$21,740.00；未实现盈亏 = 当前市值 HK$21,740.00 − 建仓市值（成本基数）HK$20,933.33 = HK$806.67；持仓盈亏 = 累计已实现 HK$233.33 + 未实现 HK$806.67 = HK$1,040.00。&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr data-kind=&quot;trade&quot;&gt;
+    &lt;td data-label=&quot;日期&quot;&gt;&lt;time datetime=&quot;2026-07-23&quot;&gt;2026-07-23&lt;/time&gt;&lt;span class=&quot;phase&quot;&gt;并行买卖&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;事件&quot;&gt;&lt;strong&gt;再次买入临时代码&lt;/strong&gt;&lt;span class=&quot;row-note&quot;&gt;利用临时柜台较小每手数量买入5手&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;交易&quot;&gt;02975&lt;span class=&quot;row-note&quot;&gt;买入 1,000 股 @ HK$2.0500&lt;/span&gt;&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码持仓&quot;&gt;5,000&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码持仓&quot;&gt;6,400&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码平均成本&quot;&gt;HK$2.0600&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码平均成本&quot;&gt;HK$1.9818&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;未实现盈亏&quot;&gt;HK$828.67&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;累计已实现盈亏&quot;&gt;HK$233.33&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;持仓盈亏&quot;&gt;HK$1,062.00&lt;/td&gt;
+    &lt;td class=&quot;calculation&quot; data-label=&quot;计算逻辑&quot;&gt;临时代码持仓：5,400 + 1,000 = 6,400；建仓市值（成本基数）：HK$10,633.33 + 1,000 × HK$2.0500 = HK$12,683.33；平均成本 = HK$12,683.33 ÷ 6,400 = HK$1.9818。当前市值：5,000 × HK$2.1000 + 6,400 × HK$2.0800 = HK$23,812.00；未实现盈亏 = 当前市值 HK$23,812.00 − 建仓市值（成本基数）HK$22,983.33 = HK$828.67；持仓盈亏 = 累计已实现 HK$233.33 + 未实现 HK$828.67 = HK$1,062.00。&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr data-kind=&quot;trade&quot;&gt;
+    &lt;td data-label=&quot;日期&quot;&gt;&lt;time datetime=&quot;2026-07-27&quot;&gt;2026-07-27&lt;/time&gt;&lt;span class=&quot;phase&quot;&gt;并行买卖&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;事件&quot;&gt;&lt;strong&gt;卖出主代码&lt;/strong&gt;&lt;span class=&quot;row-note&quot;&gt;并行期从主柜台卖出碎股数量；示例忽略经纪限制&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;交易&quot;&gt;06051&lt;span class=&quot;row-note&quot;&gt;卖出 2,000 股 @ HK$2.1800&lt;/span&gt;&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码持仓&quot;&gt;3,000&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码持仓&quot;&gt;6,400&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码平均成本&quot;&gt;HK$2.0600&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码平均成本&quot;&gt;HK$1.9818&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;未实现盈亏&quot;&gt;HK$1,154.67&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;累计已实现盈亏&quot;&gt;HK$473.33&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;持仓盈亏&quot;&gt;HK$1,628.00&lt;/td&gt;
+    &lt;td class=&quot;calculation&quot; data-label=&quot;计算逻辑&quot;&gt;主代码持仓：5,000 − 2,000 = 3,000；建仓市值（成本基数）：HK$10,300.00 − 2,000 × HK$2.0600 = HK$6,180.00；本次已实现盈亏 = 2,000 × (HK$2.1800 − HK$2.0600) = HK$240.00。当前市值：3,000 × HK$2.1500 + 6,400 × HK$2.1200 = HK$20,018.00；未实现盈亏 = 当前市值 HK$20,018.00 − 建仓市值（成本基数）HK$18,863.33 = HK$1,154.67；持仓盈亏 = 累计已实现 HK$473.33 + 未实现 HK$1,154.67 = HK$1,628.00。&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr data-kind=&quot;trade&quot;&gt;
+    &lt;td data-label=&quot;日期&quot;&gt;&lt;time datetime=&quot;2026-08-04&quot;&gt;2026-08-04&lt;/time&gt;&lt;span class=&quot;phase&quot;&gt;并行买卖&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;事件&quot;&gt;&lt;strong&gt;卖出临时代码&lt;/strong&gt;&lt;span class=&quot;row-note&quot;&gt;同一股份在独立订单簿成交，卖价可能与主代码不同&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;交易&quot;&gt;02975&lt;span class=&quot;row-note&quot;&gt;卖出 400 股 @ HK$2.2200&lt;/span&gt;&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码持仓&quot;&gt;3,000&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码持仓&quot;&gt;6,000&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码平均成本&quot;&gt;HK$2.0600&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码平均成本&quot;&gt;HK$1.9818&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;未实现盈亏&quot;&gt;HK$1,699.38&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;累计已实现盈亏&quot;&gt;HK$568.63&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;持仓盈亏&quot;&gt;HK$2,268.00&lt;/td&gt;
+    &lt;td class=&quot;calculation&quot; data-label=&quot;计算逻辑&quot;&gt;临时代码持仓：6,400 − 400 = 6,000；建仓市值（成本基数）：HK$12,683.33 − 400 × HK$1.9818 = HK$11,890.63；本次已实现盈亏 = 400 × (HK$2.2200 − HK$1.9818) = HK$95.29。当前市值：3,000 × HK$2.1700 + 6,000 × HK$2.2100 = HK$19,770.00；未实现盈亏 = 当前市值 HK$19,770.00 − 建仓市值（成本基数）HK$18,070.63 = HK$1,699.38；持仓盈亏 = 累计已实现 HK$568.63 + 未实现 HK$1,699.38 = HK$2,268.00。&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr data-kind=&quot;status&quot;&gt;
+    &lt;td data-label=&quot;日期&quot;&gt;&lt;time datetime=&quot;2026-08-06&quot;&gt;2026-08-06&lt;/time&gt;&lt;span class=&quot;phase&quot;&gt;并行结束/待清算&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;事件&quot;&gt;&lt;strong&gt;并行买卖结束&lt;/strong&gt;&lt;span class=&quot;row-note&quot;&gt;临时柜台停止交易，仍可能存在待换码持仓&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;交易&quot;&gt;02975&lt;span class=&quot;row-note&quot;&gt;无&lt;/span&gt;&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码持仓&quot;&gt;3,000&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码持仓&quot;&gt;6,000&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码平均成本&quot;&gt;HK$2.0600&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码平均成本&quot;&gt;HK$1.9818&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;未实现盈亏&quot;&gt;HK$1,309.38&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;累计已实现盈亏&quot;&gt;HK$568.63&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;持仓盈亏&quot;&gt;HK$1,878.00&lt;/td&gt;
+    &lt;td class=&quot;calculation&quot; data-label=&quot;计算逻辑&quot;&gt;本步骤不改变持仓数量或建仓市值（成本基数）；当前市值：3,000 × HK$2.1600 + 6,000 × HK$2.1500 = HK$19,380.00；未实现盈亏 = 当前市值 HK$19,380.00 − 建仓市值（成本基数）HK$18,070.63 = HK$1,309.38；持仓盈亏 = 累计已实现 HK$568.63 + 未实现 HK$1,309.38 = HK$1,878.00。&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr data-kind=&quot;ca&quot;&gt;
+    &lt;td data-label=&quot;日期&quot;&gt;&lt;time datetime=&quot;2026-08-10&quot;&gt;2026-08-10&lt;/time&gt;&lt;span class=&quot;phase&quot;&gt;仅主代码&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;事件&quot;&gt;&lt;strong&gt;8月10日CA：1:1转主代码&lt;/strong&gt;&lt;span class=&quot;row-note&quot;&gt;剩余临时持仓按1:1转回主代码&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;交易&quot;&gt;02975 -&amp;gt; 06051&lt;span class=&quot;row-note&quot;&gt;CA1&lt;/span&gt;&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码持仓&quot;&gt;9,000&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码持仓&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码平均成本&quot;&gt;HK$2.0078&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码平均成本&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;未实现盈亏&quot;&gt;HK$1,189.38&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;累计已实现盈亏&quot;&gt;HK$568.63&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;持仓盈亏&quot;&gt;HK$1,758.00&lt;/td&gt;
+    &lt;td class=&quot;calculation&quot; data-label=&quot;计算逻辑&quot;&gt;换码数量：临时代码 6,000 × 1 = 主代码 9,000；建仓市值（成本基数）HK$11,890.63 1:1 转入主代码，临时代码清零；主代码平均成本 = HK$18,070.63 ÷ 9,000 = HK$2.0078。当前市值：9,000 × HK$2.1400 + 0 × HK$0.0000 = HK$19,260.00；未实现盈亏 = 当前市值 HK$19,260.00 − 建仓市值（成本基数）HK$18,070.63 = HK$1,189.38；持仓盈亏 = 累计已实现 HK$568.63 + 未实现 HK$1,189.38 = HK$1,758.00。&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr data-kind=&quot;trade&quot;&gt;
+    &lt;td data-label=&quot;日期&quot;&gt;&lt;time datetime=&quot;2026-08-18&quot;&gt;2026-08-18&lt;/time&gt;&lt;span class=&quot;phase&quot;&gt;仅主代码&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;事件&quot;&gt;&lt;strong&gt;卖出新主代码&lt;/strong&gt;&lt;span class=&quot;row-note&quot;&gt;临时柜台生命周期结束后，客户仅持有主代码&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;交易&quot;&gt;06051&lt;span class=&quot;row-note&quot;&gt;卖出 3,000 股 @ HK$2.2500&lt;/span&gt;&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码持仓&quot;&gt;6,000&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码持仓&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码平均成本&quot;&gt;HK$2.0078&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码平均成本&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;未实现盈亏&quot;&gt;HK$1,152.92&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;累计已实现盈亏&quot;&gt;HK$1,295.08&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;持仓盈亏&quot;&gt;HK$2,448.00&lt;/td&gt;
+    &lt;td class=&quot;calculation&quot; data-label=&quot;计算逻辑&quot;&gt;主代码持仓：9,000 − 3,000 = 6,000；建仓市值（成本基数）：HK$18,070.63 − 3,000 × HK$2.0078 = HK$12,047.08；本次已实现盈亏 = 3,000 × (HK$2.2500 − HK$2.0078) = HK$726.46。当前市值：6,000 × HK$2.2000 + 0 × HK$0.0000 = HK$13,200.00；未实现盈亏 = 当前市值 HK$13,200.00 − 建仓市值（成本基数）HK$12,047.08 = HK$1,152.92；持仓盈亏 = 累计已实现 HK$1,295.08 + 未实现 HK$1,152.92 = HK$2,448.00。&lt;/td&gt;
+  &lt;/tr&gt;&lt;/tbody&gt;
+        &lt;/table&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;section class=&quot;panel&quot; id=&quot;panel-short&quot; role=&quot;tabpanel&quot; aria-labelledby=&quot;tab-short&quot; data-panel=&quot;short&quot; hidden&gt;
+      &lt;div class=&quot;panel-heading&quot;&gt;
+        &lt;div&gt;&lt;h2&gt;做空、换码与买入平仓&lt;/h2&gt;&lt;p&gt;空头数量和卖空收入基数按代码分别维护；右侧展示每一步的代入公式。&lt;/p&gt;&lt;/div&gt;
+        &lt;div class=&quot;filters&quot; aria-label=&quot;筛选做空事件&quot;&gt;
+          &lt;button class=&quot;filter&quot; aria-pressed=&quot;true&quot; data-table=&quot;short&quot; data-filter=&quot;all&quot;&gt;全部&lt;/button&gt;
+          &lt;button class=&quot;filter&quot; aria-pressed=&quot;false&quot; data-table=&quot;short&quot; data-filter=&quot;trade&quot;&gt;交易&lt;/button&gt;
+          &lt;button class=&quot;filter&quot; aria-pressed=&quot;false&quot; data-table=&quot;short&quot; data-filter=&quot;ca&quot;&gt;换码&lt;/button&gt;
+          &lt;button class=&quot;filter&quot; aria-pressed=&quot;false&quot; data-table=&quot;short&quot; data-filter=&quot;status&quot;&gt;状态&lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;metrics&quot; aria-label=&quot;做空最终结果&quot;&gt;
+        &lt;div class=&quot;metric teal&quot;&gt;&lt;span&gt;最终未平仓空头&lt;/span&gt;&lt;strong&gt;-&lt;/strong&gt;&lt;/div&gt;
+        &lt;div class=&quot;metric amber&quot;&gt;&lt;span&gt;累计卖空收入&lt;/span&gt;&lt;strong&gt;HK$5,038.00&lt;/strong&gt;&lt;/div&gt;
+        &lt;div class=&quot;metric burgundy&quot;&gt;&lt;span&gt;累计平仓支出&lt;/span&gt;&lt;strong&gt;HK$4,784.00&lt;/strong&gt;&lt;/div&gt;
+        &lt;div class=&quot;metric green&quot;&gt;&lt;span&gt;累计已实现空头盈亏&lt;/span&gt;&lt;strong class=&quot;value-positive&quot;&gt;HK$254.00&lt;/strong&gt;&lt;/div&gt;
+        &lt;div class=&quot;metric green&quot;&gt;&lt;span&gt;最终空头持仓盈亏&lt;/span&gt;&lt;strong class=&quot;value-positive&quot;&gt;HK$254.00&lt;/strong&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;table-wrap&quot;&gt;
+        &lt;table id=&quot;table-short&quot;&gt;
+          &lt;thead&gt;&lt;tr&gt;&lt;th&gt;日期 / 阶段&lt;/th&gt;&lt;th&gt;事件 / 说明&lt;/th&gt;&lt;th&gt;交易&lt;/th&gt;&lt;th class=&quot;number&quot;&gt;主代码空头&lt;/th&gt;&lt;th class=&quot;number&quot;&gt;临时代码空头&lt;/th&gt;&lt;th class=&quot;number&quot;&gt;主代码平均卖出价&lt;/th&gt;&lt;th class=&quot;number&quot;&gt;临时代码平均卖出价&lt;/th&gt;&lt;th class=&quot;number&quot;&gt;未实现空头盈亏&lt;/th&gt;&lt;th class=&quot;number&quot;&gt;累计已实现空头盈亏&lt;/th&gt;&lt;th class=&quot;number&quot;&gt;空头持仓盈亏&lt;/th&gt;&lt;th class=&quot;calculation&quot;&gt;计算逻辑&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+          &lt;tbody&gt;
+  &lt;tr data-kind=&quot;status&quot;&gt;
+    &lt;td data-label=&quot;日期&quot;&gt;&lt;time datetime=&quot;2026-07-16&quot;&gt;2026-07-16&lt;/time&gt;&lt;span class=&quot;phase&quot;&gt;并行前&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;事件&quot;&gt;&lt;strong&gt;期初&lt;/strong&gt;&lt;span class=&quot;row-note&quot;&gt;建立期初零空头&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;交易&quot;&gt;-&lt;span class=&quot;row-note&quot;&gt;无&lt;/span&gt;&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码空头&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码空头&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码平均卖出价&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码平均卖出价&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number &quot; data-label=&quot;未实现空头盈亏&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number &quot; data-label=&quot;累计已实现空头盈亏&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number &quot; data-label=&quot;空头持仓盈亏&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;calculation&quot; data-label=&quot;计算逻辑&quot;&gt;本步骤不改变空头数量或卖空收入基数；回补市值：0 × HK$2.0800 + 0 × HK$2.1000 = HK$0.00；未实现空头盈亏 = HK$0.00 − HK$0.00 = HK$0.00；空头持仓盈亏 = 累计已实现 HK$0.00 + 未实现 HK$0.00 = HK$0.00。&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr data-kind=&quot;trade&quot;&gt;
+    &lt;td data-label=&quot;日期&quot;&gt;&lt;time datetime=&quot;2026-07-17&quot;&gt;2026-07-17&lt;/time&gt;&lt;span class=&quot;phase&quot;&gt;并行买卖&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;事件&quot;&gt;&lt;strong&gt;卖空临时代码&lt;/strong&gt;&lt;span class=&quot;row-note&quot;&gt;借入并卖出5手临时柜台股份&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;交易&quot;&gt;02975&lt;span class=&quot;row-note&quot;&gt;卖空 1,000 股 @ HK$2.1000&lt;/span&gt;&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码空头&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码空头&quot;&gt;1,000&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码平均卖出价&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码平均卖出价&quot;&gt;HK$2.1000&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;未实现空头盈亏&quot;&gt;HK$20.00&lt;/td&gt;
+    &lt;td class=&quot;number &quot; data-label=&quot;累计已实现空头盈亏&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;空头持仓盈亏&quot;&gt;HK$20.00&lt;/td&gt;
+    &lt;td class=&quot;calculation&quot; data-label=&quot;计算逻辑&quot;&gt;临时代码空头数量：0 + 1,000 = 1,000；卖空收入基数：HK$0.00 + 1,000 × HK$2.1000 = HK$2,100.00；平均卖出价 = HK$2,100.00 ÷ 1,000 = HK$2.1000。回补市值：0 × HK$2.0800 + 1,000 × HK$2.0800 = HK$2,080.00；未实现空头盈亏 = HK$2,100.00 − HK$2,080.00 = HK$20.00；空头持仓盈亏 = 累计已实现 HK$0.00 + 未实现 HK$20.00 = HK$20.00。&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr data-kind=&quot;trade&quot;&gt;
+    &lt;td data-label=&quot;日期&quot;&gt;&lt;time datetime=&quot;2026-07-23&quot;&gt;2026-07-23&lt;/time&gt;&lt;span class=&quot;phase&quot;&gt;并行买卖&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;事件&quot;&gt;&lt;strong&gt;追加卖空主代码&lt;/strong&gt;&lt;span class=&quot;row-note&quot;&gt;在主柜台追加卖空；与原空头合并平均卖出价&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;交易&quot;&gt;06051&lt;span class=&quot;row-note&quot;&gt;卖空 1,000 股 @ HK$2.0500&lt;/span&gt;&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码空头&quot;&gt;1,000&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码空头&quot;&gt;1,000&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码平均卖出价&quot;&gt;HK$2.0500&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码平均卖出价&quot;&gt;HK$2.1000&lt;/td&gt;
+    &lt;td class=&quot;number value-negative&quot; data-label=&quot;未实现空头盈亏&quot;&gt;(HK$30.00)&lt;/td&gt;
+    &lt;td class=&quot;number &quot; data-label=&quot;累计已实现空头盈亏&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number value-negative&quot; data-label=&quot;空头持仓盈亏&quot;&gt;(HK$30.00)&lt;/td&gt;
+    &lt;td class=&quot;calculation&quot; data-label=&quot;计算逻辑&quot;&gt;主代码空头数量：0 + 1,000 = 1,000；卖空收入基数：HK$0.00 + 1,000 × HK$2.0500 = HK$2,050.00；平均卖出价 = HK$2,050.00 ÷ 1,000 = HK$2.0500。回补市值：1,000 × HK$2.1000 + 1,000 × HK$2.0800 = HK$4,180.00；未实现空头盈亏 = HK$4,150.00 − HK$4,180.00 = -HK$30.00；空头持仓盈亏 = 累计已实现 HK$0.00 + 未实现 -HK$30.00 = -HK$30.00。&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr data-kind=&quot;trade&quot;&gt;
+    &lt;td data-label=&quot;日期&quot;&gt;&lt;time datetime=&quot;2026-07-27&quot;&gt;2026-07-27&lt;/time&gt;&lt;span class=&quot;phase&quot;&gt;并行买卖&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;事件&quot;&gt;&lt;strong&gt;部分买入平仓主代码&lt;/strong&gt;&lt;span class=&quot;row-note&quot;&gt;低于平均卖出价回补，确认部分已实现盈利&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;交易&quot;&gt;06051&lt;span class=&quot;row-note&quot;&gt;买入平仓 800 股 @ HK$1.9800&lt;/span&gt;&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码空头&quot;&gt;200&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码空头&quot;&gt;1,000&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码平均卖出价&quot;&gt;HK$2.0500&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码平均卖出价&quot;&gt;HK$2.1000&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;未实现空头盈亏&quot;&gt;HK$70.00&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;累计已实现空头盈亏&quot;&gt;HK$56.00&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;空头持仓盈亏&quot;&gt;HK$126.00&lt;/td&gt;
+    &lt;td class=&quot;calculation&quot; data-label=&quot;计算逻辑&quot;&gt;主代码空头数量：1,000 − 800 = 200；卖空收入基数：HK$2,050.00 − 800 × HK$2.0500 = HK$410.00；本次已实现盈亏 = 800 × (HK$2.0500 − HK$1.9800) = HK$56.00。回补市值：200 × HK$2.0000 + 1,000 × HK$2.0400 = HK$2,440.00；未实现空头盈亏 = HK$2,510.00 − HK$2,440.00 = HK$70.00；空头持仓盈亏 = 累计已实现 HK$56.00 + 未实现 HK$70.00 = HK$126.00。&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr data-kind=&quot;trade&quot;&gt;
+    &lt;td data-label=&quot;日期&quot;&gt;&lt;time datetime=&quot;2026-08-04&quot;&gt;2026-08-04&lt;/time&gt;&lt;span class=&quot;phase&quot;&gt;并行买卖&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;事件&quot;&gt;&lt;strong&gt;再次卖空临时代码&lt;/strong&gt;&lt;span class=&quot;row-note&quot;&gt;两个代码分别维护空头数量和平均卖出价&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;交易&quot;&gt;02975&lt;span class=&quot;row-note&quot;&gt;卖空 400 股 @ HK$2.2200&lt;/span&gt;&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码空头&quot;&gt;200&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码空头&quot;&gt;1,400&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码平均卖出价&quot;&gt;HK$2.0500&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码平均卖出价&quot;&gt;HK$2.1343&lt;/td&gt;
+    &lt;td class=&quot;number value-negative&quot; data-label=&quot;未实现空头盈亏&quot;&gt;(HK$130.00)&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;累计已实现空头盈亏&quot;&gt;HK$56.00&lt;/td&gt;
+    &lt;td class=&quot;number value-negative&quot; data-label=&quot;空头持仓盈亏&quot;&gt;(HK$74.00)&lt;/td&gt;
+    &lt;td class=&quot;calculation&quot; data-label=&quot;计算逻辑&quot;&gt;临时代码空头数量：1,000 + 400 = 1,400；卖空收入基数：HK$2,100.00 + 400 × HK$2.2200 = HK$2,988.00；平均卖出价 = HK$2,988.00 ÷ 1,400 = HK$2.1343。回补市值：200 × HK$2.1700 + 1,400 × HK$2.2100 = HK$3,528.00；未实现空头盈亏 = HK$3,398.00 − HK$3,528.00 = -HK$130.00；空头持仓盈亏 = 累计已实现 HK$56.00 + 未实现 -HK$130.00 = -HK$74.00。&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr data-kind=&quot;status&quot;&gt;
+    &lt;td data-label=&quot;日期&quot;&gt;&lt;time datetime=&quot;2026-08-06&quot;&gt;2026-08-06&lt;/time&gt;&lt;span class=&quot;phase&quot;&gt;并行结束/待清算&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;事件&quot;&gt;&lt;strong&gt;临时柜台停止交易&lt;/strong&gt;&lt;span class=&quot;row-note&quot;&gt;临时柜台停止交易，但未平仓义务仍等待换码&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;交易&quot;&gt;02975&lt;span class=&quot;row-note&quot;&gt;无&lt;/span&gt;&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码空头&quot;&gt;200&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码空头&quot;&gt;1,400&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码平均卖出价&quot;&gt;HK$2.0500&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码平均卖出价&quot;&gt;HK$2.1343&lt;/td&gt;
+    &lt;td class=&quot;number value-negative&quot; data-label=&quot;未实现空头盈亏&quot;&gt;(HK$44.00)&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;累计已实现空头盈亏&quot;&gt;HK$56.00&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;空头持仓盈亏&quot;&gt;HK$12.00&lt;/td&gt;
+    &lt;td class=&quot;calculation&quot; data-label=&quot;计算逻辑&quot;&gt;本步骤不改变空头数量或卖空收入基数；回补市值：200 × HK$2.1600 + 1,400 × HK$2.1500 = HK$3,442.00；未实现空头盈亏 = HK$3,398.00 − HK$3,442.00 = -HK$44.00；空头持仓盈亏 = 累计已实现 HK$56.00 + 未实现 -HK$44.00 = HK$12.00。&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr data-kind=&quot;ca&quot;&gt;
+    &lt;td data-label=&quot;日期&quot;&gt;&lt;time datetime=&quot;2026-08-10&quot;&gt;2026-08-10&lt;/time&gt;&lt;span class=&quot;phase&quot;&gt;仅主代码&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;事件&quot;&gt;&lt;strong&gt;8月10日CA：空头义务1:1转主代码&lt;/strong&gt;&lt;span class=&quot;row-note&quot;&gt;临时空头数量及卖空收入基数完整并入主代码&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;交易&quot;&gt;02975 -&amp;gt; 06051&lt;span class=&quot;row-note&quot;&gt;CA1&lt;/span&gt;&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码空头&quot;&gt;1,600&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码空头&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码平均卖出价&quot;&gt;HK$2.1238&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码平均卖出价&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number value-negative&quot; data-label=&quot;未实现空头盈亏&quot;&gt;(HK$26.00)&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;累计已实现空头盈亏&quot;&gt;HK$56.00&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;空头持仓盈亏&quot;&gt;HK$30.00&lt;/td&gt;
+    &lt;td class=&quot;calculation&quot; data-label=&quot;计算逻辑&quot;&gt;空头义务：临时代码 1,400 × 1 = 主代码 1,600；剩余卖空收入基数 HK$2,988.00 1:1 转入主代码，临时代码清零；换码本身已实现盈亏为 HK$0.00。回补市值：1,600 × HK$2.1400 + 0 × HK$0.0000 = HK$3,424.00；未实现空头盈亏 = HK$3,398.00 − HK$3,424.00 = -HK$26.00；空头持仓盈亏 = 累计已实现 HK$56.00 + 未实现 -HK$26.00 = HK$30.00。&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr data-kind=&quot;trade&quot;&gt;
+    &lt;td data-label=&quot;日期&quot;&gt;&lt;time datetime=&quot;2026-08-18&quot;&gt;2026-08-18&lt;/time&gt;&lt;span class=&quot;phase&quot;&gt;仅主代码&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;事件&quot;&gt;&lt;strong&gt;全部买入平仓主代码&lt;/strong&gt;&lt;span class=&quot;row-note&quot;&gt;全部回补后未平仓空头归零，盈亏全部转为已实现&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-label=&quot;交易&quot;&gt;06051&lt;span class=&quot;row-note&quot;&gt;买入平仓 1,600 股 @ HK$2.0000&lt;/span&gt;&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码空头&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码空头&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;主代码平均卖出价&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number&quot; data-label=&quot;临时代码平均卖出价&quot;&gt;-&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;未实现空头盈亏&quot;&gt;HK$0.00&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;累计已实现空头盈亏&quot;&gt;HK$254.00&lt;/td&gt;
+    &lt;td class=&quot;number value-positive&quot; data-label=&quot;空头持仓盈亏&quot;&gt;HK$254.00&lt;/td&gt;
+    &lt;td class=&quot;calculation&quot; data-label=&quot;计算逻辑&quot;&gt;主代码空头数量：1,600 − 1,600 = 0；卖空收入基数：HK$3,398.00 − 1,600 × HK$2.1238 = HK$0.00；本次已实现盈亏 = 1,600 × (HK$2.1238 − HK$2.0000) = HK$198.00。回补市值：0 × HK$2.0000 + 0 × HK$0.0000 = HK$0.00；未实现空头盈亏 = HK$0.00 − HK$0.00 = HK$0.00；空头持仓盈亏 = 累计已实现 HK$254.00 + 未实现 HK$0.00 = HK$254.00。&lt;/td&gt;
+  &lt;/tr&gt;&lt;/tbody&gt;
+        &lt;/table&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;section class=&quot;panel&quot; id=&quot;panel-method&quot; role=&quot;tabpanel&quot; aria-labelledby=&quot;tab-method&quot; data-panel=&quot;method&quot; hidden&gt;
+      &lt;div class=&quot;panel-heading&quot;&gt;&lt;div&gt;&lt;h2&gt;核算口径与边界&lt;/h2&gt;&lt;p&gt;价格、客户交易与借券条件均为教学性假设。&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;method-grid&quot;&gt;
+        &lt;section class=&quot;method-section&quot;&gt;
+          &lt;h3&gt;长仓口径&lt;/h3&gt;
+          &lt;dl class=&quot;definition-list&quot;&gt;
+            &lt;dt&gt;平均成本&lt;/dt&gt;&lt;dd&gt;剩余建仓市值（成本基数）/ 当前持仓数量，主代码与临时代码分开计算。&lt;/dd&gt;
+            &lt;dt&gt;摊薄成本&lt;/dt&gt;&lt;dd&gt;（累计买入金额 - 累计卖出金额）/ 合并后等价数量。&lt;/dd&gt;
+            &lt;dt&gt;未实现盈亏&lt;/dt&gt;&lt;dd&gt;当前市值 - 剩余建仓市值（成本基数），各代码采用各自行情估值。&lt;/dd&gt;
+            &lt;dt&gt;持仓盈亏&lt;/dt&gt;&lt;dd&gt;累计已实现盈亏 + 未实现盈亏。&lt;/dd&gt;
+          &lt;/dl&gt;
+        &lt;/section&gt;
+        &lt;section class=&quot;method-section&quot;&gt;
+          &lt;h3&gt;做空口径&lt;/h3&gt;
+          &lt;dl class=&quot;definition-list&quot;&gt;
+            &lt;dt&gt;平均卖出价&lt;/dt&gt;&lt;dd&gt;剩余卖空收入基数 / 未平仓空头数量，按代码分开计算。&lt;/dd&gt;
+            &lt;dt&gt;未实现盈亏&lt;/dt&gt;&lt;dd&gt;剩余卖空收入基数 - 当前回补市值。&lt;/dd&gt;
+            &lt;dt&gt;已实现盈亏&lt;/dt&gt;&lt;dd&gt;平仓数量 x（平仓前平均卖出价 - 平仓价）。&lt;/dd&gt;
+            &lt;dt&gt;换码处理&lt;/dt&gt;&lt;dd&gt;数量及卖空收入基数按 1:1 转移，不确认已实现盈亏。&lt;/dd&gt;
+          &lt;/dl&gt;
+        &lt;/section&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;notice&quot;&gt;&lt;p&gt;实际卖空须满足指定卖空证券、借券可用性和券商权限。本案例未计借券费、保证金利息、佣金、印花税及其他费用。&lt;/p&gt;&lt;/div&gt;
+      &lt;section class=&quot;method-section&quot;&gt;
+        &lt;h3&gt;官方来源&lt;/h3&gt;
+        &lt;p&gt;港交所结算通告 PT/NIS/CCASS/195/2026&lt;/p&gt;
+        &lt;p class=&quot;source-link&quot;&gt;&lt;a href=&quot;https://www.hkex.com.hk/-/media/HKEX-Market/Services/Circulars-and-Notices/Participant-and-Members-Circulars/HKSCC/2026/ce_HKSCC_NOM_195_2026.pdf&quot; target=&quot;_blank&quot; rel=&quot;noreferrer&quot;&gt;https://www.hkex.com.hk/-/media/HKEX-Market/Services/Circulars-and-Notices/Participant-and-Members-Circulars/HKSCC/2026/ce_HKSCC_NOM_195_2026.pdf&lt;/a&gt;&lt;/p&gt;
+      &lt;/section&gt;
+    &lt;/section&gt;
+  &lt;/main&gt;
+
+  &lt;footer&gt;&lt;div class=&quot;shell&quot;&gt;本报告仅用于拆并股、并行交易柜台和持仓核算逻辑演示，不构成投资、交易、会计或法律意见。&lt;/div&gt;&lt;/footer&gt;
+&lt;/div&gt;
+&lt;script&gt;
+  (() =&gt; {
+    const root = document.getElementById(&#x27;youzan-consolidation-case&#x27;);
+    const tabs = root.querySelectorAll(&#x27;[data-tab]&#x27;);
+    const panels = root.querySelectorAll(&#x27;[data-panel]&#x27;);
+    tabs.forEach((tab) =&gt; tab.addEventListener(&#x27;click&#x27;, () =&gt; {
+      const target = tab.dataset.tab;
+      tabs.forEach((item) =&gt; item.setAttribute(&#x27;aria-selected&#x27;, String(item === tab)));
+      panels.forEach((panel) =&gt; { panel.hidden = panel.dataset.panel !== target; });
+    }));
+    root.querySelectorAll(&#x27;[data-filter]&#x27;).forEach((button) =&gt; button.addEventListener(&#x27;click&#x27;, () =&gt; {
+      const tableName = button.dataset.table;
+      const filter = button.dataset.filter;
+      root.querySelectorAll(&#x27;[data-table=&quot;&#x27; + tableName + &#x27;&quot;]&#x27;).forEach((item) =&gt; item.setAttribute(&#x27;aria-pressed&#x27;, String(item === button)));
+      root.querySelectorAll(&#x27;#table-&#x27; + tableName + &#x27; tbody tr&#x27;).forEach((row) =&gt; { row.hidden = filter !== &#x27;all&#x27; &amp;&amp; row.dataset.kind !== filter; });
+    }));
+  })();
+&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/@floating-ui/core@1.7.3/dist/floating-ui.core.umd.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/@floating-ui/dom@1.7.4/dist/floating-ui.dom.umd.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+(() =&gt; {
+  if (window.FloatingUIDOM == null) {
+    return;
+  }
+  const { autoUpdate, computePosition, flip, offset, shift, size } =
+    window.FloatingUIDOM;
+  const tooltipPlacements = new Set([&quot;top&quot;, &quot;right&quot;, &quot;bottom&quot;, &quot;left&quot;]);
+  const tooltipId = `codex-visualization-tooltip-${
+    window.crypto?.randomUUID?.() ?? Date.now().toString(36)
+  }`;
+  const tooltipGap = 5;
+  const hoverDelay = 700;
+  const skipDelay = 300;
+  let activeTrigger = null;
+  let pendingTrigger = null;
+  let tooltip = null;
+  let openTimeout = null;
+  let autoUpdateCleanup = null;
+  let positionRequest = 0;
+  let skipDelayUntil = 0;
+
+  const getTrigger = (target) =&gt;
+    target?.nodeType === Node.ELEMENT_NODE
+      ? target.closest(&quot;[data-tooltip]&quot;)
+      : null;
+  const containsTarget = (trigger, target) =&gt;
+    target?.nodeType != null &amp;&amp; trigger.contains(target);
+  const getContent = (trigger) =&gt;
+    trigger.getAttribute(&quot;data-tooltip&quot;)?.trim() ?? &quot;&quot;;
+  const getPlacement = (trigger) =&gt; {
+    const placement = trigger.getAttribute(&quot;data-tooltip-placement&quot;);
+    return tooltipPlacements.has(placement) ? placement : &quot;top&quot;;
+  };
+  const getTooltip = () =&gt; {
+    if (tooltip == null) {
+      tooltip = document.createElement(&quot;div&quot;);
+      tooltip.id = tooltipId;
+      tooltip.className = &quot;tooltip&quot;;
+      tooltip.setAttribute(&quot;role&quot;, &quot;tooltip&quot;);
+    }
+    return tooltip;
+  };
+  const setDescribedBy = (trigger, described) =&gt; {
+    const ids = new Set(
+      (trigger.getAttribute(&quot;aria-describedby&quot;) ?? &quot;&quot;)
+        .split(/\s+/)
+        .filter(Boolean),
+    );
+    if (described) {
+      ids.add(tooltipId);
+    } else {
+      ids.delete(tooltipId);
+    }
+    if (ids.size === 0) {
+      trigger.removeAttribute(&quot;aria-describedby&quot;);
+    } else {
+      trigger.setAttribute(&quot;aria-describedby&quot;, [...ids].join(&quot; &quot;));
+    }
+  };
+  const clearOpenTimeout = () =&gt; {
+    if (openTimeout != null) {
+      window.clearTimeout(openTimeout);
+      openTimeout = null;
+    }
+    pendingTrigger = null;
+  };
+  const closeTooltip = (activateSkipDelay = true) =&gt; {
+    clearOpenTimeout();
+    positionRequest += 1;
+    autoUpdateCleanup?.();
+    autoUpdateCleanup = null;
+    if (activeTrigger == null) {
+      return;
+    }
+    setDescribedBy(activeTrigger, false);
+    activeTrigger = null;
+    tooltip?.remove();
+    if (activateSkipDelay) {
+      skipDelayUntil = Date.now() + skipDelay;
+    }
+  };
+  const updatePosition = (trigger, floating) =&gt; {
+    const request = ++positionRequest;
+    void computePosition(trigger, floating, {
+      middleware: [
+        offset(tooltipGap),
+        flip({ padding: tooltipGap }),
+        shift({ padding: tooltipGap }),
+        size({
+          padding: tooltipGap,
+          apply({ availableHeight, availableWidth, elements }) {
+            elements.floating.style.setProperty(
+              &quot;--tooltip-available-width&quot;,
+              `${Math.max(0, availableWidth)}px`,
+            );
+            elements.floating.style.setProperty(
+              &quot;--tooltip-available-height&quot;,
+              `${Math.max(0, availableHeight)}px`,
+            );
+          },
+        }),
+      ],
+      placement: getPlacement(trigger),
+      strategy: &quot;fixed&quot;,
+    })
+      .then(({ x, y }) =&gt; {
+        if (activeTrigger !== trigger || request !== positionRequest) {
+          return;
+        }
+        const scale = window.devicePixelRatio || 1;
+        floating.style.transform = `translate(${Math.round(x * scale) / scale}px, ${Math.round(y * scale) / scale}px)`;
+        floating.style.visibility = &quot;visible&quot;;
+      })
+      .catch(() =&gt; {
+        if (activeTrigger === trigger &amp;&amp; request === positionRequest) {
+          closeTooltip(false);
+        }
+      });
+  };
+  const openTooltip = (trigger) =&gt; {
+    const content = getContent(trigger);
+    if (!trigger.isConnected || content.length === 0) {
+      return;
+    }
+    clearOpenTimeout();
+    if (activeTrigger === trigger) {
+      return;
+    }
+    closeTooltip();
+    const floating = getTooltip();
+    floating.textContent = content;
+    floating.style.visibility = &quot;hidden&quot;;
+    floating.style.transform = &quot;translate(0, 0)&quot;;
+    document.body.appendChild(floating);
+    activeTrigger = trigger;
+    setDescribedBy(trigger, true);
+    autoUpdateCleanup = autoUpdate(trigger, floating, () =&gt; {
+      updatePosition(trigger, floating);
+    });
+  };
+  const requestOpen = (trigger, immediate = false) =&gt; {
+    if (
+      getContent(trigger).length === 0 ||
+      activeTrigger === trigger ||
+      pendingTrigger === trigger
+    ) {
+      return;
+    }
+    clearOpenTimeout();
+    pendingTrigger = trigger;
+    const delay =
+      immediate || activeTrigger != null || Date.now() &lt; skipDelayUntil
+        ? 0
+        : hoverDelay;
+    if (delay === 0) {
+      openTooltip(trigger);
+      return;
+    }
+    openTimeout = window.setTimeout(() =&gt; {
+      openTimeout = null;
+      pendingTrigger = null;
+      openTooltip(trigger);
+    }, delay);
+  };
+  const handlePointerOpen = (event) =&gt; {
+    if (event.pointerType === &quot;touch&quot;) {
+      return;
+    }
+    const trigger = getTrigger(event.target);
+    if (trigger == null || containsTarget(trigger, event.relatedTarget)) {
+      return;
+    }
+    requestOpen(trigger);
+  };
+  const handleLeave = (event) =&gt; {
+    const trigger = getTrigger(event.target);
+    if (trigger == null || containsTarget(trigger, event.relatedTarget)) {
+      return;
+    }
+    if (activeTrigger === trigger || pendingTrigger === trigger) {
+      closeTooltip();
+    }
+  };
+  const handleFocusIn = (event) =&gt; {
+    const trigger = getTrigger(event.target);
+    if (trigger?.matches(&quot;:focus-visible&quot;)) {
+      requestOpen(trigger, true);
+    }
+  };
+  const handleKeyDown = (event) =&gt; {
+    if (event.key === &quot;Escape&quot;) {
+      closeTooltip();
+    }
+  };
+  const handleContextMenu = (event) =&gt; {
+    const trigger = getTrigger(event.target);
+    if (activeTrigger === trigger || pendingTrigger === trigger) {
+      closeTooltip();
+    }
+  };
+  const destroy = () =&gt; {
+    closeTooltip(false);
+    document.removeEventListener(&quot;pointerover&quot;, handlePointerOpen);
+    document.removeEventListener(&quot;pointerout&quot;, handleLeave);
+    document.removeEventListener(&quot;focusin&quot;, handleFocusIn);
+    document.removeEventListener(&quot;focusout&quot;, handleLeave);
+    document.removeEventListener(&quot;keydown&quot;, handleKeyDown);
+    document.removeEventListener(&quot;contextmenu&quot;, handleContextMenu);
+    tooltip = null;
+  };
+
+  document.addEventListener(&quot;pointerover&quot;, handlePointerOpen);
+  document.addEventListener(&quot;pointerout&quot;, handleLeave);
+  document.addEventListener(&quot;focusin&quot;, handleFocusIn);
+  document.addEventListener(&quot;focusout&quot;, handleLeave);
+  document.addEventListener(&quot;keydown&quot;, handleKeyDown);
+  document.addEventListener(&quot;contextmenu&quot;, handleContextMenu);
+  window.addEventListener(&quot;pagehide&quot;, destroy, { once: true });
+})();
+&lt;/script&gt;
+&lt;script id=&quot;codex-visualization-lucide&quot; async src=&quot;https://unpkg.com/lucide@1.17.0/dist/umd/lucide.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+(() =&gt; {
+  const initialize = () =&gt; {
+    globalThis.lucide?.createIcons({ attrs: { width: 16, height: 16 } });
+  };
+  if (globalThis.lucide != null) {
+    initialize();
+    return;
+  }
+  document
+    .getElementById(&quot;codex-visualization-lucide&quot;)
+    ?.addEventListener(&quot;load&quot;, initialize, { once: true });
+})();
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe>
+</body>
+</html>
