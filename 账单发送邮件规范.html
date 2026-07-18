@@ -1,0 +1,930 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>账单发送邮件规范</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #20231f;
+      --muted: #626862;
+      --line: #d8dcd6;
+      --surface: #ffffff;
+      --canvas: #f4f5f3;
+      --accent: #8f2f3b;
+      --accent-soft: #f8ecee;
+      --teal: #176b63;
+      --teal-soft: #eaf4f2;
+      --warning: #7a5810;
+      --warning-soft: #fff7dd;
+      --code: #f1f3f0;
+      --shadow: 0 8px 24px rgba(25, 30, 25, 0.07);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--canvas);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Microsoft YaHei", Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      letter-spacing: 0;
+    }
+
+    button, input { font: inherit; }
+
+    a { color: inherit; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(10px);
+    }
+
+    .topbar-inner {
+      width: min(1180px, calc(100% - 32px));
+      min-height: 54px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      font-size: 14px;
+      font-weight: 760;
+      white-space: nowrap;
+    }
+
+    .topnav {
+      display: flex;
+      gap: 22px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .topnav::-webkit-scrollbar { display: none; }
+
+    .topnav a {
+      flex: 0 0 auto;
+      color: var(--muted);
+      font-size: 13px;
+      text-decoration: none;
+    }
+
+    .topnav a:hover { color: var(--accent); }
+
+    main {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 42px 0 80px;
+    }
+
+    .intro {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 310px;
+      gap: 52px;
+      align-items: end;
+      padding-bottom: 34px;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .eyebrow {
+      margin: 0 0 7px;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 760;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3, h4, p { margin-top: 0; }
+
+    h1 {
+      max-width: 760px;
+      margin-bottom: 12px;
+      font-size: 38px;
+      line-height: 1.22;
+      font-weight: 780;
+    }
+
+    .lead {
+      max-width: 720px;
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .source-note {
+      margin: 0;
+      padding: 14px 16px;
+      border-left: 3px solid var(--teal);
+      background: var(--teal-soft);
+      color: #264c48;
+      font-size: 13px;
+    }
+
+    section { scroll-margin-top: 76px; }
+
+    .section-heading {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      margin: 42px 0 18px;
+    }
+
+    .section-heading h2 {
+      margin-bottom: 2px;
+      font-size: 23px;
+      line-height: 1.35;
+    }
+
+    .section-heading p {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      border: 1px solid var(--line);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .quick-item {
+      min-width: 0;
+      padding: 18px;
+      border-right: 1px solid var(--line);
+    }
+
+    .quick-item:last-child { border-right: 0; }
+
+    .quick-item h3 {
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    .quick-item dl { margin: 0; }
+
+    .quick-item dt {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .quick-item dd {
+      margin: 2px 0 0;
+      overflow-wrap: anywhere;
+      font-size: 12px;
+    }
+
+    .quick-item a {
+      color: var(--teal);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    .account-nav {
+      display: flex;
+      gap: 8px;
+      padding: 9px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .account-nav::-webkit-scrollbar { display: none; }
+
+    .account-nav button {
+      flex: 1 0 auto;
+      min-height: 38px;
+      padding: 7px 14px;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      color: var(--muted);
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .account-nav button:hover { background: var(--canvas); }
+
+    .account-nav button[aria-selected="true"] {
+      border-color: #d8aeb4;
+      color: var(--accent);
+      background: var(--accent-soft);
+      font-weight: 700;
+    }
+
+    .account-panel { display: none; }
+
+    .account-panel.active { display: block; }
+
+    .account-header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(260px, 0.72fr);
+      gap: 20px;
+      padding: 26px 0 18px;
+    }
+
+    .account-header h3 {
+      margin-bottom: 4px;
+      font-size: 21px;
+    }
+
+    .account-header p { margin-bottom: 0; color: var(--muted); }
+
+    .meta-list {
+      display: grid;
+      grid-template-columns: 90px minmax(0, 1fr);
+      gap: 5px 12px;
+      margin: 0;
+      font-size: 13px;
+    }
+
+    .meta-list dt { color: var(--muted); }
+
+    .meta-list dd {
+      margin: 0;
+      overflow-wrap: anywhere;
+      font-weight: 650;
+    }
+
+    .period-switch {
+      display: inline-flex;
+      gap: 3px;
+      padding: 3px;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      background: #e9ece8;
+    }
+
+    .period-switch button {
+      min-width: 82px;
+      min-height: 34px;
+      padding: 5px 12px;
+      border: 0;
+      border-radius: 3px;
+      color: var(--muted);
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .period-switch button[aria-selected="true"] {
+      color: var(--ink);
+      background: var(--surface);
+      box-shadow: 0 1px 4px rgba(25, 30, 25, 0.12);
+      font-weight: 700;
+    }
+
+    .mail-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .panel-head {
+      min-height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .panel-head h4 {
+      margin-bottom: 0;
+      font-size: 14px;
+    }
+
+    .copy-button {
+      min-height: 34px;
+      padding: 5px 11px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      color: var(--ink);
+      background: var(--surface);
+      cursor: pointer;
+      white-space: nowrap;
+      font-size: 12px;
+    }
+
+    .copy-button:hover { border-color: var(--teal); color: var(--teal); }
+
+    .subject-block { padding: 16px; }
+
+    .subject-block + .subject-block { border-top: 1px solid var(--line); }
+
+    .field-label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 720;
+      text-transform: uppercase;
+    }
+
+    .code-line {
+      margin: 0;
+      padding: 10px 12px;
+      border-left: 3px solid var(--teal);
+      background: var(--code);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.65;
+      overflow-wrap: anywhere;
+    }
+
+    .template-body {
+      padding: 22px 24px 26px;
+      font-size: 14px;
+    }
+
+    .template-body p { margin-bottom: 12px; }
+
+    .template-body .system-note {
+      padding: 9px 12px;
+      border-left: 3px solid var(--warning);
+      background: var(--warning-soft);
+      color: #5d4715;
+      font-size: 12px;
+    }
+
+    .template-body .notice {
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .template-body .mail-title {
+      margin: 22px 0 14px;
+      color: var(--accent);
+      font-size: 16px;
+      font-weight: 780;
+    }
+
+    .template-body .info {
+      display: grid;
+      gap: 5px;
+      padding: 13px 14px;
+      border-left: 3px solid var(--teal);
+      background: var(--teal-soft);
+    }
+
+    .template-body .account-info { gap: 0; padding: 0; }
+
+    .template-body .account-info-title {
+      padding: 11px 14px;
+      border-bottom: 1px solid #c9dfdb;
+      color: var(--teal);
+    }
+
+    .template-body .account-info-row {
+      display: grid;
+      grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+      border-bottom: 1px solid #c9dfdb;
+    }
+
+    .template-body .account-info-row:last-child { border-bottom: 0; }
+
+    .template-body .account-info-row > span {
+      min-width: 0;
+      padding: 9px 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .template-body .account-info-row > span:first-child {
+      border-right: 1px solid #c9dfdb;
+      font-weight: 650;
+    }
+
+    .template-body .reminders {
+      margin: 18px 0;
+      padding: 14px 16px;
+      border: 1px solid #eadca7;
+      background: var(--warning-soft);
+    }
+
+    .template-body .reminders strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--warning);
+    }
+
+    .template-body .reminders p:last-child,
+    .template-body .signature p:last-child { margin-bottom: 0; }
+
+    .template-body .signature {
+      margin-top: 20px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+    }
+
+    .placeholder {
+      color: var(--accent);
+      background: var(--accent-soft);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.9em;
+      font-weight: 700;
+    }
+
+    .review-box {
+      border-top: 4px solid var(--warning);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .review-lead {
+      margin: 0;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .review-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .review-list li {
+      padding: 17px 20px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .review-list li:nth-child(2n) { border-right: 0; }
+
+    .review-list li:nth-last-child(-n + 2) { border-bottom: 0; }
+
+    .review-list strong {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 13px;
+    }
+
+    .review-list span { color: var(--muted); font-size: 12px; }
+
+    footer {
+      margin-top: 42px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .toast {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 30;
+      min-width: 130px;
+      padding: 10px 14px;
+      border-radius: 4px;
+      color: #fff;
+      background: var(--ink);
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transform: translateY(8px);
+      pointer-events: none;
+      transition: opacity 160ms ease, transform 160ms ease;
+      font-size: 13px;
+    }
+
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 920px) {
+      .intro { grid-template-columns: 1fr; gap: 22px; }
+      .quick-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .quick-item { border-bottom: 1px solid var(--line); }
+      .quick-item:nth-child(2n) { border-right: 0; }
+      .quick-item:last-child { border-bottom: 0; }
+      .account-header { grid-template-columns: 1fr; }
+      .mail-layout { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 620px) {
+      .topbar-inner, main { width: min(100% - 22px, 1180px); }
+      .brand { display: none; }
+      .topnav { width: 100%; justify-content: space-between; }
+      main { padding-top: 28px; }
+      h1 { font-size: 30px; }
+      .quick-grid, .review-list { grid-template-columns: 1fr; }
+      .quick-item, .quick-item:nth-child(2n), .review-list li,
+      .review-list li:nth-child(2n), .review-list li:nth-last-child(-n + 2) {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .quick-item:last-child, .review-list li:last-child { border-bottom: 0; }
+      .section-heading { align-items: flex-start; flex-direction: column; gap: 4px; }
+      .template-body { padding: 18px 16px 22px; }
+      .account-nav button { min-width: 112px; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .topbar, .account-nav, .period-switch, .copy-button, .toast { display: none !important; }
+      main { width: 100%; padding: 0; }
+      .intro { grid-template-columns: 1fr; }
+      .source-note { margin-top: 12px; }
+      .quick-grid { box-shadow: none; }
+      .account-panel { display: block !important; page-break-before: always; }
+      .mail-layout { grid-template-columns: 1fr; }
+      .panel, .review-box { box-shadow: none; }
+      .template-body { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">账单发送邮件规范</div>
+      <nav class="topnav" aria-label="页面导航">
+        <a href="#overview">速查</a>
+        <a href="#templates">邮件模板</a>
+        <a href="#review">确认口径</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="intro" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">Operations Reference / 2026</p>
+        <h1 id="page-title">账单发送邮件规范</h1>
+        <p class="lead">集中查看各账户的发件邮箱、账户号码口径、邮件主题及中英文正文。页面以原 Word 文档中的“邮件内容”为基础，并纳入业务已确认口径。</p>
+      </div>
+      <p class="source-note"><strong>使用提示：</strong>红色底纹标识需要系统替换的变量。复制前请先确认结单周期、客户姓名、账户号码和日期。</p>
+    </section>
+
+    <section id="overview" aria-labelledby="overview-title">
+      <div class="section-heading">
+        <div>
+          <h2 id="overview-title">发送配置速查</h2>
+          <p>按账户类型确认发件邮箱与正文中的账户号码口径。</p>
+        </div>
+      </div>
+      <div class="quick-grid" id="quick-grid"></div>
+    </section>
+
+    <section id="templates" aria-labelledby="templates-title">
+      <div class="section-heading">
+        <div>
+          <h2 id="templates-title">邮件模板</h2>
+          <p>选择账户和周期后，可分别复制主题或完整正文。</p>
+        </div>
+      </div>
+      <div class="account-nav" id="account-nav" role="tablist" aria-label="账户类型"></div>
+      <div id="account-panels"></div>
+    </section>
+
+    <section id="review" aria-labelledby="review-title">
+      <div class="section-heading">
+        <div>
+          <h2 id="review-title">已确认口径</h2>
+          <p>以下内容已根据业务确认更新至邮件主题及正文。</p>
+        </div>
+      </div>
+      <div class="review-box">
+        <p class="review-lead">本次只调整已确认内容；英文拼写及 Account Type 继续按当前版本保留。</p>
+        <ul class="review-list">
+          <li><strong>示例日期带连接符</strong><span>非标准账户日结单示例使用 <code>2026-01-01</code>，月结单示例使用 <code>2026-01</code>，与主题变量格式一致。</span></li>
+          <li><strong>正文账户 ID 已明确</strong><span>第一个 ID 为 <code>[Derivatives Account ID]</code>；TRS 模板的第二个 ID 为 <code>[TRS Account ID]</code>。</span></li>
+          <li><strong>公司名称已确定</strong><span>投资类模板免责声明使用 <code>PrincipleOne Investments Limited</code>。</span></li>
+          <li><strong>英文拼写暂不调整</strong><span><code>MAGRIN</code> 与 <code>RETUEN</code> 按当前版本保留。</span></li>
+          <li><strong>账户类型保持不变</strong><span>期权、共赢及 TRS 正文中的 Account Type 继续使用 Derivatives Account。</span></li>
+          <li><strong>标准账户资料日期格式</strong><span>结单日期统一使用 <code>YYYY-MM-DD</code>。</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <footer>整理来源：账单命名格式、邮件地址、邮件内容.docx（“邮件内容”章节）及业务确认口径</footer>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">已复制</div>
+
+  <script>
+    const accounts = [
+      {
+        id: "standard",
+        name: "标准账户",
+        english: "Standard Account",
+        sender: "statements@principleone.com.hk",
+        accountRule: "正文：标准账户号码",
+        company: "同道證券有限公司 / PrincipleOne Securities Limited",
+        mode: "standard",
+        periods: {
+          daily: {
+            label: "日结单",
+            subject: "【日結單】Standard Account Daily Statement – [客戶姓名 Client Name] – [日期 YYYYMMDD]",
+            example: "【日結單】Standard Account Daily Statement – ZHANG SAN – 20260101"
+          },
+          monthly: {
+            label: "月结单",
+            subject: "【月結單】Standard Account Monthly Statement – [客戶姓名 Client Name] – [日期 YYYYMM]",
+            example: "【月結單】Standard Account Monthly Statement – ZHANG SAN – 202601"
+          }
+        }
+      },
+      {
+        id: "derivatives",
+        name: "衍生品账户",
+        english: "Derivatives Account",
+        sender: "statements@poneinvestments.com",
+        accountRule: "主题：标准账户号码；正文：衍生品账户 ID",
+        company: "PrincipleOne Investments Limited",
+        mailTitle: "DERIVATIVES ACCOUNT",
+        titleZh: "衍生品帳戶",
+        accountType: "Derivatives Account / 衍生品帳戶",
+        periods: {
+          daily: {
+            label: "日结单",
+            subject: "Daily Statement | Derivatives Account | [Client Name] | [Account Number] | [YYYY-MM-DD]",
+            example: "Daily Statement | Derivatives Account | ZHANG SAN | 800000 | 2026-01-01"
+          },
+          monthly: {
+            label: "月结单",
+            subject: "Monthly Statement | Derivatives Account | [Client Name] | [Account Number] | [YYYY-MM]",
+            example: "Monthly Statement | Derivatives Account | ZHANG SAN | 800000 | 2026-01"
+          }
+        }
+      },
+      {
+        id: "option",
+        name: "期权账户",
+        english: "Option Contract",
+        sender: "statements@poneinvestments.com",
+        accountRule: "主题及正文：衍生品账户 ID",
+        company: "PrincipleOne Investments Limited",
+        mailTitle: "OPTION CONTRACT",
+        titleZh: "期權合約",
+        accountType: "Derivatives Account / 衍生品帳戶",
+        periods: {
+          daily: {
+            label: "日结单",
+            subject: "Daily Statement | Option Contract | [Client Name] | [Account Number] | [YYYY-MM-DD]",
+            example: "Daily Statement | Option Contract | ZHANG SAN | 800000 | 2026-01-01"
+          },
+          monthly: {
+            label: "月结单",
+            subject: "Monthly Statement | Option Contract | [Client Name] | [Account Number] | [YYYY-MM]",
+            example: "Monthly Statement | Option Contract | ZHANG SAN | 800000 | 2026-01"
+          }
+        }
+      },
+      {
+        id: "margin",
+        name: "共赢账户",
+        english: "Margin Trading Contract",
+        sender: "statements@poneinvestments.com",
+        accountRule: "主题及正文：衍生品账户 ID",
+        company: "PrincipleOne Investments Limited",
+        mailTitle: "MARGIN TRADING CONTRACT",
+        monthlyMailTitle: "MAGRIN TRADING CONTRACT",
+        titleZh: "孖展合約",
+        accountType: "Derivatives Account / 衍生品帳戶",
+        periods: {
+          daily: {
+            label: "日结单",
+            subject: "Daily Statement | Margin Trading Contract | [Client Name] | [Account Number] | [YYYY-MM-DD]",
+            example: "Daily Statement | Margin Trading Contract | ZHANG SAN | 800000 | 2026-01-01"
+          },
+          monthly: {
+            label: "月结单",
+            subject: "Monthly Statement | Margin Trading Contract | [Client Name] | [Account Number] | [YYYY-MM]",
+            example: "Monthly Statement | Margin Trading Contract | ZHANG SAN | 800000 | 2026-01"
+          }
+        }
+      },
+      {
+        id: "trs",
+        name: "TRS账户",
+        english: "Total Return Swap",
+        sender: "statements@poneinvestments.com",
+        accountRule: "主题：TRS账户号码；正文：衍生品账户 ID + TRS账户 ID",
+        company: "PrincipleOne Investments Limited",
+        mailTitle: "TOTAL RETUEN SWAP",
+        titleZh: "收益互換",
+        accountType: "Derivatives Account / 衍生品帳戶",
+        hasTrsId: true,
+        periods: {
+          daily: {
+            label: "日结单",
+            subject: "Daily Statement | Total Return Swap | [Client Name] | [Account Number] | [YYYY-MM-DD]",
+            example: "Daily Statement | Total Return Swap | ZHANG SAN | 800000 | 2026-01-01"
+          },
+          monthly: {
+            label: "月结单",
+            subject: "Monthly Statement | Total Return Swap | [Client Name] | [Account Number] | [YYYY-MM]",
+            example: "Monthly Statement | Total Return Swap | ZHANG SAN | 800000 | 2026-01"
+          }
+        }
+      }
+    ];
+
+    const periodName = { daily: "DAILY", monthly: "MONTHLY" };
+    const periodZh = { daily: "日結單", monthly: "月結單" };
+    const dateToken = { daily: "[YYYY-MM-DD]", monthly: "[YYYY-MM]" };
+
+    function escapeHtml(value) {
+      return value.replace(/[&<>"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;" }[char]));
+    }
+
+    function markPlaceholders(value) {
+      return escapeHtml(value).replace(/\[[^\]]+\]/g, match => `<span class="placeholder">${match}</span>`);
+    }
+
+    function standardBody(period) {
+      const isDaily = period === "daily";
+      const cnDate = isDaily ? "[日期 YYYY-MM-DD]" : "[日期 YYYY-MM]";
+      const enDate = isDaily ? "[YYYY-MM-DD]" : "[YYYY-MM]";
+      const typeZh = isDaily ? "日結單" : "月結單";
+      const typeEn = isDaily ? "Daily Statement" : "Monthly Statement";
+      return `
+        <p class="system-note"><strong>*** This is an auto-generated system message ***</strong><br>Please do not reply to this message. Messages received at this address will not be processed.</p>
+        <p class="notice">敬啟：本郵件內容為保密資訊，發件人保留與本郵件相關的一切權利。若閣下誤收本郵件，敬請立刻刪除並通知發件人。<br>NOTICE: This message may contain confidential or privileged information. If you are not the intended recipient, please advise us immediately and delete this message.</p>
+        <p>尊敬的 <span class="placeholder">[客戶姓名 / Client Name]</span>：</p>
+        <p>您好，閣下於 <span class="placeholder">${cnDate}</span> 的 標準賬戶（Standard Account）${typeZh} 已隨本郵件附上，請查收。<br>Dear <span class="placeholder">[Client Name]</span>,<br>The Standard Account ${typeEn} for <span class="placeholder">${enDate}</span> is attached herewith for your reference. Please find it attached.</p>
+        <div class="info account-info">
+          <strong class="account-info-title">賬戶資料 Account Information</strong>
+          <div class="account-info-row"><span>客戶姓名 Client Name:</span><span class="placeholder">[客戶姓名 / Client Name]</span></div>
+          <div class="account-info-row"><span>賬戶號碼 Account Number:</span><span class="placeholder">[賬戶號碼 / Account No.]</span></div>
+          <div class="account-info-row"><span>結單日期 Statement Date:</span><span class="placeholder">[日期 YYYY-MM-DD / Date YYYY-MM-DD]</span></div>
+        </div>
+        <div class="reminders">
+          <strong>注意事項 Important Notes：</strong>
+          <p>• 本郵件及附件僅作參考，一切以本公司系統記錄為準。<br>This statement is for reference only. Official records of our company shall prevail.</p>
+          <p>• 請勿直接回覆此郵件。如有疑問，請聯繫客服或閣下的客戶經理。<br>Please do not reply directly to this email. For any enquiries, please contact our customer service or your account manager.</p>
+          <p>• 請妥善保管本郵件及附件，避免賬戶資料外洩。<br>Please keep this email and the attachment confidential.</p>
+        </div>
+        <div class="signature"><p>此致,<br>Regards,</p><p><strong>同道證券有限公司 / PrincipleOne Securities Limited</strong><br>營運部 / Operations Department</p></div>`;
+    }
+
+    function investmentBody(account, period) {
+      const isDaily = period === "daily";
+      const title = period === "monthly" && account.monthlyMailTitle ? account.monthlyMailTitle : account.mailTitle;
+      const bodyLineZh = isDaily ? "您好，閣下的日結單已生成，並以檔形式附在本郵件中，請查收。" : "您好，閣下的月結單已生成，並以檔形式附在本郵件中，請查收。";
+      const bodyLineEn = isDaily ? "Your daily statement has been generated and is attached to this email as a file for your reference." : "Your monthly statement has been generated and is attached to this email as a file for your reference.";
+      const trsLine = account.hasTrsId ? `<span>收益互換帳戶號碼 TRS Account ID: <span class="placeholder">[TRS Account ID]</span></span>` : "";
+      return `
+        <p class="system-note"><strong>*** This is an auto-generated system message ***</strong><br>Please do not reply to this message. Messages received at this address will not be processed.</p>
+        <p class="notice"><strong>CONFIDENTIALITY NOTICE / 保密聲明</strong><br>本郵件內容為保密資訊，發件人保留與本郵件相關的一切權利。若閣下誤收本郵件，敬請立刻刪除並通知發件人。<br>This message contains confidential information intended solely for the named recipient. If you are not the intended recipient, please delete this message immediately and notify the sender.</p>
+        <p class="mail-title">${title} ${periodName[period]} STATEMENT ATTACHED / ${account.titleZh}${periodZh[period]}已附上</p>
+        <div class="info">
+          <span>收件人 Recipient: <span class="placeholder">[Client Name / 客戶姓名]</span></span>
+          <span>賬戶類型 Account Type: ${account.accountType}</span>
+          <span>衍生品帳戶號碼 Derivatives Account ID: <span class="placeholder">[Derivatives Account ID]</span></span>
+          ${trsLine}
+          <span>結單日期 Statement Date: <span class="placeholder">${dateToken[period]}</span></span>
+        </div>
+        <p style="margin-top: 18px">${bodyLineZh}<br>${bodyLineEn}</p>
+        <div class="reminders">
+          <strong>⚠️ Important Reminders / 重要提示</strong>
+          <p>本郵件及附件僅作參考，一切以本公司系統記錄為準。如有不符，一概以本公司之正式紀錄為准。<br>This statement is for informational purposes only. In case of discrepancy, the official records held by PrincipleOne Investments Limited shall prevail.</p>
+          <p>請勿直接回覆此郵件。如有疑問，請聯繫客服或閣下的客戶經理。<br>Please do not reply directly to this email. For any enquiries, please contact our customer service or your account manager.</p>
+          <p>請妥善保管本郵件及附件，避免賬戶資料外洩。請勿轉發此郵件。<br>Please keep this email and the attachment confidential. Do not forward this email to third parties.</p>
+        </div>
+        <div class="signature"><p>此致,<br>Regards,</p><p><strong>${account.company}</strong><br>營運部 / Operations Department</p></div>`;
+    }
+
+    function renderQuickGrid() {
+      document.getElementById("quick-grid").innerHTML = accounts.map(account => `
+        <article class="quick-item">
+          <h3><a href="#templates" data-open-account="${account.id}">${account.name}</a></h3>
+          <dl>
+            <dt>发件邮箱</dt><dd>${account.sender}</dd>
+            <dt>账户号码</dt><dd>${account.accountRule}</dd>
+          </dl>
+        </article>`).join("");
+    }
+
+    function renderAccounts() {
+      const nav = document.getElementById("account-nav");
+      const panels = document.getElementById("account-panels");
+      nav.innerHTML = accounts.map((account, index) => `
+        <button type="button" role="tab" id="tab-${account.id}" aria-controls="panel-${account.id}" aria-selected="${index === 0}">${account.name}</button>`).join("");
+      panels.innerHTML = accounts.map((account, index) => `
+        <article class="account-panel${index === 0 ? " active" : ""}" id="panel-${account.id}" role="tabpanel" aria-labelledby="tab-${account.id}" data-account="${account.id}" data-period="daily">
+          <div class="account-header">
+            <div><h3>${account.name}</h3><p>${account.english}</p></div>
+            <dl class="meta-list"><dt>发件邮箱</dt><dd>${account.sender}</dd><dt>号码口径</dt><dd>${account.accountRule}</dd></dl>
+          </div>
+          <div class="section-heading" style="margin-top: 0">
+            <div class="period-switch" role="tablist" aria-label="结单周期">
+              <button type="button" aria-selected="true" data-period="daily">日结单</button>
+              <button type="button" aria-selected="false" data-period="monthly">月结单</button>
+            </div>
+          </div>
+          <div class="mail-layout">
+            <section class="panel" aria-label="邮件主题">
+              <div class="panel-head"><h4>邮件主题</h4><button class="copy-button" type="button" data-copy="subject">复制主题</button></div>
+              <div class="subject-block"><span class="field-label">主题格式</span><p class="code-line subject-value"></p></div>
+              <div class="subject-block"><span class="field-label">原文示例</span><p class="code-line example-value"></p></div>
+            </section>
+            <section class="panel" aria-label="邮件正文">
+              <div class="panel-head"><h4>邮件正文</h4><button class="copy-button" type="button" data-copy="body">复制正文</button></div>
+              <div class="template-body"></div>
+            </section>
+          </div>
+        </article>`).join("");
+      accounts.forEach(account => updatePanel(account.id, "daily"));
+    }
+
+    function updatePanel(accountId, period) {
+      const account = accounts.find(item => item.id === accountId);
+      const panel = document.getElementById(`panel-${accountId}`);
+      const config = account.periods[period];
+      const bodyHtml = account.mode === "standard" ? standardBody(period) : investmentBody(account, period);
+      panel.dataset.period = period;
+      panel.querySelector(".subject-value").innerHTML = markPlaceholders(config.subject);
+      panel.querySelector(".example-value").textContent = config.example;
+      panel.querySelector(".template-body").innerHTML = bodyHtml;
+      panel.querySelectorAll("[data-period]").forEach(button => button.setAttribute("aria-selected", String(button.dataset.period === period)));
+    }
+
+    function openAccount(accountId) {
+      document.querySelectorAll(".account-panel").forEach(panel => panel.classList.toggle("active", panel.dataset.account === accountId));
+      document.querySelectorAll("#account-nav [role='tab']").forEach(tab => tab.setAttribute("aria-selected", String(tab.id === `tab-${accountId}`)));
+    }
+
+    async function copyText(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch (error) {
+        const input = document.createElement("textarea");
+        input.value = text;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand("copy");
+        input.remove();
+      }
+      const toast = document.getElementById("toast");
+      toast.classList.add("show");
+      window.clearTimeout(copyText.timer);
+      copyText.timer = window.setTimeout(() => toast.classList.remove("show"), 1400);
+    }
+
+    renderQuickGrid();
+    renderAccounts();
+
+    document.addEventListener("click", event => {
+      const accountTab = event.target.closest("#account-nav [role='tab']");
+      if (accountTab) {
+        openAccount(accountTab.id.replace("tab-", ""));
+        return;
+      }
+
+      const quickLink = event.target.closest("[data-open-account]");
+      if (quickLink) {
+        openAccount(quickLink.dataset.openAccount);
+        return;
+      }
+
+      const periodButton = event.target.closest(".period-switch [data-period]");
+      if (periodButton) {
+        const panel = periodButton.closest(".account-panel");
+        updatePanel(panel.dataset.account, periodButton.dataset.period);
+        return;
+      }
+
+      const copyButton = event.target.closest("[data-copy]");
+      if (copyButton) {
+        const panel = copyButton.closest(".account-panel");
+        const account = accounts.find(item => item.id === panel.dataset.account);
+        const period = panel.dataset.period;
+        if (copyButton.dataset.copy === "subject") {
+          copyText(account.periods[period].subject);
+        } else {
+          copyText(panel.querySelector(".template-body").innerText.trim());
+        }
+      }
+    });
+  </script>
+</body>
+</html>
