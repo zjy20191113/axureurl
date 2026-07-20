@@ -1,0 +1,1481 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>拆并股登记与确认任务原型</title>
+  <style>
+    :root {
+      --blue: #1f64f2;
+      --blue-weak: #eaf2ff;
+      --blue-line: #cfe0ff;
+      --ink: #172033;
+      --muted: #7b8698;
+      --border: #e6eaf0;
+      --canvas: #f3f6fb;
+      --surface: #ffffff;
+      --success: #159a5c;
+      --success-weak: #eaf8f1;
+      --warning: #c56f00;
+      --warning-weak: #fff5e7;
+      --danger: #e44949;
+      --danger-weak: #fff0f0;
+      --shadow: 0 3px 16px rgb(28 47 86 / 6%);
+      --radius: 6px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-width: 1180px;
+      color: var(--ink);
+      background: var(--canvas);
+      font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+      font-size: 14px;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+    }
+
+    .topbar {
+      height: 66px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px 0 22px;
+      background: #eef6ff;
+      border-top: 1px solid var(--blue);
+      border-bottom: 1px solid #dce7f5;
+    }
+
+    .brand {
+      color: #1545a5;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    .top-actions,
+    .tabs,
+    .card-head,
+    .section-actions,
+    .toolbar,
+    .meta-row,
+    .state-row {
+      display: flex;
+      align-items: center;
+    }
+
+    .top-actions {
+      gap: 18px;
+    }
+
+    .icon-button {
+      width: 30px;
+      height: 30px;
+      display: inline-grid;
+      place-items: center;
+      padding: 0;
+      color: #1f2937;
+      background: transparent;
+      border: 0;
+      border-radius: 4px;
+    }
+
+    .icon-button:hover {
+      background: #dfeaff;
+    }
+
+    .icon-button svg {
+      width: 20px;
+      height: 20px;
+      stroke-width: 1.8;
+    }
+
+    .workspace-tabs {
+      height: 76px;
+      display: flex;
+      align-items: center;
+      padding: 0 22px 0 58px;
+      background: #ffffff;
+      border-bottom: 1px solid #dfe5ed;
+    }
+
+    .tabs {
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .tab {
+      height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 25px;
+      color: #1761ee;
+      background: #edf4ff;
+      border-radius: 5px;
+      white-space: nowrap;
+    }
+
+    .tab.active {
+      color: #ffffff;
+      background: var(--blue);
+      font-weight: 600;
+    }
+
+    .workspace-tabs .tab:last-child {
+      width: 42px;
+      padding: 0;
+      font-size: 27px;
+      font-weight: 300;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 66px;
+      bottom: 0;
+      left: 0;
+      width: 50px;
+      padding-top: 16px;
+      background: #eef6ff;
+      border-right: 1px solid #dfeaf8;
+    }
+
+    .side-item {
+      height: 66px;
+      display: grid;
+      place-items: center;
+      gap: 4px;
+      color: #43516b;
+      font-size: 11px;
+      text-align: center;
+    }
+
+    .side-item svg {
+      width: 22px;
+      height: 22px;
+      stroke-width: 1.7;
+    }
+
+    .side-item.active {
+      color: var(--blue);
+      background: #e5f0ff;
+      border-left: 3px solid var(--blue);
+    }
+
+    .main {
+      margin-left: 50px;
+      padding: 18px 22px 38px;
+    }
+
+    .page-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 0 0 16px;
+      font-size: 23px;
+      font-weight: 600;
+    }
+
+    .page-title .title-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .card {
+      margin-bottom: 18px;
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid #edf0f4;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .card-head {
+      min-height: 64px;
+      justify-content: space-between;
+      padding: 0 28px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-heading {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 19px;
+      font-weight: 600;
+    }
+
+    .section-actions {
+      gap: 10px;
+    }
+
+    .button {
+      height: 36px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 0 16px;
+      color: #344054;
+      background: #ffffff;
+      border: 1px solid #dce3ed;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    .button:hover:not(:disabled) {
+      color: var(--blue);
+      border-color: var(--blue);
+    }
+
+    .button:active:not(:disabled) {
+      transform: translateY(1px);
+    }
+
+    .button.primary {
+      color: #ffffff;
+      background: var(--blue);
+      border-color: var(--blue);
+    }
+
+    .button.primary:hover:not(:disabled) {
+      color: #ffffff;
+      background: #1658df;
+      border-color: #1658df;
+    }
+
+    .button.danger {
+      color: var(--danger);
+      border-color: #f1b4b4;
+    }
+
+    .button:disabled {
+      color: #a5afbd;
+      background: #f3f5f8;
+      border-color: #e6eaf0;
+    }
+
+    .button svg {
+      width: 16px;
+      height: 16px;
+      stroke-width: 1.8;
+    }
+
+    .state-tag,
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 30px;
+      padding: 0 12px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .state-tag.wait-confirm {
+      color: var(--warning);
+      background: var(--warning-weak);
+    }
+
+    .state-tag.wait-register {
+      color: #1d5ccf;
+      background: var(--blue-weak);
+    }
+
+    .state-tag.wait-execute {
+      color: #1d5ccf;
+      background: var(--blue-weak);
+    }
+
+    .state-tag.done {
+      color: #117848;
+      background: var(--success-weak);
+    }
+
+    .state-tag.cancelled {
+      color: #8d2f2f;
+      background: var(--danger-weak);
+    }
+
+    .tag.success {
+      color: var(--success);
+      background: var(--success-weak);
+    }
+
+    .tag.neutral {
+      color: #596579;
+      background: #f1f3f6;
+    }
+
+    .tag.manual {
+      color: #905b00;
+      background: #fff5df;
+    }
+
+    .basic-content,
+    .register-content {
+      padding: 24px 28px 22px;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      column-gap: 50px;
+      row-gap: 26px;
+    }
+
+    .detail-item {
+      min-width: 0;
+    }
+
+    .detail-label {
+      margin-bottom: 11px;
+      color: #8a93a1;
+      font-size: 15px;
+    }
+
+    .detail-value {
+      overflow: hidden;
+      color: #2c3442;
+      font-size: 16px;
+      line-height: 24px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .ratio-line {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 26px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      color: #2d3748;
+      font-size: 16px;
+    }
+
+    .ratio-pill {
+      padding: 5px 10px;
+      color: #596579;
+      background: #f3f5f8;
+      border-radius: 3px;
+      font-size: 14px;
+    }
+
+    .register-content {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr 1fr 1.15fr 1.4fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    .registration-simple {
+      padding: 18px 28px 24px;
+    }
+
+    .register-message {
+      margin: 0 0 14px;
+      color: #2c3442;
+      font-size: 16px;
+      line-height: 26px;
+    }
+
+    .register-help {
+      margin: 10px 0 0;
+      color: #7a8494;
+      font-size: 13px;
+      line-height: 20px;
+    }
+
+    .step-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 58px;
+      height: 26px;
+      padding: 0 8px;
+      color: #1d5ccf;
+      background: var(--blue-weak);
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .step-pending {
+      padding: 22px 28px 26px;
+      color: #697588;
+      font-size: 15px;
+      line-height: 24px;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    .inline-value {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .summary-message {
+      margin: 0 28px 18px;
+      padding: 15px 18px;
+      color: #2059cf;
+      background: #edf5ff;
+      border: 1px solid #d8e8ff;
+      border-radius: 4px;
+      line-height: 22px;
+    }
+
+    .table-card .card-head {
+      border-bottom: 0;
+    }
+
+    .toolbar {
+      justify-content: space-between;
+      gap: 16px;
+      padding: 0 28px 18px;
+    }
+
+    .toolbar-left,
+    .toolbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .search-box {
+      position: relative;
+      width: 294px;
+    }
+
+    .search-box svg {
+      position: absolute;
+      top: 10px;
+      left: 11px;
+      width: 16px;
+      height: 16px;
+      color: #9aa4b2;
+      stroke-width: 2;
+      pointer-events: none;
+    }
+
+    .search-box input {
+      width: 100%;
+      height: 36px;
+      padding: 0 12px 0 35px;
+      color: #2d3748;
+      background: #ffffff;
+      border: 1px solid #dce3ed;
+      border-radius: 4px;
+      outline: 0;
+    }
+
+    .search-box input:focus,
+    .table-input:focus,
+    .table-select:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgb(31 100 242 / 11%);
+    }
+
+    .change-count {
+      color: #8a5a00;
+      font-size: 13px;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    table {
+      width: 100%;
+      min-width: 1520px;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    thead {
+      color: #5f6b7c;
+      background: #f7f9fc;
+      font-weight: 600;
+    }
+
+    th,
+    td {
+      height: 58px;
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid #edf0f4;
+      white-space: nowrap;
+    }
+
+    th {
+      height: 48px;
+      font-size: 13px;
+    }
+
+    th.group-heading {
+      text-align: center;
+      border-left: 1px solid #e4e9f0;
+      border-right: 1px solid #e4e9f0;
+    }
+
+    tbody tr:hover {
+      background: #fbfdff;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    td {
+      color: #2e3746;
+    }
+
+    td.number,
+    th.number {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .instrument {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-weight: 500;
+    }
+
+    .market-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 25px;
+      height: 19px;
+      padding: 0 4px;
+      color: #ffffff;
+      background: #2a6aed;
+      border-radius: 3px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .market-chip.hk {
+      background: #e85b5b;
+    }
+
+    .market-chip.sz {
+      background: #8d5ee8;
+    }
+
+    .table-input,
+    .table-select {
+      width: 100%;
+      height: 34px;
+      padding: 0 9px;
+      color: #263243;
+      background: #ffffff;
+      border: 1px solid #cfd8e5;
+      border-radius: 3px;
+      outline: 0;
+    }
+
+    .table-input {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .table-input.input-error {
+      color: #b42318;
+      border-color: #e15d52;
+      background: #fff8f7;
+    }
+
+    .account-cell {
+      white-space: normal;
+      line-height: 22px;
+    }
+
+    .account-line {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .field-chip {
+      display: inline-block;
+      padding: 0 4px;
+      color: #687487;
+      background: #f2f4f7;
+      border-radius: 2px;
+      font-size: 12px;
+    }
+
+    .security-cell {
+      white-space: normal;
+      line-height: 22px;
+    }
+
+    .security-code {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .source-note {
+      display: block;
+      margin-top: 4px;
+      color: #7b8698;
+      font-size: 11px;
+      line-height: 16px;
+    }
+
+    .source-note.manual {
+      color: #b26a00;
+    }
+
+    .allocation-toggle {
+      position: relative;
+      display: inline-block;
+      width: 38px;
+      height: 22px;
+      vertical-align: middle;
+    }
+
+    .allocation-toggle input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+    }
+
+    .toggle-track {
+      position: absolute;
+      inset: 0;
+      cursor: pointer;
+      background: #c7cfdb;
+      border-radius: 11px;
+      transition: background 150ms ease;
+    }
+
+    .toggle-track::after {
+      content: "";
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 16px;
+      height: 16px;
+      background: #ffffff;
+      border-radius: 50%;
+      box-shadow: 0 1px 3px rgb(23 37 61 / 24%);
+      transition: transform 150ms ease;
+    }
+
+    .allocation-toggle input:checked + .toggle-track {
+      background: var(--blue);
+    }
+
+    .allocation-toggle input:checked + .toggle-track::after {
+      transform: translateX(16px);
+    }
+
+    .allocation-toggle input:focus-visible + .toggle-track {
+      box-shadow: 0 0 0 3px rgb(31 100 242 / 16%);
+    }
+
+    .allocation-toggle input:disabled + .toggle-track {
+      cursor: not-allowed;
+      opacity: 0.55;
+    }
+
+    .row-state {
+      display: inline-flex;
+      min-width: 54px;
+      justify-content: center;
+      padding: 4px 7px;
+      color: #637083;
+      background: #f2f4f7;
+      border-radius: 3px;
+      font-size: 12px;
+    }
+
+    .row-state.changed {
+      color: #8a5a00;
+      background: #fff3d9;
+    }
+
+    .text-link {
+      padding: 0;
+      color: var(--blue);
+      background: transparent;
+      border: 0;
+    }
+
+    .text-link:hover {
+      text-decoration: underline;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin: 20px 28px 24px;
+      border: 1px solid #eef1f5;
+      background: #fafbfd;
+    }
+
+    .table-footer-actions {
+      display: flex;
+      justify-content: flex-end;
+      padding: 0 28px 24px;
+    }
+
+    .table-footer-actions .button {
+      min-width: 140px;
+    }
+
+    .metric {
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-right: 1px solid #eef1f5;
+      color: #687487;
+    }
+
+    .metric:last-child {
+      border-right: 0;
+    }
+
+    .metric strong {
+      color: #1f2937;
+      font-size: 17px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .metric.warning strong {
+      color: #d98000;
+    }
+
+    .execute-card {
+      min-height: 142px;
+    }
+
+    .execute-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 24px 28px 27px;
+    }
+
+    .execute-note {
+      color: #7b8698;
+      font-size: 14px;
+    }
+
+    .result-modal-mask {
+      position: fixed;
+      z-index: 40;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 36px;
+      background: rgb(21 31 48 / 44%);
+    }
+
+    .result-modal-mask.open {
+      display: flex;
+    }
+
+    .result-modal {
+      width: min(1520px, calc(100vw - 72px));
+      max-height: calc(100vh - 72px);
+      overflow: hidden;
+      background: #ffffff;
+      border-radius: 6px;
+      box-shadow: 0 18px 56px rgb(22 34 55 / 22%);
+    }
+
+    .result-modal-head {
+      height: 66px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      border-bottom: 1px solid var(--border);
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .result-modal-title {
+      flex: 1;
+      text-align: center;
+    }
+
+    .result-modal-body {
+      max-height: calc(100vh - 138px);
+      padding: 24px;
+      overflow: auto;
+    }
+
+    .result-modal table {
+      min-width: 1680px;
+      border: 1px solid var(--border);
+    }
+
+    .result-modal th,
+    .result-modal td {
+      border-right: 1px solid #edf0f4;
+    }
+
+    .toast {
+      position: fixed;
+      z-index: 30;
+      right: 26px;
+      bottom: 26px;
+      display: none;
+      min-width: 280px;
+      padding: 14px 17px;
+      color: #155f3d;
+      background: #eefaf4;
+      border: 1px solid #bfe8d0;
+      border-radius: 5px;
+      box-shadow: 0 8px 24px rgb(41 77 58 / 13%);
+    }
+
+    .toast.show {
+      display: block;
+    }
+
+    .toast.error {
+      color: #9b3333;
+      background: #fff2f2;
+      border-color: #f1c6c6;
+    }
+
+    @media (max-width: 1280px) {
+      body {
+        min-width: 1024px;
+      }
+
+      .tab {
+        padding: 0 16px;
+      }
+
+      .register-content {
+        gap: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">LinkCounter</div>
+    <div class="top-actions" aria-label="工具栏">
+      <button class="icon-button" title="固定" aria-label="固定"><i data-lucide="pin"></i></button>
+      <button class="icon-button" title="搜索" aria-label="搜索"><i data-lucide="search"></i></button>
+      <button class="icon-button" title="锁定" aria-label="锁定"><i data-lucide="lock-keyhole"></i></button>
+      <button class="icon-button" title="通知" aria-label="通知"><i data-lucide="bell"></i></button>
+      <button class="icon-button" title="夜间模式" aria-label="夜间模式"><i data-lucide="moon"></i></button>
+      <button class="icon-button" title="语言" aria-label="语言"><i data-lucide="languages"></i></button>
+      <button class="icon-button" title="应用" aria-label="应用"><i data-lucide="box"></i></button>
+      <button class="icon-button" title="账户" aria-label="账户"><i data-lucide="circle-user-round"></i></button>
+    </div>
+  </header>
+
+  <nav class="workspace-tabs" aria-label="工作页签">
+    <div class="tabs">
+      <span class="tab">工作台</span>
+      <span class="tab">客户</span>
+      <span class="tab">交易</span>
+      <span class="tab">拆股并股任务管理</span>
+      <span class="tab active">详情</span>
+      <span class="tab">+</span>
+    </div>
+  </nav>
+
+  <aside class="sidebar" aria-label="主导航">
+    <div class="side-item"><i data-lucide="gauge"></i><span>工作台</span></div>
+    <div class="side-item"><i data-lucide="users-round"></i><span>客户</span></div>
+    <div class="side-item active"><i data-lucide="clipboard-list"></i><span>交易</span></div>
+    <div class="side-item"><i data-lucide="banknote"></i><span>资金</span></div>
+    <div class="side-item"><i data-lucide="badge-dollar-sign"></i><span>清算</span></div>
+    <div class="side-item"><i data-lucide="sliders-horizontal"></i><span>报表</span></div>
+  </aside>
+
+  <main class="main">
+    <div class="page-title">
+      <span>详情</span>
+      <div class="title-actions">
+        <button class="button danger" id="cancelTask"><i data-lucide="x-circle"></i>撤销</button>
+      </div>
+    </div>
+
+    <section class="card" aria-labelledby="basicHeading">
+      <div class="card-head">
+        <div class="card-heading">
+          <span class="state-tag wait-register" id="taskStatus">待登记</span>
+          <span id="basicHeading">基本信息</span>
+        </div>
+      </div>
+      <div class="basic-content">
+        <div class="detail-grid">
+          <div class="detail-item">
+            <div class="detail-label">业务编号</div>
+            <div class="detail-value">2074412436071575552</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">预告编号</div>
+            <div class="detail-value">P202607070001</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">市场</div>
+            <div class="detail-value">港股</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">代码</div>
+            <div class="detail-value">02007</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">临时代码</div>
+            <div class="detail-value">02369</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">并行交易日期</div>
+            <div class="detail-value">2026-07-20 ~ 2026-07-21</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">执行日</div>
+            <div class="detail-value">2026-07-22</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">登记方式</div>
+            <div class="detail-value">预约登记</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">预约登记日</div>
+            <div class="detail-value">2026-07-20</div>
+          </div>
+        </div>
+        <div class="ratio-line">
+          <span>每 1 股</span>
+          <span class="ratio-pill">并为 2 股</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="registerHeading">
+      <div class="card-head">
+        <div class="card-heading">
+          <span class="step-badge">第 1 步</span>
+          <span id="registerHeading">登记股权信息</span>
+        </div>
+      </div>
+      <div class="registration-simple">
+        <p class="register-message" id="registerMessage">已预约 2026-07-20 收盘后自动登记</p>
+        <button class="button primary" id="registerNow"><i data-lucide="clipboard-check"></i>立即登记</button>
+        <p class="register-help" id="registerHelp">手动登记将按当前最近可用的收盘持仓快照生成拆并股调整明细。</p>
+      </div>
+    </section>
+
+    <section class="card table-card" id="adjustmentSection" aria-labelledby="detailHeading">
+      <div class="card-head">
+        <div class="card-heading">
+          <span class="step-badge">第 2 步</span>
+          <span id="detailHeading">确认拆股并股任务</span>
+        </div>
+      </div>
+      <div class="step-pending" id="adjustmentPending">
+        <span id="adjustmentPendingMessage">完成股权登记后，系统将自动生成拆并股调整明细。</span>
+      </div>
+      <div id="adjustmentContent" hidden>
+      <div class="summary-message">
+        系统已根据股权登记日客户持仓快照自动生成拆股并股调整明细。您可在下方表格中核对并修改；无需执行的记录可关闭分配开关。
+      </div>
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <div class="search-box">
+            <i data-lucide="users"></i>
+            <input id="accountSearch" type="search" placeholder="输入客户编号或交易账号">
+          </div>
+        </div>
+        <div class="toolbar-right">
+          <button class="button" id="exportDetails"><i data-lucide="download"></i>导出明细</button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table aria-label="拆并股调整明细表">
+          <colgroup>
+            <col style="width: 48px">
+            <col style="width: 166px">
+            <col style="width: 138px">
+            <col style="width: 100px">
+            <col style="width: 100px">
+            <col style="width: 100px">
+            <col style="width: 96px">
+            <col style="width: 110px">
+            <col style="width: 112px">
+            <col style="width: 104px">
+            <col style="width: 104px">
+            <col style="width: 210px">
+            <col style="width: 110px">
+            <col style="width: 100px">
+          </colgroup>
+          <thead>
+            <tr>
+              <th rowspan="2">#</th>
+              <th rowspan="2">交易账户</th>
+              <th class="group-heading" colspan="4">调整前</th>
+              <th class="group-heading" colspan="6">调整后</th>
+              <th rowspan="2">登记日期</th>
+              <th rowspan="2">分配状态</th>
+            </tr>
+            <tr>
+              <th>证券</th>
+              <th class="number">当前持仓量</th>
+              <th class="number">已交收数量</th>
+              <th class="number">待结算数量</th>
+              <th>临时代码</th>
+              <th>方案</th>
+              <th class="number">调整股数</th>
+              <th class="number">已交收数量</th>
+              <th class="number">待结算数量</th>
+              <th>差额归属</th>
+            </tr>
+          </thead>
+          <tbody id="adjustmentRows">
+            <tr data-row="1" data-system-adjustment="1000" data-system-after-settled="1400" data-system-after-pending="600" data-contract="OS202607200001" data-system-owner="无差额">
+              <td>1</td>
+              <td class="account-cell">
+                <div class="account-line"><span class="field-chip">客户编号</span>X00014</div>
+                <div class="account-line"><span class="field-chip">交易账号</span>freezeAsset001</div>
+              </td>
+              <td class="security-cell">中油燃气<div class="security-code"><span class="market-chip hk">HK</span>00603</div></td>
+              <td class="number before-total">1,000</td>
+              <td class="number before-settled">700</td>
+              <td class="number before-pending">300</td>
+              <td>00701</td>
+              <td>1 股拆为 2 股</td>
+              <td><input class="table-input adjustment-input" type="number" step="1" value="1000" aria-label="第1条调整股数"></td>
+              <td class="number after-settled">1,400</td>
+              <td class="number after-pending">600</td>
+              <td class="difference-owner">无差额</td>
+              <td>2026-07-20</td>
+              <td><label class="allocation-toggle" title="分配状态"><input type="checkbox" checked aria-label="第1条分配状态"><span class="toggle-track"></span></label></td>
+            </tr>
+            <tr data-row="2" data-system-adjustment="1000" data-system-after-settled="2000" data-system-after-pending="0" data-contract="" data-system-owner="已交收 Z80000001 仓位 Street">
+              <td>2</td>
+              <td class="account-cell">
+                <div class="account-line"><span class="field-chip">客户编号</span>X00015</div>
+                <div class="account-line"><span class="field-chip">交易账号</span>freezeAsset002</div>
+              </td>
+              <td class="security-cell">中油燃气<div class="security-code"><span class="market-chip hk">HK</span>00603</div></td>
+              <td class="number before-total">1,000</td>
+              <td class="number before-settled">1,000</td>
+              <td class="number before-pending">0</td>
+              <td>00701</td>
+              <td>1 股拆为 2 股</td>
+              <td><input class="table-input adjustment-input" type="number" step="1" value="1000" aria-label="第2条调整股数"></td>
+              <td class="number after-settled">2,000</td>
+              <td class="number after-pending">0</td>
+              <td class="difference-owner">已交收 Z80000001 仓位 Street</td>
+              <td>2026-07-20</td>
+              <td><label class="allocation-toggle" title="分配状态"><input type="checkbox" checked aria-label="第2条分配状态"><span class="toggle-track"></span></label></td>
+            </tr>
+            <tr data-row="3" data-system-adjustment="1000" data-system-after-settled="1400" data-system-after-pending="600" data-contract="OS202607200003" data-system-owner="待结算合约 OS202607200003">
+              <td>3</td>
+              <td class="account-cell">
+                <div class="account-line"><span class="field-chip">客户编号</span>X00016</div>
+                <div class="account-line"><span class="field-chip">交易账号</span>freezeAsset003</div>
+              </td>
+              <td class="security-cell">中油燃气<div class="security-code"><span class="market-chip hk">HK</span>00603</div></td>
+              <td class="number before-total">1,000</td>
+              <td class="number before-settled">700</td>
+              <td class="number before-pending">300</td>
+              <td>00701</td>
+              <td>1 股拆为 2 股</td>
+              <td><input class="table-input adjustment-input" type="number" step="1" value="1000" aria-label="第3条调整股数"></td>
+              <td class="number after-settled">1,400</td>
+              <td class="number after-pending">600</td>
+              <td class="difference-owner">待结算合约 OS202607200003</td>
+              <td>2026-07-20</td>
+              <td><label class="allocation-toggle" title="分配状态"><input type="checkbox" checked aria-label="第3条分配状态"><span class="toggle-track"></span></label></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="metrics">
+        <div class="metric"><span>登记账户数</span><strong>3</strong></div>
+        <div class="metric"><span>调整前总持仓</span><strong>3,000 股</strong></div>
+        <div class="metric"><span>调整后总持仓</span><strong id="adjustedTotalMetric">6,000 股</strong></div>
+      </div>
+      <div class="table-footer-actions" id="confirmActions" hidden>
+        <button class="button primary" id="confirmTask"><i data-lucide="check"></i>确认任务</button>
+      </div>
+      </div>
+    </section>
+
+    <section class="card execute-card" aria-labelledby="executeHeading">
+      <div class="card-head">
+        <div class="card-heading">
+          <span class="step-badge">第 3 步</span>
+          <span id="executeHeading">执行分配任务</span>
+        </div>
+      </div>
+      <div class="execute-content">
+        <span class="execute-note" id="executeNote">请先完成股权登记并确认拆并股调整明细。</span>
+        <button class="button primary" id="executeTask" disabled><i data-lucide="play"></i>执行任务</button>
+      </div>
+    </section>
+  </main>
+
+  <div class="result-modal-mask" id="resultModal" aria-hidden="true">
+    <section class="result-modal" role="dialog" aria-modal="true" aria-labelledby="resultModalTitle">
+      <div class="result-modal-head">
+        <span class="result-modal-title" id="resultModalTitle">执行结果</span>
+        <button class="icon-button" id="closeResultModal" title="关闭" aria-label="关闭"><i data-lucide="x"></i></button>
+      </div>
+      <div class="result-modal-body">
+        <div class="table-wrap">
+          <table aria-label="拆股并股执行结果表">
+            <colgroup>
+              <col style="width: 48px"><col style="width: 166px"><col style="width: 138px">
+              <col style="width: 100px"><col style="width: 100px"><col style="width: 100px">
+              <col style="width: 96px"><col style="width: 110px"><col style="width: 126px">
+              <col style="width: 104px"><col style="width: 104px"><col style="width: 104px">
+              <col style="width: 210px"><col style="width: 110px"><col style="width: 110px">
+            </colgroup>
+            <thead>
+              <tr>
+                <th rowspan="2">#</th><th rowspan="2">交易账户</th>
+                <th class="group-heading" colspan="4">调整前</th>
+                <th class="group-heading" colspan="7">调整后</th>
+                <th rowspan="2">登记日期</th><th rowspan="2">执行日期</th>
+              </tr>
+              <tr>
+                <th>证券</th><th class="number">当前持仓量</th><th class="number">已交收数量</th><th class="number">待结算数量</th>
+                <th>临时代码</th><th>方案</th><th class="number">调整股数</th><th class="number">已交收数量</th>
+                <th class="number">待结算数量</th><th class="number">总持仓量</th><th>差额归属</th>
+              </tr>
+            </thead>
+            <tbody id="executionResultRows"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+  <script>
+    const taskStatus = document.getElementById("taskStatus");
+    const registerMessage = document.getElementById("registerMessage");
+    const registerHelp = document.getElementById("registerHelp");
+    const registerNow = document.getElementById("registerNow");
+    const adjustmentPending = document.getElementById("adjustmentPending");
+    const adjustmentPendingMessage = document.getElementById("adjustmentPendingMessage");
+    const adjustmentContent = document.getElementById("adjustmentContent");
+    const confirmActions = document.getElementById("confirmActions");
+    const executeNote = document.getElementById("executeNote");
+    const confirmTask = document.getElementById("confirmTask");
+    const executeTask = document.getElementById("executeTask");
+    const cancelTask = document.getElementById("cancelTask");
+    const rows = Array.from(document.querySelectorAll("#adjustmentRows tr"));
+    const adjustedTotalMetric = document.getElementById("adjustedTotalMetric");
+    const accountSearch = document.getElementById("accountSearch");
+    const exportDetails = document.getElementById("exportDetails");
+    const resultModal = document.getElementById("resultModal");
+    const closeResultModal = document.getElementById("closeResultModal");
+    const executionResultRows = document.getElementById("executionResultRows");
+    const toast = document.getElementById("toast");
+    let taskState = "待登记";
+
+    function showToast(message, isError) {
+      toast.textContent = message;
+      toast.classList.toggle("error", Boolean(isError));
+      toast.classList.add("show");
+      window.clearTimeout(window.toastTimer);
+      window.toastTimer = window.setTimeout(() => toast.classList.remove("show"), 2800);
+    }
+
+    function parseQuantity(value) {
+      return Number(String(value).replaceAll(",", ""));
+    }
+
+    function formatQuantity(value) {
+      return Number(value).toLocaleString("zh-CN");
+    }
+
+    function formatSignedQuantity(value) {
+      const number = Number(value);
+      if (number > 0) {
+        return "+" + formatQuantity(number);
+      }
+      return formatQuantity(number);
+    }
+
+    function updateAdjustedTotal() {
+      const total = rows.reduce((sum, row) => {
+        const beforeTotal = parseQuantity(row.querySelector(".before-total").textContent);
+        const value = row.querySelector(".adjustment-input").value;
+        const adjustment = value === "" ? 0 : Number(value);
+        return sum + beforeTotal + (Number.isFinite(adjustment) ? adjustment : 0);
+      }, 0);
+      adjustedTotalMetric.textContent = formatQuantity(total) + " 股";
+    }
+
+    function recalculateRow(row) {
+      const adjustmentInput = row.querySelector(".adjustment-input");
+      const adjustment = Number(adjustmentInput.value);
+      const beforeTotal = parseQuantity(row.querySelector(".before-total").textContent);
+      const beforePending = parseQuantity(row.querySelector(".before-pending").textContent);
+      const systemAdjustment = Number(row.dataset.systemAdjustment);
+      const systemAfterSettled = Number(row.dataset.systemAfterSettled);
+      const systemAfterPending = Number(row.dataset.systemAfterPending);
+      const manualDeviation = adjustment - systemAdjustment;
+      const targetTotal = beforeTotal + adjustment;
+      let afterSettled = systemAfterSettled;
+      let afterPending = systemAfterPending;
+
+      if (beforePending > 0) {
+        afterPending = systemAfterPending + manualDeviation;
+      } else {
+        afterSettled = systemAfterSettled + manualDeviation;
+      }
+
+      row.querySelector(".after-settled").textContent = formatQuantity(afterSettled);
+      row.querySelector(".after-pending").textContent = formatQuantity(afterPending);
+
+      const isValid = adjustmentInput.value !== "" && Number.isFinite(adjustment) && targetTotal >= 0 && afterSettled >= 0 && afterPending >= 0;
+      row.dataset.valid = isValid ? "true" : "false";
+      adjustmentInput.classList.toggle("input-error", !isValid);
+      adjustmentInput.setAttribute("aria-invalid", String(!isValid));
+
+      const isSystemValue = adjustment === systemAdjustment;
+      row.dataset.changed = isSystemValue ? "false" : "true";
+      if (!isValid) {
+        row.querySelector(".difference-owner").textContent = "人工调整后数量不可小于 0";
+      } else if (isSystemValue) {
+        row.querySelector(".difference-owner").textContent = row.dataset.systemOwner;
+      } else if (beforePending > 0) {
+        row.querySelector(".difference-owner").textContent = "待结算合约 " + row.dataset.contract;
+      } else {
+        row.querySelector(".difference-owner").textContent = "已交收 Z80000001 仓位 Street";
+      }
+      updateAdjustedTotal();
+    }
+
+    function setTaskStatus(label, className) {
+      taskStatus.textContent = label;
+      taskStatus.className = "state-tag " + className;
+    }
+
+    function lockDetailInputs() {
+      document.querySelectorAll(".adjustment-input, .allocation-toggle input").forEach((element) => {
+        element.disabled = true;
+      });
+    }
+
+    function registerCurrentTask() {
+      if (taskState !== "待登记") {
+        return;
+      }
+
+      if (!window.confirm("确认立即登记吗？系统将按当前最近可用的收盘持仓快照生成调整明细。")) {
+        return;
+      }
+
+      taskState = "待确认";
+      setTaskStatus("待确认", "wait-confirm");
+      registerMessage.textContent = "已于 2026-07-20 18:22:46 完成登记，股权登记日：2026-07-20。";
+      registerHelp.textContent = "已生成 3 个账户、3 条拆并股调整明细，请核对后确认任务。";
+      registerNow.disabled = true;
+      registerNow.hidden = true;
+      adjustmentPending.hidden = true;
+      adjustmentContent.hidden = false;
+      confirmActions.hidden = false;
+      executeNote.textContent = "请核对并确认拆并股调整明细。";
+      lucide.createIcons();
+      showToast("登记成功，已生成拆并股调整明细。");
+    }
+
+    function confirmCurrentTask() {
+      const activeRows = rows.filter((row) => row.querySelector(".allocation-toggle input").checked);
+      if (activeRows.length === 0) {
+        showToast("请至少保留一条需要执行的分配记录。", true);
+        return;
+      }
+
+      const invalid = activeRows.some((row) => {
+        const input = row.querySelector(".adjustment-input");
+        return input.value === "" || row.dataset.valid !== "true";
+      });
+
+      if (invalid) {
+        showToast("请检查调整股数，调整后总持仓及差额归属分桶数量均不得小于 0。", true);
+        return;
+      }
+
+      taskState = "待执行";
+      setTaskStatus("待执行", "wait-execute");
+      executeNote.textContent = "调整明细已确认，可执行拆并股分配任务。";
+      confirmTask.disabled = true;
+      confirmTask.innerHTML = '<i data-lucide="check-check"></i>已确认';
+      executeTask.disabled = false;
+      confirmActions.hidden = true;
+      lockDetailInputs();
+      lucide.createIcons();
+      showToast("确认成功，任务已进入待执行状态。");
+    }
+
+    function buildExecutionResult() {
+      executionResultRows.innerHTML = "";
+      const activeRows = rows.filter((row) => row.querySelector(".allocation-toggle input").checked);
+
+      activeRows.forEach((row, index) => {
+        const cells = row.cells;
+        const adjustmentValue = Number(row.querySelector(".adjustment-input").value);
+        const afterSettled = parseQuantity(row.querySelector(".after-settled").textContent);
+        const afterPending = parseQuantity(row.querySelector(".after-pending").textContent);
+        const sourceLabel = row.dataset.changed === "true" ? "手动修改" : "系统计算";
+        const sourceClass = row.dataset.changed === "true" ? "source-note manual" : "source-note";
+        const resultRow = document.createElement("tr");
+
+        resultRow.innerHTML =
+          "<td>" + (index + 1) + "</td>" +
+          '<td class="account-cell">' + cells[1].innerHTML + "</td>" +
+          '<td class="security-cell">' + cells[2].innerHTML + "</td>" +
+          '<td class="number">' + cells[3].textContent + "</td>" +
+          '<td class="number">' + cells[4].textContent + "</td>" +
+          '<td class="number">' + cells[5].textContent + "</td>" +
+          "<td>" + cells[6].textContent + "</td>" +
+          "<td>" + cells[7].textContent + "</td>" +
+          '<td class="number">' + formatSignedQuantity(adjustmentValue) + '<span class="' + sourceClass + '">' + sourceLabel + "</span></td>" +
+          '<td class="number">' + formatQuantity(afterSettled) + "</td>" +
+          '<td class="number">' + formatQuantity(afterPending) + "</td>" +
+          '<td class="number">' + formatQuantity(afterSettled + afterPending) + "</td>" +
+          "<td>" + cells[11].textContent + "</td>" +
+          "<td>" + cells[12].textContent + "</td>" +
+          "<td>2026-07-20</td>";
+        executionResultRows.appendChild(resultRow);
+      });
+    }
+
+    function openExecutionResult() {
+      resultModal.classList.add("open");
+      resultModal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeExecutionResult() {
+      resultModal.classList.remove("open");
+      resultModal.setAttribute("aria-hidden", "true");
+    }
+
+    function executeCurrentTask() {
+      if (taskState === "已执行") {
+        openExecutionResult();
+        return;
+      }
+
+      if (taskState !== "待执行") {
+        return;
+      }
+
+      buildExecutionResult();
+      taskState = "已执行";
+      setTaskStatus("已执行", "done");
+      executeNote.textContent = "拆并股分配任务已执行完成。";
+      executeTask.disabled = false;
+      executeTask.innerHTML = '<i data-lucide="file-check-2"></i>执行结果';
+      cancelTask.disabled = true;
+      lucide.createIcons();
+      showToast("执行成功，已生成执行结果。");
+    }
+
+    function cancelCurrentTask() {
+      if (taskState === "已执行") {
+        showToast("已执行任务不可撤销。", true);
+        return;
+      }
+      if (!window.confirm("确认撤销当前拆并股任务吗？撤销后不可继续确认或执行。")) {
+        return;
+      }
+      taskState = "已撤销";
+      setTaskStatus("已撤销", "cancelled");
+      registerMessage.textContent = "当前拆并股任务已撤销。";
+      registerHelp.textContent = "撤销后不可继续登记、确认或执行。";
+      registerNow.disabled = true;
+      registerNow.hidden = true;
+      confirmTask.disabled = true;
+      executeTask.disabled = true;
+      confirmActions.hidden = true;
+      executeNote.textContent = "当前任务已撤销。";
+      if (adjustmentContent.hidden) {
+        adjustmentPendingMessage.textContent = "当前任务已撤销，不能生成拆并股调整明细。";
+      }
+      cancelTask.disabled = true;
+      lockDetailInputs();
+      showToast("任务已撤销。");
+    }
+
+    rows.forEach((row) => {
+      row.dataset.changed = "false";
+      row.dataset.valid = "true";
+      row.querySelector(".adjustment-input").addEventListener("input", () => {
+        if (taskState === "待确认") {
+          recalculateRow(row);
+        }
+      });
+    });
+
+    accountSearch.addEventListener("input", () => {
+      const keyword = accountSearch.value.trim().toLowerCase();
+      rows.forEach((row) => {
+        row.style.display = row.textContent.toLowerCase().includes(keyword) ? "" : "none";
+      });
+    });
+
+    closeResultModal.addEventListener("click", closeExecutionResult);
+    resultModal.addEventListener("click", (event) => {
+      if (event.target === resultModal) {
+        closeExecutionResult();
+      }
+    });
+
+    exportDetails.addEventListener("click", () => {
+      showToast("已导出当前拆股并股调整明细。");
+    });
+
+    registerNow.addEventListener("click", registerCurrentTask);
+    confirmTask.addEventListener("click", confirmCurrentTask);
+    executeTask.addEventListener("click", executeCurrentTask);
+    cancelTask.addEventListener("click", cancelCurrentTask);
+
+    lucide.createIcons();
+  </script>
+</body>
+</html>
