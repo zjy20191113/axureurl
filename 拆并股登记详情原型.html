@@ -1056,17 +1056,17 @@
               <th>证券</th>
               <th class="number">当前持仓量</th>
               <th class="number">已交收数量</th>
-              <th class="number">待结算数量</th>
+              <th class="number">待交收数量</th>
               <th>临时代码</th>
               <th>方案</th>
-              <th class="number">调整股数</th>
-              <th class="number">已交收数量</th>
-              <th class="number">待结算数量</th>
+              <th class="number">已交收调整数量</th>
+              <th class="number">待交收调整数量</th>
+              <th class="number">总调整数量</th>
               <th>差额归属</th>
             </tr>
           </thead>
           <tbody id="adjustmentRows">
-            <tr data-row="1" data-system-adjustment="1000" data-system-after-settled="1400" data-system-after-pending="600" data-contract="OS202607200001" data-system-owner="无差额">
+            <tr data-row="1" data-system-settled-adjustment="700" data-system-pending-adjustment="300" data-system-contract-actual="600" data-contract="OS202607200001" data-contract-trade-time="2026-07-18 09:31:06" data-contract-status="pending" data-system-owner="无差额">
               <td>1</td>
               <td class="account-cell">
                 <div class="account-line"><span class="field-chip">客户编号</span>X00014</div>
@@ -1078,14 +1078,14 @@
               <td class="number before-pending">300</td>
               <td>00701</td>
               <td>1 股拆为 2 股</td>
-              <td><input class="table-input adjustment-input" type="number" step="1" value="1000" aria-label="第1条调整股数"></td>
-              <td class="number after-settled">1,400</td>
-              <td class="number after-pending">600</td>
+              <td><input class="table-input settled-adjustment-input" type="number" step="1" value="700" aria-label="第1条已交收调整数量"></td>
+              <td><input class="table-input pending-adjustment-input" type="number" step="1" value="300" aria-label="第1条待交收调整数量"></td>
+              <td class="number total-adjustment">+1,000</td>
               <td class="difference-owner">无差额</td>
               <td>2026-07-20</td>
               <td><label class="allocation-toggle" title="分配状态"><input type="checkbox" checked aria-label="第1条分配状态"><span class="toggle-track"></span></label></td>
             </tr>
-            <tr data-row="2" data-system-adjustment="1000" data-system-after-settled="2000" data-system-after-pending="0" data-contract="" data-system-owner="已交收 Z80000001 仓位 Street">
+            <tr data-row="2" data-system-settled-adjustment="1000" data-system-pending-adjustment="0" data-system-contract-actual="0" data-contract="" data-contract-trade-time="" data-contract-status="" data-system-owner="已交收 Z80000001 仓位 Street">
               <td>2</td>
               <td class="account-cell">
                 <div class="account-line"><span class="field-chip">客户编号</span>X00015</div>
@@ -1097,14 +1097,14 @@
               <td class="number before-pending">0</td>
               <td>00701</td>
               <td>1 股拆为 2 股</td>
-              <td><input class="table-input adjustment-input" type="number" step="1" value="1000" aria-label="第2条调整股数"></td>
-              <td class="number after-settled">2,000</td>
-              <td class="number after-pending">0</td>
+              <td><input class="table-input settled-adjustment-input" type="number" step="1" value="1000" aria-label="第2条已交收调整数量"></td>
+              <td><input class="table-input pending-adjustment-input" type="number" step="1" value="0" aria-label="第2条待交收调整数量" disabled></td>
+              <td class="number total-adjustment">+1,000</td>
               <td class="difference-owner">已交收 Z80000001 仓位 Street</td>
               <td>2026-07-20</td>
               <td><label class="allocation-toggle" title="分配状态"><input type="checkbox" checked aria-label="第2条分配状态"><span class="toggle-track"></span></label></td>
             </tr>
-            <tr data-row="3" data-system-adjustment="1000" data-system-after-settled="1400" data-system-after-pending="600" data-contract="OS202607200003" data-system-owner="待结算合约 OS202607200003">
+            <tr data-row="3" data-system-settled-adjustment="700" data-system-pending-adjustment="300" data-system-contract-actual="600" data-contract="OS202607200003" data-contract-trade-time="2026-07-18 09:32:18" data-contract-status="pending" data-system-owner="待结算合约 OS202607200003">
               <td>3</td>
               <td class="account-cell">
                 <div class="account-line"><span class="field-chip">客户编号</span>X00016</div>
@@ -1116,9 +1116,9 @@
               <td class="number before-pending">300</td>
               <td>00701</td>
               <td>1 股拆为 2 股</td>
-              <td><input class="table-input adjustment-input" type="number" step="1" value="1000" aria-label="第3条调整股数"></td>
-              <td class="number after-settled">1,400</td>
-              <td class="number after-pending">600</td>
+              <td><input class="table-input settled-adjustment-input" type="number" step="1" value="700" aria-label="第3条已交收调整数量"></td>
+              <td><input class="table-input pending-adjustment-input" type="number" step="1" value="300" aria-label="第3条待交收调整数量"></td>
+              <td class="number total-adjustment">+1,000</td>
               <td class="difference-owner">待结算合约 OS202607200003</td>
               <td>2026-07-20</td>
               <td><label class="allocation-toggle" title="分配状态"><input type="checkbox" checked aria-label="第3条分配状态"><span class="toggle-track"></span></label></td>
@@ -1176,9 +1176,9 @@
                 <th rowspan="2">登记日期</th><th rowspan="2">执行日期</th>
               </tr>
               <tr>
-                <th>证券</th><th class="number">当前持仓量</th><th class="number">已交收数量</th><th class="number">待结算数量</th>
-                <th>临时代码</th><th>方案</th><th class="number">调整股数</th><th class="number">已交收数量</th>
-                <th class="number">待结算数量</th><th class="number">总持仓量</th><th>差额归属</th>
+                <th>证券</th><th class="number">当前持仓量</th><th class="number">已交收数量</th><th class="number">待交收数量</th>
+                <th>临时代码</th><th>方案</th><th class="number">已交收调整数量</th><th class="number">待交收调整数量</th>
+                <th class="number">总调整数量</th><th class="number">总持仓量</th><th>差额归属</th>
               </tr>
             </thead>
             <tbody id="executionResultRows"></tbody>
@@ -1241,50 +1241,56 @@
     function updateAdjustedTotal() {
       const total = rows.reduce((sum, row) => {
         const beforeTotal = parseQuantity(row.querySelector(".before-total").textContent);
-        const value = row.querySelector(".adjustment-input").value;
-        const adjustment = value === "" ? 0 : Number(value);
-        return sum + beforeTotal + (Number.isFinite(adjustment) ? adjustment : 0);
+        const settledValue = row.querySelector(".settled-adjustment-input").value;
+        const pendingValue = row.querySelector(".pending-adjustment-input").value;
+        const settledAdjustment = settledValue === "" ? 0 : Number(settledValue);
+        const pendingAdjustment = pendingValue === "" ? 0 : Number(pendingValue);
+        const totalAdjustment = (Number.isFinite(settledAdjustment) ? settledAdjustment : 0) +
+          (Number.isFinite(pendingAdjustment) ? pendingAdjustment : 0);
+        return sum + beforeTotal + totalAdjustment;
       }, 0);
       adjustedTotalMetric.textContent = formatQuantity(total) + " 股";
     }
 
     function recalculateRow(row) {
-      const adjustmentInput = row.querySelector(".adjustment-input");
-      const adjustment = Number(adjustmentInput.value);
+      const settledInput = row.querySelector(".settled-adjustment-input");
+      const pendingInput = row.querySelector(".pending-adjustment-input");
+      const settledAdjustment = Number(settledInput.value);
+      const pendingAdjustment = Number(pendingInput.value);
       const beforeTotal = parseQuantity(row.querySelector(".before-total").textContent);
+      const beforeSettled = parseQuantity(row.querySelector(".before-settled").textContent);
       const beforePending = parseQuantity(row.querySelector(".before-pending").textContent);
-      const systemAdjustment = Number(row.dataset.systemAdjustment);
-      const systemAfterSettled = Number(row.dataset.systemAfterSettled);
-      const systemAfterPending = Number(row.dataset.systemAfterPending);
-      const manualDeviation = adjustment - systemAdjustment;
-      const targetTotal = beforeTotal + adjustment;
-      let afterSettled = systemAfterSettled;
-      let afterPending = systemAfterPending;
+      const systemSettledAdjustment = Number(row.dataset.systemSettledAdjustment);
+      const systemPendingAdjustment = Number(row.dataset.systemPendingAdjustment);
+      const totalAdjustment = settledAdjustment + pendingAdjustment;
+      const afterSettled = beforeSettled + settledAdjustment;
+      const afterPending = beforePending + pendingAdjustment;
+      const targetTotal = beforeTotal + totalAdjustment;
+      const pendingManualDifference = pendingAdjustment - systemPendingAdjustment;
+      const settledValid = settledInput.value !== "" && Number.isFinite(settledAdjustment) && afterSettled >= 0;
+      const pendingValid = pendingInput.value !== "" && Number.isFinite(pendingAdjustment) && afterPending >= 0 &&
+        (pendingManualDifference === 0 || row.dataset.contract !== "");
+      const isValid = settledValid && pendingValid && targetTotal >= 0;
 
-      if (beforePending > 0) {
-        afterPending = systemAfterPending + manualDeviation;
-      } else {
-        afterSettled = systemAfterSettled + manualDeviation;
-      }
-
-      row.querySelector(".after-settled").textContent = formatQuantity(afterSettled);
-      row.querySelector(".after-pending").textContent = formatQuantity(afterPending);
-
-      const isValid = adjustmentInput.value !== "" && Number.isFinite(adjustment) && targetTotal >= 0 && afterSettled >= 0 && afterPending >= 0;
       row.dataset.valid = isValid ? "true" : "false";
-      adjustmentInput.classList.toggle("input-error", !isValid);
-      adjustmentInput.setAttribute("aria-invalid", String(!isValid));
+      row.dataset.settledChanged = settledAdjustment === systemSettledAdjustment ? "false" : "true";
+      row.dataset.pendingChanged = pendingManualDifference === 0 ? "false" : "true";
+      row.dataset.pendingManualDifference = String(pendingManualDifference);
+      settledInput.classList.toggle("input-error", !settledValid);
+      settledInput.setAttribute("aria-invalid", String(!settledValid));
+      pendingInput.classList.toggle("input-error", !pendingValid);
+      pendingInput.setAttribute("aria-invalid", String(!pendingValid));
+      row.querySelector(".total-adjustment").textContent = formatSignedQuantity(totalAdjustment);
 
-      const isSystemValue = adjustment === systemAdjustment;
-      row.dataset.changed = isSystemValue ? "false" : "true";
       if (!isValid) {
         row.querySelector(".difference-owner").textContent = "人工调整后数量不可小于 0";
-      } else if (isSystemValue) {
-        row.querySelector(".difference-owner").textContent = row.dataset.systemOwner;
-      } else if (beforePending > 0) {
-        row.querySelector(".difference-owner").textContent = "待结算合约 " + row.dataset.contract;
+      } else if (pendingManualDifference !== 0) {
+        row.querySelector(".difference-owner").textContent = "待结算合约 " + row.dataset.contract +
+          "（最早成交，人工差额 " + formatSignedQuantity(pendingManualDifference) + "）";
+      } else if (row.dataset.settledChanged === "true") {
+        row.querySelector(".difference-owner").textContent = "公司行动已交收调整仓";
       } else {
-        row.querySelector(".difference-owner").textContent = "已交收 Z80000001 仓位 Street";
+        row.querySelector(".difference-owner").textContent = row.dataset.systemOwner;
       }
       updateAdjustedTotal();
     }
@@ -1295,7 +1301,7 @@
     }
 
     function lockDetailInputs() {
-      document.querySelectorAll(".adjustment-input, .allocation-toggle input").forEach((element) => {
+      document.querySelectorAll(".settled-adjustment-input, .pending-adjustment-input, .allocation-toggle input").forEach((element) => {
         element.disabled = true;
       });
     }
@@ -1331,14 +1337,22 @@
       }
 
       const invalid = activeRows.some((row) => {
-        const input = row.querySelector(".adjustment-input");
-        return input.value === "" || row.dataset.valid !== "true";
+        const settledInput = row.querySelector(".settled-adjustment-input");
+        const pendingInput = row.querySelector(".pending-adjustment-input");
+        return settledInput.value === "" || pendingInput.value === "" || row.dataset.valid !== "true";
       });
 
       if (invalid) {
-        showToast("请检查调整股数，调整后总持仓及差额归属分桶数量均不得小于 0。", true);
+        showToast("请检查已交收及待交收调整数量，调整后数量不得小于 0。", true);
         return;
       }
+
+      activeRows.forEach((row) => {
+        if (row.dataset.pendingChanged === "true") {
+          row.dataset.lockedContract = row.dataset.contract;
+          row.dataset.lockedContractTradeTime = row.dataset.contractTradeTime;
+        }
+      });
 
       taskState = "待执行";
       setTaskStatus("待执行", "wait-execute");
@@ -1358,11 +1372,21 @@
 
       activeRows.forEach((row, index) => {
         const cells = row.cells;
-        const adjustmentValue = Number(row.querySelector(".adjustment-input").value);
-        const afterSettled = parseQuantity(row.querySelector(".after-settled").textContent);
-        const afterPending = parseQuantity(row.querySelector(".after-pending").textContent);
-        const sourceLabel = row.dataset.changed === "true" ? "手动修改" : "系统计算";
-        const sourceClass = row.dataset.changed === "true" ? "source-note manual" : "source-note";
+        const settledAdjustment = Number(row.querySelector(".settled-adjustment-input").value);
+        const pendingAdjustment = Number(row.querySelector(".pending-adjustment-input").value);
+        const totalAdjustment = settledAdjustment + pendingAdjustment;
+        const beforeTotal = parseQuantity(row.querySelector(".before-total").textContent);
+        const settledSourceLabel = row.dataset.settledChanged === "true" ? "手动修改" : "系统计算";
+        const settledSourceClass = row.dataset.settledChanged === "true" ? "source-note manual" : "source-note";
+        const pendingSourceLabel = row.dataset.pendingChanged === "true" ? "手动修改" : "系统计算";
+        const pendingSourceClass = row.dataset.pendingChanged === "true" ? "source-note manual" : "source-note";
+        const manualPendingDifference = Number(row.dataset.pendingManualDifference || 0);
+        const finalContractActual = Number(row.dataset.systemContractActual) + manualPendingDifference;
+        let executionOwner = cells[11].textContent;
+        if (row.dataset.pendingChanged === "true") {
+          executionOwner = "待结算合约 " + row.dataset.lockedContract + "（实际交收数量 " +
+            formatQuantity(row.dataset.systemContractActual) + " → " + formatQuantity(finalContractActual) + "）";
+        }
         const resultRow = document.createElement("tr");
 
         resultRow.innerHTML =
@@ -1374,11 +1398,11 @@
           '<td class="number">' + cells[5].textContent + "</td>" +
           "<td>" + cells[6].textContent + "</td>" +
           "<td>" + cells[7].textContent + "</td>" +
-          '<td class="number">' + formatSignedQuantity(adjustmentValue) + '<span class="' + sourceClass + '">' + sourceLabel + "</span></td>" +
-          '<td class="number">' + formatQuantity(afterSettled) + "</td>" +
-          '<td class="number">' + formatQuantity(afterPending) + "</td>" +
-          '<td class="number">' + formatQuantity(afterSettled + afterPending) + "</td>" +
-          "<td>" + cells[11].textContent + "</td>" +
+          '<td class="number">' + formatSignedQuantity(settledAdjustment) + '<span class="' + settledSourceClass + '">' + settledSourceLabel + "</span></td>" +
+          '<td class="number">' + formatSignedQuantity(pendingAdjustment) + '<span class="' + pendingSourceClass + '">' + pendingSourceLabel + "</span></td>" +
+          '<td class="number">' + formatSignedQuantity(totalAdjustment) + "</td>" +
+          '<td class="number">' + formatQuantity(beforeTotal + totalAdjustment) + "</td>" +
+          "<td>" + executionOwner + "</td>" +
           "<td>" + cells[12].textContent + "</td>" +
           "<td>2026-07-20</td>";
         executionResultRows.appendChild(resultRow);
@@ -1402,6 +1426,15 @@
       }
 
       if (taskState !== "待执行") {
+        return;
+      }
+
+      const invalidContract = rows.some((row) => {
+        return row.querySelector(".allocation-toggle input").checked &&
+          row.dataset.pendingChanged === "true" && row.dataset.contractStatus !== "pending";
+      });
+      if (invalidContract) {
+        showToast("已锁定的待结算合约状态已变化，请重新确认调整明细。", true);
         return;
       }
 
@@ -1443,9 +1476,16 @@
     }
 
     rows.forEach((row) => {
-      row.dataset.changed = "false";
+      row.dataset.settledChanged = "false";
+      row.dataset.pendingChanged = "false";
+      row.dataset.pendingManualDifference = "0";
       row.dataset.valid = "true";
-      row.querySelector(".adjustment-input").addEventListener("input", () => {
+      row.querySelector(".settled-adjustment-input").addEventListener("input", () => {
+        if (taskState === "待确认") {
+          recalculateRow(row);
+        }
+      });
+      row.querySelector(".pending-adjustment-input").addEventListener("input", () => {
         if (taskState === "待确认") {
           recalculateRow(row);
         }
