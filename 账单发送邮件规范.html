@@ -359,88 +359,10 @@
 
     .template-body {
       padding: 22px 24px 26px;
-      font-size: 14px;
-    }
-
-    .template-body p { margin-bottom: 12px; }
-
-    .template-body .system-note {
-      padding: 9px 12px;
-      border-left: 3px solid var(--warning);
-      background: var(--warning-soft);
-      color: #5d4715;
-      font-size: 12px;
-    }
-
-    .template-body .notice {
-      padding-bottom: 14px;
-      border-bottom: 1px solid var(--line);
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .template-body .mail-title {
-      margin: 22px 0 14px;
-      color: var(--accent);
-      font-size: 16px;
-      font-weight: 780;
-    }
-
-    .template-body .info {
-      display: grid;
-      gap: 5px;
-      padding: 13px 14px;
-      border-left: 3px solid var(--teal);
-      background: var(--teal-soft);
-    }
-
-    .template-body .account-info { gap: 0; padding: 0; }
-
-    .template-body .account-info-title {
-      padding: 11px 14px;
-      border-bottom: 1px solid #c9dfdb;
-      color: var(--teal);
-    }
-
-    .template-body .account-info-row {
-      display: grid;
-      grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
-      border-bottom: 1px solid #c9dfdb;
-    }
-
-    .template-body .account-info-row:last-child { border-bottom: 0; }
-
-    .template-body .account-info-row > span {
-      min-width: 0;
-      padding: 9px 12px;
+      white-space: pre-wrap;
       overflow-wrap: anywhere;
-    }
-
-    .template-body .account-info-row > span:first-child {
-      border-right: 1px solid #c9dfdb;
-      font-weight: 650;
-    }
-
-    .template-body .reminders {
-      margin: 18px 0;
-      padding: 14px 16px;
-      border: 1px solid #eadca7;
-      background: var(--warning-soft);
-    }
-
-    .template-body .reminders strong {
-      display: block;
-      margin-bottom: 8px;
-      color: var(--warning);
-    }
-
-    .template-body .reminders p:last-child,
-    .template-body .signature p:last-child { margin-bottom: 0; }
-
-    .template-body .signature {
-      margin-top: 20px;
-      padding-top: 14px;
-      border-top: 1px solid var(--line);
+      font-size: 14px;
+      line-height: 1.8;
     }
 
     .placeholder {
@@ -580,7 +502,7 @@
         <h1 id="page-title">账单发送邮件规范</h1>
         <p class="lead">集中查看各账户的发件邮箱、账户号码口径、邮件主题及中英文正文。页面以原 Word 文档中的“邮件内容”为基础，并纳入业务已确认口径。</p>
       </div>
-      <p class="source-note"><strong>使用提示：</strong>红色底纹标识需要系统替换的变量。复制前请先确认结单周期、客户姓名、账户号码和日期。</p>
+      <p class="source-note"><strong>使用提示：</strong>邮件正文按纯文字展示；方括号内容为系统需要替换的变量。复制前请先确认结单周期、客户姓名、账户号码和日期。</p>
     </section>
 
     <section id="overview" aria-labelledby="overview-title">
@@ -612,7 +534,7 @@
         </div>
       </div>
       <div class="review-box">
-        <p class="review-lead">本次只调整已确认内容；英文拼写及 Account Type 继续按当前版本保留。</p>
+        <p class="review-lead">邮件正文统一为纯文字；英文拼写及 Account Type 继续按当前版本保留。</p>
         <ul class="review-list">
           <li><strong>示例日期带连接符</strong><span>非标准账户日结单示例使用 <code>2026-01-01</code>，月结单示例使用 <code>2026-01</code>，与主题变量格式一致。</span></li>
           <li><strong>正文账户 ID 已明确</strong><span>第一个 ID 为 <code>[Derivatives Account ID]</code>；TRS 模板的第二个 ID 为 <code>[TRS Account ID]</code>。</span></li>
@@ -766,24 +688,38 @@
       const enDate = isDaily ? "[YYYY-MM-DD]" : "[YYYY-MM]";
       const typeZh = isDaily ? "日結單" : "月結單";
       const typeEn = isDaily ? "Daily Statement" : "Monthly Statement";
-      return `
-        <p class="system-note"><strong>*** This is an auto-generated system message ***</strong><br>Please do not reply to this message. Messages received at this address will not be processed.</p>
-        <p class="notice">敬啟：本郵件內容為保密資訊，發件人保留與本郵件相關的一切權利。若閣下誤收本郵件，敬請立刻刪除並通知發件人。<br>NOTICE: This message may contain confidential or privileged information. If you are not the intended recipient, please advise us immediately and delete this message.</p>
-        <p>尊敬的 <span class="placeholder">[客戶姓名 / Client Name]</span>：</p>
-        <p>您好，閣下於 <span class="placeholder">${cnDate}</span> 的 標準賬戶（Standard Account）${typeZh} 已隨本郵件附上，請查收。<br>Dear <span class="placeholder">[Client Name]</span>,<br>The Standard Account ${typeEn} for <span class="placeholder">${enDate}</span> is attached herewith for your reference. Please find it attached.</p>
-        <div class="info account-info">
-          <strong class="account-info-title">賬戶資料 Account Information</strong>
-          <div class="account-info-row"><span>客戶姓名 Client Name:</span><span class="placeholder">[客戶姓名 / Client Name]</span></div>
-          <div class="account-info-row"><span>賬戶號碼 Account Number:</span><span class="placeholder">[賬戶號碼 / Account No.]</span></div>
-          <div class="account-info-row"><span>結單日期 Statement Date:</span><span class="placeholder">[日期 YYYY-MM-DD / Date YYYY-MM-DD]</span></div>
-        </div>
-        <div class="reminders">
-          <strong>注意事項 Important Notes：</strong>
-          <p>• 本郵件及附件僅作參考，一切以本公司系統記錄為準。<br>This statement is for reference only. Official records of our company shall prevail.</p>
-          <p>• 請勿直接回覆此郵件。如有疑問，請聯繫客服或閣下的客戶經理。<br>Please do not reply directly to this email. For any enquiries, please contact our customer service or your account manager.</p>
-          <p>• 請妥善保管本郵件及附件，避免賬戶資料外洩。<br>Please keep this email and the attachment confidential.</p>
-        </div>
-        <div class="signature"><p>此致,<br>Regards,</p><p><strong>同道證券有限公司 / PrincipleOne Securities Limited</strong><br>營運部 / Operations Department</p></div>`;
+      return [
+        "*** This is an auto-generated system message ***",
+        "Please do not reply to this message. Messages received at this address will not be processed.",
+        "",
+        "敬啟：本郵件內容為保密資訊，發件人保留與本郵件相關的一切權利。若閣下誤收本郵件，敬請立刻刪除並通知發件人。",
+        "NOTICE: This message may contain confidential or privileged information. If you are not the intended recipient, please advise us immediately and delete this message.",
+        "",
+        "尊敬的 [客戶姓名 / Client Name]：",
+        "",
+        `您好，閣下於 ${cnDate} 的 標準賬戶（Standard Account）${typeZh} 已隨本郵件附上，請查收。`,
+        "Dear [Client Name],",
+        `The Standard Account ${typeEn} for ${enDate} is attached herewith for your reference. Please find it attached.`,
+        "",
+        "賬戶資料 Account Information",
+        "客戶姓名 Client Name: [客戶姓名 / Client Name]",
+        "賬戶號碼 Account Number: [賬戶號碼 / Account No.]",
+        "結單日期 Statement Date: [日期 YYYY-MM-DD / Date YYYY-MM-DD]",
+        "",
+        "注意事項 Important Notes：",
+        "• 本郵件及附件僅作參考，一切以本公司系統記錄為準。",
+        "This statement is for reference only. Official records of our company shall prevail.",
+        "• 請勿直接回覆此郵件。如有疑問，請聯繫客服或閣下的客戶經理。",
+        "Please do not reply directly to this email. For any enquiries, please contact our customer service or your account manager.",
+        "• 請妥善保管本郵件及附件，避免賬戶資料外洩。",
+        "Please keep this email and the attachment confidential.",
+        "",
+        "此致,",
+        "Regards,",
+        "",
+        "同道證券有限公司 / PrincipleOne Securities Limited",
+        "營運部 / Operations Department"
+      ].join("\n");
     }
 
     function investmentBody(account, period) {
@@ -791,26 +727,44 @@
       const title = period === "monthly" && account.monthlyMailTitle ? account.monthlyMailTitle : account.mailTitle;
       const bodyLineZh = isDaily ? "您好，閣下的日結單已生成，並以檔形式附在本郵件中，請查收。" : "您好，閣下的月結單已生成，並以檔形式附在本郵件中，請查收。";
       const bodyLineEn = isDaily ? "Your daily statement has been generated and is attached to this email as a file for your reference." : "Your monthly statement has been generated and is attached to this email as a file for your reference.";
-      const trsLine = account.hasTrsId ? `<span>收益互換帳戶號碼 TRS Account ID: <span class="placeholder">[TRS Account ID]</span></span>` : "";
-      return `
-        <p class="system-note"><strong>*** This is an auto-generated system message ***</strong><br>Please do not reply to this message. Messages received at this address will not be processed.</p>
-        <p class="notice"><strong>CONFIDENTIALITY NOTICE / 保密聲明</strong><br>本郵件內容為保密資訊，發件人保留與本郵件相關的一切權利。若閣下誤收本郵件，敬請立刻刪除並通知發件人。<br>This message contains confidential information intended solely for the named recipient. If you are not the intended recipient, please delete this message immediately and notify the sender.</p>
-        <p class="mail-title">${title} ${periodName[period]} STATEMENT ATTACHED / ${account.titleZh}${periodZh[period]}已附上</p>
-        <div class="info">
-          <span>收件人 Recipient: <span class="placeholder">[Client Name / 客戶姓名]</span></span>
-          <span>賬戶類型 Account Type: ${account.accountType}</span>
-          <span>衍生品帳戶號碼 Derivatives Account ID: <span class="placeholder">[Derivatives Account ID]</span></span>
-          ${trsLine}
-          <span>結單日期 Statement Date: <span class="placeholder">${dateToken[period]}</span></span>
-        </div>
-        <p style="margin-top: 18px">${bodyLineZh}<br>${bodyLineEn}</p>
-        <div class="reminders">
-          <strong>⚠️ Important Reminders / 重要提示</strong>
-          <p>本郵件及附件僅作參考，一切以本公司系統記錄為準。如有不符，一概以本公司之正式紀錄為准。<br>This statement is for informational purposes only. In case of discrepancy, the official records held by PrincipleOne Investments Limited shall prevail.</p>
-          <p>請勿直接回覆此郵件。如有疑問，請聯繫客服或閣下的客戶經理。<br>Please do not reply directly to this email. For any enquiries, please contact our customer service or your account manager.</p>
-          <p>請妥善保管本郵件及附件，避免賬戶資料外洩。請勿轉發此郵件。<br>Please keep this email and the attachment confidential. Do not forward this email to third parties.</p>
-        </div>
-        <div class="signature"><p>此致,<br>Regards,</p><p><strong>${account.company}</strong><br>營運部 / Operations Department</p></div>`;
+      const accountLines = [
+        "收件人 Recipient: [Client Name / 客戶姓名]",
+        `賬戶類型 Account Type: ${account.accountType}`,
+        "衍生品帳戶號碼 Derivatives Account ID: [Derivatives Account ID]"
+      ];
+      if (account.hasTrsId) accountLines.push("收益互換帳戶號碼 TRS Account ID: [TRS Account ID]");
+      accountLines.push(`結單日期 Statement Date: ${dateToken[period]}`);
+      return [
+        "*** This is an auto-generated system message ***",
+        "Please do not reply to this message. Messages received at this address will not be processed.",
+        "",
+        "CONFIDENTIALITY NOTICE / 保密聲明",
+        "本郵件內容為保密資訊，發件人保留與本郵件相關的一切權利。若閣下誤收本郵件，敬請立刻刪除並通知發件人。",
+        "This message contains confidential information intended solely for the named recipient. If you are not the intended recipient, please delete this message immediately and notify the sender.",
+        "",
+        `${title} ${periodName[period]} STATEMENT ATTACHED / ${account.titleZh}${periodZh[period]}已附上`,
+        "",
+        ...accountLines,
+        "",
+        bodyLineZh,
+        bodyLineEn,
+        "",
+        "⚠️ Important Reminders / 重要提示",
+        "本郵件及附件僅作參考，一切以本公司系統記錄為準。如有不符，一概以本公司之正式紀錄為准。",
+        "This statement is for informational purposes only. In case of discrepancy, the official records held by PrincipleOne Investments Limited shall prevail.",
+        "",
+        "請勿直接回覆此郵件。如有疑問，請聯繫客服或閣下的客戶經理。",
+        "Please do not reply directly to this email. For any enquiries, please contact our customer service or your account manager.",
+        "",
+        "請妥善保管本郵件及附件，避免賬戶資料外洩。請勿轉發此郵件。",
+        "Please keep this email and the attachment confidential. Do not forward this email to third parties.",
+        "",
+        "此致,",
+        "Regards,",
+        "",
+        account.company,
+        "營運部 / Operations Department"
+      ].join("\n");
     }
 
     function renderQuickGrid() {
@@ -860,11 +814,11 @@
       const account = accounts.find(item => item.id === accountId);
       const panel = document.getElementById(`panel-${accountId}`);
       const config = account.periods[period];
-      const bodyHtml = account.mode === "standard" ? standardBody(period) : investmentBody(account, period);
+      const bodyText = account.mode === "standard" ? standardBody(period) : investmentBody(account, period);
       panel.dataset.period = period;
       panel.querySelector(".subject-value").innerHTML = markPlaceholders(config.subject);
       panel.querySelector(".example-value").textContent = config.example;
-      panel.querySelector(".template-body").innerHTML = bodyHtml;
+      panel.querySelector(".template-body").textContent = bodyText;
       panel.querySelectorAll("[data-period]").forEach(button => button.setAttribute("aria-selected", String(button.dataset.period === period)));
     }
 
@@ -921,7 +875,7 @@
         if (copyButton.dataset.copy === "subject") {
           copyText(account.periods[period].subject);
         } else {
-          copyText(panel.querySelector(".template-body").innerText.trim());
+          copyText(panel.querySelector(".template-body").textContent.trim());
         }
       }
     });
