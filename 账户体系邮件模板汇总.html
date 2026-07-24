@@ -1,0 +1,2722 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>账户体系邮件模板汇总</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --background: #eef2f1;
+  --surface: #ffffff;
+  --surface-subtle: #f6f8f7;
+  --ink: #17201f;
+  --muted: #5f6d68;
+  --border: #d7dfdc;
+  --accent: #0b6b62;
+  --accent-strong: #07584f;
+  --accent-soft: #e2f1ee;
+  --warning-surface: #fff8e8;
+  --warning-border: #b77a11;
+  --sidebar: #18312f;
+  --sidebar-ink: #f7faf9;
+  --sidebar-muted: #c3d0cd;
+  --sidebar-border: #36514d;
+  --focus: #f2b84b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--background);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "PingFang SC", "Noto Sans TC", "Microsoft JhengHei", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  letter-spacing: 0;
+}
+
+button,
+input {
+  font: inherit;
+  letter-spacing: 0;
+}
+
+a {
+  color: inherit;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 1000;
+  top: 8px;
+  left: 8px;
+  padding: 10px 14px;
+  transform: translateY(-160%);
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.app-shell {
+  min-height: 100dvh;
+}
+
+.sidebar {
+  background: var(--sidebar);
+  color: var(--sidebar-ink);
+  padding: 24px 20px;
+}
+
+.sidebar-header {
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--sidebar-border);
+}
+
+.brand-name,
+.template-kicker,
+.content-eyebrow {
+  margin: 0 0 8px;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.sidebar .brand-name {
+  color: #82d4c8;
+}
+
+.sidebar h1 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.25;
+}
+
+.sender-address {
+  margin: 10px 0 0;
+  color: var(--sidebar-muted);
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.search-panel {
+  margin: 24px 0;
+}
+
+.search-panel label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--sidebar-muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.search-field {
+  position: relative;
+}
+
+.search-field svg {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  width: 18px;
+  height: 18px;
+  transform: translateY(-50%);
+  color: var(--sidebar-muted);
+  pointer-events: none;
+}
+
+.search-field input {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 12px 10px 42px;
+  border: 1px solid var(--sidebar-border);
+  border-radius: 6px;
+  outline: none;
+  background: #0f2422;
+  color: var(--sidebar-ink);
+  caret-color: var(--focus);
+}
+
+.search-field input::placeholder {
+  color: #9fb3af;
+}
+
+.search-field input:focus-visible,
+.print-button:focus-visible,
+.toc summary:focus-visible,
+.template-nav a:focus-visible,
+.back-to-top:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.results-line {
+  margin: 8px 0 0;
+  color: var(--sidebar-muted);
+  font-size: 13px;
+}
+
+.toc {
+  border-top: 1px solid var(--sidebar-border);
+}
+
+.toc summary {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+  font-weight: 700;
+  list-style-position: inside;
+}
+
+.toc-count {
+  color: var(--sidebar-muted);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.template-nav {
+  padding: 4px 0 12px;
+}
+
+.mailbox-group + .mailbox-group {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--sidebar-border);
+}
+
+.mailbox-group-header {
+  margin-bottom: 14px;
+}
+
+.mailbox-group-title {
+  margin: 0;
+  color: var(--sidebar-ink);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.mailbox-group-address {
+  margin: 3px 0 0;
+  color: var(--sidebar-muted);
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+
+.nav-group + .nav-group {
+  margin-top: 16px;
+}
+
+.nav-group-title {
+  margin: 0 0 6px;
+  color: var(--sidebar-muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.template-nav ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.template-nav li + li {
+  margin-top: 2px;
+}
+
+.template-nav a {
+  display: grid;
+  min-height: 44px;
+  grid-template-columns: 30px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-left: 3px solid transparent;
+  border-radius: 0 4px 4px 0;
+  color: var(--sidebar-ink);
+  text-decoration: none;
+  transition: background-color 180ms ease, border-color 180ms ease;
+}
+
+.template-nav a:hover {
+  background: #23413e;
+}
+
+.template-nav a.is-active {
+  border-left-color: #82d4c8;
+  background: #294b47;
+}
+
+.nav-number {
+  color: var(--sidebar-muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.nav-label {
+  min-width: 0;
+  font-size: 14px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.print-button {
+  display: flex;
+  width: 100%;
+  min-height: 46px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+  border: 1px solid #82d4c8;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--sidebar-ink);
+  cursor: pointer;
+  font-weight: 700;
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+.print-button:hover {
+  background: #82d4c8;
+  color: #102523;
+}
+
+.print-button svg {
+  width: 18px;
+  height: 18px;
+}
+
+.content {
+  min-width: 0;
+  background: var(--surface);
+}
+
+.content-header {
+  padding: 32px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-subtle);
+}
+
+.content-header-inner,
+.template-inner,
+.empty-state {
+  max-width: 920px;
+  margin: 0 auto;
+}
+
+.content-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.content-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.template-section {
+  padding: 48px 20px;
+  border-bottom: 1px solid var(--border);
+  scroll-margin-top: 24px;
+}
+
+.template-section:target {
+  box-shadow: inset 4px 0 0 var(--accent);
+}
+
+.template-kicker {
+  font-variant-numeric: tabular-nums;
+}
+
+.template-section h2 {
+  margin: 0;
+  max-width: 760px;
+  font-size: 28px;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.template-meta {
+  display: grid;
+  max-width: 760px;
+  grid-template-columns: 112px minmax(0, 1fr);
+  margin: 28px 0 0;
+  border-top: 1px solid var(--border);
+}
+
+.template-meta dt,
+.template-meta dd {
+  margin: 0;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.template-meta dt {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.template-meta dd {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.body-heading {
+  display: flex;
+  max-width: 760px;
+  align-items: baseline;
+  margin: 40px 0 14px;
+}
+
+.body-heading h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.back-to-top {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  margin-top: 20px;
+  color: var(--accent-strong);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.back-to-top:hover {
+  text-decoration: underline;
+}
+
+.empty-state {
+  padding: 64px 20px;
+}
+
+.empty-state h2 {
+  margin: 0 0 8px;
+  font-size: 22px;
+}
+
+.empty-state p {
+  margin: 0;
+  color: var(--muted);
+}
+
+@media (min-width: 960px) {
+  .app-shell {
+    display: grid;
+    grid-template-columns: 300px minmax(0, 1fr);
+  }
+
+  .sidebar {
+    position: sticky;
+    top: 0;
+    height: 100dvh;
+    padding: 32px 24px;
+    overflow-y: auto;
+  }
+
+  .content-header {
+    padding: 40px 48px;
+  }
+
+  .template-section {
+    padding: 64px 48px;
+  }
+}
+
+@media (max-width: 599px) {
+  .sidebar h1 {
+    font-size: 26px;
+  }
+
+  .content-header {
+    padding: 28px 16px;
+  }
+
+  .template-section {
+    padding: 40px 16px;
+  }
+
+  .template-section h2 {
+    font-size: 24px;
+  }
+
+  .template-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .template-meta dt {
+    padding-bottom: 2px;
+    border-bottom: 0;
+  }
+
+  .template-meta dd {
+    padding-top: 0;
+  }
+
+  .body-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #111817;
+    --surface: #19211f;
+    --surface-subtle: #202a28;
+    --ink: #eff6f4;
+    --muted: #b5c2be;
+    --border: #3b4945;
+    --accent: #6ed3c5;
+    --accent-strong: #84e2d4;
+    --accent-soft: #19413c;
+    --warning-surface: #352d19;
+    --warning-border: #d1a04b;
+    --sidebar: #0c1211;
+    --sidebar-ink: #f7faf9;
+    --sidebar-muted: #b6c4c0;
+    --sidebar-border: #34433f;
+    --focus: #f2b84b;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media print {
+  :root {
+    color-scheme: light;
+    --surface: #ffffff;
+    --surface-subtle: #ffffff;
+    --ink: #000000;
+    --muted: #444444;
+    --border: #b8b8b8;
+    --accent: #000000;
+    --accent-strong: #000000;
+    --accent-soft: #eeeeee;
+    --warning-surface: #ffffff;
+    --warning-border: #777777;
+  }
+
+  body {
+    background: #ffffff;
+    font-size: 11pt;
+  }
+
+  .sidebar,
+  .skip-link,
+  .back-to-top {
+    display: none !important;
+  }
+
+  .content-header {
+    padding: 0 0 20pt;
+    background: #ffffff;
+  }
+
+  .template-section,
+  .template-section[hidden] {
+    display: block !important;
+    padding: 28pt 0 0;
+    border: 0;
+    box-shadow: none;
+    break-before: page;
+  }
+
+  .template-section:first-of-type {
+    break-before: auto;
+  }
+
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main-content">跳至邮件模板</a>
+<div class="app-shell" id="top">
+<aside class="sidebar" aria-label="模板导航">
+<header class="sidebar-header">
+<p class="brand-name">PrincipleOne Securities</p>
+<h1>邮件模板库</h1>
+<p class="sender-address">3 个发件邮箱</p>
+</header>
+<form class="search-panel" role="search" onsubmit="return false">
+<label for="template-search">搜索模板</label>
+<div class="search-field">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+<input id="template-search" type="search" placeholder="主题或正文关键词" autocomplete="off">
+</div>
+<p class="results-line" id="result-count" aria-live="polite">23 个模板</p>
+</form>
+<details class="toc" open>
+<summary>模板目录 <span class="toc-count">23</span></summary>
+<nav class="template-nav" aria-label="邮件模板目录">
+<div class="mailbox-group">
+<div class="mailbox-group-header">
+<p class="mailbox-group-title">标准账户</p>
+<p class="mailbox-group-address">accounts@principleone.com.hk</p>
+</div>
+<div class="nav-group">
+<p class="nav-group-title">账户通知</p>
+<ol>
+<li><a href="#template-01"><span class="nav-number">01</span><span class="nav-label">开立成功</span></a></li>
+<li><a href="#template-02"><span class="nav-number">02</span><span class="nav-label">驳回</span></a></li>
+<li><a href="#template-03"><span class="nav-number">03</span><span class="nav-label">重置密码</span></a></li>
+</ol>
+</div>
+<div class="nav-group">
+<p class="nav-group-title">风险测评</p>
+<ol>
+<li><a href="#template-04"><span class="nav-number">04</span><span class="nav-label">通过</span></a></li>
+<li><a href="#template-05"><span class="nav-number">05</span><span class="nav-label">驳回</span></a></li>
+<li><a href="#template-06"><span class="nav-number">06</span><span class="nav-label">即将到期</span></a></li>
+<li><a href="#template-07"><span class="nav-number">07</span><span class="nav-label">已经到期</span></a></li>
+</ol>
+</div>
+<div class="nav-group">
+<p class="nav-group-title">PI 认证</p>
+<ol>
+<li><a href="#template-08-pi"><span class="nav-number">08</span><span class="nav-label">通过</span></a></li>
+<li><a href="#template-09-pi"><span class="nav-number">09</span><span class="nav-label">驳回</span></a></li>
+<li><a href="#template-10-pi"><span class="nav-number">10</span><span class="nav-label">即将到期</span></a></li>
+<li><a href="#template-11-pi"><span class="nav-number">11</span><span class="nav-label">到期通知</span></a></li>
+</ol>
+</div>
+</div>
+<div class="mailbox-group">
+<div class="mailbox-group-header">
+<p class="mailbox-group-title">孖展合约账户</p>
+<p class="mailbox-group-address">accounts@poneinvestments.com</p>
+<p class="mailbox-group-address">risk_notify@poneinvestments.com</p>
+</div>
+<div class="nav-group">
+<p class="nav-group-title">账户通知</p>
+<ol>
+<li><a href="#template-12"><span class="nav-number">12</span><span class="nav-label">账户开立成功</span></a></li>
+<li><a href="#template-13"><span class="nav-number">13</span><span class="nav-label">账户开立失败</span></a></li>
+</ol>
+</div>
+<div class="nav-group">
+<p class="nav-group-title">风控通知</p>
+<ol>
+<li><a href="#template-14"><span class="nav-number">14</span><span class="nav-label">预警風控通知</span></a></li>
+<li><a href="#template-15"><span class="nav-number">15</span><span class="nav-label">强平風控通知</span></a></li>
+<li><a href="#template-16"><span class="nav-number">16</span><span class="nav-label">到期通知</span></a></li>
+<li><a href="#template-17"><span class="nav-number">17</span><span class="nav-label">追保成功通知</span></a></li>
+<li><a href="#template-18"><span class="nav-number">18</span><span class="nav-label">追保失败通知</span></a></li>
+</ol>
+</div>
+</div>
+<div class="mailbox-group">
+<div class="mailbox-group-header">
+<p class="mailbox-group-title">TRS账户</p>
+<p class="mailbox-group-address">accounts@poneinvestments.com</p>
+<p class="mailbox-group-address">risk_notify@poneinvestments.com</p>
+</div>
+<div class="nav-group">
+<p class="nav-group-title">账户通知</p>
+<ol>
+<li><a href="#template-19-trs"><span class="nav-number">19</span><span class="nav-label">开立通知</span></a></li>
+<li><a href="#template-20-trs"><span class="nav-number">20</span><span class="nav-label">重置密碼通知</span></a></li>
+</ol>
+</div>
+<div class="nav-group">
+<p class="nav-group-title">风控通知</p>
+<ol>
+<li><a href="#template-21-trs"><span class="nav-number">21</span><span class="nav-label">风控通知</span></a></li>
+</ol>
+</div>
+</div>
+<div class="mailbox-group">
+<div class="mailbox-group-header">
+<p class="mailbox-group-title">衍生品账户</p>
+<p class="mailbox-group-address">accounts@poneinvestments.com</p>
+</div>
+<div class="nav-group">
+<p class="nav-group-title">账户通知</p>
+<ol>
+<li><a href="#template-22"><span class="nav-number">22</span><span class="nav-label">开立通知</span></a></li>
+<li><a href="#template-23"><span class="nav-number">23</span><span class="nav-label">重置密码通知（如有）</span></a></li>
+</ol>
+</div>
+</div>
+</nav>
+</details>
+<button class="print-button" id="print-button" type="button">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><path d="M6 9V2h12v7"></path><rect width="12" height="8" x="6" y="14" rx="2"></rect></svg>
+打印全部模板
+</button>
+</aside>
+<main class="content" id="main-content" tabindex="-1">
+<header class="content-header">
+<div class="content-header-inner">
+<p class="content-eyebrow">账户体系改造</p>
+<p class="content-title">全部邮件模板</p>
+<p class="content-summary"><span>23 个模板</span><span>3 个发件邮箱</span><span>繁体中文 / English</span></p>
+</div>
+</header>
+<section class="empty-state" id="empty-state" hidden>
+<h2>未找到相关模板</h2>
+<p>请更换关键词后重试。</p>
+</section>
+<section class="template-section" id="template-01">
+<div class="template-inner">
+<p class="template-kicker">Template 01</p>
+<h2>标准账户 开立成功</h2>
+<dl class="template-meta">
+<dt>账户类型</dt>
+<dd>标准账户</dd>
+<dt>源文件</dt>
+<dd>标准账户 开立成功.docx</dd>
+<dt>发件邮箱</dt>
+<dd>accounts@principleone.com.hk</dd>
+<dt>邮件主题</dt>
+<dd>【同道證券 PrincipleOne Securities】閣下的證券帳戶已成功開立 / Your securities account has been successfully opened</dd>
+</dl>
+<div class="body-heading">
+<h3>邮件正文</h3>
+</div>
+<article data-email-body>
+<p>*** This is an auto-generated system message ***</p>
+<p>Please do not reply to this message. Messages received at this address will not be processed.</p>
+<p><br></p>
+<p>敬啟：本郵件內容為保密資訊，發件人保留與本郵件相關的一切權利。若閣下誤收本郵件，敬請立刻刪除並通知發件人。</p>
+<p>NOTICE: This message may contain confidential or privileged information. If you are not the intended recipient, please advise us immediately and delete this message.</p>
+<p><br></p>
+<p>閣下好，</p>
+<p><br></p>
+<p>感謝選用 同道證券有限公司 PrincipleOne Securities Limited（下稱「本公司」或「同道證券」）。</p>
+<p>閣下的證券帳戶已成功開立，相關資料及臨時憑證如下：</p>
+<table><tbody><tr><td>客戶姓名：</td><td>XXXX</td></tr><tr><td>帳戶帳號：</td><td>XXXX</td></tr><tr><td>臨時登入密碼：</td><td>XXXX（僅供首次登入）</td></tr><tr><td>帳戶類型：</td><td>標準帳戶</td></tr><tr><td>帳戶狀態：</td><td>已啟動</td></tr></tbody></table>
+<p><br></p>
+<p>⚠️ 安全及密碼設置須知（重要）</p>
+<p>•  上述密碼為系統自動生成的臨時密碼，具時效性。閣下首次登入官方 App 後，系統將強制要求閣下重新設置新密碼。</p>
+<p>•  新密碼建議設定為 8 位或以上，混合英文字母及數字，並避免使用生日、身份證號碼或電話號碼等易於猜測的組合。</p>
+<p>•  密碼屬個人資產保全之關鍵，請妥善保管，切勿向任何人士（包括聲稱代表本公司之人員）透露。</p>
+<p><br></p>
+<p>▍ 下一步建議</p>
+<p>•  下載官方 App：搜尋「同道證券」，僅從官方應用商店下載，警惕仿冒 App。</p>
+<p>•  銀證轉帳：登入後於「銀證服務」綁定閣下之指定銀行帳戶（須為開戶時登記之同名帳戶）。</p>
+<p>•  建議於「安全中心」啟用生物認證 / Passkey，進一步提升帳戶保安級別。</p>
+<p><br></p>
+<p>▍ 風險提示與防詐聲明</p>
+<p>•  證券市場價格可升可跌，投資涉風險，過往表現不代表未來表現，閣下應根據自身財務狀況審慎投資。</p>
+<p>•  本公司絕不會以電郵、短訊或來電索取閣下之登入密碼、一次性驗證碼（OTP）或銀行資料。任何聲稱代表本公司並要求提供上述資料之通訊均屬懷疑詐騙，請即致電本公司核實。</p>
+<p>•  根據香港證監會（SFC）《保障消費者防詐騙約章 2.0》，本公司不會透過 SMS / WhatsApp 向閣下發送超連結以索取投資帳戶資料。</p>
+<p><br></p>
+<p>▍ 聯絡我們</p>
+<p>如有疑問，歡迎於辦公時間聯絡：</p>
+<p>•  客戶服務熱線：(852) 3996 7388</p>
+<p>  （星期一至五 09:00–17:00，公眾假期除外）</p>
+<p>•  電郵：cs@principleone.com.hk</p>
+<p><br></p>
+<p>祝 投資順利</p>
+<p><br></p>
+<p>同道證券有限公司</p>
+<p>PrincipleOne Securities Limited</p>
+<p>www.principleone.com.hk</p>
+<p>發出日期：yyyy-mm-dd</p>
+<p><br></p>
+<p>Dear Valued Client,</p>
+<p><br></p>
+<p>Thank you for choosing PrincipleOne Securities Limited ("PrincipleOne" or "the Company"). Your securities account has been successfully opened. Your account details and temporary credentials are as follows:</p>
+<p><br></p>
+<table><tbody><tr><td>Client Name :</td><td>XXXX</td></tr><tr><td>A/C No. :</td><td>XXXX</td></tr><tr><td>Temp. Login Pwd :</td><td>XXXX  (First-time use)</td></tr><tr><td>Account Type :</td><td>Standard Account</td></tr><tr><td>Account Status :</td><td>Activated</td></tr></tbody></table>
+<p><br></p>
+<p>⚠️ Important Security &amp; Password Notice</p>
+<p>•  The above password is a system-generated TEMPORARY password with limited validity. Upon your first login to our official mobile app, you will be REQUIRED to set a new password immediately.</p>
+<p>•  We recommend setting a password of 8 characters or more, combining letters and numbers, and avoiding easily guessable combinations such as dates of birth, ID numbers, or phone numbers.</p>
+<p>•  Your password is critical to safeguarding your assets. Please keep it strictly confidential and DO NOT disclose it to anyone, including persons claiming to represent PrincipleOne.</p>
+<p><br></p>
+<p>▍ Next Steps</p>
+<p>•  Download Official App: Search for "PrincipleOne" and download only from official app stores. Beware of counterfeit apps.</p>
+<p>•  Fund Deposit (Bank-Securities Transfer): After login, link your designated bank account under "Bank-Securities Services" (must be the same account registered during onboarding).</p>
+<p>•  Enable Biometrics / Passkey: We strongly recommend activating biometric authentication or Passkey in the "Security Center" for enhanced protection.</p>
+<p><br></p>
+<p>▍ Risk Disclosure &amp; Anti-Fraud Statement</p>
+<p>•  Prices of securities can go up as well as down; investment involves risks. Past performance is not indicative of future results. You should make investment decisions based on your own financial situation and risk tolerance.</p>
+<p>•  PrincipleOne will NEVER request your login password, One-Time Password (OTP), or banking details via email, SMS, or phone calls. Any communication demanding such information is likely a scam—please contact our hotline immediately to verify.</p>
+<p>•  In accordance with the SFC’s "Anti-Fraud Charter 2.0", we will not send hyperlinks via SMS or WhatsApp to solicit your investment account credentials.</p>
+<p><br></p>
+<p>▍ Contact Us</p>
+<p>Should you have any questions, please contact us during office hours:</p>
+<p>•  Client Service Hotline: (852) 3996 7388</p>
+<p>   (Mon – Fri: 09:00–17:00, excluding public holidays)</p>
+<p>•  Email: cs@principleone.com.hk</p>
+<p><br></p>
+<p>Best regards,</p>
+<p><br></p>
+<p>PrincipleOne Securities Limited</p>
+<p>www.principleone.com.hk</p>
+<p>Date: yyyy-mm-dd</p>
+</article>
+<a class="back-to-top" href="#top">返回目录</a>
+</div>
+</section>
+<section class="template-section" id="template-02">
+<div class="template-inner">
+<p class="template-kicker">Template 02</p>
+<h2>标准账户 驳回</h2>
+<dl class="template-meta">
+<dt>账户类型</dt>
+<dd>标准账户</dd>
+<dt>源文件</dt>
+<dd>标准账户 驳回.docx</dd>
+<dt>发件邮箱</dt>
+<dd>accounts@principleone.com.hk</dd>
+<dt>邮件主题</dt>
+<dd>【同道證券 PrincipleOne Securities】開戶申請待處理：請登入App查看及修改資料 / Action Required: Log in to App to update application</dd>
+</dl>
+<div class="body-heading">
+<h3>邮件正文</h3>
+</div>
+<article data-email-body>
+<p>*** This is an auto-generated system message ***</p>
+<p>Please do not reply to this message. Messages received at this address will not be processed.</p>
+<p><br></p>
+<p>敬啟：本郵件內容為保密資訊，發件人保留與本郵件相關的一切權利。若閣下誤收本郵件，敬請立刻刪除並通知發件人。</p>
+<p>NOTICE: This message may contain confidential or privileged information. If you are not the intended recipient, please advise us immediately and delete this message.</p>
+<p><br></p>
+<p>閣下好，</p>
+<p><br></p>
+<p>感謝閣下申請 同道證券有限公司 之證券帳戶。</p>
+<p>由於閣下提交的開戶資料**有待補充或核實**，目前帳戶暫未能成功開立。</p>
+<p><br></p>
+<p>🔒 為保障閣下的個人資料及私隱，**本郵件不會列明具體需修改的項目**。所有待處理事項，請閣下**親自登入官方 App** 查閱並修改。</p>
+<p><br></p>
+<p>▍ 如何查看及修改？（請按步驟操作）</p>
+<p>•  打開「同道證券」官方 App（請認明開發者為 PrincipleOne Securities Limited）。</p>
+<p>•  於登入頁選擇「開戶進度查詢」或以**開戶時登記之手機號碼/電郵收取驗證碼**登入。</p>
+<p>•  進入「開戶進度」頁面，點擊紅色/待辦標籤，即可看到系統提示需補交或修正的具體欄目。</p>
+<p>•  按指引重新上傳清晰檔或填寫正確資料，提交後我們將盡快覆核。</p>
+<p><br></p>
+<p>⏳ 溫馨提示：上述資料請於 **7天內** 完成更新，逾期申請將自動關閉，屆時需重新遞交開戶。</p>
+<p><br></p>
+<p>🚨 重要安全提示</p>
+<p>• 如閣下並未提交開戶申請，請立即致電 (852) 3996 7388 通知本公司，可能存在身份資料被冒用風險。</p>
+<p>• 本公司職員**絕不會**透過電郵、WhatsApp 或來電指導閣下修改資料或索取驗證碼，請僅在官方 App 內操作。</p>
+<p><br></p>
+<p>如有技術問題（非資料內容諮詢），歡迎聯絡：cs@principleone.com.hk</p>
+<p><br></p>
+<p>期待儘快為閣下完成開戶！</p>
+<p><br></p>
+<p>同道證券有限公司</p>
+<p>PrincipleOne Securities Limited</p>
+<p>www.principleone.com.hk</p>
+<p>發出日期：yyyy-mm-dd</p>
+<p><br></p>
+<p>Dear Valued Client,</p>
+<p><br></p>
+<p>Thank you for applying for an account with PrincipleOne Securities Limited.</p>
+<p>Your application could not be completed because **some information requires further verification or updating**.</p>
+<p><br></p>
+<p>🔒 To safeguard your personal data and privacy, **we do not specify the exact items needing correction in this email**. All pending actions must be reviewed and completed by YOU within our official mobile App.</p>
+<p><br></p>
+<p>▍ How to view and update? (Step-by-Step)</p>
+<p>•  Open the official "PrincipleOne" mobile app (ensure the developer is PrincipleOne Securities Limited).</p>
+<p>•  On the login screen, select "Check Application Status" or log in using the **verification code sent to your registered mobile/email**.</p>
+<p>•  Go to the "Application Progress" section. Tap on the pending notification to view exactly which fields or documents need to be corrected/resubmitted.</p>
+<p>•  Follow the in-app instructions to upload clear documents or enter accurate information, then submit for our review.</p>
+<p><br></p>
+<p>⏳ Note: Please complete these updates within **7 days**. Otherwise, your application will expire and you will need to reapply.</p>
+<p><br></p>
+<p>🚨 Security Reminders</p>
+<p>• If you did NOT submit this application, please contact us immediately at (852) 3996 7388, as someone may be attempting to misuse your identity.</p>
+<p>• Our staff will **NEVER** guide you to amend details or ask for verification codes via email, WhatsApp, or phone calls. Please operate only within the official App.</p>
+<p><br></p>
+<p>For technical support only (not for consulting on application content), contact: cs@principleone.com.hk</p>
+<p><br></p>
+<p>We look forward to having you onboard soon.</p>
+<p><br></p>
+<p>Best regards,</p>
+<p><br></p>
+<p>PrincipleOne Securities Limited</p>
+<p>www.principleone.com.hk</p>
+<p>Date: yyyy-mm-dd</p>
+</article>
+<a class="back-to-top" href="#top">返回目录</a>
+</div>
+</section>
+<section class="template-section" id="template-03">
+<div class="template-inner">
+<p class="template-kicker">Template 03</p>
+<h2>标准账户 重置密码</h2>
+<dl class="template-meta">
+<dt>账户类型</dt>
+<dd>标准账户</dd>
+<dt>源文件</dt>
+<dd>标准账户 重置密码.docx</dd>
+<dt>发件邮箱</dt>
+<dd>accounts@principleone.com.hk</dd>
+<dt>邮件主题</dt>
+<dd>【同道證券 PrincipleOne Securities】密碼重置通知及臨時憑證 / Password Reset Notification &amp; Temporary Credentials</dd>
+</dl>
+<div class="body-heading">
+<h3>邮件正文</h3>
+</div>
+<article data-email-body>
+<p>*** This is an auto-generated system message ***</p>
+<p>Please do not reply to this message. Messages received at this address will not be processed.</p>
+<p><br></p>
+<p>敬啟：本郵件內容為保密資訊，發件人保留與本郵件相關的一切權利。若閣下誤收本郵件，敬請立刻刪除並通知發件人。</p>
+<p>NOTICE: This message may contain confidential or privileged information. If you are not the intended recipient, please advise us immediately and delete this message.</p>
+<p><br></p>
+<p>閣下好，</p>
+<p><br></p>
+<p>接獲閣下申請（或系統記錄顯示），閣下證券帳戶（帳號：XXXXXXX）的登入密碼已進行重置。為保障帳戶安全，新的臨時登入憑證如下：</p>
+<p><br></p>
+<table><tbody><tr><td>客戶姓名：</td><td>XXXX</td></tr><tr><td>帳戶帳號：</td><td>XXXX</td></tr><tr><td>臨時登入密碼：</td><td>XXXX</td></tr></tbody></table>
+<p><br></p>
+<p>⚠️ 安全操作指引</p>
+<p>•  **立即登入並修改**：請於收到本郵件後盡快登入「同道證券」官方 App，系統將引導閣下設置全新登入密碼。上述臨時密碼將於 24 小時後自動失效。</p>
+<p>•  **密碼設置規範**：新密碼請設定 8 位或以上，混合大小寫英文字母、數字及符號，避免使用個人資料相關組合。</p>
+<p>•  **檢查帳戶活動**：建議同步檢查近期帳戶登入記錄及資產變動，確保無異常操作。</p>
+<p><br></p>
+<p>🚨 非本人操作？</p>
+<p>如閣下**並未申請**重置密碼，或懷疑帳戶被未經授權人士存取，請**切勿使用**上述臨時密碼，並立即致電本公司客戶服務熱線鎖定帳戶：</p>
+<p>📞 (852) 3996 7388</p>
+<p><br></p>
+<p>▍ 防詐提示</p>
+<p>同道證券絕不會以任何理由主動致電或發郵件要求閣下提供舊有密碼。任何索取密碼之行為均屬釣魚詐騙，請提高警覺。</p>
+<p><br></p>
+<p>祝 投資順利</p>
+<p><br></p>
+<p>同道證券有限公司</p>
+<p>PrincipleOne Securities Limited</p>
+<p>www.principleone.com.hk</p>
+<p>發出時間：yyyy-mm-dd</p>
+<p><br></p>
+<p>Dear Valued Client,</p>
+<p><br></p>
+<p>Pursuant to your request (or our system record), the login password for your securities account (A/C No.: XXXXXXX) has been reset. For security purposes, your new temporary credentials are as follows:</p>
+<p><br></p>
+<table><tbody><tr><td>Client Name ：</td><td>XXXX</td></tr><tr><td>A/C No. :</td><td>XXXX</td></tr><tr><td>Temp. Login Pwd :</td><td>XXXX</td></tr></tbody></table>
+<p><br></p>
+<p>⚠️ Security Instructions</p>
+<p>1. **Login &amp; Change Immediately**: Please log in to the official "PrincipleOne" mobile app at your earliest convenience. You will be prompted to create a new permanent password. The above temporary password will expire automatically after 24 hours.</p>
+<p>2. **Strong Password Recommended**: Set a password of at least 8 characters, combining uppercase, lowercase letters, numbers, and symbols. Avoid using personally identifiable information.</p>
+<p>3. **Review Activity**: We recommend reviewing your recent login history and account activities via the App to ensure no unauthorized actions were taken.</p>
+<p><br></p>
+<p>🚨 Did Not Request This?</p>
+<p>If you **did NOT request** a password reset or suspect any unauthorized access, **DO NOT USE** the above temporary password. Please contact our hotline immediately to freeze/secured your account:</p>
+<p>📞 (852) 3996 7388</p>
+<p><br></p>
+<p>▍ Anti-Fraud Notice</p>
+<p>PrincipleOne will never proactively ask for your old passwords via phone or email. Any request for your credentials is likely a phishing attempt—stay vigilant.</p>
+<p><br></p>
+<p>Best regards,</p>
+<p><br></p>
+<p>PrincipleOne Securities Limited</p>
+<p>www.principleone.com.hk</p>
+<p>Issued at: yyyy-mm-dd</p>
+</article>
+<a class="back-to-top" href="#top">返回目录</a>
+</div>
+</section>
+<section class="template-section" id="template-04">
+<div class="template-inner">
+<p class="template-kicker">Template 04</p>
+<h2>风险评测 通过</h2>
+<dl class="template-meta">
+<dt>账户类型</dt>
+<dd>标准账户</dd>
+<dt>源文件</dt>
+<dd>风险评测 通过.docx</dd>
+<dt>发件邮箱</dt>
+<dd>accounts@principleone.com.hk</dd>
+<dt>邮件主题</dt>
+<dd>【同道證券 PrincipleOne Securities】風險承受能力評估結果通知 / Risk Profiling Result Notification</dd>
+</dl>
+<div class="body-heading">
+<h3>邮件正文</h3>
+</div>
+<article data-email-body>
+<p>*** This is an auto-generated system message ***</p>
+<p>Please do not reply to this message. Messages received at this address will not be processed.</p>
+<p><br></p>
+<p>敬啟：本郵件內容為保密資訊，發件人保留與本郵件相關的一切權利。若閣下誤收本郵件，敬請立刻刪除並通知發件人。</p>
+<p>NOTICE: This message may contain confidential or privileged information. If you are not the intended recipient, please advise us immediately and delete this message.</p>
+<p><br></p>
+<p>閣下好，</p>
+<p><br></p>
+<p>感謝閣下完成同道證券有限公司（下稱「本公司」）之風險承受能力評估問卷。閣下的投資屬性及可參與產品範圍如下：</p>
+<p><br></p>
+<p>▍ 評估結果</p>
+<p>----------------------------------------</p>
+<p>客戶姓名　　　：XXXX</p>
+<p>帳戶帳號　：XXXX</p>
+<p>風險承受類別　：XXXX</p>
+<p>評估狀態　　　：已完成 ✅</p>
+<p>生效日期　　　：YYYY-MM-DD</p>
+<p>有效期至　　　：YYYY-MM-DD</p>
+<p>----------------------------------------</p>
+<p><br></p>
+<p>▍ 產品匹配提示</p>
+<p>根據閣下的風險評級，目前可參與對應風險等級以下的投資產品（如貨幣基金、債券、藍籌股或相關衍生工具等）。若閣下日後有意投資風險級別更高的複雜產品，可隨時於 App 內重新評估以更新權限。</p>
+<p><br></p>
+<p>本問卷結果將用作本公司向閣下提供服務時之適當性參考，但不構成任何投資建議。閣下需對自身投資決策負責。</p>
+<p><br></p>
+<p>同道證券有限公司</p>
+<p>發出日期：YYYY-MM-DD</p>
+<p><br></p>
+<p>Dear Valued Client,</p>
+<p><br></p>
+<p>Thank you for completing the Risk Profiling Questionnaire. Your investment profile and related access are as follows:</p>
+<p><br></p>
+<p>Client Name　　　: XXXX</p>
+<p>A/C No.　　　　　: XXXX</p>
+<p>Risk Tolerance　　: XXXX</p>
+<p>Status　　　　　 : Completed ✅</p>
+<p>Effective Date　 : YYYY-MM-DD</p>
+<p>Valid Until　　　: YYYY-MM-DD</p>
+<p><br></p>
+<p>This assessment is used for suitability purposes only and does not constitute investment advice. You may retake the questionnaire in the App at any time to adjust your investment limits.</p>
+<p><br></p>
+<p>PrincipleOne Securities Limited</p>
+<p>Date: YYYY-MM-DD</p>
+</article>
+<a class="back-to-top" href="#top">返回目录</a>
+</div>
+</section>
+<section class="template-section" id="template-05">
+<div class="template-inner">
+<p class="template-kicker">Template 05</p>
+<h2>风险评测 驳回</h2>
+<dl class="template-meta">
+<dt>账户类型</dt>
+<dd>标准账户</dd>
+<dt>源文件</dt>
+<dd>风险评测 驳回.docx</dd>
+<dt>发件邮箱</dt>
+<dd>accounts@principleone.com.hk</dd>
+<dt>邮件主题</dt>
+<dd>【同道證券 PrincipleOne Securities】風險評估需完善資料 / Further Information Required for Risk Assessment</dd>
+</dl>
+<div class="body-heading">
+<h3>邮件正文</h3>
+</div>
+<article data-email-body>
+<p>*** This is an auto-generated system message ***</p>
+<p>Please do not reply to this message. Messages received at this address will not be processed.</p>
+<p><br></p>
+<p>敬啟：本郵件內容為保密資訊，發件人保留與本郵件相關的一切權利。若閣下誤收本郵件，敬請立刻刪除並通知發件人。</p>
+<p>NOTICE: This message may contain confidential or privileged information. If you are not the intended recipient, please advise us immediately and delete this message.</p>
+<p><br></p>
+<p>閣下好，</p>
+<p><br></p>
+<p>由於閣下提交的風險承受能力評估資料不完整或未達最低合規要求，目前評估暫未通過。為保障閣下審慎投資及符合適當性規定，請補充完善：</p>
+<p><br></p>
+<p>▍ 當前狀態</p>
+<p>----------------------------------------</p>
+<p>客戶姓名　　　：XXXX</p>
+<p>帳戶帳號　：XXXX</p>
+<p>評估狀態　　　：待補充 / 未通過 ⚠️</p>
+<p>----------------------------------------</p>
+<p><br></p>
+<p>⚠️ 溫馨提示</p>
+<p>• 未完成有效風險測評前，閣下帳戶將**無法開立複雜產品或高風險持倉**（如衍生品、虛擬資產相關 ETF 等）。</p>
+<p>• 請登入官方 App，於「帳戶管理 &gt; 風險測評」根據真實財務及投資經驗重填問卷，通常只需 3 分鐘即可完成。</p>
+<p>• 所有評估僅限 App 內完成，職員不會代為填寫。</p>
+<p><br></p>
+<p>同道證券有限公司</p>
+<p>發出日期：YYYY-MM-DD</p>
+<p><br></p>
+<p>Dear Valued Client,</p>
+<p><br></p>
+<p>Your recent Risk Profiling Questionnaire was incomplete or did not meet basic suitability requirements.</p>
+<p>Status: Pending / Not Passed ⚠️</p>
+<p>Until a valid assessment is completed, your account will be restricted from trading higher-risk complex products. Please log in to the App to update your financial information and investment experience.</p>
+<p><br></p>
+<p>PrincipleOne Securities Limited</p>
+<p>Date: YYYY-MM-DD</p>
+</article>
+<a class="back-to-top" href="#top">返回目录</a>
+</div>
+</section>
+<section class="template-section" id="template-06">
+<div class="template-inner">
+<p class="template-kicker">Template 06</p>
+<h2>风险测评  即将到期</h2>
+<dl class="template-meta">
+<dt>账户类型</dt>
+<dd>标准账户</dd>
+<dt>源文件</dt>
+<dd>风险测评  即将到期.docx</dd>
+<dt>发件邮箱</dt>
+<dd>accounts@principleone.com.hk</dd>
+<dt>邮件主题</dt>
+<dd>【同道證券 PrincipleOne Securities】風險承受能力評估即將到期通知 / Risk Profile Expiry Notice</dd>
+</dl>
+<div class="body-heading">
+<h3>邮件正文</h3>
+</div>
+<article data-email-body>
+<p>*** This is an auto-generated system message ***</p>
+<p>Please do not reply to this message. Messages received at this address will not be processed.</p>
+<p><br></p>
+<p>敬啟：本郵件內容為保密資訊，發件人保留與本郵件相關的一切權利。若閣下誤收本郵件，敬請立刻刪除並通知發件人。</p>
+<p>NOTICE: This message may contain confidential or privileged information. If you are not the intended recipient, please advise us immediately and delete this message.</p>
+<p><br></p>
+<p>閣下好，</p>
+<p><br></p>
+<p>根據監管機構對投資者適當性（Suitability）的持續盡職審查要求，閣下於本公司的風險承受能力評估將於近日屆滿。</p>
+<p><br></p>
+<p>▍ 當前評估狀態</p>
+<p>----------------------------------------</p>
+<p>客戶姓名　　　：XXXX</p>
+<p>帳戶帳號　：XXXX</p>
+<p>風險承受類別　：XXXX型（例如：穩健型）</p>
+<p>評估生效日　　：YYYY-MM-DD</p>
+<p>有效期至　　　：YYYY-MM-DD（即將到期）</p>
+<p>----------------------------------------</p>
+<p><br></p>
+<p>▍ 權限提示</p>
+<p>評估到期後，若未完成更新，本公司將依規暫時限制閣下帳戶購買風險級別高於閣下評級的複雜產品（如衍生工具、高收益債券等），直至閣下重測更新為止。日常股票及低風險產品交易不受影響。</p>
+<p><br></p>
+<p>👉 **如何更新**：請於到期前登入官方 App，進入「帳戶管理＞風險評估」根據近期財務狀況重填問卷，提交後即時生效。</p>
+<p><br></p>
+<p>同道證券有限公司</p>
+<p>發出日期：YYYY-MM-DD</p>
+<p><br></p>
+<p>Dear Valued Client,</p>
+<p><br></p>
+<p>Pursuant to SFC suitability requirements and ongoing due diligence, your Risk Profiling Questionnaire will soon expire.</p>
+<p><br></p>
+<p>Client Name　　: XXXX</p>
+<p>A/C No.　　　　: XXXX</p>
+<p>Risk Category　: XXXX (e.g., Balanced)</p>
+<p>Valid Until　　: YYYY-MM-DD (Expiring Soon)</p>
+<p><br></p>
+<p>Upon expiry, placing buy orders for complex/higher-risk products may be temporarily restricted by our system until you complete a new assessment.</p>
+<p><br></p>
+<p>👉 How to update: Log in to the App &gt; Account Management &gt; Risk Profiling to complete the short questionnaire. Your access will be restored immediately upon submission.</p>
+<p><br></p>
+<p>PrincipleOne Securities Limited</p>
+<p>Date: YYYY-MM-DD</p>
+</article>
+<a class="back-to-top" href="#top">返回目录</a>
+</div>
+</section>
+<section class="template-section" id="template-07">
+<div class="template-inner">
+<p class="template-kicker">Template 07</p>
+<h2>风险测评  已经到期</h2>
+<dl class="template-meta">
+<dt>账户类型</dt>
+<dd>标准账户</dd>
+<dt>源文件</dt>
+<dd>风险测评  已经到期.docx</dd>
+<dt>发件邮箱</dt>
+<dd>accounts@principleone.com.hk</dd>
+<dt>邮件主题</dt>
+<dd>【同道證券 PrincipleOne Securities】風險承受能力評估已過期通知 / Notice: Risk Profile Has Expired</dd>
+</dl>
+<div class="body-heading">
+<h3>邮件正文</h3>
+</div>
+<article data-email-body>
+<p>*** This is an auto-generated system message ***</p>
+<p>Please do not reply to this message. Messages received at this address will not be processed.</p>
+<p><br></p>
+<p>敬啟：本郵件內容為保密資訊，發件人保留與本郵件相關的一切權利。若閣下誤收本郵件，敬請立刻刪除並通知發件人。</p>
+<p>NOTICE: This message may contain confidential or privileged information. If you are not the intended recipient, please advise us immediately and delete this message.</p>
+<p><br></p>
+<p>閣下好，</p>
+<p><br></p>
+<p>閣下的風險承受能力評估已屆滿一年且未及時重測，現正式通知相關調整如下：</p>
+<p><br></p>
+<p>▍ 狀態更新</p>
+<p>----------------------------------------</p>
+<p>原風險類別　　：XXXX型（已失效）</p>
+<p>評估狀態　　　：**已過期** 🔴</p>
+<p>當前帳戶處理　：暫時受限</p>
+<p>----------------------------------------</p>
+<p><br></p>
+<p>▍ 適當性管理安排</p>
+<p>為符合《證券及期貨條例》下的適當性職責，本公司已對閣下帳戶作如下系統設置：</p>
+<p>1. 暫停接受超越原評級之高風險產品新增買入指令；</p>
+<p>2. 閣下仍可賣出現有持倉及買入與低風險匹配的產品；</p>
+<p>3. 此限制為臨時性保障措施，非永久性處罰。</p>
+<p><br></p>
+<p>本通知構成對閣下適當性評估狀態之書面記錄。如欲恢復完整交易權限，請即登入 App 重測。</p>
+<p><br></p>
+<p>同道證券有限公司</p>
+<p>發出日期：YYYY-MM-DD</p>
+<p><br></p>
+<p>Dear Valued Client,</p>
+<p><br></p>
+<p>Your Risk Profiling Questionnaire has expired. In accordance with our suitability obligations:</p>
+<p>1. Buy orders for investments exceeding your previous risk tolerance are temporarily restricted;</p>
+<p>2. You retain the ability to close positions and trade lower-risk instruments;</p>
+<p>3. Restrictions will be lifted immediately upon your re-assessment via the App.</p>
+<p>Please treat this as formal written notice of your current profile status.</p>
+<p><br></p>
+<p>PrincipleOne Securities Limited</p>
+<p>Date: YYYY-MM-DD</p>
+</article>
+<a class="back-to-top" href="#top">返回目录</a>
+</div>
+</section>
+<section class="template-section" id="template-08-pi">
+<div class="template-inner">
+<p class="template-kicker">Template 08</p>
+<h2>PI认证 通过</h2>
+<dl class="template-meta">
+<dt>账户类型</dt>
+<dd>标准账户</dd>
+<dt>源文件</dt>
+<dd>PI认证 通过.docx</dd>
+<dt>发件邮箱</dt>
+<dd>accounts@principleone.com.hk</dd>
+<dt>邮件主题</dt>
+<dd>【同道證券 PrincipleOne Securities】專業投資者(PI)身份認證結果通知 / Professional Investor (PI) Status Notification</dd>
+</dl>
+<div class="body-heading">
+<h3>邮件正文</h3>
+</div>
+<article data-email-body>
+<p>*** This is an auto-generated system message ***</p>
+<p>Please do not reply to this message. Messages received at this address will not be processed.</p>
+<p><br></p>
+<p>敬啟：本郵件內容為保密資訊，發件人保留與本郵件相關的一切權利。若閣下誤收本郵件，敬請立刻刪除並通知發件人。</p>
+<p>NOTICE: This message may contain confidential or privileged information. If you are not the intended recipient, please advise us immediately and delete this message.</p>
+<p><br></p>
+<p>閣下好，</p>
+<p><br></p>
+<p>感謝閣下向 同道證券有限公司（下稱「本公司」）提交專業投資者（Professional Investor, PI）身份認證申請。</p>
+<p>經本公司審核，閣下提交的資產證明及相關資料已符合要求，**閣下的帳戶已被正式接納/重新分類為專業投資者**。</p>
+<p><br></p>
+<table><tbody><tr><td>客戶姓名：</td><td>XXXX</td></tr><tr><td>帳戶帳號：</td><td>XXXX</td></tr><tr><td>PI類別：</td><td>專業投資者*</td></tr><tr><td>生效日期：</td><td>2026-07-20</td></tr><tr><td>認證有效期至：</td><td>2027-07-19（屆滿需重新申請）</td></tr></tbody></table>
+<p><br></p>
+<p>*註：根據《證券及期貨條例》附表 1 定義。</p>
+<p><br></p>
+<p>▍ 身份變更須知（重要法律及合約含義）</p>
+<p>閣下須知悉，基於專業投資者身份，本公司日後向閣下提供服務時將作出以下調整：</p>
+<p>1. **產品範圍擴大**：閣下將可投資更廣泛的複雜產品（如衍生工具、結構性產品及某些僅限專業投資者參與的基金或債券）。</p>
+<p>2. **保障範圍變更**：根據監管規定，閣下**將不會獲提供或部分不適用**適用於零售（普通）投資者的若干保障措施，包括但不限於：</p>
+<p>   • 某些複雜產品的事先書面警告及產品盡職審查說明；</p>
+<p>   • 特定的銷售程式限制及冷靜期安排；</p>
+<p>   • 部分投資產品風險披露的簡化要求。</p>
+<p>3. **自主決策預設**：本公司將合理假定閣下具備評估及承擔相關投資風險所需的經驗、知識及專業能力。</p>
+<p><br></p>
+<p>▍ 閣下的責任</p>
+<p>• 若閣下的財務狀況發生重大變化，導致不再符合專業投資者標準（例如投資組合價值低於 800 萬港元門檻），**必須立即以書面通知本公司**。本公司屆時將重新評估並可能恢復閣下的零售投資者身份及相關保障。</p>
+<p>• 閣下有權隨時以書面形式通知本公司，要求不被視為專業投資者（即放棄 PI 身份）。</p>
+<p><br></p>
+<p>本通知構成對閣下與本公司之間服務協議及相關風險披露聲明的補充。閣下無需就此郵件作額外回覆，上述身份將於系統中自動生效。</p>
+<p><br></p>
+<p>如對專業投資者身份有任何疑問，或欲查閱相關條款細則，歡迎聯絡：</p>
+<p>• 客戶服務/合規部：(852) 3996 7388</p>
+<p>• 電郵：cs@principleone.com.hk</p>
+<p><br></p>
+<p>同道證券有限公司</p>
+<p>PrincipleOne Securities Limited</p>
+<p>www.principleone.com.hk</p>
+<p>發出日期：yyyy-mm-dd</p>
+<p><br></p>
+<p>Dear Valued Client,</p>
+<p><br></p>
+<p>Thank you for submitting your application and supporting documents for Professional Investor (PI) classification to PrincipleOne Securities Limited ("the Company").</p>
+<p>We are pleased to inform you that, upon review, your application has been approved. **Your account has been formally classified/re-classified as a Professional Investor.**</p>
+<p><br></p>
+<table><tbody><tr><td>Client Name :</td><td>XXXX</td></tr><tr><td>A/C No. :</td><td>XXXX</td></tr><tr><td>PI Category :</td><td>專業投資者*</td></tr><tr><td>Effective Date :</td><td>2026-07-20</td></tr><tr><td>Valid Until :</td><td>2027-07-19  (subject to renew)</td></tr></tbody></table>
+<p><br></p>
+<p>*As defined under Schedule 1 to the SFO.</p>
+<p><br></p>
+<p>▍ Important Notice Regarding Your Rights and Protections</p>
+<p>Please note that, as a Professional Investor, the following changes will apply to the services provided by the Company:</p>
+<p>1. **Broader Product Access**: You will be eligible to trade/invest in a wider range of complex products (e.g., derivatives, structured products, and certain funds/bonds restricted to PIs).</p>
+<p>2. **Modified Regulatory Safeguards**: Under applicable regulatory requirements, you will **not be provided with, or will be exempted from, certain protections** normally afforded to retail investors. These include, but are not limited to:</p>
+<p>   • Certain pre-sale warnings and product due diligence disclosures for complex products;</p>
+<p>   • Specific selling restrictions and cooling-off arrangements;</p>
+<p>   • Simplified risk disclosure requirements for particular investments.</p>
+<p>3. **Reliance on Expertise**: The Company may rely on the assumption that you possess the requisite experience, knowledge, and expertise to evaluate the risks of such investments independently.</p>
+<p><br></p>
+<p>▍ Your Ongoing Obligations</p>
+<p>• If there is a material change in your financial circumstances resulting in no longer meeting the PI criteria (e.g., portfolio value falls below the HKD 8 million threshold), **you must notify the Company in writing immediately**. Your retail investor status and related safeguards may then be reinstated.</p>
+<p>• You have the right at any time to notify us in writing if you wish to opt out of being treated as a Professional Investor.</p>
+<p><br></p>
+<p>This notice supplements the Terms and Conditions and the Risk Disclosure Statements between you and the Company. No further action or reply is required from you—this change will take effect automatically in our system.</p>
+<p><br></p>
+<p>Should you have any questions about your PI status or wish to review the detailed terms, please contact:</p>
+<p>• Compliance / Client Service: (852) 3996 7388</p>
+<p>• Email: cs@principleone.com.hk</p>
+<p><br></p>
+<p>Best regards,</p>
+<p><br></p>
+<p>PrincipleOne Securities Limited</p>
+<p>www.principleone.com.hk</p>
+<p>Date: yyyy-mm-dd</p>
+</article>
+<a class="back-to-top" href="#top">返回目录</a>
+</div>
+</section>
+<section class="template-section" id="template-09-pi">
+<div class="template-inner">
+<p class="template-kicker">Template 09</p>
+<h2>PI认证 驳回</h2>
+<dl class="template-meta">
+<dt>账户类型</dt>
+<dd>标准账户</dd>
+<dt>源文件</dt>
+<dd>PI认证 驳回.docx</dd>
+<dt>发件邮箱</dt>
+<dd>accounts@principleone.com.hk</dd>
+<dt>邮件主题</dt>
+<dd>【同道證券 PrincipleOne Securities】專業投資者(PI)認證進度：需補充或更新資料 / PI Certification Update: Further Information Required</dd>
+</dl>
+<div class="body-heading">
+<h3>邮件正文</h3>
+</div>
+<article data-email-body>
+<p>*** This is an auto-generated system message ***</p>
+<p>Please do not reply to this message. Messages received at this address will not be processed.</p>
+<p><br></p>
+<p>敬啟：本郵件內容為保密資訊，發件人保留與本郵件相關的一切權利。若閣下誤收本郵件，敬請立刻刪除並通知發件人。</p>
+<p>NOTICE: This message may contain confidential or privileged information. If you are not the intended recipient, please advise us immediately and delete this message.</p>
+<p><br></p>
+<p>閣下好，</p>
+<p><br></p>
+<p>感謝閣下向 同道證券有限公司（下稱「本公司」）提交專業投資者（Professional Investor, PI）身份認證申請及相關證明檔。</p>
+<p><br></p>
+<p>經本公司合規及營運部門審核後，閣下提交的資料**目前未能充分證明符合《證券及期貨條例》及其附屬法例下對專業投資者的規定**，因此閣下的 PI 認證申請暫未獲批核。</p>
+<p><br></p>
+<p>🔒 為保障閣下的私隱及檔安全，**本郵件不會列明具體未達標的項目**。請閣下**親自登入官方 App** 查閱詳情並補充相關材料。</p>
+<p><br></p>
+<table><tbody><tr><td>客戶姓名：</td><td>XXXX</td></tr><tr><td>帳戶帳號：</td><td>XXXX</td></tr><tr><td>申請狀態：</td><td>待補充資料 / More Info Required</td></tr><tr><td>補件期限：</td><td>7個自然日（逾期將自動撤銷申請）</td></tr></tbody></table>
+<p><br></p>
+<p>▍ 如何查看及補充？（操作指引）</p>
+<p>•  打開「同道證券」官方 App，使用登記手機號/電郵收取驗證碼登入。</p>
+<p>•  於首頁或「帳戶管理 &gt; PI 認證」進入申請進度頁。</p>
+<p>•  點擊系統標註的紅色待辦項，查看需重新上傳或填寫的具體要求（例如：資產淨值證明有效期、投資經驗描述、簽署檔清晰度等）。</p>
+<p>•  按要求補齊資料並重新提交，本公司將優先為閣下安排覆核。</p>
+<p><br></p>
+<p>💡 溫馨提示：常見需補充資料類別</p>
+<p>•  由認可金融機構發出且印有日期的**資產市值證明/結單**（需在 3 個月內有效）；</p>
+<p>•  **投資經驗及風險承受問卷**未填寫完整或簽署遺漏；</p>
+<p>•  企業/機構 PI 申請中，**周年申報表、授權書或章程**等公司資料不全。</p>
+<p>*(僅供參考，閣下實際需處理之項目以 App 內提示為準)*</p>
+<p><br></p>
+<p>📌 重要須知</p>
+<p>•  閣下無需因本次退回而擔心，只要在期限內補交合規資料，仍可順利取得 PI 身份。</p>
+<p>•  若閣下決定不再申請 PI 身份，帳戶將維持一般零售投資者身份及相關保障，不影響正常交易。</p>
+<p>•  所有資料修改僅限在 App 內完成，本公司職員不會透過電郵或電話索取閣下的證明檔。</p>
+<p><br></p>
+<p>如有操作疑問，歡迎聯絡：</p>
+<p>•  客戶服務熱線：(852) 3996 7388</p>
+<p>•  電郵：cs@principleone.com.hk</p>
+<p><br></p>
+<p>同道證券有限公司</p>
+<p>PrincipleOne Securities Limited</p>
+<p>www.principleone.com.hk</p>
+<p>發出日期：yyyy-mm-dd</p>
+<p><br></p>
+<p>Dear Valued Client,</p>
+<p><br></p>
+<p>Thank you for submitting your Professional Investor (PI) certification application and supporting documents to PrincipleOne Securities Limited ("the Company").</p>
+<p><br></p>
+<p>Upon review by our Compliance and Operations teams, **the information currently provided is insufficient to establish that you meet the criteria** set out under the Securities and Futures Ordinance (SFO) and its subsidiary legislation. As such, your PI application has not been approved at this stage.</p>
+<p><br></p>
+<p>🔒 To protect your privacy and document security, **we do not specify the exact reasons for rejection in this email**. Please **log in to our official App** to view the details and upload further information.</p>
+<p><br></p>
+<table><tbody><tr><td>Client Name：</td><td>XXXX</td></tr><tr><td>A/C No. :</td><td>XXXX</td></tr><tr><td>Application Status :</td><td>Pending Resubmission</td></tr><tr><td>Deadline to Resubmit :</td><td>within seven (7) calendar days (app expires)</td></tr></tbody></table>
+<p><br></p>
+<p>▍ How to check and resubmit?</p>
+<p>•  Open the official "PrincipleOne" App and log in via the verification code sent to your registered contact.</p>
+<p>•  Go to "Account Management &gt; PI Certification" to view your application progress.</p>
+<p>•  Tap on the flagged items to see exactly what needs to be corrected or re-uploaded (e.g., validity of proof of assets, completeness of investment questionnaire, etc.).</p>
+<p>•  Submit the supplementary materials, and our team will prioritize your re-review.</p>
+<p><br></p>
+<p>💡 Commonly Required Supplementary Documents *(for reference only)*:</p>
+<p>•  Recent (within 3 months) portfolio valuation or proof of assets issued by a recognized financial institution;</p>
+<p>•  Incomplete sections or missing signatures in the Investment Experience &amp; Risk Questionnaire;</p>
+<p>•  For Corporate PI: incomplete constitutional documents, annual returns, or board resolutions.</p>
+<p>*(Please refer to the actual in-app checklist for your specific case.)*</p>
+<p><br></p>
+<p>📌 Important Notes</p>
+<p>•  There is no need for concern—simply resubmitting compliant documents within the timeframe will allow us to proceed with your PI classification.</p>
+<p>•  If you choose not to proceed with PI certification, your account will simply remain classified as a Retail Investor with standard investor protections, and your trading will not be affected.</p>
+<p>•  All updates must be done within the secure App environment. Staff will never request your documents via email or phone.</p>
+<p><br></p>
+<p>For operational support only, please contact:</p>
+<p>•  Client Service Hotline: (852) 3996 7388</p>
+<p>•  Email: cs@principleone.com.hk</p>
+<p><br></p>
+<p>Best regards,</p>
+<p><br></p>
+<p>PrincipleOne Securities Limited</p>
+<p>www.principleone.com.hk</p>
+<p>Date: yyyy-mm-dd</p>
+</article>
+<a class="back-to-top" href="#top">返回目录</a>
+</div>
+</section>
+<section class="template-section" id="template-10-pi">
+<div class="template-inner">
+<p class="template-kicker">Template 10</p>
+<h2>PI认证 即将到期</h2>
+<dl class="template-meta">
+<dt>账户类型</dt>
+<dd>标准账户</dd>
+<dt>源文件</dt>
+<dd>PI认证 即将到期.docx</dd>
+<dt>发件邮箱</dt>
+<dd>accounts@principleone.com.hk</dd>
+<dt>邮件主题</dt>
+<dd>【同道證券 PrincipleOne Securities】專業投資者(PI)認證即將到期，請辦理續期 / Action Required: PI Certification Expiry &amp; Renewal</dd>
+</dl>
+<div class="body-heading">
+<h3>邮件正文</h3>
+</div>
+<article data-email-body>
+<p>*** This is an auto-generated system message ***</p>
+<p>Please do not reply to this message. Messages received at this address will not be processed.</p>
+<p><br></p>
+<p>敬啟：本郵件內容為保密資訊，發件人保留與本郵件相關的一切權利。若閣下誤收本郵件，敬請立刻刪除並通知發件人。</p>
+<p>NOTICE: This message may contain confidential or privileged information. If you are not the intended recipient, please advise us immediately and delete this message.</p>
+<p><br></p>
+<p>閣下好，</p>
+<p><br></p>
+<p>閣下先前向 同道證券有限公司（下稱「本公司」）提交的專業投資者（Professional Investor, PI）認證申請已獲批核，相關身份將於近日屆滿。為確保閣下持續享有 PI 身份之權益，請儘快辦理續期。</p>
+<p><br></p>
+<p>▍ 當前認證資料</p>
+<p>----------------------------------------</p>
+<p>客戶姓名　　　：XXXX</p>
+<p>帳戶帳號　：XXXX</p>
+<p>PI 類別　　　 ：專業投資者*</p>
+<p>當前生效日期　：YYYY-MM-DD</p>
+<p>認證有效期至　：YYYY-MM-DD（即將屆滿）</p>
+<p>----------------------------------------</p>
+<p><br></p>
+<p>▍ 如何辦理續期？（操作指引）</p>
+<p>為符合《證券及期貨條例》持續合規要求，請於有效期屆滿前提早完成以下步驟：</p>
+<p>1. 打開「同道證券」官方 App，使用登記手機號/電郵收取驗證碼登入。</p>
+<p>2. 進入「帳戶管理 &gt; PI 認證」頁面，點擊「申請續期」。</p>
+<p>3. 重新上傳由認可金融機構發出且印有日期的**最新資產證明/投資組合結單**（需在 3 個月內有效），並確認投資經驗等基本資訊。</p>
+<p>4. 提交後本公司將於 {XX} 個工作天內完成快速覆核，續期成功將不另發通知（帳戶狀態自動延續）。</p>
+<p><br></p>
+<p>⚠️ 溫馨提示：若未完成續期之後果</p>
+<p>如閣下於上述有效期屆滿前未完成續期手續：</p>
+<p>• 閣下之帳戶將自動恢復為**一般零售投資者**身份；</p>
+<p>• 原本可參與的複雜產品（如衍生工具、僅限專業投資者參與之基金或債券等）交易權限將被暫停，持倉僅可賣出不可新開；</p>
+<p>• 若日後仍有需要，可隨時重新提交資產證明申請恢復 PI 身份。</p>
+<p><br></p>
+<p>▍ 閣下之持續責任</p>
+<p>如同首次認證所述，若閣下財務狀況發生重大變化導致不再符合專業投資者門檻，仍須立即以書面通知本公司。所有資料更新僅限在官方 App 內完成，本公司職員不會透過電郵或電話索取證明檔。</p>
+<p><br></p>
+<p>如有疑問，歡迎聯絡：</p>
+<p>• 客戶服務/合規部：(852) 3996 7388</p>
+<p>• 電郵：cs@principleone.com.hk</p>
+<p><br></p>
+<p>同道證券有限公司</p>
+<p>PrincipleOne Securities Limited</p>
+<p>www.principleone.com.hk</p>
+<p>發出日期：YYYY-MM-DD</p>
+<p><br></p>
+<p>Dear Valued Client,</p>
+<p><br></p>
+<p>Your Professional Investor (PI) status with PrincipleOne Securities Limited ("the Company") was previously approved and is scheduled to expire soon. To maintain your PI privileges without interruption, please complete the renewal process in a timely manner.</p>
+<p><br></p>
+<p>▍ Current Certification Details</p>
+<p>----------------------------------------</p>
+<p>Client Name　　　: XXXX</p>
+<p>A/C No.　　　　　: XXXX</p>
+<p>PI Category　　　: Professional Investor*</p>
+<p>Current Effective: YYYY-MM-DD</p>
+<p>Valid Until　　　: YYYY-MM-DD (Expiring Soon)</p>
+<p>----------------------------------------</p>
+<p><br></p>
+<p>▍ How to Renew? (Step-by-Step)</p>
+<p>To comply with ongoing requirements under the Securities and Futures Ordinance (SFO), please complete the following before the expiry date:</p>
+<p>1. Open the official "PrincipleOne" App and log in via the verification code sent to your registered contact.</p>
+<p>2. Go to "Account Management &gt; PI Certification" and tap "Apply for Renewal".</p>
+<p>3. Upload your latest proof of assets or portfolio statement (dated within the last 3 months) issued by a recognized financial institution, and confirm your investment profile.</p>
+<p>4. Upon submission, our Compliance team will prioritize the review within {XX} business days. Once renewed, your status will be automatically extended (no further notice will be sent).</p>
+<p><br></p>
+<p>⚠️ What happens if you do not renew?</p>
+<p>If the renewal is not completed before the expiry date:</p>
+<p>• Your account will automatically revert to a **Retail Investor** classification;</p>
+<p>• Trading access to certain complex products (e.g., derivatives, structured products, and restricted funds/bonds) will be suspended—you may only close existing positions but cannot open new ones;</p>
+<p>• You may re-apply for PI status at any time in the future by submitting updated documentation.</p>
+<p><br></p>
+<p>▍ Ongoing Obligations</p>
+<p>As previously notified, you must inform the Company in writing immediately if your financial circumstances materially change and you no longer meet the PI criteria. All updates must be completed within the secure App environment only.</p>
+<p><br></p>
+<p>Should you have any questions, please contact:</p>
+<p>• Compliance / Client Service: (852) 3996 7388</p>
+<p>• Email: cs@principleone.com.hk</p>
+<p><br></p>
+<p>Best regards,</p>
+<p><br></p>
+<p>PrincipleOne Securities Limited</p>
+<p>www.principleone.com.hk</p>
+<p>Date: YYYY-MM-DD</p>
+</article>
+<a class="back-to-top" href="#top">返回目录</a>
+</div>
+</section>
+<section class="template-section" id="template-11-pi">
+<div class="template-inner">
+<p class="template-kicker">Template 11</p>
+<h2>PI认证 到期通知</h2>
+<dl class="template-meta">
+<dt>账户类型</dt>
+<dd>标准账户</dd>
+<dt>源文件</dt>
+<dd>PI认证 到期通知.docx</dd>
+<dt>发件邮箱</dt>
+<dd>accounts@principleone.com.hk</dd>
+<dt>邮件主题</dt>
+<dd>【同道證券 PrincipleOne Securities】專業投資者(PI)認證已屆滿失效通知 / Notice: Your PI Certification Has Expired</dd>
+</dl>
+<div class="body-heading">
+<h3>邮件正文</h3>
+</div>
+<article data-email-body>
+<p>*** This is an auto-generated system message ***</p>
+<p>Please do not reply to this message. Messages received at this address will not be processed.</p>
+<p><br></p>
+<p>敬啟：本郵件內容為保密資訊，發件人保留與本郵件相關的一切權利。若閣下誤收本郵件，敬請立刻刪除並通知發件人。</p>
+<p>NOTICE: This message may contain confidential or privileged information. If you are not the intended recipient, please advise us immediately and delete this message.</p>
+<p><br></p>
+<p>閣下好，</p>
+<p><br></p>
+<p>根據閣下先前向 同道證券有限公司（下稱「本公司」）提交的專業投資者（Professional Investor, PI）認證記錄，相關證明文件及資格的有效期已屆滿。因閣下未在限期前完成續期手續，現正式通知：</p>
+<p><br></p>
+<p>▍ 帳戶狀態更新</p>
+<p>----------------------------------------</p>
+<p>客戶姓名　　　：XXXX</p>
+<p>帳戶帳號　：XXXX</p>
+<p>PI 類別　　　 ：專業投資者（已失效）</p>
+<p>原生效日期　　：YYYY-MM-DD</p>
+<p>認證有效期至　：YYYY-MM-DD（已屆滿）</p>
+<p>當前帳戶狀態　：**一般零售投資者**（自動恢復）</p>
+<p>----------------------------------------</p>
+<p><br></p>
+<p>▍ 帳戶權益及服務調整</p>
+<p>根據《證券及期貨條例》及閣下與本公司簽署之服務協議，帳戶恢復為零售投資者身份後，將作以下調整：</p>
+<p>1. **產品權限收縮**：閣下將暫時無法開立新的複雜產品持倉（如衍生工具、結構性產品及僅限 PI 參與的基金或債券等）。原有相關持倉僅可進行平倉或賣出操作，不可加倉。</p>
+<p>2. **零售保障措施回歸**：閣下將重新獲得適用於零售投資者的相關保障，包括但不限於特定產品的風險披露簡化說明及銷售程序保護。</p>
+<p>3. **合約補充終止**：先前因 PI 身份而豁免/不適用的若干條款將恢復適用，本公司不再基於專業經驗假設與閣下進行交易。</p>
+<p><br></p>
+<p>▍ 如何恢復 PI 身份？</p>
+<p>如閣下未來仍有參與更廣泛投資產品的需求，隨時歡迎重新申請：</p>
+<p>• 登入「同道證券」官方 App，進入「帳戶管理 &gt; PI 認證」；</p>
+<p>• 按指引上傳 **3 個月內有效之最新資產證明及相關問卷**；</p>
+<p>• 本公司將在收到合規資料後盡快為閣下重新核定資格。</p>
+<p><br></p>
+<p>本通知為系統自動發出，閣下無需就此作額外回覆。多謝閣下一直以來的信賴與配合。</p>
+<p><br></p>
+<p>如有疑問，歡迎聯絡：</p>
+<p>• 客戶服務/合規部：(852) 3996 7388</p>
+<p>• 電郵：cs@principleone.com.hk</p>
+<p><br></p>
+<p>同道證券有限公司</p>
+<p>PrincipleOne Securities Limited</p>
+<p>www.principleone.com.hk</p>
+<p>發出日期：YYYY-MM-DD</p>
+<p><br></p>
+<p>Dear Valued Client,</p>
+<p><br></p>
+<p>Our records indicate that your Professional Investor (PI) certification with PrincipleOne Securities Limited ("the Company") has reached its expiry date. As no renewal application was completed within the validity period, we hereby formally notify you of the following:</p>
+<p><br></p>
+<p>▍ Account Status Update</p>
+<p>----------------------------------------</p>
+<p>Client Name　　　: XXXX</p>
+<p>A/C No.　　　　　: XXXX</p>
+<p>PI Category　　　: Professional Investor (EXPIRED)</p>
+<p>Previous Effective: YYYY-MM-DD</p>
+<p>Valid Until　　　: YYYY-MM-DD (Expired)</p>
+<p>Current Status　　: **Reverted to Retail Investor** (Automatic)</p>
+<p>----------------------------------------</p>
+<p><br></p>
+<p>▍ Adjustments to Services &amp; Protections</p>
+<p>Pursuant to the Securities and Futures Ordinance (SFO) and the terms of our agreement, upon reverting to a retail classification:</p>
+<p>1. **Restricted Product Access**: You will temporarily be unable to open new positions in complex products (e.g., derivatives, structured products, and certain funds/bonds restricted to PIs). Existing holdings may only be closed or sold, and may not be increased.</p>
+<p>2. **Reinstatement of Retail Safeguards**: You will once again benefit from certain regulatory protections normally afforded to retail investors, including simplified risk disclosures and selling restrictions designed for non-professional investors.</p>
+<p>3. **Revised Assumptions**: The Company will no longer rely on the assumption that you possess professional expertise to waive certain pre-sale procedures, ensuring a standard level of investor protection.</p>
+<p><br></p>
+<p>▍ How to Regain PI Status?</p>
+<p>Should you wish to regain access to a broader range of investment products in the future, you are welcome to re-apply at any time:</p>
+<p>• Log in to the official "PrincipleOne" App and go to "Account Management &gt; PI Certification";</p>
+<p>• Upload your latest proof of assets (dated within the last 3 months) and complete the required questionnaires;</p>
+<p>• Our Compliance team will review and re-classify your account upon satisfactory submission.</p>
+<p><br></p>
+<p>This is a system-generated notice requiring no further action or reply. Thank you for your continued trust.</p>
+<p><br></p>
+<p>Should you have any questions, please contact:</p>
+<p>• Compliance / Client Service: (852) 3996 7388</p>
+<p>• Email: cs@principleone.com.hk</p>
+<p><br></p>
+<p>Best regards,</p>
+<p><br></p>
+<p>PrincipleOne Securities Limited</p>
+<p>www.principleone.com.hk</p>
+<p>Date: YYYY-MM-DD</p>
+</article>
+<a class="back-to-top" href="#top">返回目录</a>
+</div>
+</section>
+<section class="template-section" id="template-12">
+<div class="template-inner">
+<p class="template-kicker">Template 12</p>
+<h2>孖展合约 账户开立成功</h2>
+<dl class="template-meta">
+<dt>账户类型</dt>
+<dd>孖展合约账户</dd>
+<dt>源文件</dt>
+<dd>孖展合约 账户开立成功.docx</dd>
+<dt>发件邮箱</dt>
+<dd>accounts@poneinvestments.com</dd>
+<dt>邮件主题</dt>
+<dd>【PrincipleOne】孖展合約交易權限已開通及風險披露 / Margin Trading Contract Mandate Activated</dd>
+</dl>
+<div class="body-heading">
+<h3>邮件正文</h3>
+</div>
+<article data-email-body>
+<p>*** This is an auto-generated system message ***</p>
+<p>Please do not reply to this message. Messages received at this address will not be processed.</p>
+<p><br></p>
+<p>CONFIDENTIALITY NOTICE / 保密聲明</p>
+<p>本郵件內容為保密資訊，發件人保留與本郵件相關的一切權利。若閣下誤收本郵件，敬請立刻刪除並通知發件人。</p>
+<p>This message contains confidential information intended solely for the named recipient. If you are not the intended recipient, please delete this message immediately and notify the sender.</p>
+<p><br></p>
+<p>閣下好，</p>
+<p><br></p>
+<p>感謝閣下申請。經審核，閣下名下之衍生品帳戶已成功獲批**孖展合約交易權限**，相關資料如下：</p>
+<p><br></p>
+<p>▍ 權限及帳戶資訊</p>
+<p>----------------------------------------</p>
+<p>客戶姓名　　　　：XXXX</p>
+<p>衍生品帳號　　：XXXX</p>
+<p>開通業務範圍　　：孖展合約交易權限</p>
+<p>生效日期　　　　：YYYY-MM-DD</p>
+<p>帳戶狀態　　　　：正常</p>
+<p>----------------------------------------</p>
+<p><br></p>
+<p>▍ 重要須知</p>
+<p>•  **交易規則**：閣下可透過衍生品主帳戶進行孖展標的之買賣。系統將持續監測保證金水準，並依《孖展合約》行使平倉酌情權。</p>
+<p>•  **協議效力**：閣下於 App 內確認之《孖展合約》及相關風險披露聲明即日起具有合約效力。</p>
+<p>•  **高風險確認**：孖展及槓桿交易可能導致虧損超逾存入之本金，請於交易前確保完全理解運作機制及強平規則。</p>
+<p><br></p>
+<p>▍ 聯絡我們</p>
+<p>如有操作疑問，請於辦公時間聯絡閣下之客戶經理。</p>
+<p><br></p>
+<p>祝 投資順利</p>
+<p><br></p>
+<p>PrincipleOne Investments Limited</p>
+<p>發出日期：YYYY-MM-DD</p>
+<p><br></p>
+<p>Dear Valued Client,</p>
+<p><br></p>
+<p>We are pleased to confirm that a **Margin Trading Contract Mandate** has been activated under your Derivatives Account following our review.</p>
+<p><br></p>
+<p>▍ Mandate Particulars</p>
+<p>----------------------------------------</p>
+<p>Client Name　　　 : XXXX</p>
+<p>Master Derivatives A/C: XXXX</p>
+<p>Business Scope　　: Margin Trading Contract Authority</p>
+<p>Effective Date　 : YYYY-MM-DD</p>
+<p>Status　　　　　　: Active</p>
+<p>----------------------------------------</p>
+<p><br></p>
+<p>▍ Important Notices</p>
+<p>•  Trading Rules: You may trade marginable products via your master account. Margin levels will be monitored and liquidation rights exercised per the Margin Trading Contract.</p>
+<p>•  Contract Acknowledgment: The Margin Trading Contract, Margin Client Agreement, and Risk Disclosures acknowledged in the App are effective immediately.</p>
+<p>•  Risk Warning: Leveraged trading carries high risk and losses may exceed your initial deposit. Ensure you fully understand the margin and liquidation mechanics before trading.</p>
+<p><br></p>
+<p>For queries regarding margin rates or thresholds, please contact us during office hours.</p>
+<p><br></p>
+<p>Best regards,</p>
+<p><br></p>
+<p>PrincipleOne Investments Limited</p>
+<p>Date: YYYY-MM-DD</p>
+</article>
+<a class="back-to-top" href="#top">返回目录</a>
+</div>
+</section>
+<section class="template-section" id="template-13">
+<div class="template-inner">
+<p class="template-kicker">Template 13</p>
+<h2>孖展合约 账户开立失败</h2>
+<dl class="template-meta">
+<dt>账户类型</dt>
+<dd>孖展合约账户</dd>
+<dt>源文件</dt>
+<dd>孖展合约 账户开立失败.docx</dd>
+<dt>发件邮箱</dt>
+<dd>accounts@poneinvestments.com</dd>
+<dt>邮件主题</dt>
+<dd>【PrincipleOne】孖展合約交易權限申請未通過 / Margin Trading Contract Mandate Application Unsuccessful</dd>
+</dl>
+<div class="body-heading">
+<h3>邮件正文</h3>
+</div>
+<article data-email-body>
+<p>*** This is an auto-generated system message ***</p>
+<p>Please do not reply to this message. Messages received at this address will not be processed.</p>
+<p><br></p>
+<p>CONFIDENTIALITY NOTICE / 保密聲明</p>
+<p>本郵件內容為保密資訊，發件人保留與本郵件相關的一切權利。若閣下誤收本郵件，敬請立刻刪除並通知發件人。</p>
+<p>This message contains confidential information intended solely for the named recipient. If you are not the intended recipient, please delete this message immediately and notify the sender.</p>
+<p><br></p>
+<p>閣下好，</p>
+<p><br></p>
+<p>閣下申請之孖展合約交易權限未能獲批，相關狀況如下：</p>
+<p><br></p>
+<p>▍ 申請狀態</p>
+<p>----------------------------------------</p>
+<p>客戶姓名　　　　：XXXX</p>
+<p>衍生品帳號　 　：XXXX</p>
+<p>申請業務　　　　：孖展合約交易權限</p>
+<p>審核結果　　　　：未通過 ⚠️</p>
+<p>----------------------------------------</p>
+<p><br></p>
+<p>▍ 可能原因及後續安排</p>
+<p>基於內部合規及適當性評估（Suitability Assessment），常見原因可能包括（但不限於）：</p>
+<p>•  帳戶資產淨值或流動性未能符合孖展交易之門檻要求；</p>
+<p>•  風險承受能力評估與高槓桿產品不匹配；</p>
+<p>•  申請資料或證明檔需進一步補充以作核實。</p>
+<p><br></p>
+<p>👉 **後續操作**：若閣下資產狀況改善或有新版證明，歡迎隨時登入官方 App 重新發起申請。期間閣下之衍生品帳戶可繼續進行非孖展類產品之正常交易。</p>
+<p><br></p>
+<p>PrincipleOne Investments Limited</p>
+<p>合規及營運部（系統自動發出）</p>
+<p>發出日期：yyyy-mm-dd</p>
+<p><br></p>
+<p>Dear Valued Client,</p>
+<p><br></p>
+<p>Your application for a Margin Trading Mandate has not been approved at this stage.</p>
+<p><br></p>
+<p>▍ Application Status</p>
+<p>Client Name: XXXX</p>
+<p>Master Derivatives A/C: XXXX</p>
+<p>Request: Margin Trading Contract Authority</p>
+<p>Result: Not Approved ⚠️</p>
+<p><br></p>
+<p>▍ Possible Reasons &amp; Next Steps</p>
+<p>This decision is based on our internal compliance and suitability assessment, which may relate to account net asset value, risk profiling alignment, or documentation completeness.</p>
+<p>👉 Next Steps: You may re-apply via the App at any time once your financial profile or supporting documents are updated. Your account remains fully functional for non-margin trading.</p>
+<p><br></p>
+<p>PrincipleOne Investments Limited</p>
+<p>Compliance &amp; Operations</p>
+<p>Date: yyyy-mm-dd</p>
+</article>
+<a class="back-to-top" href="#top">返回目录</a>
+</div>
+</section>
+<section class="template-section" id="template-14">
+<div class="template-inner">
+<p class="template-kicker">Template 14</p>
+<h2>孖展合约 预警風控通知</h2>
+<dl class="template-meta">
+<dt>账户类型</dt>
+<dd>孖展合约账户</dd>
+<dt>源文件</dt>
+<dd>孖展合约 预警風控通知.docx</dd>
+<dt>发件邮箱</dt>
+<dd>risk_notify@poneinvestments.com</dd>
+<dt>邮件主题</dt>
+<dd>【PrincipleOne 風險提示】孖展合約保證金預警 / [Risk Alert] Margin Trading Contract Early Warning</dd>
+</dl>
+<div class="body-heading">
+<h3>邮件正文</h3>
+</div>
+<article data-email-body>
+<p>*** This is an auto-generated system message ***</p>
+<p>Please do not reply to this message. Messages received at this address will not be processed.</p>
+<p><br></p>
+<p>CONFIDENTIALITY NOTICE / 保密聲明</p>
+<p>本郵件內容為保密資訊，發件人保留與本郵件相關的一切權利。若閣下誤收本郵件，敬請立刻刪除並通知發件人。</p>
+<p>This message contains confidential information intended solely for the named recipient. If you are not the intended recipient, please delete this message immediately and notify the sender.</p>
+<p><br></p>
+<p>閣下好，</p>
+<p><br></p>
+<p>根據系統實時監測及閣下已簽署之《孖展合約》條款，閣下帳戶保證金消耗已達預警水準，相關持倉及風險參數如下：</p>
+<p><br></p>
+<p>▍ 持倉及風險參數</p>
+<p>客戶姓名：		XXXX</p>
+<p>衍生品帳號：	XXXX</p>
+<p>訂單編號：		XXXX</p>
+<p>標的資產：		XX（代碼：XX）</p>
+<p>存續名義本金：	CNY XX.00 萬元</p>
+<p>期初價格：		X,XXX.XXXX</p>
+<p>預警價格*：		X,XXX.XXXX</p>
+<p>強平價格*：		X,XXX.XXXX</p>
+<p>保證金損耗率：	XXXX（已達預警）</p>
+<p>*註：上述價格為基於當前已繳存保證金計算之參考數值，若閣下追加保證金，相關數值將動態調整。</p>
+<p><br></p>
+<p>▍ 合約項下之風險規則提示</p>
+<p>1. 【輔助性質】發出本預警僅為《孖展合約》項下的非強制性輔助服務，發行人並不保證預警必定送達或構成任何操作義務。</p>
+<p>2. 【追保前提】當保證金損耗率達預警水準時，若閣下資金帳戶無足額可用資金，則無法進行追保操作；所有追加資金將依約鎖定為「合格履約保障品」。</p>
+<p>3. 【絕對酌情權】當保證金損耗率達到強平線時，系統將自動識別並執行強制平倉，不設人工寬限期，亦無需另行徵求閣下同意。持倉一經平倉無法恢復。</p>
+<p>4. 【無限責任】閣下知悉並確認，因強平產生的任何穿倉損失（即超逾全部保證金之虧空）均構成閣下之債務，發行人有權依約直接處置閣下存放之資產以清償欠款。</p>
+<p><br></p>
+<p>請閣下密切關注標的資產價格變動及帳戶風險。</p>
+<p><br></p>
+<p>PrincipleOne Investments Limited</p>
+<p>風險管理部（系統自動發出）</p>
+<p>發出時間：yyyy-mm-dd HH:mm</p>
+<p><br></p>
+<p>Dear Valued Client,</p>
+<p><br></p>
+<p>Pursuant to the executed Margin Trading Contract and our real-time risk monitoring, the margin depletion of your position has reached the early warning level. Relevant parameters are as follows:</p>
+<p><br></p>
+<p>▍ Position &amp; Risk Parameters</p>
+<p><br></p>
+<p>Client Name : XXXX</p>
+<p>Master Derivatives A/C: XXXX</p>
+<p>Order ID : XXXX</p>
+<p>Underlying Asset : XX (Ticker: XX)</p>
+<p>Outstanding Notional Amount : CNY XX.00 Mn</p>
+<p>Initial Price :	 X,XXX.XXXX</p>
+<p>Warning Level* :	 X,XXX.XXXX</p>
+<p>Forced Liquidation Level* : X,XXX.XXXX</p>
+<p>Margin Depletion Rate : XXXX (Warning threshold reached)</p>
+<p>*Note: Levels shown are references calculated based on currently posted margin and will adjust dynamically upon any margin top-up.</p>
+<p><br></p>
+<p>▍ Contractual Risk Rules</p>
+<p>1. 【Ancillary Nature】This warning is a non-mandatory ancillary alert tool. The Issuer does not guarantee delivery timing nor does it create any operational obligation.</p>
+<p>2. 【Top-up Condition】You may add margin ONLY IF sufficient available cash exists in your account. All top-up funds shall be locked immediately as "Eligible Credit Support" pursuant to the Contract.</p>
+<p>3. 【Absolute Discretion】When the Margin Depletion Rate reaches the liquidation threshold, the system will automatically trigger forced liquidation without grace period or prior consent. Positions cannot be restored post-execution.</p>
+<p>4. 【Unlimited Liability】You acknowledge that any shortfall loss(exceeding total margin) resulting from liquidation constitutes your debt. The Issuer reserves the right to dispose of your assets held with us as Eligible Credit Support to cover such deficit.</p>
+<p><br></p>
+<p>Please closely monitor the underlying market and your account standing.</p>
+<p><br></p>
+<p>PrincipleOne Investments Limited</p>
+<p>Risk Management Department (System Generated)</p>
+<p>Time Sent: yyyy-mm-dd HH:mm:ss</p>
+</article>
+<a class="back-to-top" href="#top">返回目录</a>
+</div>
+</section>
+<section class="template-section" id="template-15">
+<div class="template-inner">
+<p class="template-kicker">Template 15</p>
+<h2>孖展合約  强平風控通知</h2>
+<dl class="template-meta">
+<dt>账户类型</dt>
+<dd>孖展合约账户</dd>
+<dt>源文件</dt>
+<dd>孖展合約  强平風控通知.docx</dd>
+<dt>发件邮箱</dt>
+<dd>risk_notify@poneinvestments.com</dd>
+<dt>邮件主题</dt>
+<dd>【PrincipleOne 風險提示】【緊急】孖展合約強制平倉通知 / [Urgent] Margin Trading Contract Forced Liquidation Notice</dd>
+</dl>
+<div class="body-heading">
+<h3>邮件正文</h3>
+</div>
+<article data-email-body>
+<p>*** This is an auto-generated system message ***</p>
+<p>Please do not reply to this message. Messages received at this address will not be processed.</p>
+<p><br></p>
+<p>CONFIDENTIALITY NOTICE / 保密聲明</p>
+<p>本郵件內容為保密資訊，發件人保留與本郵件相關的一切權利。若閣下誤收本郵件，敬請立刻刪除並通知發件人。</p>
+<p>This message contains confidential information intended solely for the named recipient. If you are not the intended recipient, please delete this message immediately and notify the sender.</p>
+<p><br></p>
+<p>閣下好，</p>
+<p><br></p>
+<p>根據系統實時監測及閣下已簽署之《孖展合約》條款，閣下帳戶保證金損耗率已達強平線。據此，系統將自動賣出閣下相關孖展帳戶之所有持倉，相關狀況如下：</p>
+<p><br></p>
+<p>▍ 持倉處置及風險參數</p>
+<p>----------------------------------------</p>
+<p>客戶姓名　　　　：XXXX</p>
+<p>衍生品主帳號　　：XXXX</p>
+<p>訂單編號　　　　：XXXX</p>
+<p>標的資產　　　　：XX（代碼：XX）</p>
+<p>存續名義本金　　：CNY XX.00 萬元</p>
+<p>期初價格　　　　：X,XXX.XXXX</p>
+<p>強平執行參考價* ：X,XXX.XXXX</p>
+<p>保證金損耗率　　：XXXX（已達強平線）</p>
+<p>當前處置狀態　　：⚠️ 已觸發強制平倉機制</p>
+<p>----------------------------------------</p>
+<p>*註：受市場波動及流動性影響，實際成交價格可能偏離參考價，相關結算以實際成交記錄為準。</p>
+<p><br></p>
+<p>▍ 合約項下之風險規則及免責提示</p>
+<p>1. 【自動執行】本平倉動作為系統依據《孖展合約》行使絕對酌情權之結果，不設人工干預及寬限期，亦無需另行徵求閣下同意。</p>
+<p>2. 【流動性例外】如遇標的資產停牌、漲跌停板限制或市場流動性嚴重不足等情況導致無法即時賣出，本公司將延後安排賣出，直至相關持倉可於市場成交為止。</p>
+<p>3. 【虧損自擔】無論實際賣出時間早晚、成交價格高低，或因延後賣出所產生之任何實際虧損、交易費用及相關成本，均構成閣下之債務，概由閣下自行承擔。</p>
+<p>4. 【資產處置與追償】若平倉後帳戶仍出現資金缺口（即穿倉/倒欠發行人款項），發行人有權直接處置閣下存放之其他資產（或追加資金形成的「合格履約保障品」）以清償欠款，並保留進一步法律追討之權利。</p>
+<p>5. 【單向操作】持倉一經系統強制平倉指令執行，不可恢復亦不可撤銷。</p>
+<p><br></p>
+<p>後續實際成交明細及最終結算確認書將另行發出，請閣下密切關注帳戶資金變動。</p>
+<p><br></p>
+<p>PrincipleOne Investments Limited</p>
+<p>風險管理部（系統自動發出）</p>
+<p>發出時間：yyyy-mm-dd HH:mm:ss</p>
+<p><br></p>
+<p>Dear Valued Client,</p>
+<p><br></p>
+<p>Pursuant to the executed Margin Trading Contract and our real-time risk monitoring, the Margin Depletion Rate of your account has reached the forced liquidation threshold. Consequently, the system will automatically sell all open positions under the relevant Derivatives Account. Details are as follows:</p>
+<p><br></p>
+<p>▍ Execution &amp; Risk Parameters</p>
+<p>----------------------------------------</p>
+<p>Client Name　　　 : XXXX</p>
+<p>Master Derivatives A/C: XXXX</p>
+<p>Order ID　　　　 : XXXX</p>
+<p>Underlying Asset : XX (Ticker: XX)</p>
+<p>Outstanding Notional: CNY XX.00 Mn</p>
+<p>Initial Price　　: X,XXX.XXXX</p>
+<p>Liquidation Ref. Price* : X,XXX.XXXX</p>
+<p>Margin Depletion　: XXXX (Liquidation triggered)</p>
+<p>Execution Status : ⚠️ Forced liquidation initiated</p>
+<p>----------------------------------------</p>
+<p>*Note: Actual execution prices may deviate from the reference level due to market volatility. Final settlement is subject to actual trade confirmations.</p>
+<p><br></p>
+<p>▍ Contractual Risk Rules &amp; Disclaimers</p>
+<p>1. 【Automated Execution】This liquidation is executed by the system exercising its absolute discretion under the Contract, without manual intervention, grace period, or your prior consent.</p>
+<p>2. 【Liquidity Exception】If positions cannot be sold immediately due to trading halts, limit-up/down restrictions, or severe illiquidity, we will delay the execution until such positions can be traded in the market.</p>
+<p>3. 【Bear All Losses】Regardless of when the sale occurs or at what price, you shall solely bear any and all actual losses, transaction costs, and expenses incurred—including those resulting from delayed execution.</p>
+<p>4. 【Deficit &amp; Recovery】Should a shortfall (exceeding total margin) remain after liquidation, the Issuer reserves the right to dispose of any other assets or "Eligible Credit Support" held by you to cover the deficit, and to pursue further legal remedies.</p>
+<p>5. 【Irreversible】Once executed by the system, liquidated positions cannot be recovered or reversed.</p>
+<p><br></p>
+<p>A formal Trade Confirmation and Settlement Notice will follow. Please monitor your account balance closely.</p>
+<p><br></p>
+<p>PrincipleOne Investments Limited</p>
+<p>Risk Management Department (System Generated)</p>
+<p>Time Sent: yyyy-mm-dd HH:mm:ss</p>
+</article>
+<a class="back-to-top" href="#top">返回目录</a>
+</div>
+</section>
+<section class="template-section" id="template-16">
+<div class="template-inner">
+<p class="template-kicker">Template 16</p>
+<h2>孖展合約 到期通知</h2>
+<dl class="template-meta">
+<dt>账户类型</dt>
+<dd>孖展合约账户</dd>
+<dt>源文件</dt>
+<dd>孖展合約 到期通知.docx</dd>
+<dt>发件邮箱</dt>
+<dd>risk_notify@poneinvestments.com</dd>
+<dt>邮件主题</dt>
+<dd>【PrincipleOne 風險提示】孖展合約保證金預警 / [Risk Alert] Margin Trading Contract Early Warning</dd>
+</dl>
+<div class="body-heading">
+<h3>邮件正文</h3>
+</div>
+<article data-email-body>
+<p>*** This is an auto-generated system message ***</p>
+<p>Please do not reply to this message. Messages received at this address will not be processed.</p>
+<p><br></p>
+<p>CONFIDENTIALITY NOTICE / 保密聲明</p>
+<p>本郵件內容為保密資訊，發件人保留與本郵件相關的一切權利。若閣下誤收本郵件，敬請立刻刪除並通知發件人。</p>
+<p>This message contains confidential information intended solely for the named recipient. If you are not the intended recipient, please delete this message immediately and notify the sender.</p>
+<p><br></p>
+<p>閣下好，</p>
+<p><br></p>
+<p>根據閣下簽署之《孖展合約》，以下合約將於近日到期，請及時作出安排：</p>
+<p><br></p>
+<p>▍ 合約基本資料</p>
+<p><br></p>
+<p>客戶姓名：		XXXX</p>
+<p>衍生品帳號：	XXXX</p>
+<p>訂單編號：		XXXX</p>
+<p>標的資產：		XX（代碼：XX）</p>
+<p>存續名義本金：	CNY XX.00 萬元</p>
+<p>合約到期日：	yyyy-mm-dd</p>
+<p>期初價格：		X,XXX.XXXX</p>
+<p><br></p>
+<p>▍ 閣下可選擇之操作（重要期限）</p>
+<p>請於合約到期日**北京時間 11:30 前**登入官方 App 完成以下任一操作：</p>
+<p><br></p>
+<p>① 【主動賣出結算】</p>
+<p>發出賣出指令了結持倉。指令若在 11:30 前全部成交，將以實際成交價格進行結算。</p>
+<p><br></p>
+<p>② 【申請展期續持】</p>
+<p>若看好後市，可支付展期費用將合約延期。請確保帳戶有足額可用資金，否則系統將無法完成展期登記。</p>
+<p><br></p>
+<p>⚠️ 若未及時操作之後果</p>
+<p>若閣下未在到期日 11:30（北京時間）前發出有效指令或完成展期繳費，將視為閣下授權本公司按合約條款執行以下操作：</p>
+<p>•  本公司將在當日**北京時間 14:00 至 14:57** 期間，以標的資產於指定交易所或數據供應商發布的**時間加權平均價（TWAP）**對持倉進行自動結算；</p>
+<p>•  結算結果以實際成交或參考價格為準，多退少補，由此產生之盈虧及手續費概由閣下承擔；</p>
+<p>•  若因市場波動、流動性不足或停牌等特殊情形無法如期賣出，將自動適用合約項下之展期或特殊處置條款。</p>
+<p><br></p>
+<p>▍ 溫馨提示</p>
+<p>• 提前結算：閣下無需等待到期日，T+1 起隨時可主動發起提前賣出。</p>
+<p>• 履約保障：結算後剩餘之保證金（如有）將在扣除相關費用及虧損後解凍並退回閣下資金帳戶。</p>
+<p><br></p>
+<p>如有操作疑問，請於辦公時間聯絡閣下之客戶經理。</p>
+<p><br></p>
+<p>祝 投資順利</p>
+<p><br></p>
+<p>PrincipleOne Investments Limited</p>
+<p>發出日期：yyyy-mm-dd</p>
+<p><br></p>
+<p>Dear Valued Client,</p>
+<p><br></p>
+<p>Pursuant to the executed Margin Trading Contract, the following position is approaching its expiration date. Please take necessary action in a timely manner.</p>
+<p><br></p>
+<p>▍ Contract Particulars</p>
+<p><br></p>
+<p>Client Name :			XXXX</p>
+<p>Master Derivatives A/C:    XXXX</p>
+<p>Order ID :			XXXX</p>
+<p>Underlying Asset :		XX (Ticker: XX)</p>
+<p>Outstanding Notional Amount :	CNY XX.00 Mn</p>
+<p>Contract Expiry Date :		yyyy-mm-dd</p>
+<p>Initial Price :			X,XXX.XXXX</p>
+<p><br></p>
+<p>▍ Available Options (Important Deadlines)</p>
+<p>Please log in to the official App and complete ONE of the following before **11:30 Beijing Time** on the expiry date:</p>
+<p><br></p>
+<p>① 【Active Settlement】</p>
+<p>Issue a sell order to close the position. If executed before the deadline, settlement will be based on the actual executed price.</p>
+<p><br></p>
+<p>② 【Rollover】</p>
+<p>Extend the contract by paying the applicable rollover fee. Please ensure sufficient available cash is in your account; otherwise, the rollover instruction cannot be processed by the system.</p>
+<p><br></p>
+<p>⚠️ Consequences of Inaction</p>
+<p>If no valid instruction is given or rollover fee is not settled by 11:30 Beijing Time, you irrevocably authorize us to proceed as follows per the Contract:</p>
+<p>•  We will automatically settle the position at the **Time-Weighted Average Price (TWAP)** of the underlying asset published between **14:00 and 14:57 Beijing Time** on the expiry date;</p>
+<p>•  All profits, losses, and transaction costs arising from such settlement shall be solely for your account, with any remaining margin refunded or deficit collected thereafter;</p>
+<p>•  In the event of trading halts or illiquidity preventing timely settlement, the Contract's special handling provisions (passive rollover/TWAP) will automatically apply.</p>
+<p><br></p>
+<p>▍ Notes</p>
+<p>•  Early termination is available from T+1 at your discretion.</p>
+<p>•  Any remaining margin collateral will be unfrozen and returned to your cash account after final settlement, less any fees or losses.</p>
+<p><br></p>
+<p>For operational support, please contact your Relationship Manager during office hours.</p>
+<p><br></p>
+<p>Best regards,</p>
+<p><br></p>
+<p>PrincipleOne Investments Limited</p>
+<p>Date: yyyy-mm-dd</p>
+</article>
+<a class="back-to-top" href="#top">返回目录</a>
+</div>
+</section>
+<section class="template-section" id="template-17">
+<div class="template-inner">
+<p class="template-kicker">Template 17</p>
+<h2>孖展合約 追保成功通知</h2>
+<dl class="template-meta">
+<dt>账户类型</dt>
+<dd>孖展合约账户</dd>
+<dt>源文件</dt>
+<dd>孖展合約 追保成功通知.docx</dd>
+<dt>发件邮箱</dt>
+<dd>risk_notify@poneinvestments.com</dd>
+<dt>邮件主题</dt>
+<dd>【PrincipleOne】孖展合約追加保證金已確認 / Margin Top-up Confirmation</dd>
+</dl>
+<div class="body-heading">
+<h3>邮件正文</h3>
+</div>
+<article data-email-body>
+<p>*** This is an auto-generated system message ***</p>
+<p>Please do not reply to this message. Messages received at this address will not be processed.</p>
+<p><br></p>
+<p>CONFIDENTIALITY NOTICE / 保密聲明</p>
+<p>本郵件內容為保密資訊，發件人保留與本郵件相關的一切權利。若閣下誤收本郵件，敬請立刻刪除並通知發件人。</p>
+<p>This message contains confidential information intended solely for the named recipient. If you are not the intended recipient, please delete this message immediately and notify the sender.</p>
+<p><br></p>
+<p>閣下好，</p>
+<p><br></p>
+<p>閣下針對以下孖展合約發起的追加保證金指令已執行成功，相關明細如下：</p>
+<p><br></p>
+<p>▍ 追保確認資訊</p>
+<p><br></p>
+<p>客戶姓名：		XXXX</p>
+<p>衍生品帳號：	XXXX</p>
+<p>訂單編號：		XXXX</p>
+<p>標的資產：		XX（代碼：XX）</p>
+<p>本次追加金額：	CNY XX,XXX.00 元</p>
+<p><br></p>
+<p>⚠️ 重要提示</p>
+<p>• 根據《孖展合約》約定，上述資金已即時鎖定為「合格履約保障品」，僅於合約最終結算時解除。</p>
+<p>• 本次追保僅暫時改善保證金水準，若標的資產價格再度波動下行，保證金損耗率仍可能再次觸發預警或強平線，請持續關注帳戶風險。</p>
+<p><br></p>
+<p>祝 投資順利</p>
+<p><br></p>
+<p>PrincipleOne Investments Limited</p>
+<p>發出時間：yyyy-mm-dd HH:mm:ss</p>
+<p><br></p>
+<p>Dear Client,</p>
+<p><br></p>
+<p>Your margin top-up instruction for the Margin Trading Contract below has been successfully processed:</p>
+<p><br></p>
+<p>▍ Top-up Confirmation</p>
+<p><br></p>
+<p>Client Name :			XXXX</p>
+<p>Master Derivatives A/C:    XXXX</p>
+<p>Order ID :			XXXX</p>
+<p>Underlying Asset :		XX (Ticker: XX)</p>
+<p>Amount Added :			CNY XX.00</p>
+<p><br></p>
+<p>⚠️ Important Notice</p>
+<p>•  Pursuant to the Margin Trading Contract, the above funds have been immediately locked as "Eligible Credit Support" and will only be released upon final settlement.</p>
+<p>•  This top-up temporarily improves your margin coverage. However, should the underlying asset price decline further, the Margin Depletion Rate may again reach warning or liquidation thresholds. Please continue to monitor your account closely.</p>
+<p><br></p>
+<p>Best regards,</p>
+<p><br></p>
+<p>PrincipleOne Investments Limited</p>
+<p>Time Sent: yyyy-mm-dd HH:mm:ss</p>
+</article>
+<a class="back-to-top" href="#top">返回目录</a>
+</div>
+</section>
+<section class="template-section" id="template-18">
+<div class="template-inner">
+<p class="template-kicker">Template 18</p>
+<h2>孖展合約 追保失败通知</h2>
+<dl class="template-meta">
+<dt>账户类型</dt>
+<dd>孖展合约账户</dd>
+<dt>源文件</dt>
+<dd>孖展合約 追保失败通知.docx</dd>
+<dt>发件邮箱</dt>
+<dd>risk_notify@poneinvestments.com</dd>
+<dt>邮件主题</dt>
+<dd>【PrincipleOne】【重要】孖展合約追加保證金失敗通知 / [Urgent] Margin Top-up Failed</dd>
+</dl>
+<div class="body-heading">
+<h3>邮件正文</h3>
+</div>
+<article data-email-body>
+<p>*** This is an auto-generated system message ***</p>
+<p>Please do not reply to this message. Messages received at this address will not be processed.</p>
+<p><br></p>
+<p>CONFIDENTIALITY NOTICE / 保密聲明</p>
+<p>本郵件內容為保密資訊，發件人保留與本郵件相關的一切權利。若閣下誤收本郵件，敬請立刻刪除並通知發件人。</p>
+<p>This message contains confidential information intended solely for the named recipient. If you are not the intended recipient, please delete this message immediately and notify the sender.</p>
+<p><br></p>
+<p>閣下好，</p>
+<p><br></p>
+<p>系統未能成功執行閣下針對以下孖展合約發起的追加保證金指令。</p>
+<p><br></p>
+<p>▍ 失敗合約資訊</p>
+<p><br></p>
+<p>客戶姓名：		XXXX</p>
+<p>衍生品帳號：	XXXX</p>
+<p>訂單編號：		XXXX</p>
+<p>標的資產：		XX（代碼：XX）</p>
+<p>追保申請金額：	CNY XX.00 元（未執行）</p>
+<p>當前保證金損耗率：XXXX（持續處於預警/強平風險中）⚠️</p>
+<p><br></p>
+<p>▍ 可能原因及建議操作</p>
+<p>經系統初步判定，本次追保失敗通常由以下原因導致：</p>
+<p>1. 【資金不足】閣下衍生品帳戶內之可用資金餘額不足以支付本次申請的追保金額。</p>
+<p>2. 【系統條件未滿足】市場價格於追保指令處理期間發生變動，導致實際需追保金額發生變化。</p>
+<p><br></p>
+<p>👉 閣下可採取以下行動：</p>
+<p>•  【核對資金】請登入官方 App，核對「衍生品帳戶」內是否有足夠可用資金結餘。</p>
+<p>•  【手動追保】若資金充足，請直接於 App 內該筆合約詳情頁點擊「追加保證金」，發起手動追保操作。</p>
+<p>•  【自行減倉】若無法補足資金，建議立即賣出部分持倉以降低名義本金及保證金損耗率，避免被強制平倉。</p>
+<p><br></p>
+<p>⚠️ 風險警示</p>
+<p>如閣下未能及時改善保證金水準，當保證金損耗率達到強平線時，系統將自動執行強制平倉，持倉將無法恢復，相關穿倉損失須由閣下承擔。</p>
+<p><br></p>
+<p>PrincipleOne Investments Limited</p>
+<p>風險管理部（系統自動發出）</p>
+<p>發出時間：yyyy-mm-dd HH:mm:ss</p>
+<p><br></p>
+<p>Dear Client,</p>
+<p><br></p>
+<p>Our system was UNABLE to execute your margin top-up instruction for the contract below.</p>
+<p><br></p>
+<p>▍ Failed Instruction Details</p>
+<p><br></p>
+<p>Client Name :			XXXX</p>
+<p>Master Derivatives A/C:    XXXX</p>
+<p>Order ID :			XXXX</p>
+<p>Underlying Asset :		XX (Ticker: XX)</p>
+<p>Requested Amount :		CNY XX.00 (Not Processed)</p>
+<p>Current Margin Depletion Rate :	XXXX (At risk / near liquidation) ⚠️</p>
+<p><br></p>
+<p>▍ Possible Reasons &amp; Suggested Actions</p>
+<p>The instruction typically fails due to:</p>
+<p>1. 【Insufficient Funds】Your Derivatives Account lacks sufficient available cash balance to cover the requested top-up amount.</p>
+<p>2. 【Market Movement】Price fluctuations during processing changed the actual margin requirement.</p>
+<p><br></p>
+<p>👉 You may take the following actions immediately:</p>
+<p>•  【Check Balance】Log in to the App to verify if there is enough available cash in your Derivatives Account.</p>
+<p>•  【Manual Top-up】If funds are sufficient, navigate to the specific contract details in the App and manually initiate a top-up.</p>
+<p>•  【Reduce Exposure】If unable to add funds, consider closing part of the position to lower the Notional Amount and Depletion Rate.</p>
+<p><br></p>
+<p>⚠️ Risk Warning</p>
+<p>Failure to improve margin coverage may result in automatic forced liquidation by the system once the depletion threshold is hit. Positions cannot be restored, and any resulting deficit shall be borne by you.</p>
+<p><br></p>
+<p>PrincipleOne Investments Limited</p>
+<p>Risk Management Department (System Generated)</p>
+<p>Time Sent: yyyy-mm-dd HH:mm:ss</p>
+</article>
+<a class="back-to-top" href="#top">返回目录</a>
+</div>
+</section>
+<section class="template-section" id="template-19-trs">
+<div class="template-inner">
+<p class="template-kicker">Template 19</p>
+<h2>TRS账户开立通知</h2>
+<dl class="template-meta">
+<dt>账户类型</dt>
+<dd>TRS账户</dd>
+<dt>源文件</dt>
+<dd>TRS账户开立通知.docx</dd>
+<dt>发件邮箱</dt>
+<dd>accounts@poneinvestments.com</dd>
+<dt>邮件主题</dt>
+<dd>【PrincipleOne】衍生產品帳戶已成功開立及登入憑證 / Your Derivatives Account is Now Open &amp; Login Details</dd>
+</dl>
+<div class="body-heading">
+<h3>邮件正文</h3>
+</div>
+<article data-email-body>
+<p>*** This is an auto-generated system message ***</p>
+<p>Please do not reply to this message. Messages received at this address will not be processed.</p>
+<p><br></p>
+<p>CONFIDENTIALITY NOTICE / 保密聲明</p>
+<p>本郵件內容為保密資訊，發件人保留與本郵件相關的一切權利。若閣下誤收本郵件，敬請立刻刪除並通知發件人。</p>
+<p>This message contains confidential information intended solely for the named recipient. If you are not the intended recipient, please delete this message immediately and notify the sender.</p>
+<p><br></p>
+<p>閣下好，</p>
+<p><br></p>
+<p>感謝選用 PrincipleOne Investments Limited（下稱「本公司」或「PrincipleOne」）。</p>
+<p>基於閣下已具備專業投資者（Professional Investor）身分，並已完成相關協議簽署及審核，現特此通知：**閣下於衍生品帳戶體系下的「收益互換（Total Return Swap, TRS）」交易權限已成功開立**。</p>
+<p><br></p>
+<p>▍ 帳戶及臨時憑證</p>
+<p><br></p>
+<p>客戶姓名：		XXXX</p>
+<p>衍生品帳號：	XXXX</p>
+<p>TRS 專用編號：	XXXX（用於交易確認書識別）</p>
+<p>臨時交易密碼：	XXXX（僅供首次登入）</p>
+<p>帳戶狀態：		正常（已啟動）</p>
+<p><br></p>
+<p>⚠️ 重要：關於保證金及資金劃轉（必讀）</p>
+<p>收益互換為保證金交易產品，請特別留意以下資金安排：</p>
+<p>•  **入金路徑**：TRS 帳戶不支援直接銀行入金，需由閣下的衍生品主帳戶透過「內部轉帳」劃入**初始保證金（Initial Margin）**及**變動保證金（Variation Margin）**。</p>
+<p>•  **融資成本**：持倉期間將按日計提融資利息及相關對沖成本，以雙方郵件約定的產品條款為準。</p>
+<p>•  **追保與強平**：若標的資產價格波動導致保證金比例低於維持水準，本公司有權發出追保通知（Margin Call）；未按時補足者，本公司可無需事前同意逕行強制平倉或提前終止互換。</p>
+<p><br></p>
+<p>▍ 下一步建議</p>
+<p>•  **立即修改密碼**：請使用上述臨時密碼登入交易終端/App，設定獨立且高強度的 TRS 交易密碼。</p>
+<p>•  **查閱協議檔**：建議於 App 或客戶門戶下載並細閱已生效的《ISDA 規則確認書》/《收益互換主協議》及《風險披露聲明》。</p>
+<p>•  **確認標的額度**：閣下可於系統內查詢獲批的特定標的（如港股、美股、基金等）名單及單一標的持倉上限。</p>
+<p><br></p>
+<p>▍ 風險披露（極度重要）</p>
+<p>收益互換為場外（OTC）複雜金融衍生工具，僅適合成熟且具備風險承受能力的專業投資者，當中涉及但不限於以下風險：</p>
+<p>•  **對手方信用風險**：閣下依賴本公司履行合約責任，若本公司違約，閣下可能無法收回應得收益或保證金。</p>
+<p>•  **非交易所產品**：TRS 並非在交易所買賣，流動性可能受限，且不享受香港投資者賠償基金（ICF）的保障。</p>
+<p>•  **潛在虧損不限本金**：由於槓桿及複合費用，閣下的最大經濟損失可能超過已繳存的保證金。</p>
+<p>•  **估值差異**：互換存續期間的每日估值由本公司（或指定對沖代理）釐定，可能與公開市場價格存在差異。</p>
+<p><br></p>
+<p>▍ 防詐及聯絡</p>
+<p>本公司絕不會以電郵或來電索取閣下之密碼或一次性驗證碼。如有結算或標的疑問，請於辦公時間聯絡專屬衍生品客服：</p>
+<p>• 衍生品專線：(852) 3996 7388</p>
+<p>• 電郵：cs@poneinvestments.com</p>
+<p><br></p>
+<p>祝 交易順利</p>
+<p><br></p>
+<p>PrincipleOne Investments Limited</p>
+<p>發出日期：yyyy-mm-dd</p>
+<p><br></p>
+<p>Dear Valued Client,</p>
+<p><br></p>
+<p>Thank you for choosing PrincipleOne Investments Limited ("PrincipleOne").</p>
+<p>Following the completion of your Professional Investor (PI) assessment and execution of relevant agreements, we are pleased to confirm that **your Total Return Swap (TRS) trading mandate under the Derivatives Account framework is now active**.</p>
+<p><br></p>
+<p>▍ Account Details &amp; Temporary Credentials</p>
+<p><br></p>
+<p>Client Name :		XXXX</p>
+<p>Master Derivatives A/C:	XXXX</p>
+<p>TRS Reference No. :	XXXX-TRS</p>
+<p>Temp. Trade Password :	XXXX (First-time use only)</p>
+<p>Status :		Active</p>
+<p><br></p>
+<p>⚠️ IMPORTANT: Margin &amp; Funding Arrangement</p>
+<p>As TRS is a margin-based product, please note the following:</p>
+<p>•  **Funding Route**: Direct bank deposits are not accepted for TRS. You must transfer Initial Margin and Variation Margin internally from your Master Derivatives Account.</p>
+<p>•  **Financing Costs**: Interest and associated hedging costs will accrue on a daily basis while positions are open, subject to the product terms agreed between both parties via email.</p>
+<p>•  **Margin Call &amp; Close-out**: Should market movements cause your margin ratio to fall below maintenance levels, we reserve the right to issue a margin call. Failure to top up timely may result in forced liquidation or early termination of the swap without prior consent.</p>
+<p><br></p>
+<p>▍ Next Steps</p>
+<p>•  **Change Password**: Log in to the trading terminal/App and set a strong, independent TRS password.</p>
+<p>•  **Review Documentation**: Download and review your executed Master TRS Agreement, ISDA acknowledgments, and Risk Disclosures via the App.</p>
+<p>•  **Check Eligible Assets**: View your approved underlying asset list and single-name concentration limits in the system.</p>
+<p><br></p>
+<p>▍ Risk Warning (High Importance)</p>
+<p>TRS is a complex over-the-counter (OTC) derivative suitable only for sophisticated Professional Investors. Key risks include:</p>
+<p>•  **Counterparty Credit Risk**: Your return depends on PrincipleOne's ability to meet contractual obligations; default may result in loss of margin or unrealized gains.</p>
+<p>•  **No Exchange/Trading Fund Protection**: TRS is not exchange-traded and is NOT covered by the Hong Kong Investor Compensation Fund (ICF).</p>
+<p>•  **Leverage Risk**: Losses may exceed the initial margin deposited due to leverage and accrued costs.</p>
+<p>•  **Valuation**: Daily valuations are determined by PrincipleOne (or its hedge counterparty) and may differ from observable market prices.</p>
+<p><br></p>
+<p>▍ Contact &amp; Security</p>
+<p>PrincipleOne will never request your password or OTP via email or phone.</p>
+<p><br></p>
+<p>Best regards,</p>
+<p><br></p>
+<p>PrincipleOne Investments Limited</p>
+<p>Date: yyyy-mm-dd</p>
+</article>
+<a class="back-to-top" href="#top">返回目录</a>
+</div>
+</section>
+<section class="template-section" id="template-20-trs">
+<div class="template-inner">
+<p class="template-kicker">Template 20</p>
+<h2>TRS帳戶重置密碼通知</h2>
+<dl class="template-meta">
+<dt>账户类型</dt>
+<dd>TRS账户</dd>
+<dt>源文件</dt>
+<dd>TRS帳戶重置密碼通知.docx</dd>
+<dt>发件邮箱</dt>
+<dd>accounts@poneinvestments.com</dd>
+<dt>邮件主题</dt>
+<dd>【PrincipleOne】收益互換(TRS)帳戶密碼重置及臨時憑證 / TRS Account Password Reset &amp; Temporary Credentials</dd>
+</dl>
+<div class="body-heading">
+<h3>邮件正文</h3>
+</div>
+<article data-email-body>
+<p>*** This is an auto-generated system message ***</p>
+<p>Please do not reply to this message. Messages received at this address will not be processed.</p>
+<p><br></p>
+<p>CONFIDENTIALITY NOTICE / 保密聲明</p>
+<p>本郵件內容為保密資訊，發件人保留與本郵件相關的一切權利。若閣下誤收本郵件，敬請立刻刪除並通知發件人。</p>
+<p>This message contains confidential information intended solely for the named recipient. If you are not the intended recipient, please delete this message immediately and notify the sender.</p>
+<p><br></p>
+<p>閣下好，</p>
+<p><br></p>
+<p>接獲系統記錄，閣下申請重置 **PrincipleOne Investments Limited** 名下收益互換（TRS）帳戶之相關密碼。為保障高權限帳戶資產安全，新的臨時憑證如下：</p>
+<p><br></p>
+<p>▍ 臨時登入憑證</p>
+<p><br></p>
+<p>客戶姓名：		XXXX</p>
+<p>衍生品主帳號：	XXXX</p>
+<p>TRS 專用編號：	XXXX</p>
+<p>臨時交易密碼：	XXXX（僅供首次登入，24小時內失效）</p>
+<p>帳戶狀態：		正常</p>
+<p><br></p>
+<p>⚠️ 安全操作指引</p>
+<p>•  **立即登入修改**：請於收到本郵件後，使用上述臨時密碼登入 TRS 交易終端或 App，系統將強制要求閣下設定全新密碼。</p>
+<p>•  **密碼獨立性**：TRS 交易密碼建議與閣下其他證券/銀行帳戶密碼區分，建議混合大小寫字母、數字及符號，長度不少於 10 位。</p>
+<p>•  **檢查持倉與委託**：密碼重置後，請於系統內核對目前掛單狀態及存量互換合約是否正常，以防未經授權操作。</p>
+<p><br></p>
+<p>🚨 非本人操作？</p>
+<p>如閣下並未申請重置，或懷疑帳戶被未經授權人士存取，請**切勿使用**上述密碼，並即刻致電衍生品專線 (852) 3996 7388 申請凍結帳戶及排查風險。</p>
+<p><br></p>
+<p>▍ 防詐提示</p>
+<p>本公司職員絕不會透過電郵、短訊或來電索取閣下之密碼、驗證碼或 API 密鑰。所有密碼修改僅能在官方認證環境內完成。</p>
+<p><br></p>
+<p>祝 交易順利</p>
+<p><br></p>
+<p>PrincipleOne Investments Limited</p>
+<p>發出日期：yyyy-mm-dd</p>
+<p><br></p>
+<p>Dear Valued Client,</p>
+<p><br></p>
+<p>Our records indicate a password reset was requested for your **Total Return Swap (TRS)** account with PrincipleOne Investments Limited. For the security of this high-authority trading mandate, your new temporary credentials are as follows:</p>
+<p><br></p>
+<p>▍ Temporary Credentials</p>
+<p><br></p>
+<p>Client Name :		XXXX</p>
+<p>Master Derivatives A/C:	XXXX</p>
+<p>TRS Reference No.:	XXXX-TRS</p>
+<p>Temp. Trade Password:	XXXX (First-time use only, expires in 24 hours)</p>
+<p>Status :		Active</p>
+<p><br></p>
+<p>⚠️ Security Instructions</p>
+<p>•  **Log in &amp; Change**: Please use the temporary password to log in to the TRS trading terminal or App. You will be prompted to set a new password immediately.</p>
+<p>•  **Credential Hygiene**: Do not reuse passwords from other platforms. We recommend a minimum of 10 characters mixing uppercase, lowercase, numbers, and symbols.</p>
+<p>•  **Verify Activity**: After resetting, please review your open orders and existing swap positions to ensure no unauthorized activity has occurred.</p>
+<p><br></p>
+<p>🚨 Security Alert</p>
+<p>If you did NOT initiate this request, **DO NOT USE** the above credentials. Please contact our Derivatives hotline at (852) 3996 7388 immediately to lock your account and investigate.</p>
+<p><br></p>
+<p>▍ Anti-Fraud Notice</p>
+<p>PrincipleOne staff will never request your password, OTP, or API keys via email, SMS, or phone calls. All credential updates must be performed within our official secure environment.</p>
+<p><br></p>
+<p>Best regards,</p>
+<p><br></p>
+<p>PrincipleOne Investments Limited</p>
+<p>Date: yyyy-mm-dd</p>
+</article>
+<a class="back-to-top" href="#top">返回目录</a>
+</div>
+</section>
+<section class="template-section" id="template-21-trs">
+<div class="template-inner">
+<p class="template-kicker">Template 21</p>
+<h2>TRS账户风控通知</h2>
+<dl class="template-meta">
+<dt>账户类型</dt>
+<dd>TRS账户</dd>
+<dt>源文件</dt>
+<dd>TRS账户风控通知.docx</dd>
+<dt>发件邮箱</dt>
+<dd>risk_notify@poneinvestments.com</dd>
+<dt>邮件主题</dt>
+<dd>【PrincipleOne 風控提示】【緊急】TRS 帳戶保證金水準通知 / [Risk Alert] TRS Account Margin Advisory</dd>
+</dl>
+<div class="body-heading">
+<h3>邮件正文</h3>
+</div>
+<article data-email-body>
+<p>*** This is an auto-generated system message ***</p>
+<p>Please do not reply to this message. Messages received at this address will not be processed.</p>
+<p><br></p>
+<p>CONFIDENTIALITY NOTICE / 保密聲明</p>
+<p>本郵件內容為保密資訊，發件人保留與本郵件相關的一切權利。若閣下誤收本郵件，敬請立刻刪除並通知發件人。</p>
+<p>This message contains confidential information intended solely for the named recipient. If you are not the intended recipient, please delete this message immediately and notify the sender.</p>
+<p><br></p>
+<p>閣下好，</p>
+<p><br></p>
+<p>系統監測到閣下名下收益互換（TRS）帳戶保證金消耗已觸及風控線，相關狀況如下：</p>
+<p><br></p>
+<p>▍ 風險狀態提示</p>
+<p><br></p>
+<p>客戶姓名：XXXX</p>
+<p>衍生品帳號：XXXXX</p>
+<p>TRS 專用編號：XXXX-TRS</p>
+<p>保證金損耗率：XXXX</p>
+<p>當前狀態：⚠️ 已低於維持保證金要求</p>
+<p>----------------------------------------</p>
+<p>*註：具體持倉後續是否調整，將視乎市場流動性及波動情況而定。</p>
+<p><br></p>
+<p>▍ 合約項下之權利告知</p>
+<p>根據閣下已簽署之《收益互換主協議》及相關產品條款：</p>
+<p>• 本公司將持續對閣下帳戶進行實時監測。當保證金水平低於合約約定之水準時，本公司保留絕對酌情權，可視乎市況對相關持倉進行**部分調整、全部了結或暫緩執行**，無需另行發出追保通知或設定寬限期。</p>
+<p>• 前述操作旨在控制風險敞口，由此產生之任何成交結果、相關費用及損益，均依約由閣下承擔。</p>
+<p>• 截至本通知發出時，實際持倉之最終變動與結算細節，將以本公司日後正式發出之《結算確認書》為準。</p>
+<p><br></p>
+<p>📌 溫馨提示</p>
+<p>如閣下希望避免被動調整持倉，可於市場允許情況下自行評估並主動降低倉位或提前終止合約。</p>
+<p><br></p>
+<p>請密切關注帳戶及標的資產狀況。</p>
+<p><br></p>
+<p>PrincipleOne Investments Limited</p>
+<p>風險管理部（系統自動發出）</p>
+<p>發出時間：yyyy-mm-dd HH:mm</p>
+<p><br></p>
+<p>Dear Client,</p>
+<p><br></p>
+<p>Our system has detected that the margin depletion of your TRS account has reached the risk control threshold. Details are as follows:</p>
+<p><br></p>
+<p>▍ Risk Status</p>
+<p><br></p>
+<p>Client Name : XXXX</p>
+<p>Master Derivatives A/C:	XXXX</p>
+<p>TRS Reference No. : XXXX-TRS</p>
+<p>Margin Depletion Rate : XXXX</p>
+<p>Current Status　　: ⚠️ Below Maintenance Margin Requirement*</p>
+<p>----------------------------------------</p>
+<p>*Note: Whether and how positions are adjusted will depend on prevailing market liquidity and volatility.</p>
+<p><br></p>
+<p>▍ Rights Reservation</p>
+<p>Pursuant to the executed Master TRS Agreement and product terms:</p>
+<p>•  We will continuously monitor your account. When margin levels fall below contractual requirements, we reserve the absolute discretion to partially adjust, fully unwind, or defer action on relevant positions depending on market conditions—without further margin call notices or grace periods.</p>
+<p>•  All executions (if any), associated costs, and profit/loss outcomes shall be for your account under the agreement.</p>
+<p>•  Actual position changes and final settlement details shall be exclusively confirmed by the formal Settlement Confirmation to be issued later.</p>
+<p><br></p>
+<p>You may, at your own discretion, reduce exposure or early-terminate to avoid passive adjustments.</p>
+<p><br></p>
+<p>Please monitor your account and underlying market closely.</p>
+<p><br></p>
+<p>PrincipleOne Investments Limited</p>
+<p>Risk Management Department (System Generated)</p>
+<p>Time Sent: yyyy-mm-dd HH:mm:ss</p>
+</article>
+<a class="back-to-top" href="#top">返回目录</a>
+</div>
+</section>
+<section class="template-section" id="template-22">
+<div class="template-inner">
+<p class="template-kicker">Template 22</p>
+<h2>衍生品账户 开立通知</h2>
+<dl class="template-meta">
+<dt>账户类型</dt>
+<dd>衍生品账户</dd>
+<dt>源文件</dt>
+<dd>衍生品账户 开立通知.docx</dd>
+<dt>发件邮箱</dt>
+<dd>accounts@poneinvestments.com</dd>
+<dt>邮件主题</dt>
+<dd>【PrincipleOne】衍生產品帳戶已成功開立及登入憑證 / Your Derivatives Account is Now Open &amp; Login Details</dd>
+</dl>
+<div class="body-heading">
+<h3>邮件正文</h3>
+</div>
+<article data-email-body>
+<p>*** This is an auto-generated system message ***</p>
+<p>Please do not reply to this message. Messages received at this address will not be processed.</p>
+<p><br></p>
+<p>CONFIDENTIALITY NOTICE / 保密聲明</p>
+<p>本郵件內容為保密資訊，發件人保留與本郵件相關的一切權利。若閣下誤收本郵件，敬請立刻刪除並通知發件人。</p>
+<p>This message contains confidential information intended solely for the named recipient. If you are not the intended recipient, please delete this message immediately and notify the sender.</p>
+<p><br></p>
+<p>閣下好，</p>
+<p><br></p>
+<p>感謝選用 PrincipleOne Investments Limited（下稱「本公司」或「PrincipleOne」）。</p>
+<p>閣下的**衍生產品及保證金交易帳戶**已成功開立，現可通過官方 App 進行相關產品的交易。</p>
+<p><br></p>
+<p>▍ 帳戶及臨時憑證</p>
+<p><br></p>
+<table><tbody><tr><td>客戶姓名：</td><td>XXXX</td></tr><tr><td>衍生品帳號：</td><td>XXXX</td></tr><tr><td>臨時登入密碼：</td><td>XXXX（僅供首次登入）</td></tr><tr><td>帳戶狀態：</td><td>正常</td></tr></tbody></table>
+<p><br></p>
+<p>⚠️ 重要：關於入金及資金劃轉（必讀）</p>
+<p>為符合監管及風險管理要求，**衍生品帳戶不支持直接接收銀行轉帳（銀證轉帳）入金**。</p>
+<p>*溫馨提示：進行衍生品交易前，請確保賬戶內有足夠的「可用保證金（Available Margin）」以應對按金要求及潛在浮動虧損。*</p>
+<p><br></p>
+<p>▍ 下一步建議</p>
+<p>•  **立即修改密碼**：首次使用衍生品帳號登入 App 後，請依指引設定高強度新密碼。</p>
+<p>•  **閱讀合約**：建議於 App 內查閱並確認已收取的《保證金客戶協議書》及《風險披露聲明》。</p>
+<p>•  **熟悉交易介面**：衍生品下單涉及行使價、到期日及槓桿倍數，建議先使用模擬盤或極小倉位熟悉操作。</p>
+<p><br></p>
+<p>▍ 風險披露（極度重要）</p>
+<p>衍生產品及保證金交易帶有高風險，並不等合所有投資者：</p>
+<p>•  閣下可能會在短時間內損失全部初始保證金，且**虧損金額可能超過最初存入的資金**（即倒欠本公司款項）。</p>
+<p>•  市場波動、槓桿效應及強制平倉機制可能導致閣下資產被自動斬倉而無法事先徵求同意。</p>
+<p>•  在進行任何交易前，務必確保閣下完全理解相關產品的運作及所涉風險。</p>
+<p><br></p>
+<p>▍ 防詐及聯絡</p>
+<p>本公司絕不會以電郵或來電索取閣下之密碼或一次性驗證碼。</p>
+<p><br></p>
+<p>祝 交易順利</p>
+<p><br></p>
+<p>PrincipleOne Investments Limited</p>
+<p>發出日期：yyyy-mm-dd</p>
+<p><br></p>
+<p>Dear Valued Client,</p>
+<p><br></p>
+<p>Thank you for choosing PrincipleOne Investments Limited ("PrincipleOne").</p>
+<p>Your **Derivatives and Margin Trading Account** has been successfully opened. You may now trade eligible products (such as CBBCs, Warrants, Futures, and leveraged FX) via our official App.</p>
+<p><br></p>
+<p>▍ Account Details &amp; Temporary Credentials</p>
+<p><br></p>
+<table><tbody><tr><td>Client Name :</td><td>XXXX</td></tr><tr><td>Derivatives A/C No. :</td><td>XXXX</td></tr><tr><td>Derivatives Password :</td><td>XXXX<br>(Temporary; you will be prompted to change it)</td></tr><tr><td>Account Status</td><td>Active</td></tr></tbody></table>
+<p><br></p>
+<p>⚠️ IMPORTANT: Funding &amp; Internal Transfer Notice</p>
+<p>To comply with internal risk controls, **the Derivatives Account does NOT accept direct bank transfers or eDDA deposits**.</p>
+<p>*Tip: Before trading, ensure sufficient "Available Margin" to cover initial &amp; variation margins plus potential unrealized losses.*</p>
+<p><br></p>
+<p>▍ Next Steps</p>
+<p>•  **Change Password**: Log in and set a strong, unique password immediately.</p>
+<p>•  **Review Documents**: Confirm you have read the Margin Client Agreement and Risk Disclosure Statements in the App.</p>
+<p>•  **Understand Leverage**: Familiarize yourself with strike prices, expiry dates, and leverage mechanics.</p>
+<p><br></p>
+<p>▍ Risk Warning (High Importance)</p>
+<p>Trading in derivatives and on margin carries a high degree of risk and is not suitable for everyone:</p>
+<p>•  You may sustain losses in excess of your initial margin deposit (**your liability may exceed the funds in your account**).</p>
+<p>•  Market volatility, leverage effects, and forced liquidation (margin call) may lead to automatic closure of your positions without prior consent.</p>
+<p>•  Ensure you fully understand the nature and risks of the relevant products before trading.</p>
+<p><br></p>
+<p>▍ Contact &amp; Security</p>
+<p>PrincipleOne will never request your password or OTP via email or phone.</p>
+<p><br></p>
+<p>Best regards,</p>
+<p><br></p>
+<p>PrincipleOne Investments Limited</p>
+<p>Date: yyyy-mm-dd</p>
+</article>
+<a class="back-to-top" href="#top">返回目录</a>
+</div>
+</section>
+<section class="template-section" id="template-23">
+<div class="template-inner">
+<p class="template-kicker">Template 23</p>
+<h2>衍生品账户 重置密码通知（如有）</h2>
+<dl class="template-meta">
+<dt>账户类型</dt>
+<dd>衍生品账户</dd>
+<dt>源文件</dt>
+<dd>衍生品账户 重置密码通知（如有）.docx</dd>
+<dt>发件邮箱</dt>
+<dd>accounts@poneinvestments.com</dd>
+<dt>邮件主题</dt>
+<dd>【PrincipleOne】密碼重置及臨時登入憑證 / Password Reset &amp; Temporary Credentials</dd>
+</dl>
+<div class="body-heading">
+<h3>邮件正文</h3>
+</div>
+<article data-email-body>
+<p>*** This is an auto-generated system message ***</p>
+<p>Please do not reply to this message. Messages received at this address will not be processed.</p>
+<p><br></p>
+<p>CONFIDENTIALITY NOTICE / 保密聲明</p>
+<p>本郵件內容為保密資訊，發件人保留與本郵件相關的一切權利。若閣下誤收本郵件，敬請立刻刪除並通知發件人。</p>
+<p>This message contains confidential information intended solely for the named recipient. If you are not the intended recipient, please delete this message immediately and notify the sender.</p>
+<p><br></p>
+<p>閣下好，</p>
+<p><br></p>
+<p>接獲系統記錄，閣下申請重置 **PrincipleOne Investments Limited** 帳戶密碼。為保障資產安全，新的臨時憑證如下：</p>
+<p><br></p>
+<p>▍ 臨時登入憑證</p>
+<table><tbody><tr><td>客戶姓名：</td><td>XXXX</td></tr><tr><td>衍生品帳號：</td><td>XXXX</td></tr><tr><td>臨時登入密碼：</td><td>XXXX（僅供首次登入）</td></tr><tr><td>帳戶狀態：</td><td>正常</td></tr></tbody></table>
+<p><br></p>
+<p>⚠️ 重要操作指示</p>
+<p>•  請盡快登入官方 App，系統將強制要求閣下設定全新密碼。</p>
+<p>•  新密碼建議混合大小寫英文字母、數字及符號，長度不少於 8 位。</p>
+<p>•  完成修改前，請勿將本郵件轉寄或截圖予他人。</p>
+<p><br></p>
+<p>🚨 非本人操作？</p>
+<p>如閣下並未申請重置密碼，或懷疑帳戶資料被冒用，請**切勿使用**上述密碼。</p>
+<p><br></p>
+<p>▍ 防詐提示</p>
+<p>本公司職員絕不會透過電郵、短訊或來電索取閣下之密碼或驗證碼。</p>
+<p><br></p>
+<p>祝 交易順利</p>
+<p><br></p>
+<p>PrincipleOne Investments Limited</p>
+<p>發出日期：yyyy-mm-dd</p>
+<p><br></p>
+<p>Dear Valued Client,</p>
+<p><br></p>
+<p>Our records indicate a password reset was requested for your account with **PrincipleOne Investments Limited**. Your new temporary credentials are as follows:</p>
+<p><br></p>
+<p>▍ Temporary Login Credentials</p>
+<p><br></p>
+<table><tbody><tr><td>Client Name :</td><td>XXXX</td></tr><tr><td>Derivatives A/C No. :</td><td>XXXX</td></tr><tr><td>Derivatives Password :</td><td>XXXX<br>(Temporary; you will be prompted to change it)</td></tr><tr><td>Account Status</td><td>Active</td></tr></tbody></table>
+<p><br></p>
+<p>⚠️ Important Instructions</p>
+<p>•  Please log in to the official App immediately; you will be required to set a new password.</p>
+<p>•  We recommend a password of at least 8 characters, mixing uppercase, lowercase, numbers, and symbols.</p>
+<p>•  Do not forward or screenshot this email before completing the update.</p>
+<p><br></p>
+<p>🚨 Security Alert</p>
+<p>If you did NOT request this reset, please **DO NOT USE** the above credentials.</p>
+<p><br></p>
+<p>▍ Anti-Fraud Notice</p>
+<p>PrincipleOne staff will never ask for your password or OTP via email, SMS, or phone calls.</p>
+<p><br></p>
+<p>Best regards,</p>
+<p><br></p>
+<p>PrincipleOne Investments Limited</p>
+<p>Date: yyyy-mm-dd</p>
+</article>
+<a class="back-to-top" href="#top">返回目录</a>
+</div>
+</section>
+</main>
+</div>
+<script>
+(() => {
+  const searchInput = document.querySelector('#template-search');
+  const resultCount = document.querySelector('#result-count');
+  const emptyState = document.querySelector('#empty-state');
+  const sections = Array.from(document.querySelectorAll('.template-section'));
+  const navLinks = Array.from(document.querySelectorAll('.template-nav a'));
+  const toc = document.querySelector('.toc');
+  const printButton = document.querySelector('#print-button');
+
+  const normalizedText = new Map(
+    sections.map((section) => [section.id, section.textContent.toLocaleLowerCase()])
+  );
+
+  const updateResults = () => {
+    const query = searchInput.value.trim().toLocaleLowerCase();
+    let visibleCount = 0;
+
+    sections.forEach((section) => {
+      const matches = !query || normalizedText.get(section.id).includes(query);
+      section.hidden = !matches;
+      visibleCount += matches ? 1 : 0;
+    });
+
+    navLinks.forEach((link) => {
+      const targetId = link.getAttribute('href').slice(1);
+      link.closest('li').hidden = !normalizedText.get(targetId).includes(query);
+    });
+
+    document.querySelectorAll('.nav-group').forEach((group) => {
+      group.hidden = !Array.from(group.querySelectorAll('li')).some((item) => !item.hidden);
+    });
+
+    document.querySelectorAll('.mailbox-group').forEach((group) => {
+      group.hidden = !Array.from(group.querySelectorAll('.nav-group')).some((item) => !item.hidden);
+    });
+
+    resultCount.textContent = `${visibleCount} 个模板`;
+    emptyState.hidden = visibleCount !== 0;
+  };
+
+  searchInput.addEventListener('input', updateResults);
+  searchInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && searchInput.value) {
+      searchInput.value = '';
+      updateResults();
+    }
+  });
+
+  navLinks.forEach((link) => {
+    link.addEventListener('click', () => {
+      if (window.matchMedia('(max-width: 959px)').matches) {
+        toc.removeAttribute('open');
+      }
+    });
+  });
+
+  if (window.matchMedia('(max-width: 959px)').matches) {
+    toc.removeAttribute('open');
+  }
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter((entry) => entry.isIntersecting && !entry.target.hidden)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+      if (!visible) return;
+      navLinks.forEach((link) => {
+        const active = link.getAttribute('href') === `#${visible.target.id}`;
+        link.classList.toggle('is-active', active);
+        if (active) link.setAttribute('aria-current', 'true');
+        else link.removeAttribute('aria-current');
+      });
+    }, { rootMargin: '-15% 0px -68% 0px', threshold: [0, 0.15, 0.5] });
+
+    sections.forEach((section) => observer.observe(section));
+  }
+
+  printButton.addEventListener('click', () => window.print());
+})();
+</script>
+</body>
+</html>
