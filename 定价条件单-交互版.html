@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>条件单</title>
+  <style>
+    :root {
+      --page-bg: #e8edf3;
+      --surface: #ffffff;
+      --app-bg: #f7f9fc;
+      --text: #111a2c;
+      --text-secondary: #4e5b6e;
+      --text-muted: #5f6f83;
+      --border: #e7edf3;
+      --blue: #237bf2;
+      --blue-soft: #eef5ff;
+      --red: #d32f3a;
+      --green: #007f62;
+      --shadow: 0 3px 8px rgba(34, 55, 83, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+      letter-spacing: 0;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      overflow: hidden;
+      background: var(--page-bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+    }
+
+    body {
+      display: grid;
+      min-height: 100dvh;
+      place-items: center;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button:focus-visible,
+    input:focus-visible {
+      outline: 3px solid rgba(35, 123, 242, 0.24);
+      outline-offset: 2px;
+    }
+
+    .trade-phone {
+      position: relative;
+      width: 454px;
+      height: 883px;
+      overflow: hidden;
+      border-radius: 24px;
+      background: var(--app-bg);
+      box-shadow: 0 20px 54px rgba(23, 38, 60, 0.2);
+    }
+
+    .trade-scroll {
+      height: calc(100% - 68px);
+      overflow-x: hidden;
+      overflow-y: auto;
+      padding: 0 20px 24px;
+      scrollbar-width: none;
+      overscroll-behavior: contain;
+    }
+
+    .trade-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .trade-header {
+      display: grid;
+      grid-template-columns: 52px 1fr 52px;
+      align-items: center;
+      height: 70px;
+      margin: 0 -20px 11px;
+      padding: 0 20px;
+      background: var(--surface);
+    }
+
+    .trade-header h1 {
+      margin: 0;
+      text-align: center;
+      font-size: 21px;
+      font-weight: 760;
+    }
+
+    .icon-button {
+      display: grid;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      place-items: center;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: #1e2938;
+      cursor: pointer;
+    }
+
+    .icon-button svg,
+    .inline-icon {
+      width: 24px;
+      height: 24px;
+      fill: none;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 2;
+    }
+
+    .trade-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+      margin-bottom: 17px;
+      padding: 4px;
+      border-radius: 9px;
+      background: #edf3f8;
+    }
+
+    .trade-tabs button {
+      height: 44px;
+      border: 0;
+      border-radius: 7px;
+      background: transparent;
+      color: #566378;
+      font-size: 16px;
+      font-weight: 650;
+      cursor: pointer;
+    }
+
+    .trade-tabs button.active {
+      background: var(--surface);
+      color: var(--blue);
+      box-shadow: 0 1px 4px rgba(25, 45, 72, 0.04);
+    }
+
+    .quote {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 91px;
+    }
+
+    .stock-trigger {
+      display: flex;
+      min-width: 0;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 0;
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .stock-trigger strong,
+    .stock-trigger span {
+      white-space: nowrap;
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .stock-trigger svg {
+      width: 22px;
+      height: 22px;
+      flex: none;
+    }
+
+    .quote-price {
+      flex: none;
+      text-align: right;
+    }
+
+    .quote-price strong {
+      display: block;
+      font-size: 30px;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+
+    .market-change {
+      display: block;
+      margin-top: 5px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .up {
+      color: var(--red);
+    }
+
+    .down {
+      color: var(--green);
+    }
+
+    .trade-card {
+      margin-bottom: 12px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .field-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-secondary);
+      font-size: 19px;
+      font-weight: 520;
+    }
+
+    .field-label svg {
+      width: 23px;
+      height: 23px;
+      color: #a3adbb;
+    }
+
+    .diamond-icon {
+      width: 14px;
+      height: 14px;
+      transform: rotate(45deg);
+      border-radius: 2px;
+      background: #a3adbb;
+    }
+
+    .monitor-card {
+      height: 222px;
+      padding: 18px 20px;
+    }
+
+    .monitor-mode {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+      margin-top: 13px;
+      padding: 4px;
+      border-radius: 8px;
+      background: #eef3f8;
+    }
+
+    .monitor-mode button {
+      height: 35px;
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
+      color: #69768a;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .monitor-mode button.active {
+      background: var(--surface);
+      color: var(--blue);
+      font-weight: 700;
+      box-shadow: 0 1px 4px rgba(23, 45, 73, 0.07);
+    }
+
+    .monitor-panel {
+      height: 73px;
+      padding-top: 12px;
+    }
+
+    .monitor-direct {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .price-controls,
+    .row-controls {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .round-button {
+      display: grid;
+      width: 40px;
+      height: 40px;
+      flex: none;
+      padding: 0 0 2px;
+      place-items: center;
+      border-radius: 50%;
+      font-size: 29px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .round-button.minus {
+      border: 1.5px solid var(--blue);
+      background: var(--surface);
+      color: var(--blue);
+    }
+
+    .round-button.plus {
+      border: 1.5px solid var(--blue);
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .monitor-input-stack {
+      text-align: right;
+    }
+
+    .monitor-direct-input {
+      width: 136px;
+      padding: 0;
+      border: 0;
+      border-bottom: 1px solid transparent;
+      background: transparent;
+      color: var(--text);
+      text-align: right;
+      font-size: 25px;
+      font-weight: 800;
+      outline: none;
+    }
+
+    .monitor-direct-input:focus {
+      border-bottom-color: var(--blue);
+    }
+
+    .monitor-change {
+      display: block;
+      min-height: 18px;
+      margin-top: 2px;
+      font-size: 15px;
+    }
+
+    .ratio-editor {
+      display: grid;
+      grid-template-columns: 80px 34px 1fr 34px;
+      gap: 7px;
+      align-items: center;
+    }
+
+    .ratio-direction {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      height: 36px;
+      padding: 0 8px;
+      border: 1px solid #dfe6ee;
+      border-radius: 7px;
+      background: var(--surface);
+      color: #435167;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .ratio-direction svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .ratio-step {
+      width: 34px;
+      height: 34px;
+      font-size: 22px;
+    }
+
+    .ratio-input-wrap {
+      display: flex;
+      min-width: 0;
+      height: 36px;
+      align-items: center;
+      padding: 0 8px;
+      border: 1px solid #dfe6ee;
+      border-radius: 7px;
+    }
+
+    .ratio-input-wrap input {
+      width: 100%;
+      min-width: 0;
+      padding: 0;
+      border: 0;
+      outline: 0;
+      text-align: right;
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .ratio-input-wrap span {
+      margin-left: 4px;
+      color: #526075;
+    }
+
+    .ratio-result {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+      color: #7c8899;
+      font-size: 12px;
+    }
+
+    .ratio-result b {
+      color: #172235;
+      font-size: 15px;
+    }
+
+    .apply-ratio {
+      height: 28px;
+      margin-left: 8px;
+      padding: 0 10px;
+      border: 0;
+      border-radius: 6px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .trigger-copy {
+      margin: 7px 0 0;
+      color: var(--text-muted);
+      font-size: 15px;
+    }
+
+    .row-card {
+      display: flex;
+      height: 90px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 23px;
+    }
+
+    .value-button {
+      min-width: 83px;
+      padding: 5px 0;
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      text-align: right;
+      font-size: 22px;
+      font-weight: 750;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .value-button.empty {
+      color: #cdd4de;
+      font-size: 18px;
+      font-weight: 520;
+    }
+
+    .quantity-card {
+      height: 171px;
+      padding: 23px 22px 17px;
+    }
+
+    .quantity-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-top: 24px;
+    }
+
+    .quick-button {
+      height: 64px;
+      padding: 0;
+      border: 1px solid #e4eaf1;
+      border-radius: 8px;
+      background: var(--surface);
+      color: #252525;
+      font-size: 17px;
+      cursor: pointer;
+    }
+
+    .quick-button.active {
+      border-color: var(--blue);
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .form-error {
+      display: none;
+      min-height: 20px;
+      margin: -4px 2px 7px;
+      color: #e93239;
+      font-size: 13px;
+    }
+
+    .form-error.show {
+      display: block;
+    }
+
+    .deadline-display {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: #1d2738;
+      font-size: 20px;
+    }
+
+    .clock-icon {
+      display: grid;
+      width: 23px;
+      height: 23px;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .clock-icon svg {
+      width: 15px;
+      height: 15px;
+      stroke-width: 2.5;
+    }
+
+    .account-card {
+      display: flex;
+      height: 78px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 23px;
+      color: #778396;
+      font-size: 14px;
+    }
+
+    .account-card b {
+      color: #202a3b;
+      font-size: 16px;
+      font-weight: 520;
+    }
+
+    .submit-button {
+      position: absolute;
+      z-index: 3;
+      right: 10px;
+      bottom: 0;
+      left: 10px;
+      height: 68px;
+      border: 0;
+      border-radius: 9px 9px 20px 20px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 20px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .overlay {
+      position: absolute;
+      z-index: 8;
+      inset: 0;
+      display: none;
+      align-items: flex-end;
+      background: rgba(14, 23, 37, 0.38);
+    }
+
+    .overlay.open {
+      display: flex;
+    }
+
+    .sheet {
+      width: 100%;
+      max-height: 76%;
+      overflow-y: auto;
+      padding: 22px 22px calc(24px + env(safe-area-inset-bottom));
+      border-radius: 18px 18px 0 0;
+      background: var(--surface);
+      animation: sheet-up 180ms ease-out;
+    }
+
+    .sheet h2 {
+      margin: 0 0 16px;
+      font-size: 20px;
+    }
+
+    .sheet-option {
+      width: 100%;
+      min-height: 55px;
+      padding: 0;
+      border: 0;
+      border-top: 1px solid #edf0f4;
+      background: var(--surface);
+      color: #1b2637;
+      text-align: left;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .sheet-option span {
+      float: right;
+    }
+
+    .sheet-stepper {
+      display: grid;
+      grid-template-columns: 52px 1fr 52px;
+      gap: 10px;
+    }
+
+    .sheet-stepper button {
+      border: 0;
+      border-radius: 9px;
+      background: var(--blue-soft);
+      color: var(--blue);
+      font-size: 28px;
+      cursor: pointer;
+    }
+
+    .sheet-stepper input {
+      width: 100%;
+      height: 52px;
+      border: 1px solid #dfe6ee;
+      border-radius: 9px;
+      text-align: center;
+      font-size: 21px;
+      font-weight: 700;
+    }
+
+    .sheet-primary {
+      width: 100%;
+      height: 50px;
+      margin-top: 18px;
+      border: 0;
+      border-radius: 8px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .confirm-list {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .confirm-row {
+      display: flex;
+      justify-content: space-between;
+      color: #6a7688;
+      font-size: 15px;
+    }
+
+    .confirm-row b {
+      color: #1c2637;
+      font-weight: 650;
+    }
+
+    .toast {
+      position: absolute;
+      z-index: 12;
+      bottom: 84px;
+      left: 50%;
+      padding: 10px 15px;
+      transform: translate(-50%, 12px);
+      border-radius: 8px;
+      background: #172131;
+      color: #fff;
+      opacity: 0;
+      pointer-events: none;
+      white-space: nowrap;
+      font-size: 14px;
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    .toast.show {
+      transform: translate(-50%, 0);
+      opacity: 1;
+    }
+
+    button:active {
+      transform: scale(0.97);
+    }
+
+    .trade-tabs button:active,
+    .monitor-mode button:active,
+    .sheet-option:active {
+      transform: translateY(1px);
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    @keyframes sheet-up {
+      from {
+        transform: translateY(22px);
+        opacity: 0.7;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @media (max-height: 883px) and (min-width: 455px) {
+      .trade-phone {
+        height: 100dvh;
+      }
+    }
+
+    @media (max-width: 454px) {
+      body {
+        display: block;
+        background: var(--app-bg);
+      }
+
+      .trade-phone {
+        width: 100vw;
+        height: 100dvh;
+        border-radius: 0;
+        box-shadow: none;
+      }
+
+      .submit-button {
+        padding-bottom: env(safe-area-inset-bottom);
+        border-radius: 9px 9px 0 0;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .trade-scroll {
+        padding-right: 14px;
+        padding-left: 14px;
+      }
+
+      .trade-header {
+        margin-right: -14px;
+        margin-left: -14px;
+        padding-right: 14px;
+        padding-left: 14px;
+      }
+
+      .stock-trigger strong,
+      .stock-trigger span {
+        font-size: 19px;
+      }
+
+      .quote-price strong {
+        font-size: 27px;
+      }
+
+      .monitor-card {
+        padding-right: 16px;
+        padding-left: 16px;
+      }
+
+      .row-card,
+      .account-card {
+        padding-right: 17px;
+        padding-left: 17px;
+      }
+
+      .round-button {
+        width: 36px;
+        height: 36px;
+      }
+
+      .row-controls,
+      .price-controls {
+        gap: 7px;
+      }
+
+      .value-button {
+        min-width: 70px;
+        font-size: 19px;
+      }
+
+      .ratio-editor {
+        grid-template-columns: 76px 32px 1fr 32px;
+        gap: 5px;
+      }
+
+      .ratio-step {
+        width: 32px;
+        height: 32px;
+      }
+
+      .quick-grid {
+        gap: 6px;
+      }
+
+      .quick-button {
+        font-size: 15px;
+      }
+
+      .account-card {
+        font-size: 13px;
+      }
+
+      .account-card b {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="trade-phone" aria-label="条件单">
+    <div class="trade-scroll">
+      <header class="trade-header">
+        <button class="icon-button" id="backBtn" type="button" aria-label="返回" title="返回">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>
+        </button>
+        <h1>条件单</h1>
+        <span></span>
+      </header>
+
+      <nav class="trade-tabs" aria-label="交易方向">
+        <button type="button" class="active" data-mode="buy" aria-pressed="true">定价买入</button>
+        <button type="button" data-mode="sell" aria-pressed="false">定价卖出</button>
+      </nav>
+
+      <section class="quote" aria-label="股票行情">
+        <button class="stock-trigger" id="stockTrigger" type="button" aria-label="切换股票">
+          <strong id="stockName">鸿博股份</strong>
+          <span id="stockCode">002229</span>
+          <svg class="inline-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+        </button>
+        <div class="quote-price">
+          <strong id="currentPrice">18.24</strong>
+          <span class="market-change down" id="currentChange">-0.60%</span>
+        </div>
+      </section>
+
+      <section class="trade-card monitor-card" aria-labelledby="monitorLabel">
+        <div class="field-label" id="monitorLabel">
+          <svg class="inline-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          <span>监控价</span>
+        </div>
+        <div class="monitor-mode" role="group" aria-label="监控价设置方式">
+          <button class="active" type="button" data-monitor-mode="price" aria-pressed="true">指定价格</button>
+          <button type="button" data-monitor-mode="ratio" aria-pressed="false">按涨跌幅</button>
+        </div>
+        <div class="monitor-panel" id="pricePanel">
+          <div class="monitor-direct">
+            <div class="price-controls">
+              <button class="round-button minus" type="button" data-minus="monitor" aria-label="减少监控价">−</button>
+              <div class="monitor-input-stack">
+                <input class="monitor-direct-input" id="monitorInput" inputmode="decimal" value="17.7911" aria-label="监控价">
+                <span class="monitor-change down" id="monitorChange">-2.80%</span>
+              </div>
+              <button class="round-button plus" type="button" data-plus="monitor" aria-label="增加监控价">+</button>
+            </div>
+          </div>
+        </div>
+        <div class="monitor-panel" id="ratioPanel" hidden>
+          <div class="ratio-editor">
+            <button class="ratio-direction" id="ratioDirection" type="button" aria-label="当前方向：下跌，点击切换">
+              <span>下跌</span>
+              <svg class="inline-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+            </button>
+            <button class="round-button minus ratio-step" id="ratioMinus" type="button" aria-label="减少涨跌幅比例">−</button>
+            <label class="ratio-input-wrap">
+              <input id="ratioInput" inputmode="decimal" value="2.5" aria-label="涨跌幅比例">
+              <span>%</span>
+            </label>
+            <button class="round-button plus ratio-step" id="ratioPlus" type="button" aria-label="增加涨跌幅比例">+</button>
+          </div>
+          <div class="ratio-result">
+            <span>按现价 <b id="ratioBase">18.24</b> 计算</span>
+            <span><b id="ratioPreview">17.7840</b><button class="apply-ratio" id="applyRatio" type="button" aria-label="应用比例监控价">应用</button></span>
+          </div>
+        </div>
+        <p class="trigger-copy" id="triggerCopy">当股价 ≤ 监控价时触发买入</p>
+      </section>
+
+      <section class="trade-card row-card" aria-labelledby="orderLabel">
+        <div class="field-label" id="orderLabel"><span class="diamond-icon" aria-hidden="true"></span><span>委托价</span></div>
+        <div class="row-controls">
+          <button class="round-button minus" type="button" data-minus="order" aria-label="减少委托价">−</button>
+          <button class="value-button empty" id="orderValue" type="button" data-editor="order" aria-label="编辑委托价">请输入</button>
+          <button class="round-button plus" type="button" data-plus="order" aria-label="增加委托价">+</button>
+        </div>
+      </section>
+
+      <section class="trade-card quantity-card" aria-labelledby="quantityLabel">
+        <div class="quantity-head">
+          <div class="field-label" id="quantityLabel">委托数量</div>
+          <div class="row-controls">
+            <button class="round-button minus" type="button" data-minus="quantity" aria-label="减少委托数量">−</button>
+            <button class="value-button empty" id="quantityValue" type="button" data-editor="quantity" aria-label="编辑委托数量">请输入</button>
+            <button class="round-button plus" type="button" data-plus="quantity" aria-label="增加委托数量">+</button>
+          </div>
+        </div>
+        <div class="quick-grid" aria-label="快捷仓位">
+          <button class="quick-button" type="button" data-fraction="1/4" data-numerator="1" data-denominator="4" aria-label="四分之一仓" aria-pressed="false">1/4</button>
+          <button class="quick-button" type="button" data-fraction="1/3" data-numerator="1" data-denominator="3" aria-label="三分之一仓" aria-pressed="false">1/3</button>
+          <button class="quick-button" type="button" data-fraction="1/2" data-numerator="1" data-denominator="2" aria-label="二分之一仓" aria-pressed="false">1/2</button>
+          <button class="quick-button" type="button" data-fraction="3/4" data-numerator="3" data-denominator="4" aria-label="四分之三仓" aria-pressed="false">3/4</button>
+          <button class="quick-button" type="button" data-fraction="1/1" data-numerator="1" data-denominator="1" aria-label="全仓" aria-pressed="false">全仓</button>
+        </div>
+      </section>
+
+      <p class="form-error" id="formError" role="alert"></p>
+
+      <section class="trade-card row-card">
+        <div class="field-label">截止时间</div>
+        <div class="deadline-display" aria-label="截止时间：当日收盘前">
+          <span id="deadlineValue">当日收盘前</span>
+          <span class="clock-icon" aria-hidden="true">
+            <svg class="inline-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+          </span>
+        </div>
+      </section>
+
+      <section class="trade-card account-card" aria-label="账户可用信息">
+        <span>持仓数量： <b id="holdingValue">100股</b></span>
+        <span id="capacityLabel">可用购买力： <b>3,356.05元</b></span>
+      </section>
+    </div>
+
+    <button class="submit-button" id="submitBtn" type="button">确认下单</button>
+    <div class="overlay" id="overlay" aria-hidden="true"><div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"></div></div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </main>
+
+  <script>
+    (() => {
+      const stocks = [
+        { name: '鸿博股份', code: '002229', price: 18.24, change: -0.60, close: 18.35 },
+        { name: '贵州茅台', code: '600519', price: 1428.88, change: 1.16, close: 1412.50 },
+        { name: '宁德时代', code: '300750', price: 268.60, change: -0.82, close: 270.82 }
+      ];
+
+      const state = {
+        mode: 'buy',
+        stock: stocks[0],
+        monitor: 17.7911,
+        order: null,
+        quantity: null,
+        deadline: '当日收盘前',
+        holding: 100,
+        buyingPower: 3356.05,
+        monitorMethod: 'price',
+        ratioDirection: 'down',
+        monitorRatio: 2.5,
+        selectedFraction: null
+      };
+
+      const $ = id => document.getElementById(id);
+      const overlay = $('overlay');
+      const sheet = $('sheet');
+      let lastFocusedElement = null;
+
+      function formatMoney(value) {
+        return value.toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
+
+      function parsePositiveDecimal(raw, maxDecimals) {
+        const text = String(raw).trim();
+        const pattern = new RegExp(`^(?:\\d+|\\d+\\.\\d{1,${maxDecimals}}|\\.\\d{1,${maxDecimals}})$`);
+        if (!pattern.test(text)) return null;
+        const value = Number(text);
+        return Number.isFinite(value) && value > 0 ? value : null;
+      }
+
+      function parsePositiveInteger(raw) {
+        const text = String(raw).trim();
+        if (!/^[1-9]\d*$/.test(text)) return null;
+        const value = Number(text);
+        return Number.isSafeInteger(value) ? value : null;
+      }
+
+      function monitorPercent(value) {
+        return (value - state.stock.close) / state.stock.close * 100;
+      }
+
+      function ratioPrice() {
+        const factor = state.ratioDirection === 'up'
+          ? 1 + state.monitorRatio / 100
+          : 1 - state.monitorRatio / 100;
+        return Number((state.stock.price * factor).toFixed(4));
+      }
+
+      function defaultMonitor() {
+        if (state.stock.code !== '002229') return state.stock.price;
+        return state.mode === 'buy' ? 17.7911 : 18.5000;
+      }
+
+      function clearError() {
+        $('formError').textContent = '';
+        $('formError').classList.remove('show');
+      }
+
+      function showError(message) {
+        $('formError').textContent = message;
+        $('formError').classList.add('show');
+      }
+
+      function showToast(message) {
+        const toast = $('toast');
+        toast.textContent = message;
+        toast.classList.add('show');
+        clearTimeout(showToast.timer);
+        showToast.timer = setTimeout(() => toast.classList.remove('show'), 2400);
+      }
+
+      function setChange(element, value) {
+        if (Math.abs(value) < 0.005) {
+          element.textContent = '';
+          element.className = element.className.replace(/\s?(up|down)/g, '');
+          return;
+        }
+        element.textContent = `${value > 0 ? '+' : ''}${value.toFixed(2)}%`;
+        element.classList.toggle('up', value > 0);
+        element.classList.toggle('down', value < 0);
+      }
+
+      function render() {
+        document.querySelectorAll('[data-mode]').forEach(button => {
+          const active = button.dataset.mode === state.mode;
+          button.classList.toggle('active', active);
+          button.setAttribute('aria-pressed', String(active));
+        });
+        document.querySelectorAll('[data-monitor-mode]').forEach(button => {
+          const active = button.dataset.monitorMode === state.monitorMethod;
+          button.classList.toggle('active', active);
+          button.setAttribute('aria-pressed', String(active));
+        });
+
+        $('stockName').textContent = state.stock.name;
+        $('stockCode').textContent = state.stock.code;
+        $('currentPrice').textContent = state.stock.price.toFixed(2);
+        setChange($('currentChange'), state.stock.change);
+
+        $('pricePanel').hidden = state.monitorMethod !== 'price';
+        $('ratioPanel').hidden = state.monitorMethod !== 'ratio';
+        if (document.activeElement !== $('monitorInput')) $('monitorInput').value = state.monitor.toFixed(4);
+        if (document.activeElement !== $('ratioInput')) $('ratioInput').value = Number(state.monitorRatio.toFixed(2));
+        $('ratioDirection').querySelector('span').textContent = state.ratioDirection === 'up' ? '上涨' : '下跌';
+        $('ratioDirection').setAttribute('aria-label', `当前方向：${state.ratioDirection === 'up' ? '上涨' : '下跌'}，点击切换`);
+        $('ratioBase').textContent = state.stock.price.toFixed(2);
+        $('ratioPreview').textContent = ratioPrice().toFixed(4);
+        setChange($('monitorChange'), monitorPercent(state.monitor));
+
+        const operator = state.monitor < state.stock.price ? '≤' : '≥';
+        $('triggerCopy').textContent = `当股价 ${operator} 监控价时触发${state.mode === 'buy' ? '买入' : '卖出'}`;
+
+        const orderValue = $('orderValue');
+        orderValue.textContent = state.order === null ? '请输入' : state.order.toFixed(4);
+        orderValue.classList.toggle('empty', state.order === null);
+
+        const quantityValue = $('quantityValue');
+        quantityValue.textContent = state.quantity === null ? '请输入' : `${state.quantity}股`;
+        quantityValue.classList.toggle('empty', state.quantity === null);
+
+        document.querySelectorAll('[data-fraction]').forEach(button => {
+          const active = button.dataset.fraction === state.selectedFraction;
+          button.classList.toggle('active', active);
+          button.setAttribute('aria-pressed', String(active));
+        });
+
+        $('deadlineValue').textContent = state.deadline;
+        $('holdingValue').textContent = `${state.holding}股`;
+        $('capacityLabel').innerHTML = state.mode === 'buy'
+          ? `可用购买力： <b>${formatMoney(state.buyingPower)}元</b>`
+          : `可卖数量： <b>${state.holding}股</b>`;
+      }
+
+      function setMode(mode) {
+        state.mode = mode;
+        state.monitor = defaultMonitor();
+        state.order = null;
+        state.quantity = null;
+        state.monitorMethod = 'price';
+        state.selectedFraction = null;
+        clearError();
+        render();
+      }
+
+      function setMonitorMethod(method) {
+        state.monitorMethod = method;
+        if (method === 'ratio') {
+          const delta = state.monitor / state.stock.price - 1;
+          state.ratioDirection = delta >= 0 ? 'up' : 'down';
+          state.monitorRatio = Math.max(0.1, Number((Math.abs(delta) * 100).toFixed(2)));
+        }
+        render();
+      }
+
+      function commitMonitorInput() {
+        const input = $('monitorInput');
+        const value = parsePositiveDecimal(input.value, 4);
+        if (value === null) {
+          input.setAttribute('aria-invalid', 'true');
+          showToast('请输入有效的监控价（最多 4 位小数）');
+          return;
+        }
+        input.removeAttribute('aria-invalid');
+        state.monitor = Number(value.toFixed(4));
+        state.order = state.monitor;
+        state.selectedFraction = null;
+        clearError();
+        render();
+      }
+
+      function adjustMonitor(delta) {
+        state.monitor = Math.max(0.0001, Number((state.monitor + delta).toFixed(4)));
+        state.order = state.monitor;
+        state.selectedFraction = null;
+        clearError();
+        render();
+      }
+
+      function updateRatioPreview() {
+        const input = $('ratioInput');
+        const value = parsePositiveDecimal(input.value, 2);
+        if (value === null || value >= 100) {
+          input.setAttribute('aria-invalid', 'true');
+          $('ratioPreview').textContent = '--';
+          return;
+        }
+        input.removeAttribute('aria-invalid');
+        state.monitorRatio = value;
+        $('ratioPreview').textContent = ratioPrice().toFixed(4);
+      }
+
+      function adjustRatio(delta) {
+        state.monitorRatio = Math.min(99.9, Math.max(0.1, Number((state.monitorRatio + delta).toFixed(2))));
+        render();
+      }
+
+      function applyRatio() {
+        const input = $('ratioInput');
+        const value = parsePositiveDecimal(input.value, 2);
+        if (value === null || value >= 100) {
+          input.setAttribute('aria-invalid', 'true');
+          showToast('请输入有效的涨跌幅比例（0 到 100）');
+          return;
+        }
+        input.removeAttribute('aria-invalid');
+        state.monitorRatio = value;
+        state.monitor = ratioPrice();
+        state.order = state.monitor;
+        state.selectedFraction = null;
+        clearError();
+        render();
+        showToast('监控价与委托价已同步');
+      }
+
+      function adjustOrder(delta) {
+        const base = state.order === null ? state.monitor : state.order;
+        state.order = Math.max(0.0001, Number((base + delta).toFixed(4)));
+        state.selectedFraction = null;
+        clearError();
+        render();
+      }
+
+      function adjustQuantity(direction) {
+        if (state.quantity === null) {
+          if (direction < 0) return;
+          state.quantity = 100;
+        } else {
+          state.quantity = Math.max(1, state.quantity + direction * 100);
+        }
+        state.selectedFraction = null;
+        clearError();
+        render();
+      }
+
+      function quickQuantity(numerator, denominator, fraction) {
+        if (state.order === null) {
+          showError('请先填写委托价');
+          return;
+        }
+        const base = state.mode === 'buy'
+          ? Math.floor(state.buyingPower / state.order)
+          : state.holding;
+        const quantity = Math.floor(base * numerator / denominator);
+        if (quantity < 1) {
+          showError(state.mode === 'buy' ? '可用购买力不足，无法选择仓位' : '可卖数量不足，无法选择仓位');
+          return;
+        }
+        state.quantity = quantity;
+        state.selectedFraction = fraction;
+        clearError();
+        render();
+      }
+
+      function openSheet(content) {
+        lastFocusedElement = document.activeElement;
+        sheet.innerHTML = content;
+        overlay.classList.add('open');
+        overlay.setAttribute('aria-hidden', 'false');
+        document.querySelector('.trade-scroll').inert = true;
+        $('submitBtn').inert = true;
+        const firstFocusable = sheet.querySelector('button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])');
+        if (firstFocusable) firstFocusable.focus();
+      }
+
+      function closeSheet() {
+        overlay.classList.remove('open');
+        overlay.setAttribute('aria-hidden', 'true');
+        document.querySelector('.trade-scroll').inert = false;
+        $('submitBtn').inert = false;
+        sheet.innerHTML = '';
+        const restoreTarget = lastFocusedElement;
+        lastFocusedElement = null;
+        if (restoreTarget && restoreTarget.isConnected) restoreTarget.focus();
+      }
+
+      function openStockSheet() {
+        const options = stocks.map((stock, index) => `
+          <button class="sheet-option" type="button" data-stock-index="${index}">
+            <b>${stock.name}</b>　${stock.code}<span>${stock.price.toFixed(2)}</span>
+          </button>`).join('');
+        openSheet(`<h2 id="sheetTitle">切换股票</h2>${options}`);
+        sheet.querySelectorAll('[data-stock-index]').forEach(button => {
+          button.addEventListener('click', () => {
+            state.stock = stocks[Number(button.dataset.stockIndex)];
+            state.monitor = state.stock.price;
+            state.order = null;
+            state.quantity = null;
+            state.monitorMethod = 'price';
+            state.selectedFraction = null;
+            clearError();
+            closeSheet();
+            render();
+          });
+        });
+      }
+
+      function openNumberEditor(type) {
+        const quantity = type === 'quantity';
+        const title = quantity ? '委托数量' : '委托价';
+        const step = quantity ? 100 : 0.0001;
+        const initial = quantity ? (state.quantity || 100) : (state.order || state.monitor);
+        openSheet(`
+          <h2 id="sheetTitle">${title}</h2>
+          <div class="sheet-stepper">
+            <button id="sheetMinus" type="button" aria-label="减少${title}">−</button>
+            <input id="sheetInput" inputmode="decimal" value="${quantity ? initial : initial.toFixed(4)}" aria-label="${title}">
+            <button id="sheetPlus" type="button" aria-label="增加${title}">+</button>
+          </div>
+          <button class="sheet-primary" id="sheetDone" type="button">确定</button>`);
+        const input = $('sheetInput');
+        const change = direction => {
+          const current = Number.parseFloat(input.value) || 0;
+          const next = Math.max(quantity ? 1 : 0.0001, current + direction * step);
+          input.value = quantity ? Math.round(next) : next.toFixed(4);
+        };
+        $('sheetMinus').addEventListener('click', () => change(-1));
+        $('sheetPlus').addEventListener('click', () => change(1));
+        $('sheetDone').addEventListener('click', () => {
+          if (quantity) {
+            const next = parsePositiveInteger(input.value);
+            if (next === null) {
+              input.setAttribute('aria-invalid', 'true');
+              showToast('请输入有效的委托数量（正整数）');
+              return;
+            }
+            input.removeAttribute('aria-invalid');
+            state.quantity = next;
+            state.selectedFraction = null;
+          } else {
+            const next = parsePositiveDecimal(input.value, 4);
+            if (next === null) {
+              input.setAttribute('aria-invalid', 'true');
+              showToast('请输入有效的委托价（最多 4 位小数）');
+              return;
+            }
+            input.removeAttribute('aria-invalid');
+            state.order = Number(next.toFixed(4));
+            state.selectedFraction = null;
+          }
+          clearError();
+          closeSheet();
+          render();
+        });
+        input.focus();
+        input.select();
+      }
+
+      function validateOrder() {
+        if (state.order === null || state.quantity === null || state.order <= 0 || state.quantity <= 0) {
+          return '请完整填写委托价和委托数量';
+        }
+        if (state.mode === 'buy' && state.order * state.quantity > state.buyingPower) {
+          return '购买力不足，无法下单';
+        }
+        if (state.mode === 'sell' && state.quantity > state.holding) {
+          return '持仓不足，无法下单';
+        }
+        return '';
+      }
+
+      function openConfirmSheet() {
+        openSheet(`
+          <div id="confirmOrder">
+            <h2 id="sheetTitle">确认条件单</h2>
+            <div class="confirm-list">
+              <div class="confirm-row"><span>方向</span><b>定价${state.mode === 'buy' ? '买入' : '卖出'}</b></div>
+              <div class="confirm-row"><span>股票</span><b>${state.stock.name} ${state.stock.code}</b></div>
+              <div class="confirm-row"><span>监控价</span><b>${state.monitor.toFixed(4)}</b></div>
+              <div class="confirm-row"><span>委托价</span><b>${state.order.toFixed(4)}</b></div>
+              <div class="confirm-row"><span>委托数量</span><b>${state.quantity}股</b></div>
+              <div class="confirm-row"><span>截止时间</span><b>${state.deadline}</b></div>
+            </div>
+            <button class="sheet-primary" id="finalConfirm" type="button" aria-label="确认创建条件单">确认创建</button>
+          </div>`);
+        $('finalConfirm').addEventListener('click', () => {
+          closeSheet();
+          showToast('条件单已创建，状态：待触发');
+        });
+      }
+
+      function submitOrder() {
+        const error = validateOrder();
+        if (error) {
+          showError(error);
+          return;
+        }
+        clearError();
+        openConfirmSheet();
+      }
+
+      document.querySelectorAll('[data-mode]').forEach(button => {
+        button.addEventListener('click', () => setMode(button.dataset.mode));
+      });
+
+      document.querySelectorAll('[data-monitor-mode]').forEach(button => {
+        button.addEventListener('click', () => setMonitorMethod(button.dataset.monitorMode));
+      });
+
+      document.querySelectorAll('[data-plus]').forEach(button => {
+        button.addEventListener('click', () => {
+          if (button.dataset.plus === 'monitor') adjustMonitor(0.0001);
+          if (button.dataset.plus === 'order') adjustOrder(0.0001);
+          if (button.dataset.plus === 'quantity') adjustQuantity(1);
+        });
+      });
+
+      document.querySelectorAll('[data-minus]').forEach(button => {
+        button.addEventListener('click', () => {
+          if (button.dataset.minus === 'monitor') adjustMonitor(-0.0001);
+          if (button.dataset.minus === 'order') adjustOrder(-0.0001);
+          if (button.dataset.minus === 'quantity') adjustQuantity(-1);
+        });
+      });
+
+      document.querySelectorAll('[data-editor]').forEach(button => {
+        button.addEventListener('click', () => openNumberEditor(button.dataset.editor));
+      });
+
+      document.querySelectorAll('[data-fraction]').forEach(button => {
+        button.addEventListener('click', () => quickQuantity(
+          Number(button.dataset.numerator),
+          Number(button.dataset.denominator),
+          button.dataset.fraction
+        ));
+      });
+
+      $('monitorInput').addEventListener('change', commitMonitorInput);
+      $('monitorInput').addEventListener('keydown', event => {
+        if (event.key === 'Enter') event.currentTarget.blur();
+      });
+      $('ratioInput').addEventListener('input', updateRatioPreview);
+      $('ratioDirection').addEventListener('click', () => {
+        state.ratioDirection = state.ratioDirection === 'up' ? 'down' : 'up';
+        render();
+      });
+      $('ratioMinus').addEventListener('click', () => adjustRatio(-0.1));
+      $('ratioPlus').addEventListener('click', () => adjustRatio(0.1));
+      $('applyRatio').addEventListener('click', applyRatio);
+      $('stockTrigger').addEventListener('click', openStockSheet);
+      $('submitBtn').addEventListener('click', submitOrder);
+      $('backBtn').addEventListener('click', () => showToast('返回上一页'));
+      overlay.addEventListener('click', event => {
+        if (event.target === overlay) closeSheet();
+      });
+      document.addEventListener('keydown', event => {
+        if (event.key === 'Tab' && overlay.classList.contains('open')) {
+          const focusable = [...sheet.querySelectorAll('button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])')];
+          if (focusable.length) {
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            if (event.shiftKey && document.activeElement === first) {
+              event.preventDefault();
+              last.focus();
+            } else if (!event.shiftKey && document.activeElement === last) {
+              event.preventDefault();
+              first.focus();
+            }
+          }
+        }
+        if (event.key === 'Escape' && overlay.classList.contains('open')) closeSheet();
+      });
+
+      render();
+    })();
+  </script>
+</body>
+</html>
