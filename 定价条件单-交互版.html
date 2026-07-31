@@ -459,7 +459,7 @@
     }
 
     .quantity-card {
-      height: 171px;
+      height: 188px;
       padding: 23px 22px 17px;
     }
 
@@ -473,7 +473,14 @@
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 8px;
-      margin-top: 24px;
+      margin-top: 12px;
+    }
+
+    .quantity-capacity {
+      min-height: 17px;
+      margin: 12px 0 0;
+      color: var(--text-muted);
+      font-size: 13px;
     }
 
     .quick-button {
@@ -898,6 +905,7 @@
             <button class="round-button plus" type="button" data-plus="quantity" aria-label="增加委托数量">+</button>
           </div>
         </div>
+        <p class="quantity-capacity" id="quantityCapacity" aria-live="polite">最大可买：--</p>
         <div class="quick-grid" aria-label="快捷仓位">
           <button class="quick-button" type="button" data-fraction="1/4" data-numerator="1" data-denominator="4" aria-label="四分之一仓" aria-pressed="false">1/4</button>
           <button class="quick-button" type="button" data-fraction="1/3" data-numerator="1" data-denominator="3" aria-label="三分之一仓" aria-pressed="false">1/3</button>
@@ -981,6 +989,12 @@
         return (value - state.stock.close) / state.stock.close * 100;
       }
 
+      function maxAvailableQuantity() {
+        if (state.mode === 'sell') return state.holding;
+        if (state.order === null) return null;
+        return Math.max(0, Math.floor(state.buyingPower / state.order));
+      }
+
       function ratioPrice() {
         const factor = state.ratioDirection === 'up'
           ? 1 + state.monitorRatio / 100
@@ -1059,6 +1073,11 @@
         const quantityValue = $('quantityValue');
         quantityValue.textContent = state.quantity === null ? '请输入' : `${state.quantity}股`;
         quantityValue.classList.toggle('empty', state.quantity === null);
+
+        const maxQuantity = maxAvailableQuantity();
+        $('quantityCapacity').textContent = state.mode === 'buy'
+          ? `最大可买：${maxQuantity === null ? '--' : `${maxQuantity} 股`}`
+          : `最大可卖：${maxQuantity} 股`;
 
         document.querySelectorAll('[data-fraction]').forEach(button => {
           const active = button.dataset.fraction === state.selectedFraction;
@@ -1175,13 +1194,11 @@
       }
 
       function quickQuantity(numerator, denominator, fraction) {
-        if (state.order === null) {
+        const base = maxAvailableQuantity();
+        if (base === null) {
           showError('请先填写委托价');
           return;
         }
-        const base = state.mode === 'buy'
-          ? Math.floor(state.buyingPower / state.order)
-          : state.holding;
         const quantity = Math.floor(base * numerator / denominator);
         if (quantity < 1) {
           showError(state.mode === 'buy' ? '可用购买力不足，无法选择仓位' : '可卖数量不足，无法选择仓位');
