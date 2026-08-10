@@ -1,0 +1,1009 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>投资范围模板详情 - 板块集中度 Demo</title>
+  <style>
+    :root {
+      --blue: #2468f2;
+      --blue-hover: #1556d9;
+      --blue-soft: #eef4ff;
+      --text: #253047;
+      --text-secondary: #667085;
+      --text-muted: #98a2b3;
+      --border: #dfe3eb;
+      --border-light: #eaecf0;
+      --surface: #ffffff;
+      --surface-subtle: #f7f8fa;
+      --page: #f5f6f8;
+      --danger: #d92d20;
+      --danger-soft: #fff2f0;
+      --success: #067647;
+      --shadow: 0 12px 34px rgba(16, 24, 40, 0.16);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { color-scheme: light; }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      color: var(--text);
+      background: var(--page);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      letter-spacing: 0;
+    }
+
+    button, input, select { font: inherit; letter-spacing: 0; }
+
+    button { cursor: pointer; }
+
+    button:disabled { cursor: not-allowed; opacity: 0.48; }
+
+    .app-shell { min-height: 100vh; }
+
+    .topbar {
+      height: 56px;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .back-button {
+      width: 32px;
+      height: 32px;
+      border: 0;
+      background: transparent;
+      color: #475467;
+      font-size: 24px;
+      line-height: 30px;
+      border-radius: 4px;
+    }
+
+    .back-button:hover { background: var(--surface-subtle); }
+
+    .topbar-divider {
+      height: 22px;
+      margin: 0 16px 0 8px;
+      border-left: 1px solid var(--border);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    main {
+      width: 100%;
+      padding: 16px 24px 44px;
+    }
+
+    .priority-strip {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      min-height: 42px;
+      padding: 9px 14px;
+      margin: 0 22px 22px;
+      color: #475467;
+      background: #f0f4fb;
+      border: 1px solid #d7e2f6;
+      border-radius: 4px;
+    }
+
+    .priority-label { color: #344054; font-weight: 600; }
+    .priority-rule { color: #475467; white-space: nowrap; }
+    .priority-arrow { color: #98a2b3; }
+
+    .panel {
+      margin-bottom: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .panel-header {
+      min-height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 8px 16px 8px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .panel-title-group {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    h2 {
+      margin: 0;
+      color: #1d2939;
+      font-size: 17px;
+      line-height: 1.4;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .button {
+      min-height: 36px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 0 16px;
+      color: #475467;
+      background: #f7f8fa;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      white-space: nowrap;
+      transition: background-color 120ms ease, border-color 120ms ease;
+    }
+
+    .button:hover:not(:disabled) { background: #edf0f4; }
+
+    .button.primary {
+      color: #fff;
+      background: var(--blue);
+      border-color: var(--blue);
+    }
+
+    .button.primary:hover:not(:disabled) { background: var(--blue-hover); }
+
+    .button.secondary {
+      color: #344054;
+      background: #fff;
+      border-color: #d0d5dd;
+    }
+
+    .button.secondary:hover:not(:disabled) { background: #f9fafb; }
+
+    .button.danger {
+      color: #fff;
+      background: var(--danger);
+      border-color: var(--danger);
+    }
+
+    .button-icon {
+      width: 16px;
+      height: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      line-height: 1;
+    }
+
+    .basic-content {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(220px, 1fr));
+      gap: 28px 52px;
+      padding: 20px 22px 24px;
+    }
+
+    .info-item { min-width: 0; }
+
+    .info-label {
+      margin-bottom: 8px;
+      color: var(--text-muted);
+    }
+
+    .info-value {
+      min-height: 22px;
+      color: #475467;
+      overflow-wrap: anywhere;
+    }
+
+    .table-wrap {
+      width: 100%;
+      padding: 16px 20px 18px;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 760px;
+      border-collapse: separate;
+      border-spacing: 0;
+      table-layout: fixed;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    th, td {
+      height: 48px;
+      padding: 10px 18px;
+      text-align: left;
+      vertical-align: middle;
+      border-bottom: 1px solid var(--border-light);
+      overflow-wrap: anywhere;
+    }
+
+    th {
+      height: 44px;
+      color: #667085;
+      background: #f2f4f7;
+      font-weight: 600;
+    }
+
+    tbody tr:last-child td { border-bottom: 0; }
+    tbody tr:hover td { background: #fafbfc; }
+
+    .col-action { width: 190px; }
+    .col-market { width: 22%; }
+    .col-limit { width: 24%; }
+    .col-code { width: 18%; }
+
+    .text-button {
+      padding: 4px 8px;
+      color: var(--blue);
+      background: transparent;
+      border: 0;
+      border-radius: 3px;
+    }
+
+    .text-button:hover { background: var(--blue-soft); }
+    .text-button.delete { color: var(--danger); }
+    .text-button.delete:hover { background: var(--danger-soft); }
+
+    .empty-state {
+      height: 154px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+
+    .empty-icon {
+      position: relative;
+      width: 48px;
+      height: 34px;
+      margin-bottom: 12px;
+      border: 2px solid #d0d5dd;
+      border-radius: 5px;
+    }
+
+    .empty-icon::before {
+      content: "";
+      position: absolute;
+      top: -7px;
+      left: 11px;
+      width: 22px;
+      height: 10px;
+      background: #fff;
+      border: 2px solid #d0d5dd;
+      border-bottom: 0;
+      border-radius: 5px 5px 0 0;
+    }
+
+    dialog {
+      width: min(620px, calc(100vw - 32px));
+      max-height: calc(100vh - 48px);
+      margin: auto;
+      padding: 0;
+      color: var(--text);
+      background: #fff;
+      border: 0;
+      border-radius: 6px;
+      box-shadow: var(--shadow);
+      overflow: auto;
+    }
+
+    dialog::backdrop { background: rgba(16, 24, 40, 0.48); }
+
+    .dialog-header {
+      min-height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 0 22px 0 28px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .dialog-title {
+      margin: 0;
+      color: #1d2939;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .close-button {
+      width: 32px;
+      height: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #667085;
+      background: transparent;
+      border: 0;
+      border-radius: 4px;
+      font-size: 22px;
+    }
+
+    .close-button:hover { background: var(--surface-subtle); }
+
+    .dialog-body { padding: 26px 28px 30px; }
+
+    .form-field { margin-bottom: 22px; }
+    .form-field:last-child { margin-bottom: 0; }
+
+    .field-label {
+      display: block;
+      margin-bottom: 8px;
+      color: #475467;
+      font-weight: 500;
+    }
+
+    .required { margin-right: 4px; color: #f04438; }
+
+    .control, select.control {
+      width: 100%;
+      height: 42px;
+      padding: 0 12px;
+      color: #344054;
+      background: #fff;
+      border: 1px solid #d0d5dd;
+      border-radius: 4px;
+      outline: 0;
+    }
+
+    .control:focus, select.control:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(36, 104, 242, 0.12);
+    }
+
+    .control:disabled, select.control:disabled {
+      color: #667085;
+      background: #f2f4f7;
+    }
+
+    .input-suffix {
+      display: grid;
+      grid-template-columns: 1fr 46px;
+    }
+
+    .input-suffix .control {
+      border-radius: 4px 0 0 4px;
+    }
+
+    .suffix {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #475467;
+      background: #f9fafb;
+      border: 1px solid #d0d5dd;
+      border-left: 0;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .field-hint {
+      min-height: 18px;
+      margin-top: 6px;
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    .field-error { color: var(--danger); }
+
+    .dialog-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 16px 28px;
+      border-top: 1px solid var(--border);
+    }
+
+    .confirm-copy {
+      margin: 0;
+      color: #475467;
+      line-height: 1.8;
+    }
+
+    .confirm-copy strong { color: #1d2939; }
+
+    .toast-region {
+      position: fixed;
+      z-index: 1000;
+      top: 72px;
+      left: 50%;
+      width: min(420px, calc(100vw - 32px));
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    .toast {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 11px 14px;
+      margin-bottom: 8px;
+      color: #344054;
+      background: #fff;
+      border: 1px solid #d0d5dd;
+      border-radius: 4px;
+      box-shadow: 0 6px 18px rgba(16, 24, 40, 0.14);
+      animation: toast-in 160ms ease-out;
+    }
+
+    .toast-mark { color: var(--success); font-weight: 700; }
+
+    @keyframes toast-in {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .visually-hidden {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
+    }
+
+    @media (max-width: 900px) {
+      .topbar { padding: 0 14px; }
+      main { padding: 12px 12px 32px; }
+      .basic-content { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 32px; }
+      .panel-header { align-items: flex-start; flex-direction: column; gap: 12px; padding: 14px 14px; }
+      .panel-title-group, .actions { width: 100%; }
+      .actions { justify-content: flex-start; }
+      .table-wrap { padding: 12px 14px 16px; }
+      .priority-strip { margin: 0 14px 16px; }
+    }
+
+    @media (max-width: 560px) {
+      .basic-content { grid-template-columns: 1fr; }
+      .button { flex: 1 1 auto; padding: 0 12px; }
+      dialog { width: calc(100vw - 20px); }
+      .dialog-header { padding: 0 14px 0 18px; }
+      .dialog-body { padding: 22px 18px 24px; }
+      .dialog-footer { padding: 14px 18px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <button class="back-button" type="button" aria-label="返回" title="返回">‹</button>
+      <span class="topbar-divider" aria-hidden="true"></span>
+      <h1>投资范围模板详情</h1>
+    </header>
+
+    <main>
+      <section class="panel" aria-labelledby="basic-title">
+        <div class="panel-header">
+          <div class="panel-title-group"><h2 id="basic-title">基础信息</h2></div>
+          <div class="actions">
+            <button class="button" id="clear-template" type="button">清空模板</button>
+            <button class="button primary" id="edit-template" type="button"><span class="button-icon">✎</span>编辑</button>
+          </div>
+        </div>
+        <div class="basic-content">
+          <div class="info-item"><div class="info-label">模板名称(中)</div><div class="info-value">默认投资范围模板</div></div>
+          <div class="info-item"><div class="info-label">模板名称(英)</div><div class="info-value">Default Investment Scope Template</div></div>
+          <div class="info-item"><div class="info-label">模板名称(繁)</div><div class="info-value">默認投資範圍模板</div></div>
+          <div class="info-item"><div class="info-label">市场</div><div class="info-value">A股</div></div>
+          <div class="info-item"><div class="info-label">是否全市场</div><div class="info-value">是</div></div>
+          <div class="info-item"><div class="info-label">默认集中度限制</div><div class="info-value">100%</div></div>
+        </div>
+        <section class="priority-strip" aria-label="规则优先级">
+          <span class="priority-label">规则优先级</span>
+          <span class="priority-rule">不可投资股票</span><span class="priority-arrow">›</span>
+          <span class="priority-rule">个股集中度</span><span class="priority-arrow">›</span>
+          <span class="priority-rule">板块集中度</span><span class="priority-arrow">›</span>
+          <span class="priority-rule">默认集中度</span>
+        </section>
+      </section>
+
+      <section class="panel" id="board-section" aria-labelledby="board-section-title">
+        <div class="panel-header">
+          <div class="panel-title-group"><h2 id="board-section-title">板块集中度</h2></div>
+          <div class="actions">
+            <button class="button primary" id="add-board-button" type="button"><span class="button-icon">＋</span>新增板块集中度</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table id="board-table">
+            <thead>
+              <tr><th>上市板块</th><th class="col-market">市场</th><th class="col-limit">集中度限制</th><th class="col-action">操作</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel" id="individual-section" aria-labelledby="individual-title">
+        <div class="panel-header">
+          <div class="panel-title-group"><h2 id="individual-title">个股集中度</h2></div>
+          <div class="actions">
+            <button class="button" type="button" data-download="individual"><span class="button-icon">↓</span>下载模板</button>
+            <button class="button" id="upload-individual-button" type="button"><span class="button-icon">↑</span>批量上传股票</button>
+            <input class="visually-hidden" id="individual-upload" type="file" accept=".csv,.xls,.xlsx">
+            <button class="button primary" id="add-individual-button" type="button"><span class="button-icon">＋</span>新增个股规则</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table id="individual-table">
+            <thead>
+              <tr><th class="col-code">股票代码</th><th>股票名称</th><th class="col-market">市场</th><th class="col-limit">集中度限制</th><th class="col-action">操作</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel" id="blocked-section" aria-labelledby="blocked-title">
+        <div class="panel-header">
+          <div class="panel-title-group"><h2 id="blocked-title">不可投资股票</h2></div>
+          <div class="actions">
+            <button class="button" type="button" data-download="blocked"><span class="button-icon">↓</span>下载模板</button>
+            <button class="button" id="upload-blocked-button" type="button"><span class="button-icon">↑</span>批量上传股票</button>
+            <input class="visually-hidden" id="blocked-upload" type="file" accept=".csv,.xls,.xlsx">
+            <button class="button primary" id="add-blocked-button" type="button"><span class="button-icon">＋</span>新增不可投资股票</button>
+          </div>
+        </div>
+        <div class="table-wrap" id="blocked-table-wrap"></div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="board-dialog" aria-labelledby="board-dialog-title">
+    <form id="board-form" novalidate>
+      <div class="dialog-header">
+        <h3 class="dialog-title" id="board-dialog-title">新增板块集中度</h3>
+        <button class="close-button" type="button" data-close="board-dialog" aria-label="关闭">×</button>
+      </div>
+      <div class="dialog-body">
+        <div class="form-field">
+          <label class="field-label" for="board-name"><span class="required">*</span>上市板块</label>
+          <select class="control" id="board-name" required>
+            <option value="">请选择</option>
+            <option value="科创板">科创板</option>
+            <option value="创业板">创业板</option>
+          </select>
+          <div class="field-hint field-error" id="board-name-error" aria-live="polite"></div>
+        </div>
+        <div class="form-field">
+          <label class="field-label" for="board-limit"><span class="required">*</span>集中度限制</label>
+          <div class="input-suffix">
+            <input class="control" id="board-limit" inputmode="decimal" autocomplete="off" placeholder="请输入 0-100 的数值">
+            <span class="suffix">%</span>
+          </div>
+          <div class="field-hint" id="board-limit-hint">支持最多 4 位小数</div>
+          <div class="field-hint field-error" id="board-limit-error" aria-live="polite"></div>
+        </div>
+      </div>
+      <div class="dialog-footer">
+        <button class="button secondary" type="button" data-close="board-dialog">取消</button>
+        <button class="button primary" type="submit">确定</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="individual-dialog" aria-labelledby="individual-dialog-title">
+    <form id="individual-form" novalidate>
+      <div class="dialog-header">
+        <h3 class="dialog-title" id="individual-dialog-title">新增个股规则</h3>
+        <button class="close-button" type="button" data-close="individual-dialog" aria-label="关闭">×</button>
+      </div>
+      <div class="dialog-body">
+        <div class="form-field">
+          <label class="field-label" for="stock-code"><span class="required">*</span>股票代码</label>
+          <input class="control" id="stock-code" maxlength="6" inputmode="numeric" placeholder="请输入 6 位股票代码">
+        </div>
+        <div class="form-field">
+          <label class="field-label" for="stock-name"><span class="required">*</span>股票名称</label>
+          <input class="control" id="stock-name" placeholder="请输入股票名称">
+        </div>
+        <div class="form-field">
+          <label class="field-label" for="stock-market"><span class="required">*</span>市场</label>
+          <select class="control" id="stock-market"><option value="SSE">SSE</option><option value="SZSE">SZSE</option></select>
+        </div>
+        <div class="form-field">
+          <label class="field-label" for="stock-limit"><span class="required">*</span>集中度限制</label>
+          <div class="input-suffix"><input class="control" id="stock-limit" inputmode="decimal" placeholder="请输入"><span class="suffix">%</span></div>
+          <div class="field-hint field-error" id="stock-error" aria-live="polite"></div>
+        </div>
+      </div>
+      <div class="dialog-footer">
+        <button class="button secondary" type="button" data-close="individual-dialog">取消</button>
+        <button class="button primary" type="submit">确定</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="blocked-dialog" aria-labelledby="blocked-dialog-title">
+    <form id="blocked-form" novalidate>
+      <div class="dialog-header">
+        <h3 class="dialog-title" id="blocked-dialog-title">新增不可投资股票</h3>
+        <button class="close-button" type="button" data-close="blocked-dialog" aria-label="关闭">×</button>
+      </div>
+      <div class="dialog-body">
+        <div class="form-field">
+          <label class="field-label" for="blocked-code"><span class="required">*</span>股票代码</label>
+          <input class="control" id="blocked-code" maxlength="6" inputmode="numeric" placeholder="请输入 6 位股票代码">
+        </div>
+        <div class="form-field">
+          <label class="field-label" for="blocked-name"><span class="required">*</span>股票名称</label>
+          <input class="control" id="blocked-name" placeholder="请输入股票名称">
+        </div>
+        <div class="form-field">
+          <label class="field-label" for="blocked-market"><span class="required">*</span>市场</label>
+          <select class="control" id="blocked-market"><option value="SSE">SSE</option><option value="SZSE">SZSE</option></select>
+          <div class="field-hint field-error" id="blocked-error" aria-live="polite"></div>
+        </div>
+      </div>
+      <div class="dialog-footer">
+        <button class="button secondary" type="button" data-close="blocked-dialog">取消</button>
+        <button class="button primary" type="submit">确定</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="confirm-dialog" aria-labelledby="confirm-dialog-title">
+    <div class="dialog-header">
+      <h3 class="dialog-title" id="confirm-dialog-title">确认删除</h3>
+      <button class="close-button" type="button" data-close="confirm-dialog" aria-label="关闭">×</button>
+    </div>
+    <div class="dialog-body"><p class="confirm-copy" id="confirm-copy"></p></div>
+    <div class="dialog-footer">
+      <button class="button secondary" type="button" data-close="confirm-dialog">取消</button>
+      <button class="button danger" id="confirm-action" type="button">确认删除</button>
+    </div>
+  </dialog>
+
+  <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
+
+  <script>
+    (() => {
+      const state = {
+        boards: [{ name: '科创板', market: 'SSE', limit: '30.0000' }],
+        stocks: [{ code: '688981', name: '中芯国际', market: 'SSE', limit: '20.0000' }],
+        blocked: [],
+        boardMode: 'add',
+        editingBoard: '',
+        confirmAction: null,
+      };
+
+      const boardMarkets = { '科创板': 'SSE', '创业板': 'SZSE' };
+      const $ = (selector, root = document) => root.querySelector(selector);
+      const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+
+      function escapeHtml(value) {
+        return String(value).replace(/[&<>'"]/g, (char) => ({
+          '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+        })[char]);
+      }
+
+      function displayPercent(value) {
+        return `${Number(value).toFixed(4).replace(/\.0+$/, '').replace(/(\.\d*?)0+$/, '$1')}%`;
+      }
+
+      function showToast(message) {
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.innerHTML = `<span class="toast-mark">✓</span><span>${escapeHtml(message)}</span>`;
+        $('#toast-region').appendChild(toast);
+        window.setTimeout(() => toast.remove(), 2200);
+      }
+
+      function renderBoards() {
+        const tbody = $('#board-table tbody');
+        tbody.innerHTML = state.boards.map((item) => `
+          <tr>
+            <td>${escapeHtml(item.name)}</td>
+            <td>${escapeHtml(item.market)}</td>
+            <td>${displayPercent(item.limit)}</td>
+            <td>
+              <button class="text-button" type="button" data-edit-board="${escapeHtml(item.name)}" aria-label="编辑${escapeHtml(item.name)}">编辑</button>
+              <button class="text-button delete" type="button" data-delete-board="${escapeHtml(item.name)}" aria-label="删除${escapeHtml(item.name)}">删除</button>
+            </td>
+          </tr>
+        `).join('');
+
+        const addButton = $('#add-board-button');
+        addButton.disabled = state.boards.length >= 2;
+        addButton.title = addButton.disabled ? '科创板和创业板均已配置' : '';
+      }
+
+      function renderStocks() {
+        $('#individual-table tbody').innerHTML = state.stocks.length ? state.stocks.map((item) => `
+          <tr>
+            <td>${escapeHtml(item.code)}</td>
+            <td>${escapeHtml(item.name)}</td>
+            <td>${escapeHtml(item.market)}</td>
+            <td>${displayPercent(item.limit)}</td>
+            <td><button class="text-button delete" type="button" data-delete-stock="${escapeHtml(item.code)}">删除</button></td>
+          </tr>
+        `).join('') : '<tr><td colspan="5" style="height:112px;text-align:center;color:#98a2b3">暂无数据</td></tr>';
+      }
+
+      function renderBlocked() {
+        const wrap = $('#blocked-table-wrap');
+        if (!state.blocked.length) {
+          wrap.innerHTML = '<div class="empty-state"><span class="empty-icon" aria-hidden="true"></span><span>暂无数据</span></div>';
+          return;
+        }
+        wrap.innerHTML = `
+          <table id="blocked-table">
+            <thead><tr><th class="col-code">股票代码</th><th>股票名称</th><th class="col-market">市场</th><th class="col-action">操作</th></tr></thead>
+            <tbody>${state.blocked.map((item) => `
+              <tr><td>${escapeHtml(item.code)}</td><td>${escapeHtml(item.name)}</td><td>${escapeHtml(item.market)}</td><td><button class="text-button delete" type="button" data-delete-blocked="${escapeHtml(item.code)}">删除</button></td></tr>
+            `).join('')}</tbody>
+          </table>`;
+      }
+
+      function clearBoardErrors() {
+        $('#board-name-error').textContent = '';
+        $('#board-limit-error').textContent = '';
+      }
+
+      function openBoardDialog(mode, boardName = '') {
+        state.boardMode = mode;
+        state.editingBoard = boardName;
+        const title = mode === 'edit' ? '编辑板块集中度' : '新增板块集中度';
+        $('#board-dialog-title').textContent = title;
+        const select = $('#board-name');
+        const limit = $('#board-limit');
+        clearBoardErrors();
+
+        $$('#board-name option').forEach((option) => {
+          option.disabled = option.value ? state.boards.some((item) => item.name === option.value) : false;
+        });
+
+        if (mode === 'edit') {
+          const item = state.boards.find((board) => board.name === boardName);
+          select.disabled = false;
+          $$('#board-name option').forEach((option) => { option.disabled = false; });
+          select.value = item.name;
+          select.disabled = true;
+          limit.value = item.limit;
+        } else {
+          select.disabled = false;
+          select.value = '';
+          limit.value = '';
+        }
+        $('#board-dialog').showModal();
+      }
+
+      function validateLimit(value, errorTarget) {
+        const trimmed = value.trim();
+        if (!trimmed) {
+          errorTarget.textContent = '请输入集中度限制';
+          return false;
+        }
+        if (!/^\d+(\.\d+)?$/.test(trimmed)) {
+          errorTarget.textContent = '请输入有效数值';
+          return false;
+        }
+        if (/\.\d{5,}$/.test(trimmed)) {
+          errorTarget.textContent = '最多支持 4 位小数';
+          return false;
+        }
+        const number = Number(trimmed);
+        if (number <= 0) {
+          errorTarget.textContent = '集中度限制必须大于 0%';
+          return false;
+        }
+        if (number > 100) {
+          errorTarget.textContent = '集中度限制不能超过 100%';
+          return false;
+        }
+        errorTarget.textContent = '';
+        return true;
+      }
+
+      function requestConfirmation(title, copy, action, actionLabel = '确认删除') {
+        $('#confirm-dialog-title').textContent = title;
+        $('#confirm-copy').innerHTML = copy;
+        $('#confirm-action').textContent = actionLabel;
+        state.confirmAction = action;
+        $('#confirm-dialog').showModal();
+      }
+
+      function downloadTemplate(kind) {
+        const isIndividual = kind === 'individual';
+        const rows = isIndividual
+          ? ['股票代码,股票名称,市场,集中度限制(%)', '688981,中芯国际,SSE,20']
+          : ['股票代码,股票名称,市场', '000001,平安银行,SZSE'];
+        const blob = new Blob(['\ufeff' + rows.join('\n')], { type: 'text/csv;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const anchor = document.createElement('a');
+        anchor.href = url;
+        anchor.download = isIndividual ? '个股集中度导入模板.csv' : '不可投资股票导入模板.csv';
+        anchor.click();
+        URL.revokeObjectURL(url);
+        showToast('模板已下载');
+      }
+
+      $('#board-form').addEventListener('submit', (event) => {
+        event.preventDefault();
+        clearBoardErrors();
+        const boardName = $('#board-name').value;
+        const limitValue = $('#board-limit').value;
+        let valid = true;
+        if (!boardName) {
+          $('#board-name-error').textContent = '请选择上市板块';
+          valid = false;
+        }
+        if (!validateLimit(limitValue, $('#board-limit-error'))) valid = false;
+        if (!valid) return;
+
+        if (state.boardMode === 'add') {
+          if (state.boards.some((item) => item.name === boardName)) {
+            $('#board-name-error').textContent = '该板块已配置集中度';
+            return;
+          }
+          state.boards.push({ name: boardName, market: boardMarkets[boardName], limit: Number(limitValue).toFixed(4) });
+          showToast('板块集中度新增成功');
+        } else {
+          const item = state.boards.find((board) => board.name === state.editingBoard);
+          item.limit = Number(limitValue).toFixed(4);
+          showToast('板块集中度更新成功');
+        }
+        $('#board-dialog').close();
+        renderBoards();
+      });
+
+      $('#individual-form').addEventListener('submit', (event) => {
+        event.preventDefault();
+        const code = $('#stock-code').value.trim();
+        const name = $('#stock-name').value.trim();
+        const limit = $('#stock-limit').value.trim();
+        const error = $('#stock-error');
+        if (!/^\d{6}$/.test(code) || !name) {
+          error.textContent = '请完整填写 6 位股票代码和股票名称';
+          return;
+        }
+        if (!validateLimit(limit, error)) return;
+        if (state.stocks.some((item) => item.code === code)) {
+          error.textContent = '该股票已配置个股集中度';
+          return;
+        }
+        state.stocks.push({ code, name, market: $('#stock-market').value, limit: Number(limit).toFixed(4) });
+        $('#individual-dialog').close();
+        renderStocks();
+        showToast('个股规则新增成功');
+      });
+
+      $('#blocked-form').addEventListener('submit', (event) => {
+        event.preventDefault();
+        const code = $('#blocked-code').value.trim();
+        const name = $('#blocked-name').value.trim();
+        if (!/^\d{6}$/.test(code) || !name) {
+          $('#blocked-error').textContent = '请完整填写 6 位股票代码和股票名称';
+          return;
+        }
+        if (state.blocked.some((item) => item.code === code)) {
+          $('#blocked-error').textContent = '该股票已在不可投资列表中';
+          return;
+        }
+        state.blocked.push({ code, name, market: $('#blocked-market').value });
+        $('#blocked-dialog').close();
+        renderBlocked();
+        showToast('不可投资股票新增成功');
+      });
+
+      document.addEventListener('click', (event) => {
+        const target = event.target.closest('button');
+        if (!target) return;
+
+        if (target.id === 'add-board-button') openBoardDialog('add');
+        if (target.dataset.editBoard) openBoardDialog('edit', target.dataset.editBoard);
+        if (target.dataset.deleteBoard) {
+          const name = target.dataset.deleteBoard;
+          requestConfirmation(
+            '删除板块集中度',
+            `确认删除 <strong>${escapeHtml(name)}</strong> 的集中度规则吗？删除后，该板块股票将继续按个股规则或默认集中度执行。`,
+            () => {
+              state.boards = state.boards.filter((item) => item.name !== name);
+              renderBoards();
+              showToast('板块集中度已删除');
+            }
+          );
+        }
+        if (target.id === 'add-individual-button') {
+          $('#individual-form').reset();
+          $('#stock-error').textContent = '';
+          $('#individual-dialog').showModal();
+        }
+        if (target.dataset.deleteStock) {
+          const code = target.dataset.deleteStock;
+          requestConfirmation('删除个股规则', `确认删除股票 <strong>${escapeHtml(code)}</strong> 的集中度规则吗？`, () => {
+            state.stocks = state.stocks.filter((item) => item.code !== code);
+            renderStocks();
+            showToast('个股规则已删除');
+          });
+        }
+        if (target.id === 'add-blocked-button') {
+          $('#blocked-form').reset();
+          $('#blocked-error').textContent = '';
+          $('#blocked-dialog').showModal();
+        }
+        if (target.dataset.deleteBlocked) {
+          const code = target.dataset.deleteBlocked;
+          requestConfirmation('删除不可投资股票', `确认将股票 <strong>${escapeHtml(code)}</strong> 移出不可投资列表吗？`, () => {
+            state.blocked = state.blocked.filter((item) => item.code !== code);
+            renderBlocked();
+            showToast('不可投资股票已删除');
+          });
+        }
+        if (target.dataset.download) downloadTemplate(target.dataset.download);
+        if (target.id === 'upload-individual-button') $('#individual-upload').click();
+        if (target.id === 'upload-blocked-button') $('#blocked-upload').click();
+        if (target.id === 'edit-template') showToast('基础信息已进入编辑状态（评审示意）');
+        if (target.id === 'clear-template') {
+          requestConfirmation('清空模板', '确认清空当前模板中的板块、个股和不可投资股票规则吗？此操作仅作用于当前 Demo。', () => {
+            state.boards = [];
+            state.stocks = [];
+            state.blocked = [];
+            renderBoards(); renderStocks(); renderBlocked();
+            showToast('模板规则已清空');
+          }, '确认清空');
+        }
+        if (target.dataset.close) document.getElementById(target.dataset.close).close();
+      });
+
+      $('#confirm-action').addEventListener('click', () => {
+        if (typeof state.confirmAction === 'function') state.confirmAction();
+        state.confirmAction = null;
+        $('#confirm-dialog').close();
+      });
+
+      for (const [inputId, label] of [['individual-upload', '个股集中度'], ['blocked-upload', '不可投资股票']]) {
+        document.getElementById(inputId).addEventListener('change', (event) => {
+          const file = event.target.files[0];
+          if (file) showToast(`${label}文件已选择：${file.name}`);
+          event.target.value = '';
+        });
+      }
+
+      $$('dialog').forEach((dialog) => {
+        dialog.addEventListener('click', (event) => {
+          if (event.target === dialog) dialog.close();
+        });
+      });
+
+      renderBoards();
+      renderStocks();
+      renderBlocked();
+    })();
+  </script>
+</body>
+</html>
