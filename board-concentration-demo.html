@@ -384,6 +384,67 @@
       background: #f2f4f7;
     }
 
+    .combobox { position: relative; }
+
+    .combobox .control { padding-right: 38px; }
+
+    .combobox-chevron {
+      position: absolute;
+      top: 11px;
+      right: 13px;
+      color: #667085;
+      pointer-events: none;
+      transition: transform 120ms ease;
+    }
+
+    .combobox:has(.combobox-list:not([hidden])) .combobox-chevron { transform: rotate(180deg); }
+
+    .combobox-list {
+      position: absolute;
+      z-index: 20;
+      top: calc(100% + 5px);
+      left: 0;
+      width: 100%;
+      max-height: 226px;
+      padding: 4px 0;
+      overflow-y: auto;
+      background: #fff;
+      border: 1px solid #d0d5dd;
+      border-radius: 4px;
+      box-shadow: 0 8px 22px rgba(16, 24, 40, 0.14);
+    }
+
+    .combobox-list[hidden] { display: none; }
+
+    .combobox-option {
+      width: 100%;
+      min-height: 46px;
+      display: grid;
+      grid-template-columns: 72px minmax(0, 1fr) 54px;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 12px;
+      color: #344054;
+      background: #fff;
+      border: 0;
+      text-align: left;
+    }
+
+    .combobox-option:hover,
+    .combobox-option.is-active {
+      background: var(--blue-soft);
+    }
+
+    .option-code { color: #1d2939; font-variant-numeric: tabular-nums; }
+    .option-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .option-market { color: var(--text-muted); font-size: 12px; text-align: right; }
+
+    .combobox-empty {
+      padding: 18px 12px;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
     .input-suffix {
       display: grid;
       grid-template-columns: 1fr 46px;
@@ -625,20 +686,17 @@
       <div class="dialog-body">
         <div class="form-field">
           <label class="field-label" for="stock-code"><span class="required">*</span>股票代码</label>
-          <input class="control" id="stock-code" maxlength="6" inputmode="numeric" placeholder="请输入 6 位股票代码">
-        </div>
-        <div class="form-field">
-          <label class="field-label" for="stock-name"><span class="required">*</span>股票名称</label>
-          <input class="control" id="stock-name" placeholder="请输入股票名称">
-        </div>
-        <div class="form-field">
-          <label class="field-label" for="stock-market"><span class="required">*</span>市场</label>
-          <select class="control" id="stock-market"><option value="SSE">SSE</option><option value="SZSE">SZSE</option></select>
+          <div class="combobox" id="stock-combobox">
+            <input class="control" id="stock-code" role="combobox" aria-autocomplete="list" aria-controls="stock-options" aria-expanded="false" autocomplete="off" placeholder="输入股票代码或名称搜索">
+            <span class="combobox-chevron" aria-hidden="true">▾</span>
+            <div class="combobox-list" id="stock-options" role="listbox" hidden></div>
+          </div>
+          <div class="field-hint field-error" id="stock-code-error" aria-live="polite"></div>
         </div>
         <div class="form-field">
           <label class="field-label" for="stock-limit"><span class="required">*</span>集中度限制</label>
           <div class="input-suffix"><input class="control" id="stock-limit" inputmode="decimal" placeholder="请输入"><span class="suffix">%</span></div>
-          <div class="field-hint field-error" id="stock-error" aria-live="polite"></div>
+          <div class="field-hint field-error" id="stock-limit-error" aria-live="polite"></div>
         </div>
       </div>
       <div class="dialog-footer">
@@ -698,10 +756,21 @@
         blocked: [],
         boardMode: 'add',
         editingBoard: '',
+        selectedStock: null,
+        stockMatches: [],
+        stockActiveIndex: -1,
         confirmAction: null,
       };
 
       const boardMarkets = { '科创板': 'SSE', '创业板': 'SZSE' };
+      const quoteStocks = [
+        { code: '000001', name: '平安银行', market: 'SZSE' },
+        { code: '300059', name: '东方财富', market: 'SZSE' },
+        { code: '300750', name: '宁德时代', market: 'SZSE' },
+        { code: '600519', name: '贵州茅台', market: 'SSE' },
+        { code: '688041', name: '海光信息', market: 'SSE' },
+        { code: '688981', name: '中芯国际', market: 'SSE' },
+      ];
       const $ = (selector, root = document) => root.querySelector(selector);
       const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
 
@@ -752,6 +821,60 @@
             <td><button class="text-button delete" type="button" data-delete-stock="${escapeHtml(item.code)}">删除</button></td>
           </tr>
         `).join('') : '<tr><td colspan="5" style="height:112px;text-align:center;color:#98a2b3">暂无数据</td></tr>';
+      }
+
+      function closeStockOptions() {
+        $('#stock-options').hidden = true;
+        $('#stock-code').setAttribute('aria-expanded', 'false');
+        $('#stock-code').removeAttribute('aria-activedescendant');
+        state.stockActiveIndex = -1;
+      }
+
+      function updateActiveStockOption() {
+        const options = $$('.combobox-option', $('#stock-options'));
+        options.forEach((option, index) => {
+          const active = index === state.stockActiveIndex;
+          option.classList.toggle('is-active', active);
+          option.setAttribute('aria-selected', String(active));
+        });
+        const activeOption = options[state.stockActiveIndex];
+        if (activeOption) {
+          $('#stock-code').setAttribute('aria-activedescendant', activeOption.id);
+          activeOption.scrollIntoView({ block: 'nearest' });
+        } else {
+          $('#stock-code').removeAttribute('aria-activedescendant');
+        }
+      }
+
+      function renderStockOptions(query = '') {
+        const normalizedQuery = query.trim().toLowerCase();
+        state.stockMatches = quoteStocks.filter((stock) => {
+          const notConfigured = !state.stocks.some((item) => item.code === stock.code);
+          const matches = !normalizedQuery
+            || stock.code.includes(normalizedQuery)
+            || stock.name.toLowerCase().includes(normalizedQuery);
+          return notConfigured && matches;
+        });
+        state.stockActiveIndex = -1;
+
+        const list = $('#stock-options');
+        list.innerHTML = state.stockMatches.length ? state.stockMatches.map((stock, index) => `
+          <button class="combobox-option" id="stock-option-${index}" type="button" role="option" aria-selected="false" data-stock-option="${escapeHtml(stock.code)}">
+            <span class="option-code">${escapeHtml(stock.code)}</span>
+            <span class="option-name">${escapeHtml(stock.name)}</span>
+            <span class="option-market">${escapeHtml(stock.market)}</span>
+          </button>
+        `).join('') : '<div class="combobox-empty">暂无匹配股票</div>';
+        list.hidden = false;
+        $('#stock-code').setAttribute('aria-expanded', 'true');
+      }
+
+      function selectStock(stock) {
+        if (!stock) return;
+        state.selectedStock = stock;
+        $('#stock-code').value = stock.code;
+        $('#stock-code-error').textContent = '';
+        closeStockOptions();
       }
 
       function renderBlocked() {
@@ -884,20 +1007,26 @@
       $('#individual-form').addEventListener('submit', (event) => {
         event.preventDefault();
         const code = $('#stock-code').value.trim();
-        const name = $('#stock-name').value.trim();
         const limit = $('#stock-limit').value.trim();
-        const error = $('#stock-error');
-        if (!/^\d{6}$/.test(code) || !name) {
-          error.textContent = '请完整填写 6 位股票代码和股票名称';
+        const codeError = $('#stock-code-error');
+        const limitError = $('#stock-limit-error');
+        const quote = state.selectedStock?.code === code
+          ? state.selectedStock
+          : quoteStocks.find((stock) => stock.code === code);
+
+        codeError.textContent = '';
+        if (!quote) {
+          codeError.textContent = '请从下拉列表选择股票';
           return;
         }
-        if (!validateLimit(limit, error)) return;
+        if (!validateLimit(limit, limitError)) return;
         if (state.stocks.some((item) => item.code === code)) {
-          error.textContent = '该股票已配置个股集中度';
+          codeError.textContent = '该股票已配置个股集中度';
           return;
         }
-        state.stocks.push({ code, name, market: $('#stock-market').value, limit: Number(limit).toFixed(4) });
+        state.stocks.push({ code: quote.code, name: quote.name, market: quote.market, limit: Number(limit).toFixed(4) });
         $('#individual-dialog').close();
+        closeStockOptions();
         renderStocks();
         showToast('个股规则新增成功');
       });
@@ -940,8 +1069,14 @@
         }
         if (target.id === 'add-individual-button') {
           $('#individual-form').reset();
-          $('#stock-error').textContent = '';
+          state.selectedStock = null;
+          $('#stock-code-error').textContent = '';
+          $('#stock-limit-error').textContent = '';
+          closeStockOptions();
           $('#individual-dialog').showModal();
+        }
+        if (target.dataset.stockOption) {
+          selectStock(quoteStocks.find((stock) => stock.code === target.dataset.stockOption));
         }
         if (target.dataset.deleteStock) {
           const code = target.dataset.deleteStock;
@@ -984,6 +1119,43 @@
         if (typeof state.confirmAction === 'function') state.confirmAction();
         state.confirmAction = null;
         $('#confirm-dialog').close();
+      });
+
+      $('#stock-code').addEventListener('focus', (event) => {
+        renderStockOptions(event.target.value);
+      });
+
+      $('#stock-code').addEventListener('input', (event) => {
+        state.selectedStock = null;
+        $('#stock-code-error').textContent = '';
+        renderStockOptions(event.target.value);
+      });
+
+      $('#stock-code').addEventListener('keydown', (event) => {
+        const listOpen = !$('#stock-options').hidden;
+        if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+          event.preventDefault();
+          if (!listOpen) renderStockOptions(event.currentTarget.value);
+          if (!state.stockMatches.length) return;
+          const direction = event.key === 'ArrowDown' ? 1 : -1;
+          const next = state.stockActiveIndex + direction;
+          state.stockActiveIndex = next < 0
+            ? state.stockMatches.length - 1
+            : next % state.stockMatches.length;
+          updateActiveStockOption();
+        }
+        if (event.key === 'Enter' && listOpen && state.stockActiveIndex >= 0) {
+          event.preventDefault();
+          selectStock(state.stockMatches[state.stockActiveIndex]);
+        }
+        if (event.key === 'Escape' && listOpen) {
+          event.preventDefault();
+          closeStockOptions();
+        }
+      });
+
+      document.addEventListener('click', (event) => {
+        if (!$('#stock-combobox').contains(event.target)) closeStockOptions();
       });
 
       for (const [inputId, label] of [['individual-upload', '个股集中度'], ['blocked-upload', '不可投资股票']]) {
