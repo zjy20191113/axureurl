@@ -1847,7 +1847,6 @@
                 <select id="direction-filter" class="control">
                   <option value="">全部方向</option>
                   <option>多头</option>
-                  <option>空头</option>
                 </select>
               </label>
               <label class="field">
@@ -1976,7 +1975,7 @@
           <div class="panel-header"><h2 id="timeline-title" class="panel-title">生命周期时间线</h2><span class="page-subtitle">仅展示开仓、加仓、减仓和平仓事件</span></div>
           <div class="timeline-scroll">
             <table id="timeline-table" class="compact-table">
-              <thead><tr><th>合约编号</th><th>操作用户</th><th>操作时间</th><th>生命周期事件</th><th>成交金额</th><th>成交数量</th></tr></thead>
+              <thead><tr><th>事件编号</th><th>操作用户</th><th>操作时间</th><th>生命周期事件</th><th>成交金额</th><th>成交数量</th></tr></thead>
               <tbody id="timeline"></tbody>
             </table>
           </div>
@@ -2011,7 +2010,7 @@
               <div class="section-content">
                 <div id="fees-summary" class="section-summary"></div>
                 <div class="compact-table-scroll">
-                  <table id="fees-table" class="compact-table"><thead><tr><th>关联事件</th><th>订单号</th><th>费用名称</th><th>结算基数</th><th>预估费率</th><th>费率</th><th>标的币种费用</th><th>结算汇率</th><th>账户币种费用</th><th>结算状态</th></tr></thead><tbody></tbody></table>
+                  <table id="fees-table" class="compact-table"><thead><tr><th>关联事件</th><th>订单号</th><th>费用名称</th><th>结算基数</th><th>预估汇率</th><th>费率</th><th>标的币种费用</th><th>结算汇率</th><th>账户币种费用</th></tr></thead><tbody></tbody></table>
                 </div>
               </div>
             </section>
@@ -2038,7 +2037,6 @@
                   <div class="interest-panel-title">计息记录</div>
                   <div class="interest-tabs" aria-label="计息记录类型">
                     <span class="interest-tab is-active">融资计息</span>
-                    <span class="interest-tab">融券计息</span>
                   </div>
                   <div class="compact-table-scroll">
                     <table id="interest-table" class="compact-table"><thead><tr><th>#</th><th>币种</th><th>扣息金额</th><th>计息方式</th><th>扣除方式</th><th>状态</th><th>计息金额</th><th>年化利率</th><th>保留小数</th><th>舍入方式</th><th>计息时间</th></tr></thead><tbody></tbody></table>
@@ -2055,7 +2053,7 @@
               <div class="section-content">
                 <div id="margin-summary" class="section-summary"></div>
                 <div class="compact-table-scroll">
-                  <table id="margin-table" class="compact-table"><thead><tr><th>关联事件</th><th>事件前名义本金</th><th>事件后名义本金</th><th>保证金比例</th><th>本次增加</th><th>本次释放</th><th>事件后占用</th><th>处理状态</th></tr></thead><tbody></tbody></table>
+                  <table id="margin-table" class="compact-table"><thead><tr><th>关联事件</th><th>事件前名义本金</th><th>事件后名义本金</th><th>保证金比例</th><th>本次增加</th><th>本次释放</th><th>事件后占用</th></tr></thead><tbody></tbody></table>
                 </div>
               </div>
             </section>
@@ -2233,7 +2231,7 @@
         startDate: '2026-08-12', maturityDate: '2026-11-12', term: '3个月', originalNotional: 26652
       },
       {
-        id: 'TRS-C-20260805-0004', status: '已终止', dataStatus: '正常', market: 'SZSE', symbol: '000001.SZ', name: '平安银行', direction: '空头',
+        id: 'TRS-C-20260805-0004', status: '已终止', dataStatus: '正常', market: 'SZSE', symbol: '000001.SZ', name: '平安银行', direction: '多头',
         customer: '祝明耀', customerEn: 'Caro', account: 'T80000161', accountCurrency: 'USD', underlyingCurrency: 'CNY',
         quantity: 0, cost: 11.34, marketValue: 0, notional: 0, cnyNotional: 0, unrealized: 0, realized: -612.44,
         fees: 94.26, accruedInterest: 324.80, deductedInterest: 280, margin: 2066.31, cnyMargin: 14800,
@@ -2249,7 +2247,7 @@
         startDate: '2026-08-08', maturityDate: '2026-11-08', term: '3个月', originalNotional: 72844
       },
       {
-        id: 'TRS-C-20260814-0006', status: '已提前终止', dataStatus: '正常', market: 'HKEX', symbol: '00700.HK', name: '腾讯控股', direction: '空头',
+        id: 'TRS-C-20260814-0006', status: '已提前终止', dataStatus: '正常', market: 'HKEX', symbol: '00700.HK', name: '腾讯控股', direction: '多头',
         customer: '徐徐', customerEn: 'Xu', account: 'T80000318', accountCurrency: 'HKD', underlyingCurrency: 'HKD',
         quantity: 0, cost: 598.40, marketValue: 0, notional: 0, cnyNotional: 0, unrealized: 0, realized: 3980,
         fees: 395.62, accruedInterest: 625.80, deductedInterest: 0, margin: 53856, cnyMargin: 49626,
@@ -2323,14 +2321,14 @@
     ];
 
     const sampleFees = [
-      { event: 'EVT-0001', order: 'ORD-20260803-0918', name: '交易佣金', basisType: 'amount', basis: 34800, estimatedRate: '0.1000%', rate: '0.1000%', underlyingFee: 34.80, exchangeRate: 1, accountFee: 34.80, status: '已结算' },
-      { event: 'EVT-0001', order: 'ORD-20260803-0918', name: '经手及监管费', basisType: 'amount', basis: 34800, estimatedRate: '0.0250%', rate: '0.0250%', underlyingFee: 8.70, exchangeRate: 1, accountFee: 8.70, status: '已结算' },
-      { event: 'EVT-0002', order: 'ORD-20260810-1002', name: '交易佣金', basisType: 'amount', basis: 18100, estimatedRate: '0.1000%', rate: '0.1000%', underlyingFee: 18.10, exchangeRate: 1, accountFee: 18.10, status: '已结算' },
-      { event: 'EVT-0002', order: 'ORD-20260810-1002', name: '股份交收费', basisType: 'shares', basis: 500, estimatedRate: 'HKD 0.0091 / 股', rate: 'HKD 0.0091 / 股', underlyingFee: 4.53, exchangeRate: 1, accountFee: 4.53, status: '已结算' },
-      { event: 'EVT-0003', order: 'ORD-20260818-1105', name: '券商最低收费补差', basisType: 'fixed', basis: null, estimatedRate: '-', rate: '固定金额', underlyingFee: 11.13, exchangeRate: 1, accountFee: 11.13, status: '已结算' },
-      { event: 'EVT-0003', order: 'ORD-20260818-1105', name: '经手及监管费', basisType: 'amount', basis: 11130, estimatedRate: '0.0250%', rate: '0.0250%', underlyingFee: 2.78, exchangeRate: 1, accountFee: 2.78, status: '已结算' },
-      { event: 'EVT-0005', order: 'ORD-20260825-1451', name: '交易佣金', basisType: 'amount', basis: 46320, estimatedRate: '0.1000%', rate: '0.1000%', underlyingFee: 46.32, exchangeRate: 1, accountFee: 46.32, status: '已结算' },
-      { event: 'EVT-0005', order: 'ORD-20260825-1451', name: '经手及监管费', basisType: 'amount', basis: 46320, estimatedRate: '0.0250%', rate: '0.0250%', underlyingFee: 11.58, exchangeRate: 1, accountFee: 11.58, status: '已结算' }
+      { event: 'EVT-0001', order: 'ORD-20260803-0918', name: '交易佣金', basisType: 'amount', basis: 34800, estimatedExchangeRate: 1, rate: '0.1000%', underlyingFee: 34.80, exchangeRate: 1, accountFee: 34.80 },
+      { event: 'EVT-0001', order: 'ORD-20260803-0918', name: '经手及监管费', basisType: 'amount', basis: 34800, estimatedExchangeRate: 1, rate: '0.0250%', underlyingFee: 8.70, exchangeRate: 1, accountFee: 8.70 },
+      { event: 'EVT-0002', order: 'ORD-20260810-1002', name: '交易佣金', basisType: 'amount', basis: 18100, estimatedExchangeRate: 1, rate: '0.1000%', underlyingFee: 18.10, exchangeRate: 1, accountFee: 18.10 },
+      { event: 'EVT-0002', order: 'ORD-20260810-1002', name: '股份交收费', basisType: 'shares', basis: 500, estimatedExchangeRate: 1, rate: 'HKD 0.0091 / 股', underlyingFee: 4.53, exchangeRate: 1, accountFee: 4.53 },
+      { event: 'EVT-0003', order: 'ORD-20260818-1105', name: '券商最低收费补差', basisType: 'fixed', basis: null, estimatedExchangeRate: 1, rate: '固定金额', underlyingFee: 11.13, exchangeRate: 1, accountFee: 11.13 },
+      { event: 'EVT-0003', order: 'ORD-20260818-1105', name: '经手及监管费', basisType: 'amount', basis: 11130, estimatedExchangeRate: 1, rate: '0.0250%', underlyingFee: 2.78, exchangeRate: 1, accountFee: 2.78 },
+      { event: 'EVT-0005', order: 'ORD-20260825-1451', name: '交易佣金', basisType: 'amount', basis: 46320, estimatedExchangeRate: 1, rate: '0.1000%', underlyingFee: 46.32, exchangeRate: 1, accountFee: 46.32 },
+      { event: 'EVT-0005', order: 'ORD-20260825-1451', name: '经手及监管费', basisType: 'amount', basis: 46320, estimatedExchangeRate: 1, rate: '0.0250%', underlyingFee: 11.58, exchangeRate: 1, accountFee: 11.58 }
     ];
 
     const sampleInterest = [
@@ -2343,17 +2341,16 @@
     ];
 
     const sampleMargins = [
-      ['EVT-0001 开仓', 0, 34800, '30.00%', 10440, 0, 10440, '已结算'],
-      ['EVT-0002 加仓', 34800, 52900, '30.00%', 5430, 0, 15870, '已结算'],
-      ['EVT-0003 减仓', 52900, 42320, '30.00%', 0, 3174, 12696, '已结算'],
-      ['修改杠杆比例', 42320, 42320, '30.00% → 25.00%', 0, 2116, 10580, '已结算'],
-      ['EVT-0005 平仓', 42320, 0, '25.00%', 0, 10580, 0, '已结算']
+      ['EVT-0001 开仓', 0, 34800, '30.00%', 10440, 0, 10440],
+      ['EVT-0002 加仓', 34800, 52900, '30.00%', 5430, 0, 15870],
+      ['EVT-0003 减仓', 52900, 42320, '30.00%', 0, 3174, 12696],
+      ['修改杠杆比例', 42320, 42320, '30.00% → 25.00%', 0, 2116, 10580],
+      ['EVT-0005 平仓', 42320, 0, '25.00%', 0, 10580, 0]
     ];
 
     const sampleValuations = [
       { date: '2026-08-25', status: '估值成功', quantity: 0, close: 38.60, marketValue: 0, cost: 0, unrealized: 0, realized: 3991.71, interest: 0, margin: 0 },
       { date: '2026-08-24', status: '估值成功', quantity: 1200, close: 38.10, marketValue: 45720, cost: 42320, unrealized: 3400, realized: 522.86, interest: 38.40, margin: 10580 },
-      { date: '2026-08-23', status: '估值失败', reason: '行情收盘价缺失' },
       { date: '2026-08-20', status: '估值成功', quantity: 1200, close: 37.85, marketValue: 45420, cost: 42320, unrealized: 3100, realized: 522.86, interest: 420.35, margin: 12696 },
       { date: '2026-08-18', status: '估值成功', quantity: 1200, close: 37.40, marketValue: 44880, cost: 42320, unrealized: 2560, realized: 522.86, interest: 285.35, margin: 12696 }
     ];
@@ -2733,15 +2730,13 @@
 
     function renderTimeline(events, contract) {
       const timelineEventTypes = new Set(['开仓', '加仓', '减仓', '平仓']);
-      const rows = events
-        .map((event, index) => ({ event, index }))
-        .filter(({ event }) => timelineEventTypes.has(event.type));
+      const rows = events.filter((event) => timelineEventTypes.has(event.type));
 
-      $('#timeline').innerHTML = rows.length ? rows.map(({ event, index }) => {
+      $('#timeline').innerHTML = rows.length ? rows.map((event, index) => {
         const quantity = Math.abs(event.delta);
         const amount = quantity * event.price;
         return `<tr>
-          <td class="number">${contract.id}</td>
+          <td class="number">${contract.id}-${index + 1}</td>
           <td>${event.operator}</td>
           <td class="number">${event.effectiveAt}</td>
           <td><span class="event-type" data-timeline-event-type="${event.type}">${event.type}</span></td>
@@ -2751,10 +2746,8 @@
       }).join('') : '<tr><td class="table-empty" colspan="6">暂无交易生命周期事件</td></tr>';
     }
 
-    function returnExchangeDirection(contract) {
-      return contract.direction === '空头'
-        ? '客户收取固定收益 / 客户支付浮动收益'
-        : '客户支付固定收益 / 客户收取浮动收益';
+    function returnExchangeDirection() {
+      return '客户支付固定收益 / 客户收取浮动收益';
     }
 
     function renderBasicInfo(contract) {
@@ -2816,12 +2809,11 @@
         name: '综合交易费用',
         basisType: 'amount',
         basis: Math.abs(contract.notional),
-        estimatedRate: '按费用套餐',
+        estimatedExchangeRate: contract.accountCurrency === contract.underlyingCurrency ? 1 : 0.92,
         rate: '按费用套餐',
         underlyingFee: contract.fees,
-        exchangeRate: 1,
-        accountFee: contract.fees,
-        status: isSettledContract(contract) ? '已结算' : '待结算'
+        exchangeRate: contract.accountCurrency === contract.underlyingCurrency ? 1 : 0.9216,
+        accountFee: contract.fees
       }];
       $('#fees-summary').innerHTML = [
         summaryItem('费用模板', '通用费用模板'),
@@ -2831,8 +2823,8 @@
       ].join('');
       $('#fees-table tbody').innerHTML = rows.map((row) => `<tr>
         <td>${row.event}</td><td><button class="text-action" type="button">${row.order}</button></td><td>${row.name}</td>
-        <td class="number" data-fee-basis="${row.basisType}">${formatFeeBasis(row, contract.underlyingCurrency)}</td><td class="number">${row.estimatedRate}</td><td class="number">${row.rate}</td>
-        <td class="number">${formatMoney(row.underlyingFee, contract.underlyingCurrency)}</td><td class="number">${formatNumber(row.exchangeRate, 6)}</td><td class="number">${formatMoney(row.accountFee, contract.accountCurrency)}</td><td><span class="status-badge ${row.status === '已结算' ? 'status-settled' : 'status-pending'}">${row.status}</span></td>
+        <td class="number" data-fee-basis="${row.basisType}">${formatFeeBasis(row, contract.underlyingCurrency)}</td><td class="number">${formatNumber(row.estimatedExchangeRate, 6)}</td><td class="number">${row.rate}</td>
+        <td class="number">${formatMoney(row.underlyingFee, contract.underlyingCurrency)}</td><td class="number">${formatNumber(row.exchangeRate, 6)}</td><td class="number">${formatMoney(row.accountFee, contract.accountCurrency)}</td>
       </tr>`).join('');
     }
 
@@ -2841,7 +2833,7 @@
       const fields = [
         ['市场', contract.market], ['标的代码', contract.symbol], ['标的名称', contract.name], ['证券类型', '股票'],
         ['交易币种', contract.underlyingCurrency], ['账户币种', contract.accountCurrency], ['最新参考价', formatMoney(latestPrice, contract.underlyingCurrency)], ['昨收价', formatMoney(Math.max(0, latestPrice - 0.28), contract.underlyingCurrency)],
-        ['最新估值汇率', contract.accountCurrency === contract.underlyingCurrency ? '1.000000' : '0.921600'], ['停牌状态', '正常交易'], ['退市状态', '否'],
+        ['最新估值汇率', contract.accountCurrency === contract.underlyingCurrency ? '1.000000' : '0.921600'], ['标的状态', '正常交易'],
         ['当前数量', formatNumber(contract.quantity, 0)], ['可用数量', formatNumber(contract.quantity, 0)], ['冻结数量', '0']
       ];
       $('#underlying-info').innerHTML = fields.map(([label, value]) => infoPair(label, value)).join('');
@@ -2882,7 +2874,7 @@
     }
 
     function renderMargin(contract) {
-      const rows = contract.id === 'TRS-C-20260803-0001' ? sampleMargins : [[`${state.currentEvents[0]?.id || 'EVT-0001'} 开仓`, 0, contract.notional, '30.00%', contract.margin, 0, contract.margin, isSettledContract(contract) ? '已结算' : '生效中']];
+      const rows = contract.id === 'TRS-C-20260803-0001' ? sampleMargins : [[`${state.currentEvents[0]?.id || 'EVT-0001'} 开仓`, 0, contract.notional, '30.00%', contract.margin, 0, contract.margin]];
       $('#margin-summary').innerHTML = [
         summaryItem('初始保证金', formatMoney(contract.id === 'TRS-C-20260803-0001' ? 10440 : contract.margin, contract.accountCurrency)),
         summaryItem('累计追加', formatMoney(contract.id === 'TRS-C-20260803-0001' ? 5430 : 0, contract.accountCurrency)),
@@ -2891,7 +2883,7 @@
       ].join('');
       $('#margin-table tbody').innerHTML = rows.map((row) => `<tr>
         <td>${row[0]}</td><td class="number">${formatMoney(row[1], contract.accountCurrency)}</td><td class="number">${formatMoney(row[2], contract.accountCurrency)}</td><td>${row[3]}</td>
-        <td class="number">${formatMoney(row[4], contract.accountCurrency)}</td><td class="number">${formatMoney(row[5], contract.accountCurrency)}</td><td class="number">${formatMoney(row[6], contract.accountCurrency)}</td><td><span class="status-badge ${row[7] === '已结算' ? 'status-settled' : 'status-active'}">${row[7]}</span></td>
+        <td class="number">${formatMoney(row[4], contract.accountCurrency)}</td><td class="number">${formatMoney(row[5], contract.accountCurrency)}</td><td class="number">${formatMoney(row[6], contract.accountCurrency)}</td>
       </tr>`).join('');
     }
 
@@ -2901,15 +2893,12 @@
         $('#valuation-table tbody').innerHTML = '<tr><td class="table-empty" colspan="11">当前日期范围内没有估值记录</td></tr>';
         return;
       }
-      $('#valuation-table tbody').innerHTML = rows.map((row, index) => {
-        if (row.status === '估值失败') return `<tr class="valuation-failed"><td>${row.date}</td><td><span class="status-badge status-pending">估值失败</span></td><td colspan="8">${row.reason}</td><td><button class="text-action" type="button" disabled>不可查看</button></td></tr>`;
-        return `<tr>
+      $('#valuation-table tbody').innerHTML = rows.map((row, index) => `<tr>
           <td>${row.date}</td><td><span class="status-badge status-settled">估值成功</span></td><td class="number">${formatNumber(row.quantity, 0)}</td><td class="number">${formatMoney(row.close, contract.underlyingCurrency)}</td>
           <td class="number">${formatMoney(row.marketValue, contract.underlyingCurrency)}</td><td class="number">${formatMoney(row.cost, contract.underlyingCurrency)}</td><td class="number ${signedClass(row.unrealized)}">${formatMoney(row.unrealized, contract.accountCurrency)}</td>
           <td class="number ${signedClass(row.realized)}">${formatMoney(row.realized, contract.accountCurrency)}</td><td class="number">${formatMoney(row.interest, contract.accountCurrency)}</td><td class="number">${formatMoney(row.margin, contract.accountCurrency)}</td>
           <td><button class="text-action" type="button" data-valuation-index="${index}" aria-label="查看 ${row.date} 估值报告">查看</button></td>
-        </tr>`;
-      }).join('');
+        </tr>`).join('');
     }
 
     function valuationTotalProfit(valuation) {
@@ -2924,8 +2913,7 @@
     function valuationRowsFor(contract) {
       const latestPrice = contract.quantity ? contract.marketValue / contract.quantity : contract.cost;
       return contract.id === 'TRS-C-20260803-0001' ? sampleValuations : [
-        { date: '2026-08-26', status: '估值成功', quantity: contract.quantity, close: latestPrice, marketValue: contract.marketValue, cost: contract.quantity * contract.cost, unrealized: contract.unrealized, realized: contract.realized, interest: contract.accruedInterest - contract.deductedInterest, margin: contract.margin },
-        { date: '2026-08-25', status: '估值失败', reason: '估值汇率尚未到达' }
+        { date: '2026-08-26', status: '估值成功', quantity: contract.quantity, close: latestPrice, marketValue: contract.marketValue, cost: contract.quantity * contract.cost, unrealized: contract.unrealized, realized: contract.realized, interest: contract.accruedInterest - contract.deductedInterest, margin: contract.margin }
       ];
     }
 
