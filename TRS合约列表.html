@@ -469,6 +469,137 @@
       border-color: var(--primary);
     }
 
+    .date-range-field {
+      position: relative;
+      grid-column: span 2;
+    }
+
+    .date-range-trigger {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      text-align: left;
+    }
+
+    .date-range-trigger:hover,
+    .date-range-trigger[aria-expanded="true"] {
+      border-color: var(--primary);
+    }
+
+    .date-range-trigger .icon {
+      color: var(--text-muted);
+    }
+
+    .date-range-popover {
+      position: absolute;
+      z-index: 120;
+      top: calc(100% + 6px);
+      left: 0;
+      width: 320px;
+      padding: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .date-range-calendar-header {
+      display: grid;
+      grid-template-columns: 32px minmax(0, 1fr) 32px;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .date-range-month {
+      color: #2b3748;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .date-range-calendar-header .icon-button {
+      width: 32px;
+      height: 32px;
+    }
+
+    .date-range-weekdays,
+    .date-range-days {
+      display: grid;
+      grid-template-columns: repeat(7, 36px);
+      justify-content: center;
+    }
+
+    .date-range-weekdays span {
+      height: 28px;
+      color: var(--text-muted);
+      text-align: center;
+      font-size: 12px;
+      line-height: 28px;
+    }
+
+    .date-range-day,
+    .date-range-day-placeholder {
+      width: 36px;
+      height: 34px;
+    }
+
+    .date-range-day {
+      position: relative;
+      padding: 0;
+      color: #344054;
+      background: transparent;
+      border: 0;
+      border-radius: var(--radius);
+      font-size: 12px;
+    }
+
+    .date-range-day:hover {
+      color: var(--primary);
+      background: var(--primary-soft);
+    }
+
+    .date-range-day.in-range {
+      color: #165db9;
+      background: #edf5ff;
+      border-radius: 0;
+    }
+
+    .date-range-day.range-start,
+    .date-range-day.range-end {
+      color: #fff;
+      background: var(--primary);
+      border-radius: var(--radius);
+      font-weight: 650;
+    }
+
+    .date-range-selection {
+      min-height: 30px;
+      margin-top: 8px;
+      padding: 7px 8px;
+      color: var(--text-secondary);
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius);
+      font-size: 12px;
+    }
+
+    .date-range-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border-light);
+    }
+
+    .date-range-footer-actions {
+      display: flex;
+      gap: 6px;
+    }
+
     .advanced-filters {
       display: contents;
     }
@@ -517,7 +648,7 @@
     }
 
     #contract-table {
-      min-width: 2380px;
+      min-width: 2532px;
       table-layout: fixed;
     }
 
@@ -589,6 +720,7 @@
     .w-direction { width: 76px; }
     .w-customer { width: 154px; }
     .w-account { width: 122px; }
+    .w-datetime { width: 152px; }
     .w-currency { width: 118px; }
     .w-number { width: 132px; }
     .w-risk { width: 100px; }
@@ -1608,6 +1740,7 @@
     <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
     <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
     <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></symbol>
     <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
     <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></symbol>
     <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.3 2.9 1.8 17a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 2.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></symbol>
@@ -1671,7 +1804,7 @@
           </div>
           <div class="page-actions">
             <button id="refresh-button" class="button" type="button"><svg class="icon"><use href="#i-refresh"></use></svg>刷新</button>
-            <button id="list-export" class="button" type="button"><svg class="icon"><use href="#i-download"></use></svg>导出</button>
+            <button id="list-export" class="button" type="button"><svg class="icon"><use href="#i-download"></use></svg>导出Excel</button>
           </div>
         </div>
 
@@ -1689,6 +1822,10 @@
               <label class="field">
                 <span class="field-label">客户</span>
                 <input id="customer-filter" class="control" type="search" placeholder="请输入客户名称">
+              </label>
+              <label class="field">
+                <span class="field-label">TRS账户号</span>
+                <input id="account-filter" class="control" type="search" placeholder="请输入TRS账户号">
               </label>
               <label class="field">
                 <span class="field-label">标的物</span>
@@ -1724,25 +1861,36 @@
                 </select>
               </label>
               <div class="advanced-filters">
-                <label class="field">
-                  <span class="field-label">开仓日期起</span>
-                  <input id="open-from-filter" class="control" type="date" value="2026-08-01">
-                </label>
-                <label class="field">
-                  <span class="field-label">开仓日期止</span>
-                  <input id="open-to-filter" class="control" type="date" value="2026-08-26">
-                </label>
-                <label class="field">
-                  <span class="field-label">TRS账户号</span>
-                  <input id="account-filter" class="control" type="text" placeholder="例如 T80000168">
-                </label>
+                <div class="field date-range-field">
+                  <span class="field-label">开仓日期</span>
+                  <button id="open-date-range" class="control date-range-trigger" type="button" aria-haspopup="dialog" aria-expanded="false">
+                    <span id="open-date-range-value">2026-08-01 至 2026-08-26</span>
+                    <svg class="icon" aria-hidden="true"><use href="#i-calendar"></use></svg>
+                  </button>
+                  <div id="open-date-range-popover" class="date-range-popover" role="dialog" aria-label="选择开仓日期区间" hidden>
+                    <div class="date-range-calendar-header">
+                      <button id="open-date-prev-month" class="icon-button" type="button" aria-label="上个月" title="上个月"><svg class="icon"><use href="#i-chevron-left"></use></svg></button>
+                      <div id="open-date-month" class="date-range-month"></div>
+                      <button id="open-date-next-month" class="icon-button" type="button" aria-label="下个月" title="下个月"><svg class="icon"><use href="#i-chevron-right"></use></svg></button>
+                    </div>
+                    <div class="date-range-weekdays" aria-hidden="true"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div>
+                    <div id="open-date-calendar" class="date-range-days"></div>
+                    <div id="open-date-selection" class="date-range-selection" aria-live="polite"></div>
+                    <div class="date-range-footer">
+                      <button id="open-date-clear" class="button ghost compact" type="button">清空</button>
+                      <div class="date-range-footer-actions">
+                        <button id="open-date-cancel" class="button compact" type="button">取消</button>
+                        <button id="open-date-confirm" class="button primary compact" type="button">确定</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <label class="field">
                   <span class="field-label">风险状态</span>
                   <select id="risk-filter" class="control">
                     <option value="">全部风险状态</option>
                     <option>安全</option>
-                    <option>预警</option>
-                    <option>追保</option>
+                    <option>触发风控线</option>
                   </select>
                 </label>
               </div>
@@ -1772,6 +1920,7 @@
                   <th class="w-underlying sticky-left-2">标的物</th>
                   <th class="w-status">合约状态</th>
                   <th class="w-direction">方向</th>
+                  <th class="w-datetime" data-col="openAt">开仓时间</th>
                   <th class="w-customer">客户</th>
                   <th class="w-account">TRS账户</th>
                   <th class="w-currency" data-col="currency">账户/标的币种</th>
@@ -1817,10 +1966,6 @@
                 <span id="detail-symbol" class="page-subtitle"></span>
               </div>
             </div>
-          </div>
-          <div class="page-actions">
-            <button id="detail-export" class="button" type="button"><svg class="icon"><use href="#i-download"></use></svg>导出合约</button>
-            <button id="settlement-button" class="button primary" type="button"><svg class="icon"><use href="#i-receipt"></use></svg>结算凭据</button>
           </div>
         </div>
 
@@ -1896,7 +2041,7 @@
                     <span class="interest-tab">融券计息</span>
                   </div>
                   <div class="compact-table-scroll">
-                    <table id="interest-table" class="compact-table"><thead><tr><th>#</th><th>币种</th><th>扣息金额</th><th>计息方式</th><th>扣除方式</th><th>状态</th><th>计息金额</th><th>年化利率</th><th>保留小数</th><th>舍入方式</th><th>退回状态</th><th>计息时间</th></tr></thead><tbody></tbody></table>
+                    <table id="interest-table" class="compact-table"><thead><tr><th>#</th><th>币种</th><th>扣息金额</th><th>计息方式</th><th>扣除方式</th><th>状态</th><th>计息金额</th><th>年化利率</th><th>保留小数</th><th>舍入方式</th><th>计息时间</th></tr></thead><tbody></tbody></table>
                   </div>
                 </div>
               </div>
@@ -1956,21 +2101,6 @@
       </section>
 
       <section id="settlement-view" class="view" hidden>
-        <div class="page-header">
-          <div class="page-heading">
-            <button id="settlement-back" class="icon-button" type="button" aria-label="返回上一页" title="返回上一页"><svg class="icon"><use href="#i-chevron-left"></use></svg></button>
-            <div class="page-title-block">
-              <div class="breadcrumb">TRS合约列表 / 合约详情 / 结算凭据</div>
-              <h1>TRS 合约结算凭据</h1>
-              <div id="settlement-page-subtitle" class="page-subtitle"></div>
-            </div>
-          </div>
-          <div class="page-actions">
-            <button id="settlement-export" class="button" type="button"><svg class="icon"><use href="#i-download"></use></svg>导出明细</button>
-            <button id="settlement-print" class="button" type="button"><svg class="icon"><use href="#i-printer"></use></svg>打印</button>
-            <button id="settlement-return" class="button primary" type="button">返回合约详情</button>
-          </div>
-        </div>
         <article class="settlement-sheet" aria-label="TRS 合约结算凭据正文">
           <header class="voucher-masthead">
             <div>
@@ -2054,6 +2184,7 @@
     </section>
   </div>
 
+  <script src="./vendor/html2canvas.min.js"></script>
   <script>
     const contracts = [
       {
@@ -2061,7 +2192,7 @@
         customer: '赵宇豪', customerEn: 'Will', account: 'T80000168', accountCurrency: 'HKD', underlyingCurrency: 'HKD',
         quantity: 0, cost: 35.2667, marketValue: 0, notional: 0, cnyNotional: 0, unrealized: 0, realized: 3991.71,
         fees: 137.94, accruedInterest: 420.35, deductedInterest: 420.35, margin: 0, cnyMargin: 0,
-        latestEvent: '平仓', eventTime: '2026-08-25 14:57:00', risk: '安全', openDate: '2026-08-03', closeDate: '2026-08-25',
+        latestEvent: '平仓', eventTime: '2026-08-25 14:57:00', risk: '安全', openDate: '2026-08-03', openAt: '2026-08-03 09:31:00', closeDate: '2026-08-25',
         startDate: '2026-08-03', maturityDate: '2026-08-25', term: '22天', originalNotional: 34800
       },
       {
@@ -2069,7 +2200,7 @@
         customer: '王王', customerEn: 'Wang', account: 'T80000319', accountCurrency: 'CNY', underlyingCurrency: 'CNY',
         quantity: 1100, cost: 50.749626, marketValue: 55792, notional: 55792, cnyNotional: 55792, unrealized: -32.59, realized: 0,
         fees: 32.59, accruedInterest: 103.44, deductedInterest: 0, margin: 55792, cnyMargin: 55792,
-        latestEvent: '开仓', eventTime: '2026-08-24 19:00:25', risk: '安全', openDate: '2026-08-24', closeDate: '',
+        latestEvent: '开仓', eventTime: '2026-08-24 19:00:25', risk: '安全', openDate: '2026-08-24', openAt: '2026-08-24 19:00:25', closeDate: '',
         startDate: '2026-08-24', maturityDate: '2026-11-24', term: '3个月', originalNotional: 55792
       },
       {
@@ -2077,7 +2208,7 @@
         customer: '胡胡', customerEn: 'HU hu', account: 'T80000136', accountCurrency: 'HKD', underlyingCurrency: 'CNY',
         quantity: 700, cost: 44.42, marketValue: 30877, notional: 31094, cnyNotional: 31094, unrealized: 302.65, realized: 128.20,
         fees: 81.14, accruedInterest: 210.43, deductedInterest: 160, margin: 9328.20, cnyMargin: 8524,
-        latestEvent: '加仓', eventTime: '2026-08-22 10:16:40', risk: '安全', openDate: '2026-08-12', closeDate: '',
+        latestEvent: '加仓', eventTime: '2026-08-22 10:16:40', risk: '安全', openDate: '2026-08-12', openAt: '2026-08-12 09:42:18', closeDate: '',
         startDate: '2026-08-12', maturityDate: '2026-11-12', term: '3个月', originalNotional: 26652
       },
       {
@@ -2085,7 +2216,7 @@
         customer: '祝明耀', customerEn: 'Caro', account: 'T80000161', accountCurrency: 'USD', underlyingCurrency: 'CNY',
         quantity: 0, cost: 11.34, marketValue: 0, notional: 0, cnyNotional: 0, unrealized: 0, realized: -612.44,
         fees: 94.26, accruedInterest: 324.80, deductedInterest: 280, margin: 2066.31, cnyMargin: 14800,
-        latestEvent: '平仓', eventTime: '2026-08-21 15:02:12', risk: '预警', openDate: '2026-08-05', closeDate: '2026-08-21',
+        latestEvent: '平仓', eventTime: '2026-08-21 15:02:12', risk: '触发风控线', openDate: '2026-08-05', openAt: '2026-08-05 10:05:44', closeDate: '2026-08-21',
         startDate: '2026-08-05', maturityDate: '2026-11-05', term: '3个月', originalNotional: 56700
       },
       {
@@ -2093,7 +2224,7 @@
         customer: 'Auuu', customerEn: 'U AUU', account: 'T80000117', accountCurrency: 'CNY', underlyingCurrency: 'CNY',
         quantity: 10000, cost: 7.2844, marketValue: 76600, notional: 72844, cnyNotional: 72844, unrealized: 3756, realized: 0,
         fees: 144.76, accruedInterest: 535.29, deductedInterest: 400, margin: 21853.20, cnyMargin: 21853.20,
-        latestEvent: '扣息', eventTime: '2026-08-20 18:30:00', risk: '追保', openDate: '2026-08-08', closeDate: '',
+        latestEvent: '扣息', eventTime: '2026-08-20 18:30:00', risk: '触发风控线', openDate: '2026-08-08', openAt: '2026-08-08 10:20:36', closeDate: '',
         startDate: '2026-08-08', maturityDate: '2026-11-08', term: '3个月', originalNotional: 72844
       },
       {
@@ -2101,7 +2232,7 @@
         customer: '徐徐', customerEn: 'Xu', account: 'T80000318', accountCurrency: 'HKD', underlyingCurrency: 'HKD',
         quantity: 0, cost: 598.40, marketValue: 0, notional: 0, cnyNotional: 0, unrealized: 0, realized: 3980,
         fees: 395.62, accruedInterest: 625.80, deductedInterest: 0, margin: 53856, cnyMargin: 49626,
-        latestEvent: '平仓', eventTime: '2026-08-19 11:08:33', risk: '安全', openDate: '2026-08-14', closeDate: '2026-08-19',
+        latestEvent: '平仓', eventTime: '2026-08-19 11:08:33', risk: '安全', openDate: '2026-08-14', openAt: '2026-08-14 09:50:12', closeDate: '2026-08-19',
         startDate: '2026-08-14', maturityDate: '2026-11-14', term: '3个月', originalNotional: 239360
       },
       {
@@ -2109,7 +2240,7 @@
         customer: '茹茹', customerEn: 'Ru', account: 'T80000322', accountCurrency: 'CNY', underlyingCurrency: 'CNY',
         quantity: 0, cost: 196.82, marketValue: 0, notional: 0, cnyNotional: 0, unrealized: 0, realized: 12360.40,
         fees: 782.51, accruedInterest: 1128.32, deductedInterest: 1128.32, margin: 0, cnyMargin: 0,
-        latestEvent: '平仓', eventTime: '2026-08-18 14:48:09', risk: '安全', openDate: '2026-08-01', closeDate: '2026-08-18',
+        latestEvent: '平仓', eventTime: '2026-08-18 14:48:09', risk: '安全', openDate: '2026-08-01', openAt: '2026-08-01 10:12:08', closeDate: '2026-08-18',
         startDate: '2026-08-01', maturityDate: '2026-08-18', term: '17天', originalNotional: 196820
       },
       {
@@ -2117,12 +2248,13 @@
         customer: '李行', customerEn: 'Alex Li', account: 'T80000323', accountCurrency: 'USD', underlyingCurrency: 'USD',
         quantity: 150, cost: 226.80, marketValue: 34822.50, notional: 34020, cnyNotional: 243356.10, unrealized: 802.50, realized: 0,
         fees: 18.50, accruedInterest: 68.04, deductedInterest: 0, margin: 10206, cnyMargin: 72984.40,
-        latestEvent: '加仓', eventTime: '2026-08-18 22:30:40', risk: '安全', openDate: '2026-08-18', closeDate: '',
+        latestEvent: '加仓', eventTime: '2026-08-18 22:30:40', risk: '安全', openDate: '2026-08-18', openAt: '2026-08-18 21:35:20', closeDate: '',
         startDate: '2026-08-18', maturityDate: '2026-11-18', term: '3个月', originalNotional: 11340
       }
     ];
 
     const optionalColumns = [
+      ['openAt', '开仓时间'],
       ['currency', '账户/标的币种'],
       ['quantity', '当前数量'],
       ['cost', '摊薄成本'],
@@ -2181,12 +2313,12 @@
     ];
 
     const sampleInterest = [
-      { currency: 'HKD', deductedInterest: 230.14, method: '融资计息', deductionMethod: '每日累计次月扣息', status: '待扣', interestAmount: 400000, annualRate: '21.0000%', decimals: 2, rounding: '四舍五入', returnStatus: '未退', calculatedAt: '2026-08-25 18:01:00' },
-      { currency: 'HKD', deductedInterest: 172.60, method: '融资计息', deductionMethod: '每日累计次月扣息', status: '待扣', interestAmount: 300000, annualRate: '21.0000%', decimals: 2, rounding: '四舍五入', returnStatus: '未退', calculatedAt: '2026-08-24 18:01:00' },
-      { currency: 'HKD', deductedInterest: 172.60, method: '融资计息', deductionMethod: '每日累计次月扣息', status: '待扣', interestAmount: 300000, annualRate: '21.0000%', decimals: 2, rounding: '四舍五入', returnStatus: '未退', calculatedAt: '2026-08-23 18:01:01' },
-      { currency: 'HKD', deductedInterest: 172.60, method: '融资计息', deductionMethod: '每日累计次月扣息', status: '待扣', interestAmount: 300000, annualRate: '21.0000%', decimals: 2, rounding: '四舍五入', returnStatus: '未退', calculatedAt: '2026-08-22 18:01:00' },
-      { currency: 'HKD', deductedInterest: 172.60, method: '融资计息', deductionMethod: '每日累计次月扣息', status: '待扣', interestAmount: 300000, annualRate: '21.0000%', decimals: 2, rounding: '四舍五入', returnStatus: '未退', calculatedAt: '2026-08-21 18:01:00' },
-      { currency: 'HKD', deductedInterest: 172.60, method: '融资计息', deductionMethod: '每日累计次月扣息', status: '待扣', interestAmount: 300000, annualRate: '21.0000%', decimals: 2, rounding: '四舍五入', returnStatus: '未退', calculatedAt: '2026-08-20 18:01:00' }
+      { currency: 'HKD', deductedInterest: 230.14, method: '交易计息', deductionMethod: '每日累计次月扣息', status: '待扣', interestAmount: 400000, annualRate: '21.0000%', decimals: 2, rounding: '四舍五入', calculatedAt: '2026-08-25 18:01:00' },
+      { currency: 'HKD', deductedInterest: 172.60, method: '交易计息', deductionMethod: '每日累计次月扣息', status: '待扣', interestAmount: 300000, annualRate: '21.0000%', decimals: 2, rounding: '四舍五入', calculatedAt: '2026-08-24 18:01:00' },
+      { currency: 'HKD', deductedInterest: 172.60, method: '交易计息', deductionMethod: '每日累计次月扣息', status: '待扣', interestAmount: 300000, annualRate: '21.0000%', decimals: 2, rounding: '四舍五入', calculatedAt: '2026-08-23 18:01:01' },
+      { currency: 'HKD', deductedInterest: 172.60, method: '交易计息', deductionMethod: '每日累计次月扣息', status: '待扣', interestAmount: 300000, annualRate: '21.0000%', decimals: 2, rounding: '四舍五入', calculatedAt: '2026-08-22 18:01:00' },
+      { currency: 'HKD', deductedInterest: 172.60, method: '交易计息', deductionMethod: '每日累计次月扣息', status: '待扣', interestAmount: 300000, annualRate: '21.0000%', decimals: 2, rounding: '四舍五入', calculatedAt: '2026-08-21 18:01:00' },
+      { currency: 'HKD', deductedInterest: 172.60, method: '交易计息', deductionMethod: '每日累计次月扣息', status: '待扣', interestAmount: 300000, annualRate: '21.0000%', decimals: 2, rounding: '四舍五入', calculatedAt: '2026-08-20 18:01:00' }
     ];
 
     const sampleMargins = [
@@ -2231,6 +2363,8 @@
       ]
     };
 
+    const defaultOpenDateRange = { start: '2026-08-01', end: '2026-08-26' };
+
     const state = {
       filtered: [...contracts],
       page: 1,
@@ -2242,7 +2376,15 @@
       currentValuations: [],
       displayedValuations: [],
       lastFocused: null,
-      modalLastFocused: null
+      modalLastFocused: null,
+      openDateRange: {
+        ...defaultOpenDateRange,
+        draftStart: defaultOpenDateRange.start,
+        draftEnd: defaultOpenDateRange.end,
+        viewYear: 2026,
+        viewMonth: 7,
+        pickingNewRange: true
+      }
     };
 
     const $ = (selector, root = document) => root.querySelector(selector);
@@ -2269,6 +2411,100 @@
       return '';
     }
 
+    function dateIso(year, month, day) {
+      return `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    }
+
+    function updateOpenDateRangeValue() {
+      const { start, end } = state.openDateRange;
+      $('#open-date-range-value').textContent = start && end ? `${start} 至 ${end}` : '全部日期';
+    }
+
+    function renderOpenDateCalendar() {
+      const range = state.openDateRange;
+      const firstWeekday = new Date(Date.UTC(range.viewYear, range.viewMonth, 1)).getUTCDay();
+      const dayCount = new Date(Date.UTC(range.viewYear, range.viewMonth + 1, 0)).getUTCDate();
+      $('#open-date-month').textContent = `${range.viewYear}年${range.viewMonth + 1}月`;
+
+      const placeholders = Array.from({ length: firstWeekday }, () => '<span class="date-range-day-placeholder" aria-hidden="true"></span>');
+      const days = Array.from({ length: dayCount }, (_, index) => {
+        const day = index + 1;
+        const iso = dateIso(range.viewYear, range.viewMonth, day);
+        const classes = ['date-range-day'];
+        if (range.draftStart && range.draftEnd && iso > range.draftStart && iso < range.draftEnd) classes.push('in-range');
+        if (iso === range.draftStart) classes.push('range-start');
+        if (iso === range.draftEnd) classes.push('range-end');
+        return `<button class="${classes.join(' ')}" type="button" data-open-date="${iso}" aria-label="${range.viewYear}年${range.viewMonth + 1}月${day}日">${day}</button>`;
+      });
+      $('#open-date-calendar').innerHTML = [...placeholders, ...days].join('');
+
+      const selection = range.draftStart
+        ? range.draftEnd ? `${range.draftStart} 至 ${range.draftEnd}` : `${range.draftStart} 至 请选择结束日期`
+        : '请选择开始日期';
+      $('#open-date-selection').textContent = selection;
+      $('#open-date-confirm').disabled = !(range.draftStart && range.draftEnd);
+    }
+
+    function openOpenDateRange() {
+      const range = state.openDateRange;
+      range.draftStart = range.start;
+      range.draftEnd = range.end;
+      range.pickingNewRange = true;
+      const anchor = range.start || defaultOpenDateRange.start;
+      range.viewYear = Number(anchor.slice(0, 4));
+      range.viewMonth = Number(anchor.slice(5, 7)) - 1;
+      renderOpenDateCalendar();
+      $('#open-date-range-popover').hidden = false;
+      $('#open-date-range').setAttribute('aria-expanded', 'true');
+    }
+
+    function closeOpenDateRange({ restoreFocus = false } = {}) {
+      $('#open-date-range-popover').hidden = true;
+      $('#open-date-range').setAttribute('aria-expanded', 'false');
+      if (restoreFocus) $('#open-date-range').focus();
+    }
+
+    function selectOpenDate(iso) {
+      const range = state.openDateRange;
+      if (range.pickingNewRange || !range.draftStart || range.draftEnd) {
+        range.draftStart = iso;
+        range.draftEnd = '';
+        range.pickingNewRange = false;
+      } else if (iso < range.draftStart) {
+        range.draftStart = iso;
+      } else {
+        range.draftEnd = iso;
+      }
+      renderOpenDateCalendar();
+    }
+
+    function changeOpenDateMonth(offset) {
+      const range = state.openDateRange;
+      const next = new Date(Date.UTC(range.viewYear, range.viewMonth + offset, 1));
+      range.viewYear = next.getUTCFullYear();
+      range.viewMonth = next.getUTCMonth();
+      renderOpenDateCalendar();
+    }
+
+    function confirmOpenDateRange() {
+      const range = state.openDateRange;
+      if (!range.draftStart || !range.draftEnd) return;
+      range.start = range.draftStart;
+      range.end = range.draftEnd;
+      updateOpenDateRangeValue();
+      closeOpenDateRange({ restoreFocus: true });
+    }
+
+    function clearOpenDateRange() {
+      const range = state.openDateRange;
+      range.start = '';
+      range.end = '';
+      range.draftStart = '';
+      range.draftEnd = '';
+      updateOpenDateRangeValue();
+      closeOpenDateRange({ restoreFocus: true });
+    }
+
     const pendingSettlementStatuses = new Set(['已到期', '已终止', '已提前终止']);
     const printableSettlementStatuses = new Set(['已终止', '已提前终止', '已结算']);
 
@@ -2289,7 +2525,7 @@
     }
 
     function riskClass(risk) {
-      return risk === '安全' ? 'risk-safe' : risk === '预警' ? 'risk-warning' : 'risk-danger';
+      return risk === '安全' ? 'risk-safe' : 'risk-danger';
     }
 
     function infoPair(label, value) {
@@ -2307,7 +2543,7 @@
       const open = {
         ...sampleEvents[0],
         id: `${contract.id}-E01`,
-        effectiveAt: `${contract.openDate} 09:31:00`,
+        effectiveAt: contract.openAt,
         source: `ORD-${contract.openDate.replaceAll('-', '')}-OPEN`,
         quantityAfter: openQuantity,
         delta: openQuantity,
@@ -2352,6 +2588,7 @@
           </td>
           <td><span class="status-badge ${statusClass(contract.status)}">${contract.status}</span></td>
           <td><span class="direction-badge ${contract.direction === '多头' ? 'direction-long' : 'direction-short'}">${contract.direction}</span></td>
+          <td data-col="openAt" class="number">${contract.openAt}</td>
           <td><div class="cell-primary">${contract.customer}</div><div class="cell-secondary">${contract.customerEn}</div></td>
           <td><button class="text-action" type="button">${contract.account}</button></td>
           <td data-col="currency"><div>${contract.accountCurrency}</div><div class="cell-secondary">标的 ${contract.underlyingCurrency}</div></td>
@@ -2367,9 +2604,9 @@
           <td data-col="risk"><span class="risk-badge ${riskClass(contract.risk)}">${contract.risk}</span></td>
           <td class="sticky-right"><div class="action-group">
             <button class="text-action contract-link" type="button" data-open-contract="${contract.id}">详情</button>
-            <button class="text-action" type="button" data-print-confirmation-id="${contract.id}">${icon('i-printer')}打印交易确认书</button>
-            <button class="text-action" type="button" data-print-valuation-id="${contract.id}">${icon('i-printer')}打印估值报告</button>
-            ${canPrintSettlementVoucher(contract) ? `<button class="text-action" type="button" data-print-settlement-id="${contract.id}">${icon('i-printer')}打印结算凭据</button>` : ''}
+            <button class="text-action" type="button" data-download-confirmation-id="${contract.id}">${icon('i-download')}下载交易确认书</button>
+            <button class="text-action" type="button" data-download-valuation-id="${contract.id}">${icon('i-download')}下载估值报告</button>
+            ${canPrintSettlementVoucher(contract) ? `<button class="text-action" type="button" data-download-settlement-id="${contract.id}">${icon('i-download')}下载结算凭据</button>` : ''}
           </div></td>
         </tr>`;
     }
@@ -2389,7 +2626,7 @@
       const pageRows = state.filtered.slice(start, start + state.pageSize);
       $('#contract-body').innerHTML = pageRows.length
         ? pageRows.map(rowMarkup).join('')
-        : '<tr><td class="table-empty" colspan="18">没有符合当前条件的合约</td></tr>';
+        : '<tr><td class="table-empty" colspan="19">没有符合当前条件的合约</td></tr>';
       $('#result-count').textContent = `共 ${state.filtered.length} 条`;
       $('#table-summary').textContent = state.filtered.length
         ? `显示第 ${start + 1}-${Math.min(start + state.pageSize, state.filtered.length)} 条，共 ${state.filtered.length} 条`
@@ -2409,8 +2646,8 @@
       const market = $('#market-filter').value;
       const account = $('#account-filter').value.trim().toLowerCase();
       const risk = $('#risk-filter').value;
-      const openFrom = $('#open-from-filter').value;
-      const openTo = $('#open-to-filter').value;
+      const openFrom = state.openDateRange.start;
+      const openTo = state.openDateRange.end;
 
       state.filtered = contracts.filter((contract) => {
         const customerText = `${contract.customer} ${contract.customerEn}`.toLowerCase();
@@ -2438,10 +2675,14 @@
       $('#status-filter').value = '';
       $('#direction-filter').value = '';
       $('#market-filter').value = '';
-      $('#open-from-filter').value = '2026-08-01';
-      $('#open-to-filter').value = '2026-08-26';
       $('#account-filter').value = '';
       $('#risk-filter').value = '';
+      state.openDateRange.start = defaultOpenDateRange.start;
+      state.openDateRange.end = defaultOpenDateRange.end;
+      state.openDateRange.draftStart = defaultOpenDateRange.start;
+      state.openDateRange.draftEnd = defaultOpenDateRange.end;
+      updateOpenDateRangeValue();
+      closeOpenDateRange();
       state.filtered = [...contracts];
       state.page = 1;
       $('#filter-hint').textContent = '默认展示全部合约';
@@ -2457,7 +2698,7 @@
     }
 
     function renderDetailSummary(contract) {
-      const cashFlow = contract.realized - contract.fees - contract.deductedInterest;
+      const totalProfit = contract.realized + contract.unrealized;
       $('#detail-summary').innerHTML = [
         ['当前数量', formatNumber(contract.quantity, 0), ''],
         ['当前市值', formatMoney(contract.marketValue, contract.underlyingCurrency), ''],
@@ -2465,7 +2706,7 @@
         ['累计已实现盈亏', formatMoney(contract.realized, contract.accountCurrency), signedClass(contract.realized)],
         ['累计交易费用', formatMoney(contract.fees, contract.accountCurrency), ''],
         ['已计 / 已扣利息', `${formatNumber(contract.accruedInterest)} / ${formatNumber(contract.deductedInterest)}`, ''],
-        ['合约净现金流', formatMoney(cashFlow, contract.accountCurrency), signedClass(cashFlow)]
+        ['总盈亏', formatMoney(totalProfit, contract.accountCurrency), signedClass(totalProfit)]
       ].map(([label, value, valueClass]) => `<div class="detail-summary-item"><div class="detail-summary-label">${label}</div><div class="detail-summary-value ${valueClass}">${value}</div></div>`).join('');
     }
 
@@ -2511,8 +2752,7 @@
         ['起始日', contract.startDate],
         ['到期日', contract.maturityDate],
         ['期限', contract.term],
-        ['名义本金', formatMoney(contract.originalNotional, contract.underlyingCurrency)],
-        ['开仓时间', `${contract.openDate} 09:31:00`],
+        ['开仓时间', contract.openAt],
         ['平仓时间', contract.closeDate ? `${contract.closeDate} 14:57:00` : '--']
       ];
       $('#basic-info').innerHTML = fields.map(([label, value]) => infoPair(label, value)).join('');
@@ -2580,8 +2820,8 @@
       const fields = [
         ['市场', contract.market], ['标的代码', contract.symbol], ['标的名称', contract.name], ['证券类型', '股票'],
         ['交易币种', contract.underlyingCurrency], ['账户币种', contract.accountCurrency], ['最新参考价', formatMoney(latestPrice, contract.underlyingCurrency)], ['昨收价', formatMoney(Math.max(0, latestPrice - 0.28), contract.underlyingCurrency)],
-        ['价格更新时间', isSettledContract(contract) ? contract.eventTime : '2026-08-26 09:15:39'], ['最新估值汇率', contract.accountCurrency === contract.underlyingCurrency ? '1.000000' : '0.921600'], ['停牌状态', '正常交易'], ['退市状态', '否'],
-        ['公司行动状态', '无进行中公司行动'], ['当前数量', formatNumber(contract.quantity, 0)], ['可用数量', formatNumber(contract.quantity, 0)], ['冻结数量', '0']
+        ['最新估值汇率', contract.accountCurrency === contract.underlyingCurrency ? '1.000000' : '0.921600'], ['停牌状态', '正常交易'], ['退市状态', '否'],
+        ['当前数量', formatNumber(contract.quantity, 0)], ['可用数量', formatNumber(contract.quantity, 0)], ['冻结数量', '0']
       ];
       $('#underlying-info').innerHTML = fields.map(([label, value]) => infoPair(label, value)).join('');
     }
@@ -2595,14 +2835,13 @@
       const rows = contract.id === 'TRS-C-20260803-0001' ? sampleInterest : [{
         currency: contract.accountCurrency,
         deductedInterest: contract.deductedInterest || contract.accruedInterest,
-        method: '融资计息',
+        method: '交易计息',
         deductionMethod: '每日累计次月扣息',
         status: contract.deductedInterest ? '已扣' : '待扣',
         interestAmount: settingsAmount,
         annualRate: '21.0000%',
         decimals: 2,
         rounding: '四舍五入',
-        returnStatus: '未退',
         calculatedAt: contract.eventTime
       }];
       $('#interest-settings').innerHTML = [
@@ -2617,7 +2856,7 @@
       $('#interest-table tbody').innerHTML = rows.map((row, index) => `<tr>
         <td class="number">${index + 1}</td><td>${row.currency}</td><td class="number">${formatNumber(row.deductedInterest, 2)}</td><td>${row.method}</td><td>${row.deductionMethod}</td>
         <td><span class="status-badge ${row.status === '已扣' ? 'status-settled' : 'status-pending'}">${row.status}</span></td><td class="number">${formatNumber(row.interestAmount, 4)}</td><td class="number">${row.annualRate}</td>
-        <td class="number">${row.decimals}</td><td>${row.rounding}</td><td>${row.returnStatus}</td><td>${row.calculatedAt}</td>
+        <td class="number">${row.decimals}</td><td>${row.rounding}</td><td>${row.calculatedAt}</td>
       </tr>`).join('');
     }
 
@@ -2703,8 +2942,6 @@
       $('#detail-risk').textContent = contract.risk;
       $('#detail-risk').className = `risk-badge ${riskClass(contract.risk)}`;
       $('#detail-symbol').textContent = `${contract.market} · ${contract.symbol} · ${contract.name} · ${contract.direction}`;
-      $('#settlement-button').hidden = isActiveContract(contract);
-      $('#settlement-button').innerHTML = `${icon('i-receipt')}${isSettledContract(contract) ? '结算凭据' : '结算预览'}`;
       $('#quality-banner').hidden = contract.dataStatus !== '异常';
       if (contract.dataStatus === '异常') $('#quality-banner span').textContent = '事件回放数量与持仓快照存在差异，已阻止正式结算凭据生成。';
 
@@ -2736,7 +2973,7 @@
         ${infoPair('估值状态', valuation.status)}${infoPair('当前数量', formatNumber(valuation.quantity, 0))}${infoPair('收盘价', formatMoney(valuation.close, contract.underlyingCurrency))}${infoPair('估值汇率', contract.accountCurrency === contract.underlyingCurrency ? '1.000000' : '0.921600')}
         ${infoPair('市场价值', formatMoney(valuation.marketValue, contract.underlyingCurrency))}${infoPair('持仓成本', formatMoney(valuation.cost, contract.underlyingCurrency))}${infoPair('未实现盈亏', formatMoney(valuation.unrealized, contract.accountCurrency))}${infoPair('累计已实现盈亏', formatMoney(valuation.realized, contract.accountCurrency))}
         ${infoPair('当日应计利息', formatMoney(valuation.interest, contract.accountCurrency))}${infoPair('累计交易费用', formatMoney(contract.fees, contract.accountCurrency))}${infoPair('保证金占用', formatMoney(valuation.margin, contract.accountCurrency))}${infoPair('保证金比例', valuationMarginRate(contract, valuation))}
-        ${infoPair('合约总盈亏', formatMoney(totalProfit, contract.accountCurrency))}${infoPair('盈亏计算公式', '累计已实现盈亏 + 未实现盈亏')}
+        ${infoPair('合约总盈亏', formatMoney(totalProfit, contract.accountCurrency))}
       </div>`;
       $('#valuation-modal-backdrop').hidden = false;
       $('#close-valuation-modal').focus();
@@ -2828,7 +3065,6 @@
       const finalVoucher = isSettledContract(contract);
       const voucherNumber = finalVoucher ? `STL-${voucherSuffix}-20260826` : `STL-${voucherSuffix}-PREVIEW`;
 
-      $('#settlement-page-subtitle').textContent = `${contract.id} · ${contract.name} · ${finalVoucher ? '结算日' : '预览基准日'} 2026-08-26`;
       $('#voucher-contract').textContent = `${contract.id} · ${contract.market} · ${contract.symbol} ${contract.name} · ${contract.direction}`;
       $('#voucher-title').textContent = finalVoucher ? '合约终止结算凭据' : '合约终止结算预览';
       $('#voucher-number').textContent = voucherNumber;
@@ -2899,13 +3135,197 @@
         <section class="voucher-section"><div class="settlement-signatures"><div class="signature-line">经办人：admin</div><div class="signature-line">复核人：trs_checker</div><div class="signature-line">系统签章：LINK TRS</div></div></section>`;
     }
 
-    function preparePrint(mode) {
-      if (mode === 'settlement') $('#list-print-title').textContent = '';
-      document.body.dataset.printMode = mode;
-      window.print();
+    function pdfSectionBoundaries(root, rootRect) {
+      const blocks = root.id === 'list-print-sheet'
+        ? [
+            root.querySelector('.voucher-masthead'),
+            root.querySelector('.voucher-summary'),
+            ...root.querySelector('#list-print-body').children
+          ]
+        : [...root.children];
+      return [...new Set(blocks.filter(Boolean).map((block) => Math.ceil(block.getBoundingClientRect().bottom - rootRect.top)))]
+        .filter((value) => value > 0 && value <= Math.ceil(rootRect.height))
+        .sort((left, right) => left - right);
     }
 
-    function printTradeConfirmation(contract) {
+    function pdfPageRanges(totalHeight, sourceWidth, boundaries) {
+      const pageWidth = 841.89;
+      const pageHeight = 595.28;
+      const margin = 28.35;
+      const idealHeight = sourceWidth * ((pageHeight - margin * 2) / (pageWidth - margin * 2));
+      const ranges = [];
+      let start = 0;
+      while (start < totalHeight) {
+        const remaining = totalHeight - start;
+        if (remaining <= idealHeight * 1.1) {
+          ranges.push([start, totalHeight]);
+          break;
+        }
+        const preferred = boundaries.filter((value) => value > start + idealHeight * 0.45 && value <= start + idealHeight);
+        const nearby = boundaries.filter((value) => value > start && value <= start + idealHeight * 1.05);
+        let end = preferred.at(-1) || nearby.at(-1) || Math.min(totalHeight, Math.round(start + idealHeight));
+        if (end <= start) end = Math.min(totalHeight, Math.round(start + idealHeight));
+        ranges.push([start, end]);
+        start = end;
+      }
+      return ranges;
+    }
+
+    async function rasterizePdfSource(source) {
+      if (document.fonts?.ready) await document.fonts.ready;
+      const stage = document.createElement('div');
+      stage.style.cssText = 'position:fixed;left:-12000px;top:0;width:1120px;background:#fff;z-index:-1;pointer-events:none;';
+      const clone = source.cloneNode(true);
+      clone.removeAttribute('hidden');
+      clone.style.cssText = 'display:block;position:relative;width:1120px;min-width:1120px;height:auto;overflow:visible;margin:0;background:#fff;border-radius:0;';
+      stage.append(clone);
+      document.body.append(stage);
+
+      try {
+        await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+        const rootRect = clone.getBoundingClientRect();
+        const width = Math.ceil(rootRect.width);
+        const height = Math.ceil(rootRect.height);
+        const boundaries = pdfSectionBoundaries(clone, rootRect);
+        clone.querySelectorAll('.voucher-table-scroll').forEach((element) => { element.style.overflow = 'visible'; });
+        const canvas = await html2canvas(clone, {
+          backgroundColor: '#fff',
+          scale: 1.5,
+          logging: false,
+          useCORS: true,
+          width,
+          height,
+          windowWidth: width,
+          scrollX: 0,
+          scrollY: 0
+        });
+        return { canvas, width, height, scale: canvas.width / width, boundaries };
+      } finally {
+        stage.remove();
+      }
+    }
+
+    function canvasJpeg(canvas, quality = 0.92) {
+      return new Promise((resolve, reject) => {
+        canvas.toBlob((blob) => blob ? blob.arrayBuffer().then((buffer) => resolve(new Uint8Array(buffer)), reject) : reject(new Error('PDF page could not be encoded')), 'image/jpeg', quality);
+      });
+    }
+
+    function asciiBytes(value) {
+      return new TextEncoder().encode(value);
+    }
+
+    function createPdfBlob(pages) {
+      const pageWidth = 841.89;
+      const pageHeight = 595.28;
+      const margin = 28.35;
+      const objects = new Map();
+      const pageIds = [];
+      pages.forEach((page, index) => {
+        const pageId = 3 + index * 3;
+        const imageId = pageId + 1;
+        const contentId = pageId + 2;
+        pageIds.push(pageId);
+        const maxWidth = pageWidth - margin * 2;
+        const maxHeight = pageHeight - margin * 2;
+        const scale = Math.min(maxWidth / page.width, maxHeight / page.height);
+        const drawWidth = page.width * scale;
+        const drawHeight = page.height * scale;
+        const drawX = (pageWidth - drawWidth) / 2;
+        const drawY = pageHeight - margin - drawHeight;
+        const content = `q\n${drawWidth.toFixed(2)} 0 0 ${drawHeight.toFixed(2)} ${drawX.toFixed(2)} ${drawY.toFixed(2)} cm\n/Im${index + 1} Do\nQ\n`;
+        const contentBytes = asciiBytes(content);
+        objects.set(pageId, asciiBytes(`${pageId} 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Resources << /XObject << /Im${index + 1} ${imageId} 0 R >> >> /Contents ${contentId} 0 R >>\nendobj\n`));
+        objects.set(imageId, [
+          asciiBytes(`${imageId} 0 obj\n<< /Type /XObject /Subtype /Image /Width ${page.width} /Height ${page.height} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${page.jpeg.length} >>\nstream\n`),
+          page.jpeg,
+          asciiBytes('\nendstream\nendobj\n')
+        ]);
+        objects.set(contentId, [
+          asciiBytes(`${contentId} 0 obj\n<< /Length ${contentBytes.length} >>\nstream\n`),
+          contentBytes,
+          asciiBytes('endstream\nendobj\n')
+        ]);
+      });
+      objects.set(1, asciiBytes('1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n'));
+      objects.set(2, asciiBytes(`2 0 obj\n<< /Type /Pages /Kids [${pageIds.map((id) => `${id} 0 R`).join(' ')}] /Count ${pages.length} >>\nendobj\n`));
+
+      const lastObjectId = 2 + pages.length * 3;
+      const chunks = [asciiBytes('%PDF-1.4\n%TRS-PDF\n')];
+      const offsets = Array(lastObjectId + 1).fill(0);
+      let byteLength = chunks[0].length;
+      const appendChunk = (chunk) => {
+        if (Array.isArray(chunk)) chunk.forEach(appendChunk);
+        else {
+          chunks.push(chunk);
+          byteLength += chunk.length;
+        }
+      };
+      for (let id = 1; id <= lastObjectId; id += 1) {
+        offsets[id] = byteLength;
+        appendChunk(objects.get(id));
+      }
+      const xrefOffset = byteLength;
+      const xref = [`xref\n0 ${lastObjectId + 1}\n`, '0000000000 65535 f \n'];
+      for (let id = 1; id <= lastObjectId; id += 1) xref.push(`${String(offsets[id]).padStart(10, '0')} 00000 n \n`);
+      xref.push(`trailer\n<< /Size ${lastObjectId + 1} /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`);
+      appendChunk(asciiBytes(xref.join('')));
+      return new Blob(chunks, { type: 'application/pdf' });
+    }
+
+    async function createPdfFromElement(source) {
+      const rendered = await rasterizePdfSource(source);
+      const ranges = pdfPageRanges(rendered.height, rendered.width, rendered.boundaries);
+      const pages = [];
+      for (const [start, end] of ranges) {
+        const pageCanvas = document.createElement('canvas');
+        pageCanvas.width = rendered.canvas.width;
+        pageCanvas.height = Math.max(1, Math.ceil((end - start) * rendered.scale));
+        const context = pageCanvas.getContext('2d');
+        context.fillStyle = '#fff';
+        context.fillRect(0, 0, pageCanvas.width, pageCanvas.height);
+        context.drawImage(
+          rendered.canvas,
+          0, Math.floor(start * rendered.scale), rendered.canvas.width, pageCanvas.height,
+          0, 0, pageCanvas.width, pageCanvas.height
+        );
+        pages.push({ width: pageCanvas.width, height: pageCanvas.height, jpeg: await canvasJpeg(pageCanvas) });
+      }
+      return createPdfBlob(pages);
+    }
+
+    function downloadBlob(filename, blob) {
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      link.hidden = true;
+      document.body.append(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
+    async function runPdfDownload(button, task) {
+      if (button?.disabled) return;
+      if (button) {
+        button.disabled = true;
+        button.setAttribute('aria-busy', 'true');
+      }
+      try {
+        await task();
+      } catch (error) {
+        console.error(error);
+        window.alert('PDF生成失败，请重试');
+      } finally {
+        if (button) {
+          button.disabled = false;
+          button.removeAttribute('aria-busy');
+        }
+      }
+    }
+
+    async function downloadTradeConfirmation(contract, button) {
       const openEvent = eventsFor(contract)[0];
       renderListPrintDocument({
         contract,
@@ -2938,10 +3358,12 @@
           ])
         ]
       });
-      preparePrint('list-document');
+      await runPdfDownload(button, async () => {
+        downloadBlob(`${contract.id}-交易确认书.pdf`, await createPdfFromElement($('#list-print-sheet')));
+      });
     }
 
-    function printValuationReport(contract) {
+    async function downloadValuationReport(contract, button) {
       const valuation = valuationRowsFor(contract).find((row) => row.status === '估值成功');
       if (!valuation) return;
       const totalProfit = valuationTotalProfit(valuation);
@@ -2971,32 +3393,155 @@
           ])
         ]
       });
-      preparePrint('list-document');
+      await runPdfDownload(button, async () => {
+        downloadBlob(`${contract.id}-估值报告.pdf`, await createPdfFromElement($('#list-print-sheet')));
+      });
     }
 
-    function printSettlementVoucher(contract) {
+    async function downloadSettlementVoucher(contract, button) {
       if (!canPrintSettlementVoucher(contract)) return;
       state.currentContract = contract;
       renderSettlement(contract);
-      setView('settlement-view');
-      preparePrint('settlement');
+      await runPdfDownload(button, async () => {
+        downloadBlob(`${contract.id}-结算凭据.pdf`, await createPdfFromElement($('#settlement-view .settlement-sheet')));
+      });
     }
 
-    function showSettlement(contract) {
-      state.currentContract = contract || contracts[0];
-      renderSettlement(state.currentContract);
-      setView('settlement-view');
+    const crc32Table = (() => {
+      const table = new Uint32Array(256);
+      for (let index = 0; index < 256; index += 1) {
+        let value = index;
+        for (let bit = 0; bit < 8; bit += 1) value = value & 1 ? 0xedb88320 ^ (value >>> 1) : value >>> 1;
+        table[index] = value >>> 0;
+      }
+      return table;
+    })();
+
+    function crc32(bytes) {
+      let value = 0xffffffff;
+      bytes.forEach((byte) => { value = crc32Table[(value ^ byte) & 0xff] ^ (value >>> 8); });
+      return (value ^ 0xffffffff) >>> 0;
     }
 
-    function returnToContractDetail() {
-      if (!state.currentContract) state.currentContract = contracts[0];
-      renderDetail(state.currentContract);
-      setView('detail-view');
+    function zipTimestamp(date = new Date()) {
+      const year = Math.max(1980, date.getFullYear());
+      return {
+        time: (date.getHours() << 11) | (date.getMinutes() << 5) | Math.floor(date.getSeconds() / 2),
+        date: ((year - 1980) << 9) | ((date.getMonth() + 1) << 5) | date.getDate()
+      };
     }
 
-    function downloadCsv(filename, rows) {
-      const csv = `\ufeff${rows.map((row) => row.map((cell) => `"${String(cell ?? '').replaceAll('"', '""')}"`).join(',')).join('\n')}`;
-      const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    function createZip(files) {
+      const encoder = new TextEncoder();
+      const localParts = [];
+      const centralParts = [];
+      const stamp = zipTimestamp();
+      let localOffset = 0;
+      let centralSize = 0;
+
+      files.forEach(({ name, content }) => {
+        const nameBytes = encoder.encode(name);
+        const data = typeof content === 'string' ? encoder.encode(content) : content;
+        const checksum = crc32(data);
+        const localHeader = new Uint8Array(30 + nameBytes.length);
+        const localView = new DataView(localHeader.buffer);
+        localView.setUint32(0, 0x04034b50, true);
+        localView.setUint16(4, 20, true);
+        localView.setUint16(6, 0x0800, true);
+        localView.setUint16(8, 0, true);
+        localView.setUint16(10, stamp.time, true);
+        localView.setUint16(12, stamp.date, true);
+        localView.setUint32(14, checksum, true);
+        localView.setUint32(18, data.length, true);
+        localView.setUint32(22, data.length, true);
+        localView.setUint16(26, nameBytes.length, true);
+        localView.setUint16(28, 0, true);
+        localHeader.set(nameBytes, 30);
+        localParts.push(localHeader, data);
+
+        const centralHeader = new Uint8Array(46 + nameBytes.length);
+        const centralView = new DataView(centralHeader.buffer);
+        centralView.setUint32(0, 0x02014b50, true);
+        centralView.setUint16(4, 20, true);
+        centralView.setUint16(6, 20, true);
+        centralView.setUint16(8, 0x0800, true);
+        centralView.setUint16(10, 0, true);
+        centralView.setUint16(12, stamp.time, true);
+        centralView.setUint16(14, stamp.date, true);
+        centralView.setUint32(16, checksum, true);
+        centralView.setUint32(20, data.length, true);
+        centralView.setUint32(24, data.length, true);
+        centralView.setUint16(28, nameBytes.length, true);
+        centralView.setUint16(30, 0, true);
+        centralView.setUint16(32, 0, true);
+        centralView.setUint16(34, 0, true);
+        centralView.setUint16(36, 0, true);
+        centralView.setUint32(38, 0, true);
+        centralView.setUint32(42, localOffset, true);
+        centralHeader.set(nameBytes, 46);
+        centralParts.push(centralHeader);
+        centralSize += centralHeader.length;
+        localOffset += localHeader.length + data.length;
+      });
+
+      const end = new Uint8Array(22);
+      const endView = new DataView(end.buffer);
+      endView.setUint32(0, 0x06054b50, true);
+      endView.setUint16(4, 0, true);
+      endView.setUint16(6, 0, true);
+      endView.setUint16(8, files.length, true);
+      endView.setUint16(10, files.length, true);
+      endView.setUint32(12, centralSize, true);
+      endView.setUint32(16, localOffset, true);
+      endView.setUint16(20, 0, true);
+      return new Blob([...localParts, ...centralParts, end], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    }
+
+    function xmlEscape(value) {
+      return String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&apos;');
+    }
+
+    function excelColumn(index) {
+      let value = index + 1;
+      let column = '';
+      while (value > 0) {
+        value -= 1;
+        column = String.fromCharCode(65 + (value % 26)) + column;
+        value = Math.floor(value / 26);
+      }
+      return column;
+    }
+
+    function createExcelWorkbook(rows) {
+      const lastColumn = excelColumn(Math.max(0, rows[0].length - 1));
+      const sheetRows = rows.map((row, rowIndex) => {
+        const cells = row.map((cell, columnIndex) => {
+          const reference = `${excelColumn(columnIndex)}${rowIndex + 1}`;
+          if (typeof cell === 'number' && Number.isFinite(cell)) return `<c r="${reference}"${rowIndex === 0 ? ' s="1"' : ''}><v>${cell}</v></c>`;
+          return `<c r="${reference}" t="inlineStr"${rowIndex === 0 ? ' s="1"' : ''}><is><t xml:space="preserve">${xmlEscape(cell)}</t></is></c>`;
+        }).join('');
+        return `<row r="${rowIndex + 1}">${cells}</row>`;
+      }).join('');
+
+      const contentTypes = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>`;
+      const rootRels = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`;
+      const workbook = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="TRS合约列表" sheetId="1" r:id="rId1"/></sheets></workbook>`;
+      const workbookRels = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`;
+      const styles = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Calibri"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF2878F0"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="2"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`;
+      const sheet = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><dimension ref="A1:${lastColumn}${rows.length}"/><sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews><sheetFormatPr defaultRowHeight="15"/><sheetData>${sheetRows}</sheetData><autoFilter ref="A1:${lastColumn}${rows.length}"/></worksheet>`;
+
+      return createZip([
+        { name: '[Content_Types].xml', content: contentTypes },
+        { name: '_rels/.rels', content: rootRels },
+        { name: 'xl/workbook.xml', content: workbook },
+        { name: 'xl/_rels/workbook.xml.rels', content: workbookRels },
+        { name: 'xl/styles.xml', content: styles },
+        { name: 'xl/worksheets/sheet1.xml', content: sheet }
+      ]);
+    }
+
+    function downloadExcel(filename, rows) {
+      const url = URL.createObjectURL(createExcelWorkbook(rows));
       const link = document.createElement('a');
       link.href = url;
       link.download = filename;
@@ -3009,60 +3554,13 @@
 
     function exportContractList() {
       const rows = [
-        ['合约编号', '合约状态', '客户', 'TRS账户号', '市场', '标的代码', '标的名称', '方向', '起始日', '到期日', '期限', '原始名义本金', '当前数量', '当前名义本金', '未实现盈亏', '累计已实现盈亏', '累计费用', '累计利息', '保证金占用', '风险状态'],
+        ['合约编号', '合约状态', '客户', 'TRS账户号', '开仓时间', '市场', '标的代码', '标的名称', '方向', '起始日', '到期日', '期限', '名义本金', '当前数量', '当前名义本金', '未实现盈亏', '累计已实现盈亏', '累计费用', '累计利息', '保证金占用', '风险状态'],
         ...state.filtered.map((contract) => [
-          contract.id, contract.status, contract.customer, contract.account, contract.market, contract.symbol, contract.name, contract.direction,
+          contract.id, contract.status, contract.customer, contract.account, contract.openAt, contract.market, contract.symbol, contract.name, contract.direction,
           contract.startDate, contract.maturityDate, contract.term, contract.originalNotional, contract.quantity, contract.notional, contract.unrealized, contract.realized, contract.fees, contract.accruedInterest, contract.margin, contract.risk
         ])
       ];
-      downloadCsv('TRS合约列表.csv', rows);
-    }
-
-    function exportContractDetail() {
-      const contract = state.currentContract;
-      if (!contract) return;
-      const events = eventsFor(contract);
-      const rows = [
-        ['TRS合约明细', contract.id],
-        ['客户', `${contract.customer} / ${contract.customerEn}`],
-        ['TRS账户号', contract.account],
-        ['标的物', `${contract.market} ${contract.symbol} ${contract.name}`],
-        ['生命周期状态', contract.status],
-        ['方向', contract.direction],
-        ['起始日', contract.startDate],
-        ['到期日', contract.maturityDate],
-        ['期限', contract.term],
-        ['原始名义本金', contract.originalNotional],
-        ['开仓日期', contract.openDate],
-        ['平仓日期', contract.closeDate || '--'],
-        ['累计已实现盈亏', contract.realized],
-        ['累计交易费用', contract.fees],
-        ['累计融资利息', contract.accruedInterest],
-        [],
-        ['事件编号', '事件类型', '生效时间', '来源单据', '事件前数量', '数量变化', '事件后数量', '事件前成本', '事件后成本', '现金流', '状态'],
-        ...events.map((event) => [event.id, event.type, event.effectiveAt, event.source, event.quantityBefore, event.delta, event.quantityAfter, event.costBefore, event.costAfter, event.cashFlow, event.status])
-      ];
-      downloadCsv(`${contract.id}-合约明细.csv`, rows);
-    }
-
-    function exportSettlementDetails() {
-      const contract = state.currentContract;
-      const model = state.currentSettlement;
-      if (!contract || !model) return;
-      const rows = [
-        ['TRS合约结算凭据', contract.id],
-        ['币种', model.currency],
-        ['总收入', model.income],
-        ['总支出', model.expense],
-        ['结算总盈亏', model.profit],
-        ['投资回报率', `${formatNumber(model.returnRate)}%`],
-        ['保证金返还', model.marginReturned],
-        [],
-        ['项目', '关联事件', '金额'],
-        ...model.incomeRows.map((row) => [row.name, row.reference, row.amount]),
-        ...model.expenseRows.map((row) => [row.name, row.reference, -row.amount])
-      ];
-      downloadCsv(`${contract.id}-${isSettledContract(contract) ? '结算凭据' : '结算预览'}.csv`, rows);
+      downloadExcel('TRS合约列表.xlsx', rows);
     }
 
     function openColumnDrawer() {
@@ -3085,6 +3583,19 @@
 
     $('#query-button').addEventListener('click', applyFilters);
     $('#reset-button').addEventListener('click', resetFilters);
+    $('#open-date-range').addEventListener('click', () => {
+      if ($('#open-date-range-popover').hidden) openOpenDateRange();
+      else closeOpenDateRange();
+    });
+    $('#open-date-prev-month').addEventListener('click', () => changeOpenDateMonth(-1));
+    $('#open-date-next-month').addEventListener('click', () => changeOpenDateMonth(1));
+    $('#open-date-calendar').addEventListener('click', (event) => {
+      const day = event.target.closest('[data-open-date]');
+      if (day) selectOpenDate(day.dataset.openDate);
+    });
+    $('#open-date-clear').addEventListener('click', clearOpenDateRange);
+    $('#open-date-cancel').addEventListener('click', () => closeOpenDateRange({ restoreFocus: true }));
+    $('#open-date-confirm').addEventListener('click', confirmOpenDateRange);
     $('#refresh-button').addEventListener('click', () => {
       $('#filter-hint').textContent = `数据已刷新：${new Date().toLocaleString('zh-CN', { hour12: false })}`;
       renderTable();
@@ -3095,6 +3606,7 @@
       $('#advanced-toggle').setAttribute('aria-expanded', String(!expanded));
       $('.advanced-filters').hidden = expanded;
       $('#advanced-toggle span').textContent = expanded ? '展开筛选' : '收起筛选';
+      if (expanded) closeOpenDateRange();
     });
     $('#prev-page').addEventListener('click', () => {
       if (state.page > 1) { state.page -= 1; renderTable(); }
@@ -3107,12 +3619,6 @@
     $('#close-column-drawer').addEventListener('click', closeColumnDrawer);
     $('#column-backdrop').addEventListener('click', closeColumnDrawer);
     $('#detail-back').addEventListener('click', () => setView('list-view'));
-    $('#detail-export').addEventListener('click', exportContractDetail);
-    $('#settlement-button').addEventListener('click', () => showSettlement(state.currentContract));
-    $('#settlement-back').addEventListener('click', returnToContractDetail);
-    $('#settlement-return').addEventListener('click', returnToContractDetail);
-    $('#settlement-print').addEventListener('click', () => preparePrint('settlement'));
-    $('#settlement-export').addEventListener('click', exportSettlementDetails);
     $('#valuation-filter-query').addEventListener('click', applyValuationFilters);
     $('#close-valuation-modal').addEventListener('click', closeValuationModal);
     $('#valuation-modal-backdrop').addEventListener('click', (event) => {
@@ -3127,16 +3633,18 @@
     });
 
     document.addEventListener('click', (event) => {
+      const clickedDateRange = event.composedPath().some((node) => node instanceof Element && node.classList.contains('date-range-field'));
+      if (!$('#open-date-range-popover').hidden && !clickedDateRange) closeOpenDateRange();
       const contractLink = event.target.closest('[data-contract-id]');
       if (contractLink) openContract(contractLink.dataset.contractId);
       const contractAction = event.target.closest('[data-open-contract]');
       if (contractAction) openContract(contractAction.dataset.openContract);
-      const confirmationPrint = event.target.closest('[data-print-confirmation-id]');
-      if (confirmationPrint) printTradeConfirmation(contracts.find((contract) => contract.id === confirmationPrint.dataset.printConfirmationId));
-      const valuationPrint = event.target.closest('[data-print-valuation-id]');
-      if (valuationPrint) printValuationReport(contracts.find((contract) => contract.id === valuationPrint.dataset.printValuationId));
-      const settlementPrint = event.target.closest('[data-print-settlement-id]');
-      if (settlementPrint) printSettlementVoucher(contracts.find((contract) => contract.id === settlementPrint.dataset.printSettlementId));
+      const confirmationDownload = event.target.closest('[data-download-confirmation-id]');
+      if (confirmationDownload) downloadTradeConfirmation(contracts.find((contract) => contract.id === confirmationDownload.dataset.downloadConfirmationId), confirmationDownload);
+      const valuationDownload = event.target.closest('[data-download-valuation-id]');
+      if (valuationDownload) downloadValuationReport(contracts.find((contract) => contract.id === valuationDownload.dataset.downloadValuationId), valuationDownload);
+      const settlementDownload = event.target.closest('[data-download-settlement-id]');
+      if (settlementDownload) downloadSettlementVoucher(contracts.find((contract) => contract.id === settlementDownload.dataset.downloadSettlementId), settlementDownload);
       const valuationTrigger = event.target.closest('[data-valuation-index]');
       if (valuationTrigger) openValuationModal(Number(valuationTrigger.dataset.valuationIndex), valuationTrigger);
       const navTrigger = event.target.closest('[data-section-target]');
@@ -3155,10 +3663,12 @@
     });
 
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && !$('#column-drawer').hidden) closeColumnDrawer();
+      if (event.key === 'Escape' && !$('#open-date-range-popover').hidden) closeOpenDateRange({ restoreFocus: true });
+      else if (event.key === 'Escape' && !$('#column-drawer').hidden) closeColumnDrawer();
       else if (event.key === 'Escape' && !$('#valuation-modal-backdrop').hidden) closeValuationModal();
     });
 
+    updateOpenDateRangeValue();
     renderTable();
 
     window.__TRS_DEMO__ = {
