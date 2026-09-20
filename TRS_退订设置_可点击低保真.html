@@ -1,0 +1,713 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TRS 订阅设置</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --canvas: #f4f5f7;
+      --surface: #ffffff;
+      --surface-muted: #f8f9fa;
+      --ink: #20242a;
+      --ink-secondary: #5f6772;
+      --ink-muted: #858d98;
+      --line: rgba(32, 36, 42, 0.12);
+      --line-strong: rgba(32, 36, 42, 0.2);
+      --accent: #b42318;
+      --accent-hover: #941f16;
+      --accent-soft: #fff1ef;
+      --success: #176b4d;
+      --success-soft: #ebf7f1;
+      --danger-soft: #fff3f1;
+      --focus: rgba(180, 35, 24, 0.26);
+      --shadow: 0 0 0 1px rgba(25, 31, 38, 0.04), 0 12px 34px rgba(25, 31, 38, 0.08);
+      --radius-control: 6px;
+      --radius-panel: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+      letter-spacing: 0;
+    }
+
+    html {
+      min-width: 320px;
+      background: var(--canvas);
+      font-family: "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      background: var(--canvas);
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      min-height: 44px;
+      border: 0;
+      border-radius: var(--radius-control);
+      cursor: pointer;
+      transition: background-color 160ms cubic-bezier(0.23, 1, 0.32, 1),
+        color 160ms cubic-bezier(0.23, 1, 0.32, 1),
+        box-shadow 160ms cubic-bezier(0.23, 1, 0.32, 1),
+        transform 120ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    button:active:not(:disabled) {
+      transform: scale(0.97);
+    }
+
+    button:focus-visible,
+    input:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.46;
+    }
+
+    .page-shell {
+      width: min(100% - 32px, 760px);
+      margin: 0 auto;
+      padding: 42px 0 56px;
+    }
+
+    .brand-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      color: #ffffff;
+      background: var(--accent);
+      border-radius: 7px;
+      box-shadow: 0 5px 14px rgba(180, 35, 24, 0.2);
+    }
+
+    .brand-mark svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 2;
+    }
+
+    .brand-copy strong,
+    .brand-copy span {
+      display: block;
+    }
+
+    .brand-copy strong {
+      font-size: 16px;
+      font-weight: 650;
+    }
+
+    .brand-copy span {
+      margin-top: 2px;
+      color: var(--ink-muted);
+      font-size: 12px;
+    }
+
+    .settings-panel {
+      overflow: hidden;
+      background: var(--surface);
+      border-radius: var(--radius-panel);
+      box-shadow: var(--shadow);
+    }
+
+    .panel-heading {
+      padding: 30px 32px 24px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    h1,
+    h2,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 680;
+      line-height: 1.28;
+      text-wrap: balance;
+    }
+
+    .lead {
+      max-width: 590px;
+      margin-top: 9px;
+      color: var(--ink-secondary);
+      font-size: 14px;
+      line-height: 1.7;
+      text-wrap: pretty;
+    }
+
+    .email-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 22px;
+      padding: 14px 16px;
+      background: var(--surface-muted);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-control);
+    }
+
+    .email-label {
+      color: var(--ink-muted);
+      font-size: 13px;
+    }
+
+    .email-value {
+      font-size: 15px;
+      font-weight: 620;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .settings-form {
+      padding: 26px 32px 30px;
+    }
+
+    .section-kicker {
+      color: var(--ink-muted);
+      font-size: 12px;
+      font-weight: 650;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin-top: 5px;
+      font-size: 18px;
+      font-weight: 650;
+      line-height: 1.4;
+    }
+
+    .subscription-groups {
+      display: grid;
+      margin-top: 16px;
+    }
+
+    .subscription-group {
+      min-width: 0;
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+
+    .subscription-group + .subscription-group {
+      margin-top: 24px;
+    }
+
+    .group-title {
+      width: 100%;
+      padding: 0 0 10px;
+      color: var(--ink);
+      border-bottom: 1px solid var(--line-strong);
+      font-size: 15px;
+      font-weight: 680;
+      line-height: 1.5;
+    }
+
+    .group-items {
+      display: grid;
+    }
+
+    .subscription-option {
+      display: grid;
+      grid-template-columns: 24px minmax(0, 1fr);
+      gap: 14px;
+      min-height: 58px;
+      padding: 15px 4px;
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+      cursor: pointer;
+    }
+
+    .subscription-option:hover .option-name {
+      color: var(--accent);
+    }
+
+    .subscription-option input {
+      width: 20px;
+      height: 20px;
+      margin: 0;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .option-name,
+    .option-description {
+      display: block;
+    }
+
+    .option-name {
+      font-size: 15px;
+      font-weight: 620;
+      line-height: 1.45;
+      transition: color 160ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .option-description {
+      margin-top: 5px;
+      color: var(--ink-secondary);
+      font-size: 13px;
+      line-height: 1.6;
+      text-wrap: pretty;
+    }
+
+    .form-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    .save-button,
+    .confirm-button {
+      min-width: 126px;
+      padding: 0 22px;
+      color: #ffffff;
+      background: var(--accent);
+      font-weight: 620;
+      box-shadow: 0 5px 14px rgba(180, 35, 24, 0.2);
+    }
+
+    .save-button:hover:not(:disabled),
+    .confirm-button:hover:not(:disabled) {
+      background: var(--accent-hover);
+    }
+
+    .secondary-button {
+      min-width: 104px;
+      padding: 0 18px;
+      color: var(--ink);
+      background: var(--surface-muted);
+      border: 1px solid var(--line-strong);
+      font-weight: 580;
+    }
+
+    .secondary-button:hover {
+      background: #eef0f2;
+    }
+
+    .feedback {
+      display: none;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 18px;
+      padding: 12px 14px;
+      border-radius: var(--radius-control);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .feedback.is-visible {
+      display: flex;
+    }
+
+    .feedback.success {
+      color: var(--success);
+      background: var(--success-soft);
+    }
+
+    .feedback.error {
+      color: var(--accent);
+      background: var(--danger-soft);
+    }
+
+    dialog {
+      width: min(100% - 32px, 470px);
+      padding: 0;
+      color: var(--ink);
+      background: var(--surface);
+      border: 0;
+      border-radius: var(--radius-panel);
+      box-shadow: 0 24px 70px rgba(25, 31, 38, 0.26);
+    }
+
+    dialog::backdrop {
+      background: rgba(24, 28, 34, 0.48);
+    }
+
+    .dialog-body {
+      padding: 28px 28px 22px;
+    }
+
+    .dialog-eyebrow {
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .dialog-body h2 {
+      margin-top: 6px;
+      font-size: 22px;
+    }
+
+    .dialog-copy {
+      margin-top: 10px;
+      color: var(--ink-secondary);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .unsubscribe-summary {
+      margin: 18px 0 0;
+      padding: 14px 16px 14px 34px;
+      background: var(--accent-soft);
+      border-radius: var(--radius-control);
+      color: #712018;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .dialog-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 18px 28px 24px;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width: 600px) {
+      .page-shell {
+        width: min(100% - 24px, 760px);
+        padding: 24px 0 34px;
+      }
+
+      .brand-bar {
+        margin-bottom: 16px;
+      }
+
+      .panel-heading,
+      .settings-form {
+        padding-right: 20px;
+        padding-left: 20px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .email-line {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .subscription-group + .subscription-group {
+        margin-top: 22px;
+      }
+
+      .subscription-option {
+        min-height: 60px;
+      }
+
+      .form-actions,
+      .dialog-actions {
+        align-items: stretch;
+        flex-direction: column-reverse;
+      }
+
+      .save-button,
+      .confirm-button,
+      .secondary-button {
+        width: 100%;
+      }
+
+      .dialog-body,
+      .dialog-actions {
+        padding-right: 20px;
+        padding-left: 20px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page-shell">
+    <header class="brand-bar" aria-label="TRS 通知中心">
+      <span class="brand-mark" aria-hidden="true">
+        <!-- Lucide Mail icon -->
+        <svg viewBox="0 0 24 24">
+          <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+        </svg>
+      </span>
+      <span class="brand-copy">
+        <strong>TRS 通知中心</strong>
+        <span>Email preferences</span>
+      </span>
+    </header>
+
+    <section class="settings-panel" aria-labelledby="page-title">
+      <div class="panel-heading">
+        <h1 id="page-title">订阅设置</h1>
+        <p class="lead">查看并修改您希望接收的 TRS 邮件。打开本页面不会直接退订任何邮件。</p>
+        <div class="email-line">
+          <span class="email-label">当前邮箱</span>
+          <span class="email-value">29***@qq.com</span>
+        </div>
+      </div>
+
+      <form class="settings-form" id="settingsForm">
+        <p class="section-kicker">Email categories</p>
+        <h2>邮件订阅</h2>
+
+        <div class="subscription-groups">
+          <fieldset class="subscription-group">
+            <legend class="group-title">结单邮件</legend>
+            <div class="group-items">
+              <label class="subscription-option">
+                <input type="checkbox" name="dailyStatement" checked>
+                <span class="option-name">TRS日结单</span>
+              </label>
+              <label class="subscription-option">
+                <input type="checkbox" name="monthlyStatement" checked>
+                <span class="option-name">TRS月结单</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="subscription-group">
+            <legend class="group-title">风控邮件</legend>
+            <div class="group-items">
+              <label class="subscription-option">
+                <input type="checkbox" name="riskAlert" checked>
+                <span class="option-name">风控消息提醒</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="subscription-group">
+            <legend class="group-title">业务邮件</legend>
+            <div class="group-items">
+              <label class="subscription-option">
+                <input type="checkbox" name="financingLimitResult" checked>
+                <span class="option-name">融资额度申请结果</span>
+              </label>
+              <label class="subscription-option">
+                <input type="checkbox" name="singleStockLimitResult" checked>
+                <span class="option-name">单票额度申请结果</span>
+              </label>
+              <label class="subscription-option">
+                <input type="checkbox" name="marginWithdrawalResult" checked>
+                <span class="option-name">提取保证金申请结果</span>
+              </label>
+              <label class="subscription-option">
+                <input type="checkbox" name="cashWithdrawalResult" checked>
+                <span class="option-name">提现申请结果</span>
+              </label>
+              <label class="subscription-option">
+                <input type="checkbox" name="accountSettlementNotice" checked>
+                <span class="option-name">账户结算通知</span>
+              </label>
+              <label class="subscription-option">
+                <input type="checkbox" name="currencyTransferResult" checked>
+                <span class="option-name">货币划转申请结果</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="subscription-group">
+            <legend class="group-title">账户邮件</legend>
+            <div class="group-items">
+              <label class="subscription-option">
+                <input type="checkbox" name="accountOpeningNotice" checked>
+                <span class="option-name">开户通知</span>
+              </label>
+              <label class="subscription-option">
+                <input type="checkbox" name="passwordResetNotice" checked>
+                <span class="option-name">重置密码通知</span>
+              </label>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="form-actions">
+          <button class="save-button" id="saveButton" type="submit" disabled>保存设置</button>
+        </div>
+
+        <div class="feedback success" id="successFeedback" role="status" aria-live="polite">
+          <span aria-hidden="true">✓</span>
+          <span>订阅设置已保存。</span>
+        </div>
+        <div class="feedback error" id="errorFeedback" role="alert">
+          <span aria-hidden="true">!</span>
+          <span>保存失败，本次设置未生效，请重新提交。</span>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <dialog id="confirmDialog" aria-labelledby="confirmTitle">
+    <div class="dialog-body">
+      <p class="dialog-eyebrow">请再次确认</p>
+      <h2 id="confirmTitle">确认退订</h2>
+      <p class="dialog-copy">确认后，您将不再收到以下邮件：</p>
+      <ul class="unsubscribe-summary" id="unsubscribeSummary"></ul>
+    </div>
+    <div class="dialog-actions">
+      <button class="secondary-button" id="returnButton" type="button">返回修改</button>
+      <button class="confirm-button" id="confirmButton" type="button">确认退订</button>
+    </div>
+  </dialog>
+
+  <script>
+    (() => {
+      const storageKey = 'trs-email-subscription-settings-v2';
+      const categoryNames = {
+        dailyStatement: 'TRS日结单',
+        monthlyStatement: 'TRS月结单',
+        riskAlert: '风控消息提醒',
+        financingLimitResult: '融资额度申请结果',
+        singleStockLimitResult: '单票额度申请结果',
+        marginWithdrawalResult: '提取保证金申请结果',
+        cashWithdrawalResult: '提现申请结果',
+        accountSettlementNotice: '账户结算通知',
+        currencyTransferResult: '货币划转申请结果',
+        accountOpeningNotice: '开户通知',
+        passwordResetNotice: '重置密码通知'
+      };
+      const defaultSettings = {
+        dailyStatement: true,
+        monthlyStatement: true,
+        riskAlert: true,
+        financingLimitResult: true,
+        singleStockLimitResult: true,
+        marginWithdrawalResult: true,
+        cashWithdrawalResult: true,
+        accountSettlementNotice: true,
+        currencyTransferResult: true,
+        accountOpeningNotice: true,
+        passwordResetNotice: true
+      };
+
+      const form = document.getElementById('settingsForm');
+      const saveButton = document.getElementById('saveButton');
+      const confirmDialog = document.getElementById('confirmDialog');
+      const unsubscribeSummary = document.getElementById('unsubscribeSummary');
+      const returnButton = document.getElementById('returnButton');
+      const confirmButton = document.getElementById('confirmButton');
+      const successFeedback = document.getElementById('successFeedback');
+      const errorFeedback = document.getElementById('errorFeedback');
+      const checkboxes = [...form.querySelectorAll('input[type="checkbox"]')];
+
+      function readSettings() {
+        try {
+          const stored = JSON.parse(localStorage.getItem(storageKey));
+          if (!stored || typeof stored !== 'object') return { ...defaultSettings };
+          return Object.fromEntries(
+            Object.keys(defaultSettings).map((key) => [key, typeof stored[key] === 'boolean' ? stored[key] : defaultSettings[key]])
+          );
+        } catch (error) {
+          return { ...defaultSettings };
+        }
+      }
+
+      let savedSettings = readSettings();
+
+      function currentSettings() {
+        return Object.fromEntries(checkboxes.map((checkbox) => [checkbox.name, checkbox.checked]));
+      }
+
+      function renderSettings(settings) {
+        checkboxes.forEach((checkbox) => {
+          checkbox.checked = settings[checkbox.name];
+        });
+        updateDirtyState();
+      }
+
+      function updateDirtyState() {
+        const draft = currentSettings();
+        saveButton.disabled = Object.keys(defaultSettings).every((key) => draft[key] === savedSettings[key]);
+        successFeedback.classList.remove('is-visible');
+        errorFeedback.classList.remove('is-visible');
+      }
+
+      function removedCategories(nextSettings) {
+        return Object.keys(defaultSettings).filter((key) => savedSettings[key] && !nextSettings[key]);
+      }
+
+      function showConfirmation(keys) {
+        unsubscribeSummary.replaceChildren(
+          ...keys.map((key) => {
+            const item = document.createElement('li');
+            item.textContent = categoryNames[key];
+            return item;
+          })
+        );
+        confirmDialog.showModal();
+      }
+
+      function saveSettings() {
+        const nextSettings = currentSettings();
+        try {
+          localStorage.setItem(storageKey, JSON.stringify(nextSettings));
+          savedSettings = { ...nextSettings };
+          saveButton.disabled = true;
+          errorFeedback.classList.remove('is-visible');
+          successFeedback.classList.add('is-visible');
+        } catch (error) {
+          successFeedback.classList.remove('is-visible');
+          errorFeedback.classList.add('is-visible');
+        }
+      }
+
+      checkboxes.forEach((checkbox) => checkbox.addEventListener('change', updateDirtyState));
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const removed = removedCategories(currentSettings());
+        if (removed.length > 0) {
+          showConfirmation(removed);
+          return;
+        }
+        saveSettings();
+      });
+
+      returnButton.addEventListener('click', () => confirmDialog.close());
+      confirmButton.addEventListener('click', () => {
+        confirmDialog.close();
+        saveSettings();
+      });
+
+      confirmDialog.addEventListener('cancel', (event) => {
+        event.preventDefault();
+        confirmDialog.close();
+      });
+
+      renderSettings(savedSettings);
+    })();
+  </script>
+</body>
+</html>
