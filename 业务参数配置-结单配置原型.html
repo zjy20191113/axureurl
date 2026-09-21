@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>业务参数配置 - 结单配置原型</title>
+  <style>
+    :root {
+      --page-bg: #f3f5f7;
+      --panel-bg: #ffffff;
+      --line: #e5e9ef;
+      --line-strong: #d7dde6;
+      --text: #344054;
+      --text-strong: #25344a;
+      --muted: #8994a5;
+      --blue: #2878ee;
+      --blue-soft: #eaf5ff;
+      --blue-border: #bfe0ff;
+      --green: #1c9b67;
+      --green-soft: #ecf9f2;
+      --orange: #d87522;
+      --orange-soft: #fff5e9;
+      --danger: #d64545;
+      --shadow: 0 8px 24px rgba(45, 66, 95, 0.06);
+      --radius: 6px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-width: 1120px;
+      color: var(--text);
+      background: var(--page-bg);
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+      font-size: 14px;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .shell {
+      min-height: 100vh;
+      padding: 14px 28px 34px;
+    }
+
+    .primary-nav {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 56px;
+      padding: 10px 14px;
+      background: var(--panel-bg);
+      border: 1px solid #eef1f5;
+      box-shadow: var(--shadow);
+    }
+
+    .primary-item {
+      min-width: 128px;
+      height: 36px;
+      padding: 0 22px;
+      border: 0;
+      border-radius: 3px;
+      color: #7c8796;
+      background: #f1f3f5;
+      font-size: 16px;
+    }
+
+    .primary-item.is-active {
+      color: #328bf2;
+      background: #e6f5ff;
+    }
+
+    .secondary-nav {
+      display: flex;
+      align-items: center;
+      gap: 38px;
+      min-height: 58px;
+      margin-top: 14px;
+      padding: 0 28px;
+      background: var(--panel-bg);
+      border: 1px solid #eef1f5;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .secondary-item {
+      position: relative;
+      height: 58px;
+      padding: 0 0 1px;
+      border: 0;
+      color: #697586;
+      background: transparent;
+      font-size: 16px;
+    }
+
+    .secondary-item::after {
+      position: absolute;
+      right: 0;
+      bottom: -1px;
+      left: 0;
+      height: 3px;
+      border-radius: 2px;
+      background: transparent;
+      content: "";
+    }
+
+    .secondary-item.is-active {
+      color: var(--blue);
+      font-weight: 600;
+    }
+
+    .secondary-item.is-active::after {
+      background: var(--blue);
+    }
+
+    .content {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 26px 30px 0;
+    }
+
+    .page-heading {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 20px;
+    }
+
+    .heading-copy h1 {
+      margin: 0;
+      color: var(--text-strong);
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 0;
+    }
+
+    .heading-copy p {
+      margin: 9px 0 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .status-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-top: 4px;
+      white-space: nowrap;
+    }
+
+    .status-label {
+      color: var(--muted);
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 30px;
+      padding: 0 12px;
+      border: 1px solid #bfe9d4;
+      border-radius: 15px;
+      color: var(--green);
+      background: var(--green-soft);
+    }
+
+    .status-pill::before {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+      content: "";
+    }
+
+    .status-pill.is-draft {
+      border-color: #ffd7a8;
+      color: var(--orange);
+      background: var(--orange-soft);
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(380px, 0.62fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .panel {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel-bg);
+      box-shadow: var(--shadow);
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 62px;
+      padding: 0 24px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .panel-header h2 {
+      margin: 0;
+      color: var(--text-strong);
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .panel-header span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .prd-panel {
+      position: sticky;
+      top: 18px;
+    }
+
+    .prd-body {
+      padding: 20px 22px 24px;
+    }
+
+    .prd-section {
+      padding: 0 0 20px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .prd-section + .prd-section {
+      margin-top: 20px;
+    }
+
+    .prd-section:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .prd-section h3 {
+      margin: 0 0 11px;
+      color: var(--text-strong);
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .prd-section p {
+      margin: 0;
+      color: #667085;
+      line-height: 1.7;
+    }
+
+    .prd-list {
+      display: grid;
+      grid-template-columns: 86px minmax(0, 1fr);
+      gap: 11px 14px;
+      margin: 0;
+    }
+
+    .prd-list dt {
+      color: #8994a5;
+      line-height: 1.6;
+    }
+
+    .prd-list dd {
+      margin: 0;
+      color: #475467;
+      line-height: 1.6;
+    }
+
+    .prd-table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+    }
+
+    .prd-table {
+      width: 100%;
+      min-width: 430px;
+      border-collapse: collapse;
+      color: #475467;
+      font-size: 12px;
+    }
+
+    .prd-table th,
+    .prd-table td {
+      padding: 10px 11px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      line-height: 1.55;
+    }
+
+    .prd-table th:last-child,
+    .prd-table td:last-child {
+      border-right: 0;
+    }
+
+    .prd-table tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .prd-table th {
+      color: #667085;
+      background: #f8fafc;
+      font-weight: 500;
+    }
+
+    .form-section {
+      padding: 24px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .form-section:last-child {
+      border-bottom: 0;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h3 {
+      margin: 0;
+      color: var(--text-strong);
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .section-heading p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .logo-editor {
+      display: grid;
+      grid-template-columns: 200px minmax(0, 1fr);
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .logo-preview-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 200px;
+      height: 84px;
+      padding: 12px;
+      border: 1px solid var(--line-strong);
+      border-radius: 5px;
+      background: #fbfcfd;
+    }
+
+    .logo-preview-box img {
+      display: none;
+      max-width: 180px;
+      max-height: 48px;
+      object-fit: contain;
+    }
+
+    .logo-preview-box.has-image img {
+      display: block;
+    }
+
+    .logo-preview-box.has-image .logo-fallback {
+      display: none;
+    }
+
+    .logo-fallback {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 7px;
+      color: #205f9e;
+    }
+
+    .logo-fallback strong {
+      font-size: 21px;
+      letter-spacing: 1.2px;
+      font-weight: 700;
+    }
+
+    .logo-fallback small {
+      color: #98a2b3;
+      font-size: 7px;
+      letter-spacing: 0.9px;
+    }
+
+    .upload-copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-width: 0;
+    }
+
+    .upload-copy strong {
+      color: var(--text-strong);
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .upload-copy p {
+      margin: 9px 0 0;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .upload-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 17px;
+    }
+
+    .button {
+      min-height: 34px;
+      padding: 0 16px;
+      border: 1px solid var(--line-strong);
+      border-radius: 4px;
+      color: #536174;
+      background: #fff;
+    }
+
+    .button:hover {
+      border-color: #99b8dc;
+      color: var(--blue);
+    }
+
+    .button-primary {
+      border-color: var(--blue);
+      color: #fff;
+      background: var(--blue);
+    }
+
+    .button-primary:hover {
+      border-color: #1768db;
+      color: #fff;
+      background: #1768db;
+    }
+
+    .button-quiet {
+      color: #667085;
+      background: #f8fafc;
+    }
+
+    .file-name {
+      min-height: 20px;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px 28px;
+    }
+
+    .field {
+      min-width: 0;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    .field label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 9px;
+      color: #475467;
+      font-weight: 500;
+    }
+
+    .required {
+      color: var(--danger);
+    }
+
+    .field input,
+    .field textarea {
+      display: block;
+      width: 100%;
+      border: 1px solid var(--line-strong);
+      border-radius: 4px;
+      color: var(--text-strong);
+      background: #fff;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .field input {
+      height: 40px;
+      padding: 0 12px;
+    }
+
+    .field textarea {
+      min-height: 76px;
+      padding: 10px 12px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    .field input:focus,
+    .field textarea:focus {
+      border-color: #76a9ed;
+      box-shadow: 0 0 0 3px rgba(40, 120, 238, 0.1);
+    }
+
+    .field input.is-invalid,
+    .field textarea.is-invalid {
+      border-color: #e27777;
+      box-shadow: 0 0 0 3px rgba(214, 69, 69, 0.08);
+    }
+
+    .field-hint {
+      margin: 7px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .scope-row {
+      display: grid;
+      grid-template-columns: 132px minmax(0, 1fr);
+      gap: 14px;
+      align-items: center;
+      margin-top: 20px;
+      padding: 13px 14px;
+      border: 1px solid #e6edf6;
+      border-radius: 4px;
+      background: #f8fbff;
+    }
+
+    .scope-row .label {
+      color: #64748b;
+    }
+
+    .scope-row .value {
+      color: var(--text-strong);
+      font-weight: 500;
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 17px 24px;
+      border-top: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .toast {
+      position: fixed;
+      right: 30px;
+      bottom: 30px;
+      z-index: 10;
+      min-width: 220px;
+      max-width: 360px;
+      padding: 12px 16px;
+      border: 1px solid #cce6d8;
+      border-radius: 5px;
+      color: #19714b;
+      background: #effaf4;
+      box-shadow: 0 10px 28px rgba(45, 66, 95, 0.16);
+      opacity: 0;
+      transform: translateY(8px);
+      pointer-events: none;
+      transition: opacity 0.18s ease, transform 0.18s ease;
+    }
+
+    .toast.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .toast.is-error {
+      border-color: #f0c5c5;
+      color: #b63535;
+      background: #fff5f5;
+    }
+
+    @media (max-width: 1260px) {
+      body {
+        min-width: 0;
+      }
+
+      .shell {
+        padding: 12px;
+      }
+
+      .primary-nav {
+        overflow-x: auto;
+      }
+
+      .primary-item {
+        flex: 0 0 auto;
+      }
+
+      .content {
+        padding-right: 12px;
+        padding-left: 12px;
+      }
+
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+
+      .prd-panel {
+        position: static;
+      }
+
+    }
+
+    @media (max-width: 720px) {
+      .secondary-nav {
+        gap: 22px;
+        overflow-x: auto;
+        padding: 0 16px;
+      }
+
+      .secondary-item {
+        flex: 0 0 auto;
+      }
+
+      .page-heading {
+        display: block;
+      }
+
+      .status-area {
+        margin-top: 16px;
+      }
+
+      .logo-editor,
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .logo-preview-box {
+        width: 100%;
+        max-width: 200px;
+      }
+
+      .field.full {
+        grid-column: auto;
+      }
+
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <nav class="primary-nav" aria-label="一级导航">
+      <button class="primary-item" type="button">工作台</button>
+      <button class="primary-item" type="button">TRS账户日结单</button>
+      <button class="primary-item" type="button">上手汇率</button>
+      <button class="primary-item" type="button">后台配置</button>
+      <button class="primary-item" type="button">系统配置</button>
+      <button class="primary-item is-active" type="button">业务参数配置</button>
+    </nav>
+
+    <nav class="secondary-nav" aria-label="业务参数配置">
+      <button class="secondary-item" type="button" data-tab="withdraw">提现设置</button>
+      <button class="secondary-item" type="button" data-tab="margin">提保设置</button>
+      <button class="secondary-item" type="button" data-tab="odd-lot">碎股策略配置</button>
+      <button class="secondary-item is-active" type="button" data-tab="statement" aria-selected="true">结单配置</button>
+    </nav>
+
+    <main class="content">
+      <div class="page-heading">
+        <div class="heading-copy">
+          <h1>结单配置</h1>
+          <p>配置 TRS账户日月结单的品牌标识和联系信息，发布后用于后续生成的结单。</p>
+        </div>
+        <div class="status-area">
+          <span class="status-label">当前状态</span>
+          <span class="status-pill" id="statusPill">已发布</span>
+        </div>
+      </div>
+
+      <section class="workspace" id="statementPanel">
+        <div class="panel">
+          <div class="panel-header">
+            <h2>结单展示信息</h2>
+            <span>最后更新：<span id="lastUpdated">2026-09-20 16:40</span></span>
+          </div>
+
+          <form id="configForm" novalidate>
+            <section class="form-section">
+              <div class="section-heading">
+                <h3>品牌标识</h3>
+                <p>展示在结单每页抬头左侧</p>
+              </div>
+
+              <div class="logo-editor">
+                <div class="logo-preview-box" id="logoPreviewBox">
+                  <img id="logoImage" alt="已配置的结单 logo">
+                  <div class="logo-fallback">
+                    <strong>LINKSOFT</strong>
+                    <small>TRS TOTAL RETURN SWAP</small>
+                  </div>
+                </div>
+                <div class="upload-copy">
+                  <strong>上传结单 logo</strong>
+                  <p>支持 PNG、JPG、SVG 格式。建议使用透明底图片，建议尺寸为 180 × 48 px，系统按结单抬头区域等比缩放。</p>
+                  <div class="upload-actions">
+                    <label class="button button-primary" for="logoInput">选择文件</label>
+                  </div>
+                  <input id="logoInput" type="file" accept="image/png,image/jpeg,image/svg+xml" hidden>
+                  <div class="file-name" id="fileName">当前使用已生效 logo</div>
+                </div>
+              </div>
+            </section>
+
+            <section class="form-section">
+              <div class="section-heading">
+                <h3>联系信息</h3>
+                <p>展示在结单抬头下方</p>
+              </div>
+
+              <div class="form-grid">
+                <div class="field">
+                  <label for="phone">联系电话 <span class="required">*</span></label>
+                  <input id="phone" name="phone" type="tel" value="+865718655552" autocomplete="tel">
+                  <p class="field-hint">支持国际区号、空格和连字符。</p>
+                </div>
+
+                <div class="field">
+                  <label for="email">联系邮箱 <span class="required">*</span></label>
+                  <input id="email" name="email" type="email" value="market@linksoft.com" autocomplete="email">
+                  <p class="field-hint">用于结单中的业务联系信息。</p>
+                </div>
+
+                <div class="field full">
+                  <label for="address">联系地址 <span class="required">*</span></label>
+                  <textarea id="address" name="address" autocomplete="street-address">浙江省杭州市余杭区仓前街道IT公园4号楼6楼</textarea>
+                  <p class="field-hint">建议填写完整办公地址，内容过长时结单会自动换行。</p>
+                </div>
+              </div>
+
+              <div class="scope-row">
+                <span class="label">适用结单</span>
+                <span class="value">TRS账户日月结单</span>
+              </div>
+            </section>
+          </form>
+
+          <div class="form-actions">
+            <button class="button button-quiet" type="button" id="cancelButton">取消</button>
+            <button class="button button-primary" type="button" id="publishButton">发布配置</button>
+          </div>
+        </div>
+
+        <aside class="panel prd-panel" aria-label="页面 PRD">
+          <div class="panel-header">
+            <h2>页面 PRD</h2>
+            <span>结单配置</span>
+          </div>
+          <div class="prd-body">
+            <section class="prd-section">
+              <h3>1. 功能说明</h3>
+              <p>用于维护 TRS账户日月结单的 Logo、联系电话、联系地址和联系邮箱。发布后，后续生成的结单使用最新配置。</p>
+            </section>
+
+            <section class="prd-section">
+              <h3>2. 需求详细说明</h3>
+              <dl class="prd-list">
+                <dt>页面入口</dt>
+                <dd>业务参数配置 &gt; 结单配置</dd>
+                <dt>适用范围</dt>
+                <dd>TRS账户日月结单</dd>
+                <dt>默认状态</dt>
+                <dd>首次进入默认展示当前已生效配置，当前 Tab 处于选中状态。</dd>
+                <dt>发布规则</dt>
+                <dd>联系电话、邮箱、地址均填写且格式校验通过后，允许发布配置。</dd>
+                <dt>生效范围</dt>
+                <dd>发布后用于后续生成的结单；本页面不提供历史结单回写操作。</dd>
+              </dl>
+            </section>
+
+            <section class="prd-section">
+              <h3>3. 页面字段说明</h3>
+              <div class="prd-table-wrap">
+                <table class="prd-table">
+                  <thead>
+                    <tr>
+                      <th>字段/操作</th>
+                      <th>规则说明</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Logo</td>
+                      <td>选填。支持 PNG、JPG、SVG；建议尺寸 180 × 48 px，按结单抬头区域等比缩放。</td>
+                    </tr>
+                    <tr>
+                      <td>联系电话</td>
+                      <td>必填，支持国际区号、空格和连字符。</td>
+                    </tr>
+                    <tr>
+                      <td>联系邮箱</td>
+                      <td>必填，按邮箱格式校验。</td>
+                    </tr>
+                    <tr>
+                      <td>联系地址</td>
+                      <td>必填，支持多行录入；结单展示时允许自动换行。</td>
+                    </tr>
+                    <tr>
+                      <td>取消</td>
+                      <td>放弃本次未发布修改，恢复当前页面初始状态。</td>
+                    </tr>
+                    <tr>
+                      <td>发布配置</td>
+                      <td>执行必填和格式校验；校验通过后发布，并将状态更新为“已发布”。</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+        </aside>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (function () {
+      const form = document.getElementById("configForm");
+      const phone = document.getElementById("phone");
+      const email = document.getElementById("email");
+      const address = document.getElementById("address");
+      const logoInput = document.getElementById("logoInput");
+      const logoImage = document.getElementById("logoImage");
+      const logoPreviewBox = document.getElementById("logoPreviewBox");
+      const fileName = document.getElementById("fileName");
+      const statusPill = document.getElementById("statusPill");
+      const lastUpdated = document.getElementById("lastUpdated");
+      const toast = document.getElementById("toast");
+      let toastTimer = null;
+      let logoObjectUrl = null;
+
+      function showToast(message, isError) {
+        window.clearTimeout(toastTimer);
+        toast.textContent = message;
+        toast.classList.toggle("is-error", Boolean(isError));
+        toast.classList.add("is-visible");
+        toastTimer = window.setTimeout(function () {
+          toast.classList.remove("is-visible");
+        }, 2400);
+      }
+
+      function markDraft() {
+        statusPill.textContent = "未发布修改";
+        statusPill.classList.add("is-draft");
+      }
+
+      function markEdited() {
+        markDraft();
+      }
+
+      function clearValidation() {
+        [phone, email, address].forEach(function (field) {
+          field.classList.remove("is-invalid");
+        });
+      }
+
+      function validate() {
+        clearValidation();
+        let valid = true;
+        if (!phone.value.trim()) {
+          phone.classList.add("is-invalid");
+          valid = false;
+        }
+        if (!email.value.trim() || !email.validity.valid) {
+          email.classList.add("is-invalid");
+          valid = false;
+        }
+        if (!address.value.trim()) {
+          address.classList.add("is-invalid");
+          valid = false;
+        }
+        return valid;
+      }
+
+      function updateLogoPreview(src, name) {
+        logoImage.src = src;
+        logoPreviewBox.classList.add("has-image");
+        fileName.textContent = name;
+      }
+
+      function clearLogoSelection() {
+        if (logoObjectUrl) {
+          URL.revokeObjectURL(logoObjectUrl);
+          logoObjectUrl = null;
+        }
+        logoInput.value = "";
+        logoImage.removeAttribute("src");
+        logoPreviewBox.classList.remove("has-image");
+        fileName.textContent = "当前使用已生效 logo";
+      }
+
+      [phone, email, address].forEach(function (field) {
+        field.addEventListener("input", function () {
+          field.classList.remove("is-invalid");
+          markEdited();
+        });
+      });
+
+      logoInput.addEventListener("change", function () {
+        const file = logoInput.files && logoInput.files[0];
+        if (!file) {
+          return;
+        }
+        if (!file.type.startsWith("image/")) {
+          logoInput.value = "";
+          showToast("请选择 PNG、JPG 或 SVG 图片", true);
+          return;
+        }
+        if (logoObjectUrl) {
+          URL.revokeObjectURL(logoObjectUrl);
+        }
+        logoObjectUrl = URL.createObjectURL(file);
+        updateLogoPreview(logoObjectUrl, "已选择：" + file.name);
+        markDraft();
+        showToast("logo 文件已更新");
+      });
+
+      document.getElementById("publishButton").addEventListener("click", function () {
+        if (!validate()) {
+          showToast("请先补充完整的联系电话、邮箱和地址", true);
+          return;
+        }
+        lastUpdated.textContent = "2026-09-21 11:20";
+        statusPill.textContent = "已发布";
+        statusPill.classList.remove("is-draft");
+        showToast("结单配置已发布，后续生成的结单将使用新配置");
+      });
+
+      document.getElementById("cancelButton").addEventListener("click", function () {
+        form.reset();
+        markEdited();
+        clearValidation();
+        clearLogoSelection();
+        statusPill.textContent = "已发布";
+        statusPill.classList.remove("is-draft");
+        lastUpdated.textContent = "2026-09-20 16:40";
+        showToast("已恢复本次编辑前的字段值");
+      });
+
+      document.querySelectorAll(".secondary-item").forEach(function (tab) {
+        tab.addEventListener("click", function () {
+          if (tab.dataset.tab === "statement") {
+            return;
+          }
+          showToast("其他业务参数页面沿用现有配置，本原型聚焦结单配置");
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
