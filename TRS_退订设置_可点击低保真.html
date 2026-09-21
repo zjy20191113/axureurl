@@ -15,11 +15,12 @@
       --ink-muted: #858d98;
       --line: rgba(32, 36, 42, 0.12);
       --line-strong: rgba(32, 36, 42, 0.2);
-      --accent: #b42318;
-      --accent-hover: #941f16;
-      --accent-soft: #fff1ef;
+      --accent: #1855f9;
+      --accent-hover: #1046d8;
+      --accent-soft: #eef3ff;
       --success: #176b4d;
       --success-soft: #ebf7f1;
+      --danger: #b42318;
       --danger-soft: #fff3f1;
       --focus: rgba(180, 35, 24, 0.26);
       --shadow: 0 0 0 1px rgba(25, 31, 38, 0.04), 0 12px 34px rgba(25, 31, 38, 0.08);
@@ -332,7 +333,7 @@
     }
 
     .feedback.error {
-      color: var(--accent);
+      color: var(--danger);
       background: var(--danger-soft);
     }
 
@@ -375,7 +376,7 @@
     .unsubscribe-summary {
       margin: 18px 0 0;
       padding: 14px 16px 14px 34px;
-      background: var(--accent-soft);
+      background: var(--danger-soft);
       border-radius: var(--radius-control);
       color: #712018;
       font-size: 14px;
