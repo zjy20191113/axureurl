@@ -196,6 +196,20 @@
       text-transform: uppercase;
     }
 
+    .setting-hint {
+      margin-top: 7px;
+      color: var(--ink-secondary);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .demo-notice {
+      margin-top: 5px;
+      color: var(--ink-muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
     h2 {
       margin-top: 5px;
       font-size: 18px;
@@ -473,7 +487,7 @@
     <section class="settings-panel" aria-labelledby="page-title">
       <div class="panel-heading">
         <h1 id="page-title">订阅设置</h1>
-        <p class="lead">查看并修改您希望接收的 TRS 邮件。打开本页面不会直接退订任何邮件。</p>
+        <p class="lead">勾选您不希望继续接收的 TRS 邮件。打开本页面不会直接退订任何邮件。</p>
         <div class="email-line">
           <span class="email-label">当前邮箱</span>
           <span class="email-value">29***@qq.com</span>
@@ -482,18 +496,20 @@
 
       <form class="settings-form" id="settingsForm">
         <p class="section-kicker">Email categories</p>
-        <h2>邮件订阅</h2>
+        <h2>退订邮件</h2>
+        <p class="setting-hint">勾选后将退订该类邮件，取消勾选则继续接收。</p>
+        <p class="demo-notice">本地演示初始状态并非真实邮件订阅状态。</p>
 
         <div class="subscription-groups">
           <fieldset class="subscription-group">
             <legend class="group-title">结单邮件</legend>
             <div class="group-items">
               <label class="subscription-option">
-                <input type="checkbox" name="dailyStatement" checked>
+                <input type="checkbox" name="dailyStatement">
                 <span class="option-name">TRS日结单</span>
               </label>
               <label class="subscription-option">
-                <input type="checkbox" name="monthlyStatement" checked>
+                <input type="checkbox" name="monthlyStatement">
                 <span class="option-name">TRS月结单</span>
               </label>
             </div>
@@ -503,7 +519,7 @@
             <legend class="group-title">风控邮件</legend>
             <div class="group-items">
               <label class="subscription-option">
-                <input type="checkbox" name="riskAlert" checked>
+                <input type="checkbox" name="riskAlert">
                 <span class="option-name">风控消息提醒</span>
               </label>
             </div>
@@ -513,27 +529,27 @@
             <legend class="group-title">业务邮件</legend>
             <div class="group-items">
               <label class="subscription-option">
-                <input type="checkbox" name="financingLimitResult" checked>
+                <input type="checkbox" name="financingLimitResult">
                 <span class="option-name">融资额度申请结果</span>
               </label>
               <label class="subscription-option">
-                <input type="checkbox" name="singleStockLimitResult" checked>
+                <input type="checkbox" name="singleStockLimitResult">
                 <span class="option-name">单票额度申请结果</span>
               </label>
               <label class="subscription-option">
-                <input type="checkbox" name="marginWithdrawalResult" checked>
+                <input type="checkbox" name="marginWithdrawalResult">
                 <span class="option-name">提取保证金申请结果</span>
               </label>
               <label class="subscription-option">
-                <input type="checkbox" name="cashWithdrawalResult" checked>
+                <input type="checkbox" name="cashWithdrawalResult">
                 <span class="option-name">提现申请结果</span>
               </label>
               <label class="subscription-option">
-                <input type="checkbox" name="accountSettlementNotice" checked>
+                <input type="checkbox" name="accountSettlementNotice">
                 <span class="option-name">账户结算通知</span>
               </label>
               <label class="subscription-option">
-                <input type="checkbox" name="currencyTransferResult" checked>
+                <input type="checkbox" name="currencyTransferResult">
                 <span class="option-name">货币划转申请结果</span>
               </label>
             </div>
@@ -543,11 +559,11 @@
             <legend class="group-title">账户邮件</legend>
             <div class="group-items">
               <label class="subscription-option">
-                <input type="checkbox" name="accountOpeningNotice" checked>
+                <input type="checkbox" name="accountOpeningNotice">
                 <span class="option-name">开户通知</span>
               </label>
               <label class="subscription-option">
-                <input type="checkbox" name="passwordResetNotice" checked>
+                <input type="checkbox" name="passwordResetNotice">
                 <span class="option-name">重置密码通知</span>
               </label>
             </div>
@@ -560,7 +576,7 @@
 
         <div class="feedback success" id="successFeedback" role="status" aria-live="polite">
           <span aria-hidden="true">✓</span>
-          <span>订阅设置已保存。</span>
+          <span>退订设置已保存。</span>
         </div>
         <div class="feedback error" id="errorFeedback" role="alert">
           <span aria-hidden="true">!</span>
@@ -585,7 +601,8 @@
 
   <script>
     (() => {
-      const storageKey = 'trs-email-subscription-settings-v2';
+      const storageKey = 'trs-email-subscription-settings-v3';
+      const legacyStorageKey = 'trs-email-subscription-settings-v2';
       const categoryNames = {
         dailyStatement: 'TRS日结单',
         monthlyStatement: 'TRS月结单',
@@ -600,17 +617,17 @@
         passwordResetNotice: '重置密码通知'
       };
       const defaultSettings = {
-        dailyStatement: true,
-        monthlyStatement: true,
-        riskAlert: true,
-        financingLimitResult: true,
-        singleStockLimitResult: true,
-        marginWithdrawalResult: true,
-        cashWithdrawalResult: true,
-        accountSettlementNotice: true,
-        currencyTransferResult: true,
-        accountOpeningNotice: true,
-        passwordResetNotice: true
+        dailyStatement: false,
+        monthlyStatement: false,
+        riskAlert: false,
+        financingLimitResult: false,
+        singleStockLimitResult: false,
+        marginWithdrawalResult: false,
+        cashWithdrawalResult: false,
+        accountSettlementNotice: false,
+        currencyTransferResult: false,
+        accountOpeningNotice: false,
+        passwordResetNotice: false
       };
 
       const form = document.getElementById('settingsForm');
@@ -623,16 +640,28 @@
       const errorFeedback = document.getElementById('errorFeedback');
       const checkboxes = [...form.querySelectorAll('input[type="checkbox"]')];
 
+      function hasCompleteSettings(value) {
+        return value && typeof value === 'object' &&
+          Object.keys(defaultSettings).every((key) => typeof value[key] === 'boolean');
+      }
+
       function readSettings() {
         try {
           const stored = JSON.parse(localStorage.getItem(storageKey));
-          if (!stored || typeof stored !== 'object') return { ...defaultSettings };
-          return Object.fromEntries(
-            Object.keys(defaultSettings).map((key) => [key, typeof stored[key] === 'boolean' ? stored[key] : defaultSettings[key]])
-          );
+          if (hasCompleteSettings(stored)) return stored;
+
+          const legacy = JSON.parse(localStorage.getItem(legacyStorageKey));
+          if (hasCompleteSettings(legacy)) {
+            const inverted = Object.fromEntries(
+              Object.keys(defaultSettings).map((key) => [key, !legacy[key]])
+            );
+            localStorage.setItem(storageKey, JSON.stringify(inverted));
+            return inverted;
+          }
         } catch (error) {
-          return { ...defaultSettings };
+          // The offline example remains usable when local storage is unavailable.
         }
+        return { ...defaultSettings };
       }
 
       let savedSettings = readSettings();
@@ -655,8 +684,8 @@
         errorFeedback.classList.remove('is-visible');
       }
 
-      function removedCategories(nextSettings) {
-        return Object.keys(defaultSettings).filter((key) => savedSettings[key] && !nextSettings[key]);
+      function newUnsubscribes(nextSettings) {
+        return Object.keys(defaultSettings).filter((key) => !savedSettings[key] && nextSettings[key]);
       }
 
       function showConfirmation(keys) {
@@ -688,9 +717,9 @@
 
       form.addEventListener('submit', (event) => {
         event.preventDefault();
-        const removed = removedCategories(currentSettings());
-        if (removed.length > 0) {
-          showConfirmation(removed);
+        const unsubscribes = newUnsubscribes(currentSettings());
+        if (unsubscribes.length > 0) {
+          showConfirmation(unsubscribes);
           return;
         }
         saveSettings();
