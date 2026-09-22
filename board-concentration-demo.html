@@ -256,6 +256,17 @@
     .col-market { width: 22%; }
     .col-limit { width: 24%; }
     .col-code { width: 18%; }
+    .col-lot { width: 14%; }
+    .col-tick { width: 18%; }
+
+    #individual-table { min-width: 1080px; }
+    #individual-table .col-code { width: 150px; }
+    #individual-table .col-name { width: 250px; }
+    #individual-table .col-market { width: 120px; }
+    #individual-table .col-lot { width: 120px; }
+    #individual-table .col-tick { width: 170px; }
+    #individual-table .col-limit { width: 150px; }
+    #individual-table .col-action { width: 180px; }
 
     .text-button {
       padding: 4px 8px;
@@ -629,7 +640,15 @@
         <div class="table-wrap">
           <table id="individual-table">
             <thead>
-              <tr><th class="col-code">股票代码</th><th>股票名称</th><th class="col-market">市场</th><th class="col-limit">集中度限制</th><th class="col-action">操作</th></tr>
+              <tr>
+                <th class="col-code">股票代码</th>
+                <th class="col-name">股票名称</th>
+                <th class="col-market">市场</th>
+                <th class="col-lot" title="行情自动获取">每手股数</th>
+                <th class="col-tick" title="行情自动获取">最小变动单位</th>
+                <th class="col-limit">集中度限制</th>
+                <th class="col-action">操作</th>
+              </tr>
             </thead>
             <tbody></tbody>
           </table>
@@ -754,7 +773,7 @@
     (() => {
       const state = {
         boards: [{ name: '双创板', market: '沪深市场', limit: '30.0000' }],
-        stocks: [{ code: '688981', name: '中芯国际', market: 'SSE', limit: '20.0000' }],
+        stocks: [{ code: '688981', name: '中芯国际', market: 'SSE', lotSize: 100, tickSize: '0.01', limit: '20.0000' }],
         blocked: [],
         boardMode: 'add',
         editingBoard: '',
@@ -767,12 +786,12 @@
       };
 
       const quoteStocks = [
-        { code: '000001', name: '平安银行', market: 'SZSE' },
-        { code: '300059', name: '东方财富', market: 'SZSE' },
-        { code: '300750', name: '宁德时代', market: 'SZSE' },
-        { code: '600519', name: '贵州茅台', market: 'SSE' },
-        { code: '688041', name: '海光信息', market: 'SSE' },
-        { code: '688981', name: '中芯国际', market: 'SSE' },
+        { code: '000001', name: '平安银行', market: 'SZSE', lotSize: 100, tickSize: '0.01' },
+        { code: '300059', name: '东方财富', market: 'SZSE', lotSize: 100, tickSize: '0.01' },
+        { code: '300750', name: '宁德时代', market: 'SZSE', lotSize: 100, tickSize: '0.01' },
+        { code: '600519', name: '贵州茅台', market: 'SSE', lotSize: 100, tickSize: '0.01' },
+        { code: '688041', name: '海光信息', market: 'SSE', lotSize: 100, tickSize: '0.01' },
+        { code: '688981', name: '中芯国际', market: 'SSE', lotSize: 100, tickSize: '0.01' },
       ];
       const $ = (selector, root = document) => root.querySelector(selector);
       const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
@@ -820,13 +839,15 @@
             <td>${escapeHtml(item.code)}</td>
             <td>${escapeHtml(item.name)}</td>
             <td>${escapeHtml(item.market)}</td>
+            <td>${escapeHtml(item.lotSize)}</td>
+            <td>${escapeHtml(item.tickSize)}</td>
             <td>${displayPercent(item.limit)}</td>
             <td>
               <button class="text-button" type="button" data-edit-stock="${escapeHtml(item.code)}" aria-label="编辑${escapeHtml(item.code)}">编辑</button>
               <button class="text-button delete" type="button" data-delete-stock="${escapeHtml(item.code)}" aria-label="删除${escapeHtml(item.code)}">删除</button>
             </td>
           </tr>
-        `).join('') : '<tr><td colspan="5" style="height:112px;text-align:center;color:#98a2b3">暂无数据</td></tr>';
+        `).join('') : '<tr><td colspan="7" style="height:112px;text-align:center;color:#98a2b3">暂无数据</td></tr>';
       }
 
       function closeStockOptions() {
@@ -1038,7 +1059,7 @@
           item.limit = Number(limit).toFixed(4);
           showToast('个股规则更新成功');
         } else {
-          state.stocks.push({ code: quote.code, name: quote.name, market: quote.market, limit: Number(limit).toFixed(4) });
+          state.stocks.push({ code: quote.code, name: quote.name, market: quote.market, lotSize: quote.lotSize, tickSize: quote.tickSize, limit: Number(limit).toFixed(4) });
           showToast('个股规则新增成功');
         }
         $('#individual-dialog').close();
