@@ -1,8 +1,9 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>TRS账户月结单 - T80000339 - 2026/09/01</title>
 <style>
 @page { size: A4 portrait; margin: 0; }
@@ -50,34 +51,51 @@ body {
 
 .report-header {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 20px;
   align-items: start;
-  min-height: 53px;
+  min-height: 65px;
   border-bottom: 1.5px solid var(--line-dark);
 }
 
 .brand {
   display: flex;
-  align-items: flex-start;
-  gap: 10px;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
 }
 
-.brand-mark {
-  padding-top: 1px;
-  color: var(--brand);
-  font-family: Arial, sans-serif;
-  font-size: 20px;
+.brand-logo {
+  display: block;
+  width: 46px;
+  height: 46px;
+  flex: 0 0 46px;
+  object-fit: contain;
+}
+
+.brand-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  gap: 3px;
+}
+
+.brand-cn {
+  color: #333;
+  font-family: "Songti SC", SimSun, serif;
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.brand-en {
+  color: #333;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 14px;
   font-weight: 700;
-  line-height: 1;
-  letter-spacing: .2px;
-}
-
-.brand-subtitle {
-  margin-top: 5px;
-  color: #7a8490;
-  font-family: Arial, sans-serif;
-  font-size: 8.5px;
-  letter-spacing: 1.1px;
+  letter-spacing: 0;
+  line-height: 1.2;
 }
 
 .report-meta {
@@ -131,13 +149,6 @@ body {
   font-size: 9.5px;
 }
 
-.client-intro {
-  margin-top: 14px;
-  color: #69737d;
-  font-size: 9.3px;
-  line-height: 1.55;
-}
-
 .account-grid {
   display: grid;
   grid-template-columns: 82px 1fr 82px 1fr;
@@ -162,22 +173,6 @@ body {
 .pnl-positive { color: var(--profit) !important; }
 .pnl-negative { color: var(--loss) !important; }
 .pnl-zero { color: var(--zero) !important; }
-
-.notice {
-  margin: 0 0 13px;
-  padding: 8px 11px;
-  border-left: 3px solid var(--brand);
-  background: #fafbfc;
-  color: #69737d;
-  line-height: 1.5;
-}
-
-.notice strong {
-  display: block;
-  margin-bottom: 3px;
-  color: #303a44;
-  font-size: 10px;
-}
 
 .section-title {
   margin: 12px 0 6px;
@@ -228,8 +223,28 @@ table {
   font-variant-numeric: tabular-nums;
 }
 
-.report-table .right { text-align: right; }
+.report-table .left { text-align: left; }
+.report-table .right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
 .report-table .center { text-align: center; }
+
+.report-table th {
+  white-space: normal;
+  vertical-align: middle;
+}
+.report-table td[data-value] {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.report-table time {
+  display: block;
+  white-space: nowrap;
+  font-size: 8px;
+  line-height: 1.45;
+}
+.report-table time span { display: block; }
 
 .report-table .total-row td {
   background: var(--fill);
@@ -281,9 +296,9 @@ table {
 
 .funds-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px 18px;
-  margin-bottom: 14px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+  margin-bottom: 0;
 }
 
 .fund-block {
@@ -292,7 +307,7 @@ table {
 }
 
 .fund-block .subsection-title {
-  margin: 0 0 6px;
+  margin: 0 0 4px;
   line-height: 16px;
 }
 
@@ -303,18 +318,22 @@ table {
 }
 
 .fund-table th {
-  height: 40px;
+  height: 28px;
   padding: 5px 4px;
   background: var(--fill);
-  line-height: 1.4;
+  line-height: 1.2;
   white-space: normal;
   overflow-wrap: anywhere;
 }
 
 .fund-table td {
-  height: 27px;
+  height: 21px;
   padding: 5px 4px;
   overflow-wrap: anywhere;
+}
+
+.funds-grid .empty-row td {
+  height: 22px;
 }
 
 .fund-table .total-row td {
@@ -323,8 +342,8 @@ table {
 
 .two-up {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 17px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
   align-items: start;
 }
 
@@ -353,8 +372,8 @@ table {
   break-inside: avoid;
   margin: 0 0 6px;
   font-family: Georgia, "Microsoft YaHei", SimSun, serif;
-  font-size: 8.9px;
-  line-height: 1.45;
+  font-size: 10px;
+  line-height: 1.6;
 }
 
 .note-item strong {
@@ -364,7 +383,7 @@ table {
 }
 
 .ending {
-  margin-top: 35px;
+  margin-top: 16px;
   color: #5e6973;
   text-align: center;
 }
@@ -424,7 +443,7 @@ footer {
 @media screen and (max-width: 600px) {
   .page {
     min-height: 0;
-    padding: 20px 16px 44px;
+    padding: 20px 16px 52px;
     overflow: visible;
   }
   .report-header {
@@ -445,7 +464,6 @@ footer {
     grid-template-columns: minmax(0, 1fr);
     gap: 16px;
   }
-  .client-intro { margin-top: 8px; }
   .account-grid { grid-template-columns: 100px minmax(0, 1fr); }
   .account-grid .value {
     white-space: normal;
@@ -461,282 +479,209 @@ footer {
 </style>
 </head>
 <body>
-
 <section class="page">
-  <header class="report-header">
-    <div class="brand">
-      <div>
-        <div class="brand-mark">LINKSOFT</div>
-        <div class="brand-subtitle">TRS TOTAL RETURN SWAP</div>
-      </div>
-    </div>
-    <div class="report-meta">
-      <div class="report-date">2026.08.01 - 2026.09.01</div>
-      <div class="report-name">收益互换账户月结单</div>
-    </div>
-  </header>
-  <div class="contact-strip">
-    <span>地址：浙江省杭州市余杭区仓前街道IT公园4号楼6楼</span>
-    <span>电话：+865718655552</span>
-    <span>邮箱：market@linksoft.com</span>
-  </div>
-
-  <main class="page-body">
-    <section class="identity">
-      <div>
-        <div class="client-name">赵宇寰</div>
-        <div class="client-type">TRS 账户 · 月结单</div>
-      </div>
-      <div class="account-grid">
-        <span class="label">账户号码</span><span class="value">T80000339</span>
-        <span class="label">账户生效日</span><span class="value">2026-07-06</span>
-        <span class="label">所属资金账户</span><span class="value">ZJY2019113</span>
-        <span class="label">账户到期日</span><span class="value">2026-10-01</span>
-        <span class="label">交易品种</span><span class="value">美股</span>
-        <span class="label">账户币种</span><span class="value">USD</span>
-        <span class="label">风控状态</span><span class="value">安全</span>
-        <span class="label">总盈亏</span><span class="value pnl-value pnl-zero">+0.00</span>
-      </div>
-    </section>
-
-    <section>
-      <h2 class="section-title" id="overview-title">期末资产报告 (USD)</h2>
-      <div class="table-scroll" role="region" aria-labelledby="overview-title" tabindex="0">
-      <table class="report-table overview-original" aria-labelledby="overview-title">
-        <colgroup><col style="width:16.7%"><col style="width:16.6%"><col style="width:16.7%"><col style="width:16.6%"><col style="width:16.7%"><col style="width:16.7%"></colgroup>
-        <tbody>
-          <tr>
-            <td>保证金总额</td><td>1,000,000.00</td>
-            <td>被担保额度</td><td>0.00</td>
-            <td>授权购买力</td><td>5,000,000.00</td>
-          </tr>
-          <tr>
-            <td>证券市值</td><td>0.00</td>
-            <td>可用购买力</td><td>5,000,000.00</td>
-            <td>冻结资金</td><td>0.00</td>
-          </tr>
-          <tr>
-            <td>计息金额</td><td>0.00</td>
-            <td>TRS融资已扣利息</td><td>0.00</td>
-            <td>最大可提</td><td>4,500,000.00</td>
-          </tr>
-          <tr>
-            <td>总盈亏</td><td class="pnl-zero">+0.00</td>
-            <td>保证金损耗比例</td><td>0%</td>
-            <td>提现中</td><td>0.00</td>
-          </tr>
-          <tr>
-            <td>融券已扣利息</td><td>0.00</td>
-            <td>追加保证金</td><td>1.00</td>
-            <td>当月盈亏</td><td class="pnl-zero">0.00</td>
-          </tr>
-          <tr>
-            <td>当月盈亏率</td><td class="pnl-zero">0%</td>
-            <td>期末账户总资产</td><td>5,000,000.00</td>
-            <td></td><td></td>
-          </tr>
-        </tbody>
-      </table>
-      </div>
-    </section>
-
-    <section id="fund-details" aria-labelledby="fund-details-title">
-      <div class="section-title" id="fund-details-title">资金详情</div>
-      <div class="funds-grid">
-        <section class="fund-block" aria-labelledby="margin-changes-title">
-          <h3 class="subsection-title" id="margin-changes-title">保证金变动</h3>
-          <table class="report-table fund-table" aria-labelledby="margin-changes-title">
-            <colgroup><col style="width:18%"><col style="width:10%"><col style="width:19%"><col style="width:19%"><col style="width:19%"><col style="width:15%"></colgroup>
-            <thead>
-              <tr>
-                <th scope="col">变动事项</th><th scope="col">币种</th>
-                <th scope="col">保证金总额<br>变动</th><th scope="col">自有保证金<br>变动</th>
-                <th scope="col">被担保额度<br>变动</th><th scope="col">时间</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="empty-row"><td colspan="6">暂无保证金变动记录</td></tr>
-            </tbody>
-            <tfoot>
-              <tr class="total-row"><td colspan="2">合计 (USD)</td><td class="right">+0.00</td><td class="right">+0.00</td><td class="right">+0.00</td><td></td></tr>
-            </tfoot>
-          </table>
-        </section>
-
-        <section class="fund-block" aria-labelledby="additional-margin-title">
-          <h3 class="subsection-title" id="additional-margin-title">追加保证金变动</h3>
-          <table class="report-table fund-table" aria-labelledby="additional-margin-title">
-            <colgroup><col style="width:27%"><col style="width:15%"><col style="width:32%"><col style="width:26%"></colgroup>
-            <thead>
-              <tr><th scope="col">变动事项</th><th scope="col">币种</th><th scope="col">保证金总额变动</th><th scope="col">时间</th></tr>
-            </thead>
-            <tbody>
-              <tr class="empty-row"><td colspan="4">暂无追加保证金变动记录</td></tr>
-            </tbody>
-            <tfoot>
-              <tr class="total-row"><td colspan="2">合计 (USD)</td><td class="right">+0.00</td><td></td></tr>
-            </tfoot>
-          </table>
-        </section>
-
-        <section class="fund-block" aria-labelledby="buying-power-title">
-          <h3 class="subsection-title" id="buying-power-title">授权购买力变动</h3>
-          <table class="report-table fund-table" aria-labelledby="buying-power-title">
-            <colgroup><col style="width:27%"><col style="width:15%"><col style="width:32%"><col style="width:26%"></colgroup>
-            <thead>
-              <tr><th scope="col">变动事项</th><th scope="col">币种</th><th scope="col">授权购买力变动</th><th scope="col">时间</th></tr>
-            </thead>
-            <tbody>
-              <tr class="empty-row"><td colspan="4">暂无授权购买力变动记录</td></tr>
-            </tbody>
-            <tfoot>
-              <tr class="total-row"><td colspan="2">合计 (USD)</td><td class="right">+0.00</td><td></td></tr>
-            </tfoot>
-          </table>
-        </section>
-
-        <section class="fund-block" aria-labelledby="withdrawals-title">
-          <h3 class="subsection-title" id="withdrawals-title">提现记录</h3>
-          <table class="report-table fund-table" aria-labelledby="withdrawals-title">
-            <colgroup><col style="width:26%"><col style="width:24%"><col style="width:25%"><col style="width:25%"></colgroup>
-            <thead>
-              <tr><th scope="col">币种</th><th scope="col">提现金额</th><th scope="col">申请时间</th><th scope="col">提现时间</th></tr>
-            </thead>
-            <tbody>
-              <tr class="empty-row"><td colspan="4">暂无提现记录</td></tr>
-            </tbody>
-            <tfoot>
-              <tr class="total-row"><td>合计 (USD)</td><td class="right">0.00</td><td></td><td></td></tr>
-            </tfoot>
-          </table>
-          <p class="table-note">* 以上为提现时间在本月的提现记录。</p>
-        </section>
-      </div>
-    </section>
-
-    <section>
-      <div class="section-title">融资与融券扣息</div>
-      <h3 class="subsection-title" id="financing-interest-title">融资扣息记录</h3>
-      <table class="report-table" aria-labelledby="financing-interest-title">
-        <colgroup><col style="width:35%"><col style="width:15%"><col style="width:30%"><col style="width:20%"></colgroup>
-        <thead>
-          <tr><th scope="col">计息周期</th><th scope="col">币种</th><th scope="col">扣息时间</th><th scope="col" class="right">扣息金额</th></tr>
-        </thead>
-        <tbody>
-          <tr class="empty-row"><td colspan="4">暂无融资扣息记录</td></tr>
-        </tbody>
-        <tfoot><tr class="total-row"><td colspan="3">合计 (USD)</td><td class="right">0.00</td></tr></tfoot>
-      </table>
-      <p class="table-note">* 以上为扣息时间在本月的扣息记录。</p>
-
-      <h3 class="subsection-title" id="short-interest-title">融券扣息记录</h3>
-      <div class="table-scroll" role="region" aria-labelledby="short-interest-title" tabindex="0">
-      <table class="report-table" aria-labelledby="short-interest-title">
-        <colgroup><col style="width:21%"><col style="width:15%"><col style="width:9%"><col style="width:15%"><col style="width:15%"><col style="width:12%"><col style="width:13%"></colgroup>
-        <thead>
-          <tr><th scope="col">计息周期</th><th scope="col">扣息日</th><th scope="col">币种</th><th scope="col">股票代码</th><th scope="col">计息金额</th><th scope="col">融券利率</th><th scope="col" class="right">金额</th></tr>
-        </thead>
-        <tbody>
-          <tr class="empty-row"><td colspan="7">暂无融券扣息记录</td></tr>
-        </tbody>
-        <tfoot><tr class="total-row"><td colspan="6">合计 (USD)</td><td class="right">0.00</td></tr></tfoot>
-      </table>
-      </div>
-      <p class="table-note">* 以上为扣息时间在本月的扣息记录。</p>
-    </section>
-  </main>
-  <footer>T80000339 · 1/2</footer>
+<header class="report-header">
+<div class="brand">
+<img alt="海泉盛资本 Logo" class="brand-logo" height="46" src="data:image/png;base64,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" width="46"/>
+<div class="brand-copy">
+<div class="brand-cn">海泉盛资本</div>
+<div class="brand-en">Azure Tide Capital</div>
+</div></div>
+<div class="report-meta">
+<div class="report-date">2026.08.01 - 2026.09.01</div>
+<div class="report-name">收益互换账户月结单 · 示例</div>
+</div>
+</header>
+<div class="contact-strip">
+<span>地址：浙江省杭州市余杭区仓前街道IT公园4号楼6楼</span>
+<span>电话：+865718655552</span>
+<span>邮箱：market@linksoft.com</span>
+</div>
+<main class="page-body">
+<section class="identity">
+<div>
+<div class="client-name">赵宇寰</div>
+<div class="client-type">TRS 账户 · 月结单</div>
+</div>
+<div class="account-grid">
+<span class="label">账户号码</span><span class="value">T80000339</span>
+<span class="label">账户生效日</span><span class="value">2026-07-06</span>
+<span class="label">所属资金账户</span><span class="value">ZJY2019113</span>
+<span class="label">账户到期日</span><span class="value">2026-10-01</span>
+<span class="label">交易品种</span><span class="value">美股</span>
+<span class="label">账户币种</span><span class="value">USD</span>
+<span class="label">风控状态</span><span class="value">安全</span>
+<span class="label">总盈亏</span><span class="value pnl-value pnl-positive">+2,554.50</span>
+</div>
 </section>
-
+<section>
+<h2 class="section-title" id="overview-title">期末资产报告 (USD)</h2>
+<div aria-labelledby="overview-title" class="table-scroll" role="region" tabindex="0">
+<table aria-label="结单明细表 1" aria-labelledby="overview-title" class="report-table overview-original" id="statement-table-1">
+<colgroup><col style="width:16.7%"/><col style="width:16.6%"/><col style="width:16.7%"/><col style="width:16.6%"/><col style="width:16.7%"/><col style="width:16.7%"/></colgroup>
+<tbody>
+<tr>
+<td>保证金总额</td><td>1,000,000.00</td>
+<td>被担保额度</td><td>0.00</td>
+<td>授权购买力</td><td>5,000,000.00</td>
+</tr>
+<tr>
+<td>证券市值</td><td>327,000.00</td>
+<td>可用购买力</td><td>4,677,554.50</td>
+<td>冻结资金</td><td>0.00</td>
+</tr>
+<tr>
+<td>计息金额</td><td>325,000.00</td>
+<td>TRS融资已扣利息</td><td>262.50</td>
+<td>最大可提</td><td>900,000.00</td>
+</tr>
+<tr>
+<td>总盈亏</td><td class="pnl-positive">+2,554.50</td>
+<td>保证金损耗比例</td><td>0%</td>
+<td>提现中</td><td>0.00</td>
+</tr>
+<tr>
+<td>融券已扣利息</td><td>0.00</td>
+<td>追加保证金</td><td>2,000.00</td>
+<td>当月盈亏</td><td class="pnl-positive">+2,554.50</td>
+</tr>
+<tr>
+<td>当月盈亏率</td><td class="pnl-positive">+0.30%</td>
+<td>期末账户总资产</td><td>1,002,554.50</td>
+<td></td><td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section aria-labelledby="fund-details-title" id="fund-details">
+<div class="section-title" id="fund-details-title">资金详情</div>
+<div class="funds-grid">
+<section aria-labelledby="margin-changes-title" class="fund-block">
+<h3 class="subsection-title" id="margin-changes-title">保证金变动</h3>
+<div aria-label="结单明细表 2" class="table-scroll" role="region" tabindex="0"><table aria-label="结单明细表 2" aria-labelledby="margin-changes-title" class="report-table fund-table" id="statement-table-2">
+<colgroup><col style="width:10%"/><col style="width:18%"/><col style="width:20%"/><col style="width:18%"/><col style="width:18%"/><col style="width:16%"/></colgroup>
+<thead>
+<tr>
+<th class="left" scope="col">币种</th><th class="left" scope="col">变动事项</th>
+<th class="right" scope="col">保证金总额变动</th><th class="right" scope="col">自有保证金变动</th>
+<th class="right" scope="col">被担保额度变动</th><th class="right" scope="col">时间</th>
+</tr>
+</thead>
+<tbody><tr><td class="left">USD</td><td class="left">保证金转入</td><td class="right" data-value="200000">+200,000.00</td><td class="right" data-value="200000">+200,000.00</td><td class="right" data-value="0">+0.00</td><td class="right"><time datetime="2026-08-03T09:30"><span>2026-08-03</span><span>09:30</span></time></td></tr><tr><td class="left">USD</td><td class="left">保证金转出</td><td class="right" data-value="-50000">-50,000.00</td><td class="right" data-value="-50000">-50,000.00</td><td class="right" data-value="0">+0.00</td><td class="right"><time datetime="2026-08-24T16:00"><span>2026-08-24</span><span>16:00</span></time></td></tr></tbody>
+<tfoot><tr class="total-row"><td class="left" colspan="2">合计 (USD)</td><td class="right" data-value="150000">+150,000.00</td><td class="right" data-value="150000">+150,000.00</td><td class="right" data-value="0">+0.00</td><td class="right"></td></tr></tfoot></table></div>
+</section>
+<section aria-labelledby="additional-margin-title" class="fund-block">
+<h3 class="subsection-title" id="additional-margin-title">追加保证金变动</h3>
+<div aria-label="结单明细表 3" class="table-scroll" role="region" tabindex="0"><table aria-label="结单明细表 3" aria-labelledby="additional-margin-title" class="report-table fund-table" id="statement-table-3">
+<colgroup><col style="width:10%"/><col style="width:18%"/><col style="width:20%"/><col style="width:52%"/></colgroup>
+<thead>
+<tr><th class="left" scope="col">币种</th><th class="left" scope="col">变动事项</th><th class="right" scope="col">保证金总额变动</th><th class="right" scope="col">时间</th></tr>
+</thead>
+<tbody><tr><td class="left">USD</td><td class="left">追加保证金转入</td><td class="right" data-value="2000">+2,000.00</td><td class="right"><time datetime="2026-08-03T09:45"><span>2026-08-03</span><span>09:45</span></time></td></tr></tbody>
+<tfoot><tr class="total-row"><td class="left" colspan="2">合计 (USD)</td><td class="right" data-value="2000">+2,000.00</td><td class="right"></td></tr></tfoot></table></div>
+</section>
+<section aria-labelledby="buying-power-title" class="fund-block">
+<h3 class="subsection-title" id="buying-power-title">授权购买力变动</h3>
+<div aria-label="结单明细表 4" class="table-scroll" role="region" tabindex="0"><table aria-label="结单明细表 4" aria-labelledby="buying-power-title" class="report-table fund-table" id="statement-table-4">
+<colgroup><col style="width:10%"/><col style="width:18%"/><col style="width:20%"/><col style="width:52%"/></colgroup>
+<thead>
+<tr><th class="left" scope="col">币种</th><th class="left" scope="col">变动事项</th><th class="right" scope="col">授权购买力变动</th><th class="right" scope="col">时间</th></tr>
+</thead>
+<tbody><tr><td class="left">USD</td><td class="left">授权额度调整</td><td class="right" data-value="1000000">+1,000,000.00</td><td class="right"><time datetime="2026-08-03T09:45"><span>2026-08-03</span><span>09:45</span></time></td></tr></tbody>
+<tfoot><tr class="total-row"><td class="left" colspan="2">合计 (USD)</td><td class="right" data-value="1000000">+1,000,000.00</td><td class="right"></td></tr></tfoot></table></div>
+</section>
+<section aria-labelledby="withdrawals-title" class="fund-block">
+<h3 class="subsection-title" id="withdrawals-title">提现记录</h3>
+<div aria-label="结单明细表 5" class="table-scroll" role="region" tabindex="0"><table aria-label="结单明细表 5" aria-labelledby="withdrawals-title" class="report-table fund-table" id="statement-table-5">
+<colgroup><col style="width:10%"/><col style="width:38%"/><col style="width:36%"/><col style="width:16%"/></colgroup>
+<thead>
+<tr><th class="left" scope="col">币种</th><th class="right" scope="col">提现金额</th><th class="right" scope="col">申请时间</th><th class="right" scope="col">提现时间</th></tr>
+</thead>
+<tbody><tr><td class="left">USD</td><td class="right" data-value="50000">50,000.00</td><td class="right"><time datetime="2026-08-24T14:00"><span>2026-08-24</span><span>14:00</span></time></td><td class="right"><time datetime="2026-08-24T16:00"><span>2026-08-24</span><span>16:00</span></time></td></tr></tbody>
+<tfoot><tr class="total-row"><td class="left">合计 (USD)</td><td class="right" data-value="50000">50,000.00</td><td class="right"></td><td class="right"></td></tr></tfoot></table></div>
+<p class="table-note">* 以上为提现时间在本月的提现记录。</p>
+</section>
+</div>
+</section>
+</main>
+<footer>T80000339 · 1/2</footer>
+</section>
 <section class="page">
-  <header class="report-header">
-    <div class="brand">
-      <div>
-        <div class="brand-mark">LINKSOFT</div>
-        <div class="brand-subtitle">TRS TOTAL RETURN SWAP</div>
-      </div>
-    </div>
-    <div class="report-meta">
-      <div class="report-date">2026.08.01 - 2026.09.01</div>
-      <div class="report-name">收益互换账户月结单</div>
-    </div>
-  </header>
-  <div class="contact-strip">
-    <span>地址：浙江省杭州市余杭区仓前街道IT公园4号楼6楼</span>
-    <span>电话：+865718655552</span>
-    <span>邮箱：market@linksoft.com</span>
-  </div>
-
-  <main class="page-body">
-    <section>
-      <div class="section-title">交易与持仓</div>
-      <h3 class="subsection-title" id="trades-title">交易明细</h3>
-      <div class="table-scroll" role="region" aria-labelledby="trades-title" tabindex="0">
-      <table class="report-table" aria-labelledby="trades-title">
-        <colgroup><col style="width:9%"><col style="width:7%"><col style="width:6%"><col style="width:8%"><col style="width:12%"><col style="width:12%"><col style="width:12%"><col style="width:12%"><col style="width:12%"><col style="width:10%"></colgroup>
-        <thead>
-          <tr><th scope="col">代码</th><th scope="col">币种</th><th scope="col">方向</th><th scope="col">数量</th><th scope="col">交易价格</th><th scope="col">收盘价格</th><th scope="col">成交额</th><th scope="col" class="right">交易费用</th><th scope="col" class="right">交收金额</th><th scope="col">时间</th></tr>
-        </thead>
-        <tbody>
-          <tr class="empty-row"><td colspan="10">暂无交易明细记录</td></tr>
-        </tbody>
-        <tfoot>
-          <tr class="total-row">
-            <td colspan="7">合计 (USD)</td><td class="right">0.00</td><td class="right">0.00</td><td></td>
-          </tr>
-        </tfoot>
-      </table>
-      </div>
-
-      <h3 class="subsection-title" id="positions-title">期末未平仓头寸</h3>
-      <div class="table-scroll" role="region" aria-labelledby="positions-title" tabindex="0">
-      <table class="report-table" aria-labelledby="positions-title">
-        <colgroup><col style="width:9%"><col style="width:7%"><col style="width:7%"><col style="width:6%"><col style="width:11%"><col style="width:11%"><col style="width:12%"><col style="width:11%"><col style="width:15%"><col style="width:11%"></colgroup>
-        <thead>
-          <tr><th scope="col">代码</th><th scope="col">币种</th><th scope="col">数量</th><th scope="col">停牌</th><th scope="col">成本价格</th><th scope="col">收盘价格</th><th scope="col" class="right">市值</th><th scope="col" class="right">持仓盈亏</th><th scope="col" class="right">未实现合约盈亏</th><th scope="col" class="right">已实现盈亏</th></tr>
-        </thead>
-        <tbody>
-          <tr class="empty-row"><td colspan="10">暂无期末未平仓头寸记录</td></tr>
-        </tbody>
-        <tfoot><tr class="total-row"><td colspan="6">合计 (USD)</td><td class="right">0.00</td><td class="right pnl-zero">+0.00</td><td class="right pnl-zero">0.00</td><td class="right pnl-zero">0.00</td></tr></tfoot>
-      </table>
-      </div>
-      <p class="table-note">* 市值为结单周期最后一日收盘后的市值，仅供参考。</p>
-    </section>
-
-    <section class="notes" aria-labelledby="notes-title">
-    <h2 class="section-title" id="notes-title">账单注释</h2>
-    <div class="notes-list">
-      <div class="note-item"><strong>1.</strong>应计分红（股息）：当公司宣布其股票的分红数额时，该部分会计算账户将要获得的分红，在表单查询时间获得的分红，将会计入现金中。</div>
-      <div class="note-item"><strong>2.</strong>应计利息：利息每月收取，因此该部分会将账户在报表期间发生的利息总计计算，而非已收取的利息部分。</div>
-      <div class="note-item"><strong>3.</strong>时间加权收益率：区间内（除出入金外）收益率。</div>
-      <div class="note-item"><strong>4.</strong>净交易（售出）：出售标的得到的现金。</div>
-      <div class="note-item"><strong>5.</strong>净交易（购入）：购入标的所花费的现金。</div>
-      <div class="note-item"><strong>6.</strong>交易费用：包含交易征费和印花税。</div>
-      <div class="note-item"><strong>7.</strong>其他费用：包含 ADR 费、IPO 费、出金费用、分红费等其他费用。</div>
-      <div class="note-item"><strong>8.</strong>代扣税款：港股分红税。</div>
-      <div class="note-item"><strong>9.</strong>segment 转账：证券与期货间的资金划转。</div>
-      <div class="note-item"><strong>10.</strong>应计转回：用户在查询报表期间，实际被收取的利息。</div>
-      <div class="note-item"><strong>11.</strong>乘数：个股期权或期货交易中，合约的价值是以一定的货币金额与标的指数的乘积。表示这一定的货币金额是由合约所固定的，称为合约乘数。目前股票默认为 1，个股期权为 100。</div>
-      <div class="note-item"><strong>12.</strong>结算价格：期货结算价格不等于收盘价，且期货是按照结算价格计算持仓盈亏。</div>
-      <div class="note-item"><strong>13.</strong>成交额：交易价格乘以成交数量乘以乘数。</div>
-      <div class="note-item"><strong>14.</strong>净金额：买入时，净金额记做购买金融资产的成交额加上佣金和税的金额；卖出时，净金额记做卖出金融资产时的成本摊销，包含已实现的损益。</div>
-      <div class="note-item"><strong>15.</strong>佣金/税：交易明细中，2021 年 12 月前发生的交易，佣金包含佣金+平台费+交易征费+印花税+交易费+结算交收费等；2021 年 12 月后发生的交易，佣金仅代表佣金，其他费用单独展示。</div>
-      <div class="note-item"><strong>16.</strong>托管人费用：不收费，$0。</div>
-      <div class="note-item"><strong>17.</strong>基本货币汇率：你可通过查看美元指数表格来了解报表截止日当天的汇率信息（美元作为报价货币）。</div>
-      <div class="note-item"><strong>18.</strong>交易只采取 FIFO 模式（先进先出）。</div>
-      <div class="note-item"><strong>19.</strong>期货的期初现金和期末现金代表期初和期末的资产市值，期初和期末现金差异包含持仓市值变动和现金交易产生的差异（不在报表显示）。</div>
-      <div class="note-item"><strong>20.</strong>在途资金包括：IPO 在途申购，IPO 在途申购费。</div>
-    </div>
-
-    <div class="ending">
-      <div class="ending-cn">结单完结</div>
-      <div class="ending-en">- End of Statement -</div>
-    </div>
-    </section>
-  </main>
-  <footer>T80000339 · 2/2</footer>
+<header class="report-header">
+<div class="brand">
+<img alt="海泉盛资本 Logo" class="brand-logo" height="46" src="data:image/png;base64,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" width="46"/>
+<div class="brand-copy">
+<div class="brand-cn">海泉盛资本</div>
+<div class="brand-en">Azure Tide Capital</div>
+</div></div>
+<div class="report-meta">
+<div class="report-date">2026.08.01 - 2026.09.01</div>
+<div class="report-name">收益互换账户月结单 · 示例</div>
+</div>
+</header>
+<div class="contact-strip">
+<span>地址：浙江省杭州市余杭区仓前街道IT公园4号楼6楼</span>
+<span>电话：+865718655552</span>
+<span>邮箱：market@linksoft.com</span>
+</div>
+<main class="page-body"><section>
+<div class="section-title">融资与融券扣息</div>
+<h3 class="subsection-title" id="financing-interest-title">融资扣息记录</h3>
+<div aria-label="结单明细表 6" class="table-scroll" role="region" tabindex="0"><table aria-label="结单明细表 6" aria-labelledby="financing-interest-title" class="report-table" id="statement-table-6">
+<colgroup><col style="width:35%"/><col style="width:15%"/><col style="width:30%"/><col style="width:20%"/></colgroup>
+<thead>
+<tr><th class="left" scope="col">计息周期</th><th class="left" scope="col">币种</th><th class="left" scope="col">扣息时间</th><th class="right" scope="col">扣息金额</th></tr>
+</thead>
+<tbody><tr><td class="left">2026-08-01 至 2026-08-15</td><td class="left">USD</td><td class="left"><time datetime="2026-08-17T09:00"><span>2026-08-17</span><span>09:00</span></time></td><td class="right" data-value="125">125.00</td></tr><tr><td class="left">2026-08-16 至 2026-08-31</td><td class="left">USD</td><td class="left"><time datetime="2026-09-01T09:00"><span>2026-09-01</span><span>09:00</span></time></td><td class="right" data-value="137.5">137.50</td></tr></tbody>
+<tfoot><tr class="total-row"><td class="left" colspan="3">合计 (USD)</td><td class="right" data-value="262.50">262.50</td></tr></tfoot></table></div>
+<p class="table-note">* 以上为扣息时间在本月的扣息记录。</p>
+<h3 class="subsection-title" id="short-interest-title">融券扣息记录</h3>
+<div aria-labelledby="short-interest-title" class="table-scroll" role="region" tabindex="0">
+<table aria-label="结单明细表 7" aria-labelledby="short-interest-title" class="report-table" id="statement-table-7">
+<colgroup><col style="width:21%"/><col style="width:15%"/><col style="width:9%"/><col style="width:15%"/><col style="width:15%"/><col style="width:12%"/><col style="width:13%"/></colgroup>
+<thead>
+<tr><th class="left" scope="col">计息周期</th><th class="left" scope="col">扣息日</th><th class="left" scope="col">币种</th><th class="left" scope="col">股票代码</th><th class="right" scope="col">计息金额</th><th class="right" scope="col">融券利率</th><th class="right" scope="col">金额</th></tr>
+</thead>
+<tbody>
+<tr class="empty-row"><td colspan="7">暂无融券扣息记录</td></tr>
+</tbody>
+<tfoot><tr class="total-row"><td class="left" colspan="6">合计 (USD)</td><td class="right">0.00</td></tr></tfoot>
+</table>
+</div>
+<p class="table-note">* 以上为扣息时间在本月的扣息记录。</p>
 </section>
-
-</body>
+<section>
+<div class="section-title">交易与持仓</div>
+<h3 class="subsection-title" id="trades-title">交易明细</h3>
+<div aria-labelledby="trades-title" class="table-scroll" role="region" tabindex="0">
+<table aria-label="结单明细表 8" aria-labelledby="trades-title" class="report-table" id="trades-table">
+<colgroup><col style="width:8%"/><col style="width:5%"/><col style="width:6%"/><col style="width:6%"/><col style="width:10%"/><col style="width:10%"/><col style="width:13%"/><col style="width:10%"/><col style="width:14%"/><col style="width:18%"/></colgroup>
+<thead>
+<tr><th class="left" scope="col">代码</th><th class="left" scope="col">币种</th><th class="left" scope="col">方向</th><th class="right" scope="col">数量</th><th class="right" scope="col">交易价格</th><th class="right" scope="col">收盘价格</th><th class="right" scope="col">成交额</th><th class="right" scope="col">交易费用</th><th class="right" scope="col">交收金额</th><th class="left" scope="col">时间</th></tr>
+</thead>
+<tbody><tr><td class="left">AAPL</td><td class="left">USD</td><td class="left">买入</td><td class="right" data-value="600">600</td><td class="right" data-value="200">200.00</td><td class="right" data-value="205">205.00</td><td class="right" data-value="120000">120,000.00</td><td class="right" data-value="60">60.00</td><td class="right" data-value="-120060">-120,060.00</td><td class="left"><time datetime="2026-08-04T22:05"><span>2026-08-04</span><span>22:05</span></time></td></tr><tr><td class="left">MSFT</td><td class="left">USD</td><td class="left">买入</td><td class="right" data-value="250">250</td><td class="right" data-value="420">420.00</td><td class="right" data-value="418">418.00</td><td class="right" data-value="105000">105,000.00</td><td class="right" data-value="52.5">52.50</td><td class="right" data-value="-105052.5">-105,052.50</td><td class="left"><time datetime="2026-08-10T22:18"><span>2026-08-10</span><span>22:18</span></time></td></tr><tr><td class="left">NVDA</td><td class="left">USD</td><td class="left">买入</td><td class="right" data-value="1000">1,000</td><td class="right" data-value="120">120.00</td><td class="right" data-value="120">120.00</td><td class="right" data-value="120000">120,000.00</td><td class="right" data-value="60">60.00</td><td class="right" data-value="-120060">-120,060.00</td><td class="left"><time datetime="2026-08-18T22:26"><span>2026-08-18</span><span>22:26</span></time></td></tr><tr><td class="left">AAPL</td><td class="left">USD</td><td class="left">卖出</td><td class="right" data-value="100">100</td><td class="right" data-value="210">210.00</td><td class="right" data-value="205">205.00</td><td class="right" data-value="21000">21,000.00</td><td class="right" data-value="10.5">10.50</td><td class="right" data-value="20989.5">+20,989.50</td><td class="left"><time datetime="2026-08-28T22:40"><span>2026-08-28</span><span>22:40</span></time></td></tr></tbody>
+<tfoot><tr class="total-row"><td class="left" colspan="6">合计 (USD)</td><td class="right" data-value="366000">366,000.00</td><td class="right" data-value="183.0">183.00</td><td class="right" data-value="-324183.0">-324,183.00</td><td class="left"></td></tr></tfoot></table>
+</div>
+<h3 class="subsection-title" id="positions-title">期末未平仓头寸</h3>
+<div aria-labelledby="positions-title" class="table-scroll" role="region" tabindex="0">
+<table aria-label="结单明细表 9" aria-labelledby="positions-title" class="report-table" id="positions-table">
+<colgroup><col style="width:8%"/><col style="width:5%"/><col style="width:5%"/><col style="width:5%"/><col style="width:8%"/><col style="width:8%"/><col style="width:12%"/><col style="width:12%"/><col style="width:11%"/><col style="width:14%"/><col style="width:12%"/></colgroup>
+<thead><tr><th class="left" scope="col">代码</th><th class="left" scope="col">币种</th><th class="right" scope="col">数量</th><th class="left" scope="col">停牌</th><th class="right" scope="col">成本价格</th><th class="right" scope="col">收盘价格</th><th class="right" scope="col">存续名本</th><th class="right" scope="col">市值</th><th class="right" scope="col">持仓盈亏</th><th class="right" scope="col">未实现合约盈亏</th><th class="right" scope="col">已实现盈亏</th></tr></thead>
+<tbody><tr class="group-row"><td colspan="11">股票（美国市场；美元）</td></tr><tr><td class="left">AAPL</td><td class="left">USD</td><td class="right" data-value="500">500</td><td class="left">否</td><td class="right" data-value="200">200.00</td><td class="right" data-value="205">205.00</td><td class="right" data-value="100000">100,000.00</td><td class="right" data-value="102500">102,500.00</td><td class="pnl-positive right" data-value="2500">+2,500.00</td><td class="pnl-positive right" data-value="2500">+2,500.00</td><td class="pnl-positive right" data-value="1000">+1,000.00</td></tr><tr><td class="left">MSFT</td><td class="left">USD</td><td class="right" data-value="250">250</td><td class="left">否</td><td class="right" data-value="420">420.00</td><td class="right" data-value="418">418.00</td><td class="right" data-value="105000">105,000.00</td><td class="right" data-value="104500">104,500.00</td><td class="pnl-negative right" data-value="-500">-500.00</td><td class="pnl-negative right" data-value="-500">-500.00</td><td class="pnl-zero right" data-value="0">+0.00</td></tr><tr><td class="left">NVDA</td><td class="left">USD</td><td class="right" data-value="1000">1,000</td><td class="left">否</td><td class="right" data-value="120">120.00</td><td class="right" data-value="120">120.00</td><td class="right" data-value="120000">120,000.00</td><td class="right" data-value="120000">120,000.00</td><td class="pnl-zero right" data-value="0">+0.00</td><td class="pnl-zero right" data-value="0">+0.00</td><td class="pnl-zero right" data-value="0">+0.00</td></tr></tbody>
+<tfoot><tr class="total-row"><td class="left" colspan="6">合计 (USD)</td><td class="right" data-value="325000">325,000.00</td><td class="right" data-value="327000">327,000.00</td><td class="pnl-positive right" data-value="2000">+2,000.00</td><td class="pnl-positive right" data-value="2000">+2,000.00</td><td class="pnl-positive right" data-value="1000">+1,000.00</td></tr></tfoot></table>
+</div>
+<p class="table-note">* 市值为结单周期最后一日收盘后的市值，仅供参考。</p>
+</section>
+<section aria-labelledby="notes-title" class="notes" data-config-source="statement-config.responsibility" lang="zh-CN">
+<h2 class="section-title" id="notes-title">责任说明</h2>
+<div class="notes-list"><p class="note-item"><strong>1.</strong>本结单由电脑系统自动列印，无需签署。</p><p class="note-item"><strong>2.</strong>如有任何错漏，请于七天内通知本公司，否则此结单一切帐目均视为正确。</p><p class="note-item"><strong>3.</strong>所有货币汇率以本公司最终决定为准。</p><p class="note-item"><strong>4.</strong>若阁下的通讯地址经已更改，请尽快通知本公司。</p></div>
+<div class="ending">
+<div class="ending-cn">结单完结</div>
+<div class="ending-en">- End of Statement -</div>
+</div></section>
+</main>
+<footer>T80000339 · 2/2</footer>
+</section>
+<script id="statementConfigSnapshot" type="application/json">{"language": "zh-CN", "responsibility": "1. 本结单由电脑系统自动列印，无需签署。\n2. 如有任何错漏，请于七天内通知本公司，否则此结单一切帐目均视为正确。\n3. 所有货币汇率以本公司最终决定为准。\n4. 若阁下的通讯地址经已更改，请尽快通知本公司。", "publishedAt": null}</script></body>
 </html>

@@ -494,6 +494,7 @@
     }
 
     .field input,
+    .field select,
     .field textarea {
       display: block;
       width: 100%;
@@ -510,6 +511,11 @@
       padding: 0 12px;
     }
 
+    .field select {
+      height: 40px;
+      padding: 0 12px;
+    }
+
     .field textarea {
       min-height: 76px;
       padding: 10px 12px;
@@ -518,12 +524,14 @@
     }
 
     .field input:focus,
+    .field select:focus,
     .field textarea:focus {
       border-color: #76a9ed;
       box-shadow: 0 0 0 3px rgba(40, 120, 238, 0.1);
     }
 
     .field input.is-invalid,
+    .field select.is-invalid,
     .field textarea.is-invalid {
       border-color: #e27777;
       box-shadow: 0 0 0 3px rgba(214, 69, 69, 0.08);
@@ -534,6 +542,54 @@
       color: var(--muted);
       font-size: 12px;
       line-height: 1.5;
+    }
+
+    .language-tabs {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .language-tab {
+      min-height: 40px;
+      padding: 0 2px;
+      border: 0;
+      border-bottom: 2px solid transparent;
+      color: var(--muted);
+      background: transparent;
+      white-space: nowrap;
+    }
+
+    .language-tab[aria-selected="true"] {
+      border-bottom-color: var(--blue);
+      color: var(--blue);
+      font-weight: 600;
+    }
+
+    .language-tab.is-invalid {
+      color: var(--danger);
+    }
+
+    .language-tab:focus-visible {
+      outline: 2px solid var(--blue);
+      outline-offset: 2px;
+    }
+
+    .responsibility-panel[hidden],
+    .field-error[hidden] {
+      display: none;
+    }
+
+    .responsibility-panel textarea {
+      min-height: 232px;
+      line-height: 1.8;
+    }
+
+    .field-error {
+      margin: 8px 0 0;
+      color: var(--danger);
+      font-size: 12px;
     }
 
     .scope-row {
@@ -686,7 +742,7 @@
       <div class="page-heading">
         <div class="heading-copy">
           <h1>结单配置</h1>
-          <p>配置 TRS账户日月结单的品牌标识和联系信息，发布后用于后续生成的结单。</p>
+          <p>TRS账户日月结单</p>
         </div>
         <div class="status-area">
           <span class="status-label">当前状态</span>
@@ -730,6 +786,37 @@
 
             <section class="form-section">
               <div class="section-heading">
+                <h3>公司信息</h3>
+                <p>展示在结单 Logo 右侧</p>
+              </div>
+
+              <div class="form-grid">
+                <div class="field">
+                  <label for="companyCn">公司中文名称 <span class="required">*</span></label>
+                  <input id="companyCn" name="companyCn" type="text" value="令克科技" autocomplete="organization">
+                  <p class="field-hint">用于结单页眉中文名称展示。</p>
+                </div>
+
+                <div class="field">
+                  <label for="companyEn">公司英文名称 <span class="required">*</span></label>
+                  <input id="companyEn" name="companyEn" type="text" value="LINKSOFT" autocomplete="organization">
+                  <p class="field-hint">用于结单页眉英文名称展示。</p>
+                </div>
+
+                <div class="field">
+                  <label for="defaultLanguage">默认结单语言 <span class="required">*</span></label>
+                  <select id="defaultLanguage" name="defaultLanguage">
+                    <option value="zh-CN" selected>简体中文</option>
+                    <option value="zh-TW">繁體中文</option>
+                    <option value="en-US">English</option>
+                  </select>
+                  <p class="field-hint">决定新生成结单的默认文案语言。</p>
+                </div>
+              </div>
+            </section>
+
+            <section class="form-section">
+              <div class="section-heading">
                 <h3>联系信息</h3>
                 <p>展示在结单抬头下方</p>
               </div>
@@ -753,6 +840,29 @@
                   <p class="field-hint">建议填写完整办公地址，内容过长时结单会自动换行。</p>
                 </div>
               </div>
+            </section>
+
+            <section class="form-section" id="responsibilitySection" aria-labelledby="responsibilityHeading">
+              <div class="section-heading">
+                <h3 id="responsibilityHeading">责任说明 <span class="required">*</span></h3>
+              </div>
+              <div class="language-tabs" role="tablist" aria-label="责任说明语言">
+                <button class="language-tab" type="button" role="tab" id="responsibilityTabCn" data-responsibility-tab="zh-CN" aria-controls="responsibilityPanelCn" aria-selected="true">简体中文</button>
+                <button class="language-tab" type="button" role="tab" id="responsibilityTabTw" data-responsibility-tab="zh-TW" aria-controls="responsibilityPanelTw" aria-selected="false" tabindex="-1">繁体中文</button>
+                <button class="language-tab" type="button" role="tab" id="responsibilityTabEn" data-responsibility-tab="en-US" aria-controls="responsibilityPanelEn" aria-selected="false" tabindex="-1">英语</button>
+              </div>
+              <div class="responsibility-panel field" id="responsibilityPanelCn" role="tabpanel" aria-labelledby="responsibilityTabCn">
+                <textarea id="responsibilityCn" name="responsibilityCn" data-responsibility-locale="zh-CN" lang="zh-CN" aria-label="简体中文责任说明" aria-describedby="responsibilityErrorCn" required spellcheck="false"></textarea>
+                <p class="field-error" id="responsibilityErrorCn" hidden>请填写简体中文责任说明。</p>
+              </div>
+              <div class="responsibility-panel field" id="responsibilityPanelTw" role="tabpanel" aria-labelledby="responsibilityTabTw" hidden>
+                <textarea id="responsibilityTw" name="responsibilityTw" data-responsibility-locale="zh-TW" lang="zh-TW" aria-label="繁体中文责任说明" aria-describedby="responsibilityErrorTw" required spellcheck="false"></textarea>
+                <p class="field-error" id="responsibilityErrorTw" hidden>请填写繁体中文责任说明。</p>
+              </div>
+              <div class="responsibility-panel field" id="responsibilityPanelEn" role="tabpanel" aria-labelledby="responsibilityTabEn" hidden>
+                <textarea id="responsibilityEn" name="responsibilityEn" data-responsibility-locale="en-US" lang="en-US" aria-label="英语责任说明" aria-describedby="responsibilityErrorEn" required spellcheck="false"></textarea>
+                <p class="field-error" id="responsibilityErrorEn" hidden>请填写英语责任说明。</p>
+              </div>
 
               <div class="scope-row">
                 <span class="label">适用结单</span>
@@ -775,7 +885,7 @@
           <div class="prd-body">
             <section class="prd-section">
               <h3>1. 功能说明</h3>
-              <p>用于维护 TRS账户日月结单的 Logo、联系电话、联系地址和联系邮箱。发布后，后续生成的结单使用最新配置。</p>
+              <p>用于维护 TRS账户日月结单的 Logo、公司名称、默认语言、联系信息及三语言责任说明。发布后，后续生成的结单使用已发布配置。</p>
             </section>
 
             <section class="prd-section">
@@ -788,9 +898,13 @@
                 <dt>默认状态</dt>
                 <dd>首次进入默认展示当前已生效配置，当前 Tab 处于选中状态。</dd>
                 <dt>发布规则</dt>
-                <dd>联系电话、邮箱、地址均填写且格式校验通过后，允许发布配置。</dd>
+                <dd>公司名称、默认语言、联系信息和三种语言的责任说明均填写且校验通过后，整份配置一起发布；任一语言为空或仅空白时阻止发布，并定位对应语言。</dd>
+                <dt>语言取值</dt>
+                <dd>日、月结单均按本次结单语言读取对应的已发布责任说明；未指定语言时使用默认结单语言，不拼接多种语言，也不以其他语言替代缺失文案。</dd>
+                <dt>编辑规则</dt>
+                <dd>三种语言独立保存内容；切换编辑语言不修改默认结单语言、不清空输入，也不自动翻译其他语言。仅切换页签不产生未发布修改。</dd>
                 <dt>生效范围</dt>
-                <dd>发布后用于后续生成的结单；本页面不提供历史结单回写操作。</dd>
+                <dd>仅影响发布后新生成的结单；生成时固定对应配置内容，已生成结单不随配置更新而改变。责任说明紧接正文，内容较长时自然分页，不固定另起一页。</dd>
               </dl>
             </section>
 
@@ -810,6 +924,18 @@
                       <td>选填。支持 PNG、JPG、SVG；建议尺寸 180 × 48 px，按结单抬头区域等比缩放。</td>
                     </tr>
                     <tr>
+                      <td>公司中文名称</td>
+                      <td>必填，展示在结单 Logo 右侧的中文名称。</td>
+                    </tr>
+                    <tr>
+                      <td>公司英文名称</td>
+                      <td>必填，展示在结单 Logo 右侧的英文名称。</td>
+                    </tr>
+                    <tr>
+                      <td>默认结单语言</td>
+                      <td>必填，候选值为简体中文、繁體中文、English；新生成结单默认使用该语言。</td>
+                    </tr>
+                    <tr>
                       <td>联系电话</td>
                       <td>必填，支持国际区号、空格和连字符。</td>
                     </tr>
@@ -822,8 +948,16 @@
                       <td>必填，支持多行录入；结单展示时允许自动换行。</td>
                     </tr>
                     <tr>
+                      <td>责任说明</td>
+                      <td>必填，分别维护简体中文、繁体中文、英语三份多行纯文本。首次配置预填约定的四条默认说明及对应译文；后续展示已发布内容，保留段落和编号，不解析 HTML。</td>
+                    </tr>
+                    <tr>
+                      <td>语言页签</td>
+                      <td>仅切换当前编辑的责任说明。进入页面时选中默认结单语言；未展示语言的输入同样参与发布校验。</td>
+                    </tr>
+                    <tr>
                       <td>取消</td>
-                      <td>放弃本次未发布修改，恢复当前页面初始状态。</td>
+                      <td>放弃本次未发布修改，恢复最近一次已发布配置，包括三种语言的责任说明。</td>
                     </tr>
                     <tr>
                       <td>发布配置</td>
@@ -841,9 +975,22 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+  <script type="application/json" id="statementDefaults">
+  {
+    "defaultLanguage": "zh-CN",
+    "responsibility": {
+      "zh-CN": "1. 本结单由电脑系统自动列印，无需签署。\n2. 如有任何错漏，请于七天内通知本公司，否则此结单一切帐目均视为正确。\n3. 所有货币汇率以本公司最终决定为准。\n4. 若阁下的通讯地址经已更改，请尽快通知本公司。",
+      "zh-TW": "1. 本結單由電腦系統自動列印，無需簽署。\n2. 如有任何錯漏，請於七天內通知本公司，否則此結單一切帳目均視為正確。\n3. 所有貨幣匯率以本公司最終決定為準。\n4. 若閣下的通訊地址經已更改，請盡快通知本公司。",
+      "en-US": "1. This statement is computer-generated and requires no signature.\n2. Please notify the Company of any errors or omissions within seven days. Otherwise, all entries in this statement will be deemed correct.\n3. All currency exchange rates are subject to the Company's final determination.\n4. Please notify the Company promptly of any change to your correspondence address."
+    }
+  }
+  </script>
   <script>
     (function () {
       const form = document.getElementById("configForm");
+      const companyCn = document.getElementById("companyCn");
+      const companyEn = document.getElementById("companyEn");
+      const defaultLanguage = document.getElementById("defaultLanguage");
       const phone = document.getElementById("phone");
       const email = document.getElementById("email");
       const address = document.getElementById("address");
@@ -854,8 +1001,21 @@
       const statusPill = document.getElementById("statusPill");
       const lastUpdated = document.getElementById("lastUpdated");
       const toast = document.getElementById("toast");
+      const publishButton = document.getElementById("publishButton");
+      const fields = [companyCn, companyEn, defaultLanguage, phone, email, address];
+      const responsibilityFields = Array.from(document.querySelectorAll("[data-responsibility-locale]"));
+      const languageTabs = Array.from(document.querySelectorAll("[data-responsibility-tab]"));
+      const defaults = JSON.parse(document.getElementById("statementDefaults").textContent);
+      const storageKey = "trs.statement.config.published.v1";
       let toastTimer = null;
-      let logoObjectUrl = null;
+      let logoReadId = 0;
+      let logo = { src: "", name: "当前使用已生效 logo" };
+      let published = {
+        ...Object.fromEntries(fields.map(field => [field.name, field.value])),
+        responsibility: { ...defaults.responsibility },
+        logo: { ...logo },
+        publishedAt: lastUpdated.textContent
+      };
 
       function showToast(message, isError) {
         window.clearTimeout(toastTimer);
@@ -867,60 +1027,107 @@
         }, 2400);
       }
 
-      function markDraft() {
-        statusPill.textContent = "未发布修改";
-        statusPill.classList.add("is-draft");
+      function readConfig() {
+        return {
+          ...Object.fromEntries(fields.map(field => [field.name, field.value])),
+          responsibility: Object.fromEntries(responsibilityFields.map(field => [field.dataset.responsibilityLocale, field.value])),
+          logo: { ...logo }
+        };
       }
 
       function markEdited() {
-        markDraft();
+        const { publishedAt, ...saved } = published;
+        const changed = JSON.stringify(readConfig()) !== JSON.stringify(saved);
+        statusPill.textContent = changed ? "未发布修改" : "已发布";
+        statusPill.classList.toggle("is-draft", changed);
       }
 
-      function clearValidation() {
-        [phone, email, address].forEach(function (field) {
-          field.classList.remove("is-invalid");
+      function selectLanguage(locale, focus) {
+        languageTabs.forEach(function (tab) {
+          const selected = tab.dataset.responsibilityTab === locale;
+          tab.setAttribute("aria-selected", String(selected));
+          tab.tabIndex = selected ? 0 : -1;
+          document.getElementById(tab.getAttribute("aria-controls")).hidden = !selected;
+          if (selected && focus) tab.focus();
         });
       }
 
+      function setInvalid(field, invalid) {
+        field.classList.toggle("is-invalid", invalid);
+        field.setAttribute("aria-invalid", String(invalid));
+        if (field.dataset.responsibilityLocale) {
+          const tab = languageTabs.find(item => item.dataset.responsibilityTab === field.dataset.responsibilityLocale);
+          tab.classList.toggle("is-invalid", invalid);
+          document.getElementById(field.getAttribute("aria-describedby")).hidden = !invalid;
+        }
+      }
+
+      function clearValidation() {
+        fields.concat(responsibilityFields).forEach(field => setInvalid(field, false));
+      }
+
       function validate() {
-        clearValidation();
-        let valid = true;
-        if (!phone.value.trim()) {
-          phone.classList.add("is-invalid");
-          valid = false;
+        const invalid = fields.concat(responsibilityFields).filter(function (field) {
+          const missing = !field.value.trim() || (field === email && !email.validity.valid);
+          setInvalid(field, missing);
+          return missing;
+        });
+        if (invalid.length) {
+          const first = invalid[0];
+          if (first.dataset.responsibilityLocale) selectLanguage(first.dataset.responsibilityLocale);
+          first.focus();
         }
-        if (!email.value.trim() || !email.validity.valid) {
-          email.classList.add("is-invalid");
-          valid = false;
-        }
-        if (!address.value.trim()) {
-          address.classList.add("is-invalid");
-          valid = false;
-        }
-        return valid;
+        return invalid.length === 0;
       }
 
-      function updateLogoPreview(src, name) {
-        logoImage.src = src;
-        logoPreviewBox.classList.add("has-image");
-        fileName.textContent = name;
-      }
-
-      function clearLogoSelection() {
-        if (logoObjectUrl) {
-          URL.revokeObjectURL(logoObjectUrl);
-          logoObjectUrl = null;
-        }
+      function applyPublished() {
+        fields.forEach(field => { field.value = published[field.name]; });
+        responsibilityFields.forEach(field => { field.value = published.responsibility[field.dataset.responsibilityLocale]; });
+        logo = { ...published.logo };
+        if (logo.src) logoImage.src = logo.src;
+        else logoImage.removeAttribute("src");
+        logoPreviewBox.classList.toggle("has-image", Boolean(logo.src));
+        fileName.textContent = logo.name;
         logoInput.value = "";
-        logoImage.removeAttribute("src");
-        logoPreviewBox.classList.remove("has-image");
-        fileName.textContent = "当前使用已生效 logo";
+        lastUpdated.textContent = published.publishedAt;
+        clearValidation();
+        selectLanguage(published.defaultLanguage);
+        markEdited();
       }
 
-      [phone, email, address].forEach(function (field) {
-        field.addEventListener("input", function () {
-          field.classList.remove("is-invalid");
-          markEdited();
+      try {
+        const saved = JSON.parse(localStorage.getItem(storageKey));
+        if (saved &&
+            fields.every(field => typeof saved[field.name] === "string") &&
+            Object.hasOwn(defaults.responsibility, saved.defaultLanguage) &&
+            responsibilityFields.every(field => typeof saved.responsibility?.[field.dataset.responsibilityLocale] === "string" &&
+              saved.responsibility[field.dataset.responsibilityLocale].trim()) &&
+            typeof saved.logo?.src === "string" && typeof saved.logo?.name === "string" &&
+            typeof saved.publishedAt === "string") {
+          published = saved;
+        }
+      } catch (error) {
+        showToast("本地配置读取失败，已载入初始配置", true);
+      }
+      applyPublished();
+
+      fields.concat(responsibilityFields).forEach(function (field) {
+        ["input", "change"].forEach(function (event) {
+          field.addEventListener(event, function () {
+            setInvalid(field, false);
+            markEdited();
+          });
+        });
+      });
+
+      languageTabs.forEach(function (tab, index) {
+        tab.addEventListener("click", () => selectLanguage(tab.dataset.responsibilityTab));
+        tab.addEventListener("keydown", function (event) {
+          const positions = { ArrowLeft: (index + 2) % 3, ArrowRight: (index + 1) % 3, Home: 0, End: 2 };
+          if (Object.hasOwn(positions, event.key)) {
+            event.preventDefault();
+            selectLanguage(languageTabs[positions[event.key]].dataset.responsibilityTab, true);
+          }
         });
       });
 
@@ -929,42 +1136,62 @@
         if (!file) {
           return;
         }
-        if (!file.type.startsWith("image/")) {
+        if (!["image/png", "image/jpeg", "image/svg+xml"].includes(file.type)) {
           logoInput.value = "";
           showToast("请选择 PNG、JPG 或 SVG 图片", true);
           return;
         }
-        if (logoObjectUrl) {
-          URL.revokeObjectURL(logoObjectUrl);
-        }
-        logoObjectUrl = URL.createObjectURL(file);
-        updateLogoPreview(logoObjectUrl, "已选择：" + file.name);
-        markDraft();
-        showToast("logo 文件已更新");
+        const currentRead = ++logoReadId;
+        const reader = new FileReader();
+        publishButton.disabled = true;
+        reader.onload = function () {
+          if (currentRead !== logoReadId) return;
+          publishButton.disabled = false;
+          logo = { src: reader.result, name: file.name };
+          logoImage.src = logo.src;
+          logoPreviewBox.classList.add("has-image");
+          fileName.textContent = logo.name;
+          markEdited();
+        };
+        reader.onerror = function () {
+          if (currentRead !== logoReadId) return;
+          publishButton.disabled = false;
+          showToast("Logo 读取失败，请重新选择", true);
+        };
+        reader.readAsDataURL(file);
       });
 
-      document.getElementById("publishButton").addEventListener("click", function () {
+      publishButton.addEventListener("click", function () {
         if (!validate()) {
-          showToast("请先补充完整的联系电话、邮箱和地址", true);
+          showToast("请检查必填字段及三种语言的责任说明", true);
           return;
         }
-        lastUpdated.textContent = "2026-09-21 11:20";
-        statusPill.textContent = "已发布";
-        statusPill.classList.remove("is-draft");
-        showToast("结单配置已发布，后续生成的结单将使用新配置");
+        const next = readConfig();
+        fields.forEach(field => { next[field.name] = next[field.name].trim(); });
+        Object.keys(next.responsibility).forEach(locale => { next.responsibility[locale] = next.responsibility[locale].trim(); });
+        const date = new Date();
+        next.publishedAt = date.getFullYear() + "-" +
+          String(date.getMonth() + 1).padStart(2, "0") + "-" + String(date.getDate()).padStart(2, "0") + " " +
+          String(date.getHours()).padStart(2, "0") + ":" + String(date.getMinutes()).padStart(2, "0");
+        try {
+          localStorage.setItem(storageKey, JSON.stringify(next));
+        } catch (error) {
+          showToast("本地发布失败，未修改已发布配置，请检查浏览器存储空间或权限", true);
+          return;
+        }
+        published = next;
+        applyPublished();
+        showToast("配置已在本地原型中发布");
       });
 
       document.getElementById("cancelButton").addEventListener("click", function () {
-        form.reset();
-        markEdited();
-        clearValidation();
-        clearLogoSelection();
-        statusPill.textContent = "已发布";
-        statusPill.classList.remove("is-draft");
-        lastUpdated.textContent = "2026-09-20 16:40";
-        showToast("已恢复本次编辑前的字段值");
+        logoReadId++;
+        publishButton.disabled = false;
+        applyPublished();
+        showToast("已恢复最近一次已发布配置");
       });
 
+      form.addEventListener("submit", event => event.preventDefault());
       document.querySelectorAll(".secondary-item").forEach(function (tab) {
         tab.addEventListener("click", function () {
           if (tab.dataset.tab === "statement") {
