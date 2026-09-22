@@ -384,6 +384,13 @@
       background: #f2f4f7;
     }
 
+    .fixed-control {
+      display: flex;
+      align-items: center;
+      color: #667085;
+      background: #f2f4f7;
+    }
+
     .combobox { position: relative; }
 
     .combobox .control { padding-right: 38px; }
@@ -652,13 +659,8 @@
       </div>
       <div class="dialog-body">
         <div class="form-field">
-          <label class="field-label" for="board-name"><span class="required">*</span>上市板块</label>
-          <select class="control" id="board-name" required>
-            <option value="">请选择</option>
-            <option value="科创板">科创板</option>
-            <option value="创业板">创业板</option>
-          </select>
-          <div class="field-hint field-error" id="board-name-error" aria-live="polite"></div>
+          <span class="field-label"><span class="required">*</span>上市板块</span>
+          <div class="control fixed-control" id="board-fixed-name">双创板</div>
         </div>
         <div class="form-field">
           <label class="field-label" for="board-limit"><span class="required">*</span>集中度限制</label>
@@ -751,18 +753,19 @@
   <script>
     (() => {
       const state = {
-        boards: [{ name: '科创板', market: 'SSE', limit: '30.0000' }],
+        boards: [{ name: '双创板', market: '沪深市场', limit: '30.0000' }],
         stocks: [{ code: '688981', name: '中芯国际', market: 'SSE', limit: '20.0000' }],
         blocked: [],
         boardMode: 'add',
         editingBoard: '',
+        individualMode: 'add',
+        editingStock: '',
         selectedStock: null,
         stockMatches: [],
         stockActiveIndex: -1,
         confirmAction: null,
       };
 
-      const boardMarkets = { '科创板': 'SSE', '创业板': 'SZSE' };
       const quoteStocks = [
         { code: '000001', name: '平安银行', market: 'SZSE' },
         { code: '300059', name: '东方财富', market: 'SZSE' },
@@ -807,8 +810,8 @@
         `).join('');
 
         const addButton = $('#add-board-button');
-        addButton.disabled = state.boards.length >= 2;
-        addButton.title = addButton.disabled ? '科创板和创业板均已配置' : '';
+        addButton.disabled = state.boards.length >= 1;
+        addButton.title = addButton.disabled ? '双创板集中度已配置' : '';
       }
 
       function renderStocks() {
@@ -818,7 +821,10 @@
             <td>${escapeHtml(item.name)}</td>
             <td>${escapeHtml(item.market)}</td>
             <td>${displayPercent(item.limit)}</td>
-            <td><button class="text-button delete" type="button" data-delete-stock="${escapeHtml(item.code)}">删除</button></td>
+            <td>
+              <button class="text-button" type="button" data-edit-stock="${escapeHtml(item.code)}" aria-label="编辑${escapeHtml(item.code)}">编辑</button>
+              <button class="text-button delete" type="button" data-delete-stock="${escapeHtml(item.code)}" aria-label="删除${escapeHtml(item.code)}">删除</button>
+            </td>
           </tr>
         `).join('') : '<tr><td colspan="5" style="height:112px;text-align:center;color:#98a2b3">暂无数据</td></tr>';
       }
@@ -893,7 +899,6 @@
       }
 
       function clearBoardErrors() {
-        $('#board-name-error').textContent = '';
         $('#board-limit-error').textContent = '';
       }
 
@@ -902,27 +907,35 @@
         state.editingBoard = boardName;
         const title = mode === 'edit' ? '编辑板块集中度' : '新增板块集中度';
         $('#board-dialog-title').textContent = title;
-        const select = $('#board-name');
         const limit = $('#board-limit');
         clearBoardErrors();
 
-        $$('#board-name option').forEach((option) => {
-          option.disabled = option.value ? state.boards.some((item) => item.name === option.value) : false;
-        });
-
         if (mode === 'edit') {
           const item = state.boards.find((board) => board.name === boardName);
-          select.disabled = false;
-          $$('#board-name option').forEach((option) => { option.disabled = false; });
-          select.value = item.name;
-          select.disabled = true;
           limit.value = item.limit;
         } else {
-          select.disabled = false;
-          select.value = '';
           limit.value = '';
         }
         $('#board-dialog').showModal();
+      }
+
+      function openIndividualDialog(mode, stockCode = '') {
+        state.individualMode = mode;
+        state.editingStock = stockCode;
+        state.selectedStock = mode === 'edit'
+          ? state.stocks.find((item) => item.code === stockCode) || null
+          : null;
+        $('#individual-dialog-title').textContent = mode === 'edit' ? '编辑个股规则' : '新增个股规则';
+        $('#individual-form').reset();
+        $('#stock-code-error').textContent = '';
+        $('#stock-limit-error').textContent = '';
+        closeStockOptions();
+        const input = $('#stock-code');
+        input.readOnly = mode === 'edit';
+        input.setAttribute('aria-readonly', String(mode === 'edit'));
+        input.value = mode === 'edit' ? stockCode : '';
+        $('#stock-limit').value = mode === 'edit' ? state.selectedStock.limit : '';
+        $('#individual-dialog').showModal();
       }
 
       function validateLimit(value, errorTarget) {
@@ -978,22 +991,18 @@
       $('#board-form').addEventListener('submit', (event) => {
         event.preventDefault();
         clearBoardErrors();
-        const boardName = $('#board-name').value;
+        const boardName = '双创板';
         const limitValue = $('#board-limit').value;
         let valid = true;
-        if (!boardName) {
-          $('#board-name-error').textContent = '请选择上市板块';
-          valid = false;
-        }
         if (!validateLimit(limitValue, $('#board-limit-error'))) valid = false;
         if (!valid) return;
 
         if (state.boardMode === 'add') {
           if (state.boards.some((item) => item.name === boardName)) {
-            $('#board-name-error').textContent = '该板块已配置集中度';
+            $('#board-limit-error').textContent = '双创板已配置集中度，请直接编辑已有规则';
             return;
           }
-          state.boards.push({ name: boardName, market: boardMarkets[boardName], limit: Number(limitValue).toFixed(4) });
+          state.boards.push({ name: boardName, market: '沪深市场', limit: Number(limitValue).toFixed(4) });
           showToast('板块集中度新增成功');
         } else {
           const item = state.boards.find((board) => board.name === state.editingBoard);
@@ -1020,15 +1029,21 @@
           return;
         }
         if (!validateLimit(limit, limitError)) return;
-        if (state.stocks.some((item) => item.code === code)) {
+        if (state.individualMode === 'add' && state.stocks.some((item) => item.code === code)) {
           codeError.textContent = '该股票已配置个股集中度';
           return;
         }
-        state.stocks.push({ code: quote.code, name: quote.name, market: quote.market, limit: Number(limit).toFixed(4) });
+        if (state.individualMode === 'edit') {
+          const item = state.stocks.find((stock) => stock.code === state.editingStock);
+          item.limit = Number(limit).toFixed(4);
+          showToast('个股规则更新成功');
+        } else {
+          state.stocks.push({ code: quote.code, name: quote.name, market: quote.market, limit: Number(limit).toFixed(4) });
+          showToast('个股规则新增成功');
+        }
         $('#individual-dialog').close();
         closeStockOptions();
         renderStocks();
-        showToast('个股规则新增成功');
       });
 
       $('#blocked-form').addEventListener('submit', (event) => {
@@ -1068,12 +1083,10 @@
           );
         }
         if (target.id === 'add-individual-button') {
-          $('#individual-form').reset();
-          state.selectedStock = null;
-          $('#stock-code-error').textContent = '';
-          $('#stock-limit-error').textContent = '';
-          closeStockOptions();
-          $('#individual-dialog').showModal();
+          openIndividualDialog('add');
+        }
+        if (target.dataset.editStock) {
+          openIndividualDialog('edit', target.dataset.editStock);
         }
         if (target.dataset.stockOption) {
           selectStock(quoteStocks.find((stock) => stock.code === target.dataset.stockOption));
@@ -1122,16 +1135,19 @@
       });
 
       $('#stock-code').addEventListener('focus', (event) => {
+        if (event.currentTarget.readOnly) return;
         renderStockOptions(event.target.value);
       });
 
       $('#stock-code').addEventListener('input', (event) => {
+        if (event.currentTarget.readOnly) return;
         state.selectedStock = null;
         $('#stock-code-error').textContent = '';
         renderStockOptions(event.target.value);
       });
 
       $('#stock-code').addEventListener('keydown', (event) => {
+        if (event.currentTarget.readOnly) return;
         const listOpen = !$('#stock-options').hidden;
         if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
           event.preventDefault();
