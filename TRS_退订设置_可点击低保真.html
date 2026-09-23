@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>TRS 订阅设置</title>
+  <title>OTC通知中心 - 订阅设置</title>
   <style>
     :root {
       color-scheme: light;
@@ -22,7 +22,7 @@
       --success-soft: #ebf7f1;
       --danger: #b42318;
       --danger-soft: #fff3f1;
-      --focus: rgba(180, 35, 24, 0.26);
+      --focus: rgba(24, 85, 249, 0.26);
       --shadow: 0 0 0 1px rgba(25, 31, 38, 0.04), 0 12px 34px rgba(25, 31, 38, 0.08);
       --radius-control: 6px;
       --radius-panel: 8px;
@@ -99,7 +99,7 @@
       color: #ffffff;
       background: var(--accent);
       border-radius: 7px;
-      box-shadow: 0 5px 14px rgba(180, 35, 24, 0.2);
+      box-shadow: 0 5px 14px rgba(24, 85, 249, 0.2);
     }
 
     .brand-mark svg {
@@ -129,7 +129,6 @@
     }
 
     .settings-panel {
-      overflow: hidden;
       background: var(--surface);
       border-radius: var(--radius-panel);
       box-shadow: var(--shadow);
@@ -162,6 +161,11 @@
       text-wrap: pretty;
     }
 
+    .mobile-lead,
+    .global-label-mobile {
+      display: none;
+    }
+
     .email-line {
       display: flex;
       align-items: center;
@@ -185,6 +189,105 @@
       font-variant-numeric: tabular-nums;
     }
 
+    .saved-overview {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 4px 16px;
+      padding: 12px 32px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--line);
+      box-shadow: 0 5px 15px rgba(25, 31, 38, 0.04);
+    }
+
+    .saved-overview-main {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 4px 8px;
+      min-width: 0;
+      font-size: 13px;
+    }
+
+    .saved-overview-main strong {
+      color: var(--ink);
+      font-size: 18px;
+      font-weight: 680;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .saved-overview-main .saved-state {
+      color: var(--ink-muted);
+    }
+
+    .view-saved-button {
+      min-height: 36px;
+      padding: 0 10px;
+      color: var(--accent);
+      background: var(--accent-soft);
+      font-size: 13px;
+      font-weight: 620;
+    }
+
+    .view-saved-button:hover:not(:disabled) {
+      background: #e2eaff;
+    }
+
+    .mobile-list-button,
+    .mobile-pending-message {
+      display: none;
+    }
+
+    .pending-message {
+      grid-column: 1 / -1;
+      color: var(--danger);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .overview-preview {
+      display: none;
+    }
+
+    .overview-preview-title {
+      margin-bottom: 8px;
+      color: var(--ink-muted);
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .overview-empty,
+    .preview-more {
+      color: var(--ink-secondary);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .preview-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .preview-list li {
+      padding: 9px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 13px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .preview-more {
+      margin-top: 10px;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
     .settings-form {
       padding: 26px 32px 30px;
     }
@@ -203,13 +306,6 @@
       line-height: 1.6;
     }
 
-    .demo-notice {
-      margin-top: 5px;
-      color: var(--ink-muted);
-      font-size: 12px;
-      line-height: 1.6;
-    }
-
     h2 {
       margin-top: 5px;
       font-size: 18px;
@@ -219,7 +315,96 @@
 
     .subscription-groups {
       display: grid;
-      margin-top: 16px;
+    }
+
+    .business-tabs {
+      display: flex;
+      max-width: 100%;
+      margin-top: 22px;
+      overflow-x: auto;
+      border-bottom: 1px solid var(--line-strong);
+      scrollbar-width: none;
+    }
+
+    .business-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .business-tab {
+      display: flex;
+      flex: 0 0 auto;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 3px;
+      min-width: 132px;
+      min-height: 60px;
+      padding: 10px 14px;
+      color: var(--ink-secondary);
+      background: transparent;
+      border-bottom: 2px solid transparent;
+      border-radius: 0;
+      font-size: 14px;
+      font-weight: 620;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    .business-tab:hover {
+      color: var(--accent);
+      background: var(--surface-muted);
+    }
+
+    .business-tab[aria-selected="true"] {
+      color: var(--ink);
+      background: var(--accent-soft);
+      border-bottom-color: var(--accent);
+    }
+
+    .business-tab .business-state {
+      color: var(--ink-muted);
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .business-tab[aria-selected="true"] .business-state {
+      color: var(--accent-hover);
+    }
+
+    .business-panel {
+      min-width: 0;
+    }
+
+    .business-panel:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: -3px;
+    }
+
+    .selection-toolbar {
+      display: flex;
+      justify-content: flex-end;
+      padding: 0 4px;
+      background: var(--surface-muted);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .select-all {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 44px;
+      color: var(--ink-secondary);
+      font-size: 13px;
+      font-weight: 580;
+      cursor: pointer;
+    }
+
+    .select-all input {
+      width: 18px;
+      height: 18px;
+      margin: 0;
+      accent-color: var(--accent);
+      cursor: pointer;
     }
 
     .subscription-group {
@@ -233,14 +418,34 @@
       margin-top: 24px;
     }
 
-    .group-title {
-      width: 100%;
-      padding: 0 0 10px;
-      color: var(--ink);
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    .group-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 44px;
       border-bottom: 1px solid var(--line-strong);
+    }
+
+    .group-title {
+      color: var(--ink);
       font-size: 15px;
       font-weight: 680;
       line-height: 1.5;
+    }
+
+    .group-select {
+      flex: none;
+      margin-right: 4px;
     }
 
     .group-items {
@@ -305,7 +510,7 @@
       color: #ffffff;
       background: var(--accent);
       font-weight: 620;
-      box-shadow: 0 5px 14px rgba(180, 35, 24, 0.2);
+      box-shadow: 0 5px 14px rgba(24, 85, 249, 0.2);
     }
 
     .save-button:hover:not(:disabled),
@@ -353,6 +558,7 @@
 
     dialog {
       width: min(100% - 32px, 470px);
+      max-height: calc(100dvh - 32px);
       padding: 0;
       color: var(--ink);
       background: var(--surface);
@@ -365,7 +571,14 @@
       background: rgba(24, 28, 34, 0.48);
     }
 
+    dialog[open] {
+      display: flex;
+      flex-direction: column;
+    }
+
     .dialog-body {
+      min-height: 0;
+      overflow-y: auto;
       padding: 28px 28px 22px;
     }
 
@@ -397,38 +610,260 @@
       line-height: 1.7;
     }
 
+    .saved-list-title {
+      margin-top: 20px;
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .saved-list {
+      margin: 6px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .saved-list li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 48px;
+      border-bottom: 1px solid var(--line);
+      font-size: 14px;
+    }
+
+    .saved-list li span {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .locate-button {
+      flex: none;
+      min-height: 36px;
+      padding: 0 8px;
+      color: var(--accent);
+      background: transparent;
+      font-size: 13px;
+      font-weight: 620;
+    }
+
+    .locate-button:hover {
+      background: var(--accent-soft);
+    }
+
     .dialog-actions {
       display: flex;
+      flex: none;
       justify-content: flex-end;
       gap: 10px;
       padding: 18px 28px 24px;
       border-top: 1px solid var(--line);
     }
 
+    @media (min-width: 960px) {
+      .page-shell {
+        width: min(100% - 64px, 1160px);
+      }
+
+      .settings-panel {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 280px;
+        grid-template-areas: "heading heading" "form overview";
+      }
+
+      .panel-heading {
+        grid-area: heading;
+        padding-right: 36px;
+        padding-left: 36px;
+      }
+
+      .settings-form {
+        grid-area: form;
+        min-width: 0;
+        padding-right: 36px;
+        padding-left: 36px;
+      }
+
+      .saved-overview {
+        grid-area: overview;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        position: sticky;
+        top: 24px;
+        align-self: start;
+        padding: 28px 24px;
+        border-bottom: 0;
+        border-left: 1px solid var(--line);
+        box-shadow: none;
+      }
+
+      .saved-overview-main {
+        display: grid;
+        gap: 6px;
+      }
+
+      .saved-overview-main strong {
+        font-size: 27px;
+      }
+
+      .view-saved-button {
+        align-self: flex-start;
+      }
+
+      .overview-preview {
+        display: block;
+        margin-top: 6px;
+        padding-top: 18px;
+        border-top: 1px solid var(--line);
+      }
+
+      .business-tab {
+        flex-grow: 1;
+      }
+    }
+
     @media (max-width: 600px) {
       .page-shell {
         width: min(100% - 24px, 760px);
-        padding: 24px 0 34px;
+        padding: 12px 0 34px;
       }
 
       .brand-bar {
-        margin-bottom: 16px;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+
+      .brand-mark {
+        width: 30px;
+        height: 30px;
+        border-radius: 5px;
+      }
+
+      .brand-mark svg {
+        width: 17px;
+        height: 17px;
+      }
+
+      .brand-copy strong {
+        font-size: 14px;
+      }
+
+      .brand-copy span {
+        display: none;
       }
 
       .panel-heading,
-      .settings-form {
+      .settings-form,
+      .saved-overview {
         padding-right: 20px;
         padding-left: 20px;
       }
 
+      .panel-heading {
+        padding-top: 15px;
+        padding-bottom: 14px;
+      }
+
+      .settings-form {
+        padding-top: 0;
+      }
+
+      .section-kicker,
+      .settings-form > h2,
+      .setting-hint,
+      .desktop-lead,
+      .global-label-desktop,
+      .business-state-prefix {
+        display: none;
+      }
+
+      .mobile-lead,
+      .global-label-mobile {
+        display: inline;
+      }
+
+      .lead {
+        margin-top: 5px;
+        font-size: 12px;
+        line-height: 1.5;
+      }
+
+      .saved-overview {
+        display: none;
+      }
+
+      .mobile-pending-message:not([hidden]) {
+        display: block;
+        margin-top: 16px;
+      }
+
+      .mobile-pending-message:not([hidden]) + .form-actions {
+        margin-top: 10px;
+      }
+
       h1 {
-        font-size: 24px;
+        font-size: 20px;
+      }
+
+      .business-tab {
+        flex-direction: row;
+        align-items: center;
+        gap: 6px;
+        min-width: 0;
+        min-height: 44px;
+        padding: 0 12px;
+        font-size: 13px;
+      }
+
+      .business-tabs {
+        margin-top: 0;
+      }
+
+      .global-toolbar {
+        justify-content: space-between;
+        gap: 4px;
+        padding: 0;
+        background: var(--surface);
+        border-top: 1px solid var(--line);
+      }
+
+      .global-toolbar .select-all {
+        gap: 6px;
+        font-size: 12px;
+        white-space: nowrap;
+      }
+
+      .view-saved-button.mobile-list-button {
+        display: inline-flex;
+        flex: none;
+        align-items: center;
+        min-height: 44px;
+        padding: 0 0 0 6px;
+        background: transparent;
+        font-size: 12px;
+        white-space: nowrap;
       }
 
       .email-line {
-        align-items: flex-start;
-        flex-direction: column;
-        gap: 4px;
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        width: 100%;
+        margin-top: 9px;
+        padding: 6px 10px;
+      }
+
+      .email-label {
+        font-size: 12px;
+      }
+
+      .email-value {
+        min-width: 0;
+        font-size: 13px;
+        overflow-wrap: anywhere;
+        text-align: right;
       }
 
       .subscription-group + .subscription-group {
@@ -437,6 +872,11 @@
 
       .subscription-option {
         min-height: 60px;
+      }
+
+      .option-name {
+        font-size: 14px;
+        font-weight: 550;
       }
 
       .form-actions,
@@ -470,7 +910,7 @@
 </head>
 <body>
   <main class="page-shell">
-    <header class="brand-bar" aria-label="TRS 通知中心">
+    <header class="brand-bar" aria-label="OTC通知中心">
       <span class="brand-mark" aria-hidden="true">
         <!-- Lucide Mail icon -->
         <svg viewBox="0 0 24 24">
@@ -479,7 +919,7 @@
         </svg>
       </span>
       <span class="brand-copy">
-        <strong>TRS 通知中心</strong>
+        <strong>OTC通知中心</strong>
         <span>Email preferences</span>
       </span>
     </header>
@@ -487,10 +927,26 @@
     <section class="settings-panel" aria-labelledby="page-title">
       <div class="panel-heading">
         <h1 id="page-title">订阅设置</h1>
-        <p class="lead">勾选您不希望继续接收的 TRS 邮件。打开本页面不会直接退订任何邮件。</p>
+        <p class="lead"><span class="desktop-lead">勾选您不希望继续接收的邮件。打开本页面不会直接退订任何邮件。</span><span class="mobile-lead">勾选要退订的邮件，保存后生效。</span></p>
         <div class="email-line">
           <span class="email-label">当前邮箱</span>
           <span class="email-value">29***@qq.com</span>
+        </div>
+      </div>
+
+      <div class="saved-overview" aria-label="已保存的退订设置">
+        <div class="saved-overview-main">
+          <span>已退订邮件</span>
+          <strong><span id="savedCount">0</span> 类</strong>
+          <span class="saved-state">已保存</span>
+        </div>
+        <button class="view-saved-button" id="viewSavedButton" type="button" disabled>查看清单</button>
+        <p class="pending-message" id="pendingMessage" role="status" aria-live="polite" hidden>本次有 <span id="pendingCount">0</span> 项修改尚未保存</p>
+        <div class="overview-preview">
+          <p class="overview-preview-title">当前已退订</p>
+          <p class="overview-empty" id="overviewEmpty">暂无已退订邮件</p>
+          <ul class="preview-list" id="savedPreview"></ul>
+          <p class="preview-more" id="savedOverflow" hidden></p>
         </div>
       </div>
 
@@ -498,78 +954,232 @@
         <p class="section-kicker">Email categories</p>
         <h2>退订邮件</h2>
         <p class="setting-hint">勾选后将退订该类邮件，取消勾选则继续接收。</p>
-        <p class="demo-notice">本地演示初始状态并非真实邮件订阅状态。</p>
 
-        <div class="subscription-groups">
-          <fieldset class="subscription-group">
-            <legend class="group-title">结单邮件</legend>
-            <div class="group-items">
-              <label class="subscription-option">
-                <input type="checkbox" name="dailyStatement">
-                <span class="option-name">TRS日结单</span>
-              </label>
-              <label class="subscription-option">
-                <input type="checkbox" name="monthlyStatement">
-                <span class="option-name">TRS月结单</span>
-              </label>
-            </div>
-          </fieldset>
-
-          <fieldset class="subscription-group">
-            <legend class="group-title">风控邮件</legend>
-            <div class="group-items">
-              <label class="subscription-option">
-                <input type="checkbox" name="riskAlert">
-                <span class="option-name">风控消息提醒</span>
-              </label>
-            </div>
-          </fieldset>
-
-          <fieldset class="subscription-group">
-            <legend class="group-title">业务邮件</legend>
-            <div class="group-items">
-              <label class="subscription-option">
-                <input type="checkbox" name="financingLimitResult">
-                <span class="option-name">融资额度申请结果</span>
-              </label>
-              <label class="subscription-option">
-                <input type="checkbox" name="singleStockLimitResult">
-                <span class="option-name">单票额度申请结果</span>
-              </label>
-              <label class="subscription-option">
-                <input type="checkbox" name="marginWithdrawalResult">
-                <span class="option-name">提取保证金申请结果</span>
-              </label>
-              <label class="subscription-option">
-                <input type="checkbox" name="cashWithdrawalResult">
-                <span class="option-name">提现申请结果</span>
-              </label>
-              <label class="subscription-option">
-                <input type="checkbox" name="accountSettlementNotice">
-                <span class="option-name">账户结算通知</span>
-              </label>
-              <label class="subscription-option">
-                <input type="checkbox" name="currencyTransferResult">
-                <span class="option-name">货币划转申请结果</span>
-              </label>
-            </div>
-          </fieldset>
-
-          <fieldset class="subscription-group">
-            <legend class="group-title">账户邮件</legend>
-            <div class="group-items">
-              <label class="subscription-option">
-                <input type="checkbox" name="accountOpeningNotice">
-                <span class="option-name">开户通知</span>
-              </label>
-              <label class="subscription-option">
-                <input type="checkbox" name="passwordResetNotice">
-                <span class="option-name">重置密码通知</span>
-              </label>
-            </div>
-          </fieldset>
+        <div class="selection-toolbar global-toolbar">
+          <label class="select-all">
+            <input type="checkbox" id="selectAll" aria-label="全选退订所有邮件">
+            <span><span class="global-label-desktop">全选退订全部业务邮件</span><span class="global-label-mobile">全选全部邮件</span>（<span id="totalMailCount">33</span> 类）</span>
+          </label>
+          <button class="view-saved-button mobile-list-button" id="mobileViewSavedButton" type="button" disabled>查看退订清单</button>
         </div>
 
+        <div class="business-tabs" role="tablist" aria-label="业务">
+          <button class="business-tab" id="tab-trs" type="button" role="tab" aria-controls="panel-trs" aria-selected="true" tabindex="0">
+            <span>TRS</span><span class="business-state" id="trsBusinessState"><span class="business-state-prefix">已退订 </span><span class="business-state-count">0/11</span></span>
+          </button>
+          <button class="business-tab" id="tab-otc-option" type="button" role="tab" aria-controls="panel-otc-option" aria-selected="false" tabindex="-1">
+            <span>场外期权</span><span class="business-state"><span class="business-state-prefix">已退订 </span><span class="business-state-count">0/5</span></span>
+          </button>
+          <button class="business-tab" id="tab-win-win-option" type="button" role="tab" aria-controls="panel-win-win-option" aria-selected="false" tabindex="-1">
+            <span>共赢期权</span><span class="business-state"><span class="business-state-prefix">已退订 </span><span class="business-state-count">0/10</span></span>
+          </button>
+          <button class="business-tab" id="tab-fund-account" type="button" role="tab" aria-controls="panel-fund-account" aria-selected="false" tabindex="-1">
+            <span>资金账户</span><span class="business-state"><span class="business-state-prefix">已退订 </span><span class="business-state-count">0/7</span></span>
+          </button>
+        </div>
+
+        <section class="business-panel" id="panel-trs" role="tabpanel" aria-labelledby="tab-trs" data-business-name="TRS" tabindex="0">
+          <div class="selection-toolbar">
+            <label class="select-all">
+              <input type="checkbox" class="product-select" aria-label="全选退订当前业务">
+              <span>全选 TRS 邮件</span>
+            </label>
+          </div>
+          <div class="subscription-groups">
+            <fieldset class="subscription-group">
+              <legend class="sr-only">结单邮件</legend>
+              <div class="group-heading">
+                <span class="group-title">结单邮件</span>
+                <label class="select-all group-select">
+                  <input type="checkbox" aria-label="全选退订本组">
+                  <span>全选</span>
+                </label>
+              </div>
+              <div class="group-items">
+                <label class="subscription-option">
+                  <input type="checkbox" name="dailyStatement">
+                  <span class="option-name">TRS日结单</span>
+                </label>
+                <label class="subscription-option">
+                  <input type="checkbox" name="monthlyStatement">
+                  <span class="option-name">TRS月结单</span>
+                </label>
+              </div>
+            </fieldset>
+
+            <fieldset class="subscription-group">
+              <legend class="sr-only">风控邮件</legend>
+              <div class="group-heading">
+                <span class="group-title">风控邮件</span>
+                <label class="select-all group-select">
+                  <input type="checkbox" aria-label="全选退订本组">
+                  <span>全选</span>
+                </label>
+              </div>
+              <div class="group-items">
+                <label class="subscription-option">
+                  <input type="checkbox" name="riskAlert">
+                  <span class="option-name">风控消息提醒</span>
+                </label>
+              </div>
+            </fieldset>
+
+            <fieldset class="subscription-group">
+              <legend class="sr-only">业务邮件</legend>
+              <div class="group-heading">
+                <span class="group-title">业务邮件</span>
+                <label class="select-all group-select">
+                  <input type="checkbox" aria-label="全选退订本组">
+                  <span>全选</span>
+                </label>
+              </div>
+              <div class="group-items">
+                <label class="subscription-option">
+                  <input type="checkbox" name="financingLimitResult">
+                  <span class="option-name">融资额度申请结果</span>
+                </label>
+                <label class="subscription-option">
+                  <input type="checkbox" name="singleStockLimitResult">
+                  <span class="option-name">单票额度申请结果</span>
+                </label>
+                <label class="subscription-option">
+                  <input type="checkbox" name="marginWithdrawalResult">
+                  <span class="option-name">提取保证金申请结果</span>
+                </label>
+                <label class="subscription-option">
+                  <input type="checkbox" name="cashWithdrawalResult">
+                  <span class="option-name">提现申请结果</span>
+                </label>
+                <label class="subscription-option">
+                  <input type="checkbox" name="accountSettlementNotice">
+                  <span class="option-name">账户结算通知</span>
+                </label>
+                <label class="subscription-option">
+                  <input type="checkbox" name="currencyTransferResult">
+                  <span class="option-name">货币划转申请结果</span>
+                </label>
+              </div>
+            </fieldset>
+
+            <fieldset class="subscription-group">
+              <legend class="sr-only">账户邮件</legend>
+              <div class="group-heading">
+                <span class="group-title">账户邮件</span>
+                <label class="select-all group-select">
+                  <input type="checkbox" aria-label="全选退订本组">
+                  <span>全选</span>
+                </label>
+              </div>
+              <div class="group-items">
+                <label class="subscription-option">
+                  <input type="checkbox" name="accountOpeningNotice">
+                  <span class="option-name">开户通知</span>
+                </label>
+                <label class="subscription-option">
+                  <input type="checkbox" name="passwordResetNotice">
+                  <span class="option-name">重置密码通知</span>
+                </label>
+              </div>
+            </fieldset>
+          </div>
+        </section>
+
+        <section class="business-panel" id="panel-otc-option" role="tabpanel" aria-labelledby="tab-otc-option" data-business-name="场外期权" tabindex="0" hidden>
+          <div class="selection-toolbar">
+            <label class="select-all">
+              <input type="checkbox" class="product-select" aria-label="全选退订当前业务">
+              <span>全选场外期权邮件</span>
+            </label>
+          </div>
+          <div class="group-items flat-items">
+            <label class="subscription-option"><input type="checkbox" name="optionOrderTrade"><span class="option-name">订单交易</span></label>
+            <label class="subscription-option"><input type="checkbox" name="optionTradeConfirmation"><span class="option-name">交易确认书</span></label>
+            <label class="subscription-option"><input type="checkbox" name="optionPositionNotice"><span class="option-name">持仓通知</span></label>
+            <label class="subscription-option"><input type="checkbox" name="optionDailyStatement"><span class="option-name">日结单</span></label>
+            <label class="subscription-option"><input type="checkbox" name="optionMonthlyStatement"><span class="option-name">月结单</span></label>
+          </div>
+        </section>
+        <section class="business-panel" id="panel-win-win-option" role="tabpanel" aria-labelledby="tab-win-win-option" data-business-name="共赢期权" tabindex="0" hidden>
+          <div class="selection-toolbar">
+            <label class="select-all">
+              <input type="checkbox" class="product-select" aria-label="全选退订当前业务">
+              <span>全选共赢期权邮件</span>
+            </label>
+          </div>
+          <div class="subscription-groups">
+            <fieldset class="subscription-group">
+              <legend class="sr-only">业务邮件</legend>
+              <div class="group-heading"><span class="group-title">业务邮件</span><label class="select-all group-select"><input type="checkbox" aria-label="全选退订本组"><span>全选</span></label></div>
+              <div class="group-items">
+                <label class="subscription-option"><input type="checkbox" name="winQuoteNotice"><span class="option-name">报价通知</span></label>
+                <label class="subscription-option"><input type="checkbox" name="winContractExpiryNotice"><span class="option-name">合约到期通知</span></label>
+                <label class="subscription-option"><input type="checkbox" name="winExtensionNotice"><span class="option-name">展期通知</span></label>
+                <label class="subscription-option"><input type="checkbox" name="winAdditionalMarginNotice"><span class="option-name">提保通知</span></label>
+                <label class="subscription-option"><input type="checkbox" name="winTradeConfirmation"><span class="option-name">交易确认书</span></label>
+              </div>
+            </fieldset>
+            <fieldset class="subscription-group">
+              <legend class="sr-only">账户邮件</legend>
+              <div class="group-heading"><span class="group-title">账户邮件</span><label class="select-all group-select"><input type="checkbox" aria-label="全选退订本组"><span>全选</span></label></div>
+              <div class="group-items">
+                <label class="subscription-option"><input type="checkbox" name="winAccountOpeningNotice"><span class="option-name">开户通知</span></label>
+              </div>
+            </fieldset>
+            <fieldset class="subscription-group">
+              <legend class="sr-only">风控邮件</legend>
+              <div class="group-heading"><span class="group-title">风控邮件</span><label class="select-all group-select"><input type="checkbox" aria-label="全选退订本组"><span>全选</span></label></div>
+              <div class="group-items">
+                <label class="subscription-option"><input type="checkbox" name="winMarginTopUpNotice"><span class="option-name">追保通知</span></label>
+                <label class="subscription-option"><input type="checkbox" name="winRiskNotice"><span class="option-name">风控通知</span></label>
+              </div>
+            </fieldset>
+            <fieldset class="subscription-group">
+              <legend class="sr-only">结单邮件</legend>
+              <div class="group-heading"><span class="group-title">结单邮件</span><label class="select-all group-select"><input type="checkbox" aria-label="全选退订本组"><span>全选</span></label></div>
+              <div class="group-items">
+                <label class="subscription-option"><input type="checkbox" name="winDailyStatement"><span class="option-name">共赢日结单</span></label>
+                <label class="subscription-option"><input type="checkbox" name="winMonthlyStatement"><span class="option-name">共赢月结单</span></label>
+              </div>
+            </fieldset>
+          </div>
+        </section>
+        <section class="business-panel" id="panel-fund-account" role="tabpanel" aria-labelledby="tab-fund-account" data-business-name="资金账户" tabindex="0" hidden>
+          <div class="selection-toolbar">
+            <label class="select-all">
+              <input type="checkbox" class="product-select" aria-label="全选退订当前业务">
+              <span>全选资金账户邮件</span>
+            </label>
+          </div>
+          <div class="subscription-groups">
+            <fieldset class="subscription-group">
+              <legend class="sr-only">业务邮件</legend>
+              <div class="group-heading"><span class="group-title">业务邮件</span><label class="select-all group-select"><input type="checkbox" aria-label="全选退订本组"><span>全选</span></label></div>
+              <div class="group-items">
+                <label class="subscription-option"><input type="checkbox" name="fundDepositApplication"><span class="option-name">入金申请</span></label>
+                <label class="subscription-option"><input type="checkbox" name="fundWithdrawalApplication"><span class="option-name">出金申请</span></label>
+                <label class="subscription-option"><input type="checkbox" name="fundCurrencyExchangeApplication"><span class="option-name">货币兑换申请</span></label>
+              </div>
+            </fieldset>
+            <fieldset class="subscription-group">
+              <legend class="sr-only">账户邮件</legend>
+              <div class="group-heading"><span class="group-title">账户邮件</span><label class="select-all group-select"><input type="checkbox" aria-label="全选退订本组"><span>全选</span></label></div>
+              <div class="group-items">
+                <label class="subscription-option"><input type="checkbox" name="fundPasswordResetNotice"><span class="option-name">重置密码通知</span></label>
+                <label class="subscription-option"><input type="checkbox" name="fundAccountApplication"><span class="option-name">账户申请</span></label>
+              </div>
+            </fieldset>
+            <fieldset class="subscription-group">
+              <legend class="sr-only">结单邮件</legend>
+              <div class="group-heading"><span class="group-title">结单邮件</span><label class="select-all group-select"><input type="checkbox" aria-label="全选退订本组"><span>全选</span></label></div>
+              <div class="group-items">
+                <label class="subscription-option"><input type="checkbox" name="fundDailyStatement"><span class="option-name">资金账户日结单</span></label>
+                <label class="subscription-option"><input type="checkbox" name="fundMonthlyStatement"><span class="option-name">资金账户月结单</span></label>
+              </div>
+            </fieldset>
+          </div>
+        </section>
+
+        <p class="pending-message mobile-pending-message" id="mobilePendingMessage" role="status" aria-live="polite" hidden>本次有 <span id="mobilePendingCount">0</span> 项修改尚未保存</p>
         <div class="form-actions">
           <button class="save-button" id="saveButton" type="submit" disabled>保存设置</button>
         </div>
@@ -590,7 +1200,7 @@
     <div class="dialog-body">
       <p class="dialog-eyebrow">请再次确认</p>
       <h2 id="confirmTitle">确认退订</h2>
-      <p class="dialog-copy">确认后，您将不再收到以下邮件：</p>
+      <p class="dialog-copy" id="confirmCopy">确认后，您将不再收到以下邮件：</p>
       <ul class="unsubscribe-summary" id="unsubscribeSummary"></ul>
     </div>
     <div class="dialog-actions">
@@ -599,64 +1209,95 @@
     </div>
   </dialog>
 
+  <dialog id="savedDialog" aria-labelledby="savedDialogTitle">
+    <div class="dialog-body">
+      <p class="dialog-eyebrow">已保存的设置</p>
+      <h2 id="savedDialogTitle">已退订邮件清单</h2>
+      <p class="dialog-copy">以下仅展示已保存的退订项，未保存的修改不会计入。</p>
+      <div id="savedGroups"></div>
+    </div>
+    <div class="dialog-actions">
+      <button class="secondary-button" id="closeSavedButton" type="button">关闭</button>
+    </div>
+  </dialog>
+
   <script>
     (() => {
-      const storageKey = 'trs-email-subscription-settings-v3';
+      const storageKey = 'otc-email-subscription-settings-v4';
+      const previousStorageKey = 'trs-email-subscription-settings-v3';
       const legacyStorageKey = 'trs-email-subscription-settings-v2';
-      const categoryNames = {
-        dailyStatement: 'TRS日结单',
-        monthlyStatement: 'TRS月结单',
-        riskAlert: '风控消息提醒',
-        financingLimitResult: '融资额度申请结果',
-        singleStockLimitResult: '单票额度申请结果',
-        marginWithdrawalResult: '提取保证金申请结果',
-        cashWithdrawalResult: '提现申请结果',
-        accountSettlementNotice: '账户结算通知',
-        currencyTransferResult: '货币划转申请结果',
-        accountOpeningNotice: '开户通知',
-        passwordResetNotice: '重置密码通知'
-      };
-      const defaultSettings = {
-        dailyStatement: false,
-        monthlyStatement: false,
-        riskAlert: false,
-        financingLimitResult: false,
-        singleStockLimitResult: false,
-        marginWithdrawalResult: false,
-        cashWithdrawalResult: false,
-        accountSettlementNotice: false,
-        currencyTransferResult: false,
-        accountOpeningNotice: false,
-        passwordResetNotice: false
-      };
 
       const form = document.getElementById('settingsForm');
       const saveButton = document.getElementById('saveButton');
       const confirmDialog = document.getElementById('confirmDialog');
+      const confirmCopy = document.getElementById('confirmCopy');
       const unsubscribeSummary = document.getElementById('unsubscribeSummary');
       const returnButton = document.getElementById('returnButton');
       const confirmButton = document.getElementById('confirmButton');
       const successFeedback = document.getElementById('successFeedback');
       const errorFeedback = document.getElementById('errorFeedback');
-      const checkboxes = [...form.querySelectorAll('input[type="checkbox"]')];
+      const products = [...form.querySelectorAll('.business-panel')].map((panel) => ({
+        name: panel.dataset.businessName,
+        tab: document.getElementById(panel.getAttribute('aria-labelledby')),
+        select: panel.querySelector('.product-select'),
+        items: [...panel.querySelectorAll('.group-items input[type="checkbox"]')]
+      }));
+      const checkboxes = products.flatMap((product) => product.items);
+      const categoryNames = Object.fromEntries(checkboxes.map((checkbox) => [
+        checkbox.name,
+        checkbox.closest('.subscription-option').querySelector('.option-name').textContent
+      ]));
+      const productForKey = Object.fromEntries(products.flatMap((product) =>
+        product.items.map((item) => [item.name, product])
+      ));
+      const defaultSettings = Object.fromEntries(checkboxes.map((checkbox) => [checkbox.name, false]));
+      const trsKeys = products[0].items.map((item) => item.name);
+      const groupControls = [...form.querySelectorAll('.subscription-group')].map((group) => ({
+        select: group.querySelector('.group-select input'),
+        items: [...group.querySelectorAll('.group-items input[type="checkbox"]')]
+      }));
+      const selectAll = document.getElementById('selectAll');
+      const tabs = [...form.querySelectorAll('[role="tab"]')];
+      const savedCount = document.getElementById('savedCount');
+      const pendingMessage = document.getElementById('pendingMessage');
+      const pendingCount = document.getElementById('pendingCount');
+      const mobilePendingMessage = document.getElementById('mobilePendingMessage');
+      const mobilePendingCount = document.getElementById('mobilePendingCount');
+      const viewSavedButton = document.getElementById('viewSavedButton');
+      const mobileViewSavedButton = document.getElementById('mobileViewSavedButton');
+      const savedDialog = document.getElementById('savedDialog');
+      const savedGroups = document.getElementById('savedGroups');
+      const savedPreview = document.getElementById('savedPreview');
+      const overviewEmpty = document.getElementById('overviewEmpty');
+      const savedOverflow = document.getElementById('savedOverflow');
+      document.getElementById('totalMailCount').textContent = checkboxes.length;
 
-      function hasCompleteSettings(value) {
+      function hasCompleteSettings(value, keys) {
         return value && typeof value === 'object' &&
-          Object.keys(defaultSettings).every((key) => typeof value[key] === 'boolean');
+          keys.every((key) => typeof value[key] === 'boolean');
       }
 
       function readSettings() {
         try {
           const stored = JSON.parse(localStorage.getItem(storageKey));
-          if (hasCompleteSettings(stored)) return stored;
+          if (stored && typeof stored === 'object' && !Array.isArray(stored)) {
+            return Object.fromEntries(Object.keys(defaultSettings).map((key) => [
+              key, typeof stored[key] === 'boolean' ? stored[key] : false
+            ]));
+          }
+
+          const previous = JSON.parse(localStorage.getItem(previousStorageKey));
+          if (hasCompleteSettings(previous, trsKeys)) {
+            const migrated = { ...defaultSettings, ...Object.fromEntries(trsKeys.map((key) => [key, previous[key]])) };
+            localStorage.setItem(storageKey, JSON.stringify(migrated));
+            return migrated;
+          }
 
           const legacy = JSON.parse(localStorage.getItem(legacyStorageKey));
-          if (hasCompleteSettings(legacy)) {
-            const inverted = Object.fromEntries(
-              Object.keys(defaultSettings).map((key) => [key, !legacy[key]])
-            );
-            localStorage.setItem(storageKey, JSON.stringify(inverted));
-            return inverted;
+          if (hasCompleteSettings(legacy, trsKeys)) {
+            const migrated = { ...defaultSettings, ...Object.fromEntries(trsKeys.map((key) => [key, !legacy[key]])) };
+            localStorage.setItem(storageKey, JSON.stringify(migrated));
+            return migrated;
           }
         } catch (error) {
           // The offline example remains usable when local storage is unavailable.
@@ -679,9 +1320,82 @@
 
       function updateDirtyState() {
         const draft = currentSettings();
-        saveButton.disabled = Object.keys(defaultSettings).every((key) => draft[key] === savedSettings[key]);
+        const changed = Object.keys(defaultSettings).filter((key) => draft[key] !== savedSettings[key]);
+        saveButton.disabled = changed.length === 0;
+        pendingCount.textContent = changed.length;
+        pendingMessage.hidden = changed.length === 0;
+        mobilePendingCount.textContent = changed.length;
+        mobilePendingMessage.hidden = changed.length === 0;
+        for (const { select, items } of groupControls) updateSelectAll(select, items);
+        for (const { select, items } of products) updateSelectAll(select, items);
+        updateSelectAll(selectAll, checkboxes);
         successFeedback.classList.remove('is-visible');
         errorFeedback.classList.remove('is-visible');
+      }
+
+      function activateTab(selectedTab) {
+        tabs.forEach((tab) => {
+          const active = tab === selectedTab;
+          tab.setAttribute('aria-selected', String(active));
+          tab.tabIndex = active ? 0 : -1;
+          document.getElementById(tab.getAttribute('aria-controls')).hidden = !active;
+        });
+        selectedTab.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+      }
+
+      function renderSavedSummary() {
+        const savedKeys = Object.keys(defaultSettings).filter((key) => savedSettings[key]);
+        savedCount.textContent = savedKeys.length;
+        products.forEach(({ tab, items }) => {
+          const count = items.filter((item) => savedSettings[item.name]).length;
+          tab.querySelector('.business-state-count').textContent = `${count}/${items.length}`;
+        });
+        viewSavedButton.disabled = savedKeys.length === 0;
+        mobileViewSavedButton.disabled = savedKeys.length === 0;
+        overviewEmpty.hidden = savedKeys.length > 0;
+        savedOverflow.hidden = savedKeys.length <= 5;
+        savedOverflow.textContent = `另有 ${Math.max(0, savedKeys.length - 5)} 类，查看清单可见全部`;
+        savedPreview.replaceChildren(...savedKeys.slice(0, 5).map((key) => {
+          const row = document.createElement('li');
+          row.textContent = `${productForKey[key].name} · ${categoryNames[key]}`;
+          return row;
+        }));
+        savedGroups.replaceChildren(...products.flatMap((product) => {
+          const selected = product.items.filter((item) => savedSettings[item.name]);
+          if (selected.length === 0) return [];
+          const section = document.createElement('section');
+          const title = document.createElement('h3');
+          title.className = 'saved-list-title';
+          title.textContent = product.name;
+          const list = document.createElement('ul');
+          list.className = 'saved-list';
+          selected.forEach((item) => {
+            const row = document.createElement('li');
+            const name = document.createElement('span');
+            name.textContent = categoryNames[item.name];
+            const locate = document.createElement('button');
+            locate.type = 'button';
+            locate.className = 'locate-button';
+            locate.textContent = '定位';
+            locate.setAttribute('aria-label', `定位至 ${product.name} ${categoryNames[item.name]}`);
+            locate.addEventListener('click', () => {
+              savedDialog.close();
+              activateTab(product.tab);
+              item.focus();
+              item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+            row.append(name, locate);
+            list.append(row);
+          });
+          section.append(title, list);
+          return [section];
+        }));
+      }
+
+      function updateSelectAll(select, items) {
+        const checked = items.filter((item) => item.checked).length;
+        select.checked = checked === items.length;
+        select.indeterminate = checked > 0 && checked < items.length;
       }
 
       function newUnsubscribes(nextSettings) {
@@ -689,10 +1403,12 @@
       }
 
       function showConfirmation(keys) {
+        confirmCopy.textContent = `确认后，您将不再收到以下 ${keys.length} 类邮件：`;
+        confirmButton.textContent = `确认退订 ${keys.length} 类`;
         unsubscribeSummary.replaceChildren(
           ...keys.map((key) => {
             const item = document.createElement('li');
-            item.textContent = categoryNames[key];
+            item.textContent = `${productForKey[key].name} · ${categoryNames[key]}`;
             return item;
           })
         );
@@ -704,8 +1420,8 @@
         try {
           localStorage.setItem(storageKey, JSON.stringify(nextSettings));
           savedSettings = { ...nextSettings };
-          saveButton.disabled = true;
-          errorFeedback.classList.remove('is-visible');
+          renderSavedSummary();
+          updateDirtyState();
           successFeedback.classList.add('is-visible');
         } catch (error) {
           successFeedback.classList.remove('is-visible');
@@ -714,6 +1430,36 @@
       }
 
       checkboxes.forEach((checkbox) => checkbox.addEventListener('change', updateDirtyState));
+      groupControls.forEach(({ select, items }) => select.addEventListener('change', () => {
+        items.forEach((item) => { item.checked = select.checked; });
+        updateDirtyState();
+      }));
+      products.forEach(({ select, items }) => select.addEventListener('change', () => {
+        items.forEach((item) => { item.checked = select.checked; });
+        updateDirtyState();
+      }));
+      selectAll.addEventListener('change', () => {
+        checkboxes.forEach((item) => { item.checked = selectAll.checked; });
+        updateDirtyState();
+      });
+      tabs.forEach((tab) => tab.addEventListener('click', () => activateTab(tab)));
+      form.querySelector('[role="tablist"]').addEventListener('keydown', (event) => {
+        const index = tabs.indexOf(document.activeElement);
+        if (index < 0) return;
+        let next;
+        if (event.key === 'ArrowRight') next = tabs[(index + 1) % tabs.length];
+        else if (event.key === 'ArrowLeft') next = tabs[(index - 1 + tabs.length) % tabs.length];
+        else if (event.key === 'Home') next = tabs[0];
+        else if (event.key === 'End') next = tabs[tabs.length - 1];
+        else return;
+        event.preventDefault();
+        activateTab(next);
+        next.focus({ preventScroll: true });
+      });
+      for (const button of [viewSavedButton, mobileViewSavedButton]) {
+        button.addEventListener('click', () => savedDialog.showModal());
+      }
+      document.getElementById('closeSavedButton').addEventListener('click', () => savedDialog.close());
 
       form.addEventListener('submit', (event) => {
         event.preventDefault();
@@ -737,6 +1483,7 @@
       });
 
       renderSettings(savedSettings);
+      renderSavedSummary();
     })();
   </script>
 </body>
