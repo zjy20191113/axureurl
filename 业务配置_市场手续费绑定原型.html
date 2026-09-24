@@ -43,33 +43,56 @@
 <div class="review-layout"><div class="prototype-stage">
 <header class="top"><div class="brand"><b>▌LINK</b><i></i>COUNTER</div><nav class="nav"><button>租户管理</button><button>客户端管理</button><button>权限管理</button><button class="active" id="businessNav">业务配置⌄</button><button>系统配置</button><button>openapi授权</button></nav><div class="user"><div class="avatar">LINK<br>ADMIN</div><span>zzz</span></div></header>
 <main class="page"><div class="title-row"><div class="title">市场手续费绑定</div><button class="btn primary" id="addBtn">＋ 新增绑定</button></div>
-<section id="binding"><div class="notice">该配置对所有租户生效。SaaS 统一维护“收费类型适用市场”；柜台根据收费类型自定义收费项目，是否收取由各自的收费套餐决定。</div><div class="filters"><div class="field"><label>市场</label><select id="marketFilter"><option>全部市场</option><option>港股</option><option>美股</option><option>中华通</option><option>港股-R</option></select></div><div class="field"><label for="typeFilter">收费类型</label><select id="typeFilter"><option>全部收费类型</option><option>印花税</option><option>佣金</option><option>交易费</option><option>平台费</option></select></div><div class="field"><label for="statusFilter">状态</label><select id="statusFilter"><option>全部状态</option><option>已启用</option><option>已停用</option></select></div><div class="actions"><button class="btn primary" id="queryBtn">查询</button><button class="btn" id="resetBtn">重置</button></div></div><div class="panel" style="margin-top:16px"><div class="table-head"><div class="table-title">绑定记录 <span style="color:#9aa1ad;font-weight:400;font-size:12px"><span id="recordCount">共 6 条</span></span></div></div><table class="table"><thead><tr><th style="width:70px">序号</th><th>市场</th><th>收费类型</th><th>状态</th><th style="width:170px">操作</th></tr></thead><tbody id="bindingRows"></tbody></table><div class="pagination"><span>每页 20 条</span><button class="pagebtn">‹</button><button class="pagebtn current">1</button><button class="pagebtn">›</button></div></div></section>
+<section id="binding"><div class="notice">仅状态为“启用”的 SaaS 绑定项，才会出现在柜台【配置 &gt; 系统字典 &gt; 交易收费类型】的可选收费类型中。</div><div class="filters"><div class="field"><label>市场</label><select id="marketFilter"><option>全部市场</option><option>港股</option><option>美股</option><option>中华通</option><option>港股-R</option></select></div><div class="field"><label for="typeFilter">收费类型</label><select id="typeFilter"><option>全部收费类型</option><option>交收费</option><option>印花税</option><option>交易费</option><option>证监会交易征费</option><option>会财局交易征费</option><option>证监会规费</option><option>交易活动费</option><option>经手费</option><option>证管费</option><option>过户费</option><option>登记过户费</option><option>佣金</option><option>平台费</option><option>征税</option><option>清算指令费</option><option>交易系统使用费</option><option>中央系统结算费</option><option>其他</option></select></div><div class="field"><label for="statusFilter">状态</label><select id="statusFilter"><option>全部状态</option><option>已启用</option><option>已停用</option></select></div><div class="actions"><button class="btn primary" id="queryBtn">查询</button><button class="btn" id="resetBtn">重置</button></div></div><div class="panel" style="margin-top:16px"><div class="table-head"><div class="table-title">绑定记录 <span style="color:#9aa1ad;font-weight:400;font-size:12px"><span id="recordCount">共 6 条</span></span></div></div><table class="table"><thead><tr><th style="width:70px">序号</th><th>市场</th><th>收费类型</th><th>状态</th><th style="width:170px">操作</th></tr></thead><tbody id="bindingRows"></tbody></table><div class="pagination"><span>每页 20 条</span><button class="pagebtn">‹</button><button class="pagebtn current">1</button><button class="pagebtn">›</button></div></div></section>
 </main>
-<div class="drawer-mask" id="drawerMask"><aside class="drawer"><span class="close" id="closeDrawer">×</span><h2 id="drawerTitle">新增市场手续费绑定</h2><div class="field"><label>市场 <b style="color:#e45656">*</b></label><select id="drawerMarket"><option value="">请选择市场</option><option value="HK">港股</option><option value="US">美股</option><option value="CN">中华通</option><option value="HK-R">港股-R</option></select></div><div class="field"><label>收费类型 <b style="color:#e45656">*</b></label><select id="drawerType"><option value="">请选择收费类型</option><option value="stamp">印花税</option><option value="commission">佣金</option><option value="trade">交易费</option><option value="platform">平台费</option></select></div><div class="summary" id="typeSummary">选择收费类型后展示已绑定市场</div><div class="field" style="margin-top:19px"><label>状态 <b style="color:#e45656">*</b></label><div class="radio"><label><input type="radio" name="status" value="启用" checked> 启用</label><label><input type="radio" name="status" value="停用"> 停用</label></div></div><div class="drawer-footer"><button class="btn" id="cancelDrawer">取消</button><button class="btn primary" id="saveBinding">保存</button></div></aside></div>
+<div class="drawer-mask" id="drawerMask"><aside class="drawer"><span class="close" id="closeDrawer">×</span><h2 id="drawerTitle">新增市场手续费绑定</h2><div class="field"><label>市场 <b style="color:#e45656">*</b></label><select id="drawerMarket"><option value="">请选择市场</option><option value="HK">港股</option><option value="US">美股</option><option value="CN">中华通</option><option value="HK-R">港股-R</option></select></div><div class="field"><label>收费类型 <b style="color:#e45656">*</b></label><select id="drawerType"><option value="">请选择收费类型</option><option value="settlement">交收费</option><option value="stamp">印花税</option><option value="trade">交易费</option><option value="sfcLevy">证监会交易征费</option><option value="fscLevy">会财局交易征费</option><option value="sfcFee">证监会规费</option><option value="tradingActivity">交易活动费</option><option value="handling">经手费</option><option value="sfcAdmin">证管费</option><option value="transfer">过户费</option><option value="registrationTransfer">登记过户费</option><option value="commission">佣金</option><option value="platform">平台费</option><option value="tax">征税</option><option value="clearingInstruction">清算指令费</option><option value="tradingSystem">交易系统使用费</option><option value="centralSettlement">中央系统结算费</option><option value="other">其他</option></select></div><div class="summary" id="typeSummary">选择收费类型后展示已绑定市场</div><div class="field" style="margin-top:19px"><label>状态 <b style="color:#e45656">*</b></label><div class="radio"><label><input type="radio" name="status" value="启用" checked> 启用</label><label><input type="radio" name="status" value="停用"> 停用</label></div></div><div class="drawer-footer"><button class="btn" id="cancelDrawer">取消</button><button class="btn primary" id="saveBinding">保存</button></div></aside></div>
 <div class="confirm-mask" id="confirmMask"><div class="confirm"><h3>确认保存市场手续费绑定？</h3><p>该绑定会影响所有租户的收费套餐可选项。柜台套餐仅可选择本地已添加、且所属收费类型与套餐市场存在启用绑定的收费项目。</p><div class="confirm-footer"><button class="btn" id="cancelConfirm">取消</button> <button class="btn primary" id="confirmSave">确认保存</button></div></div></div><div class="toast" id="toast"></div>
 </div>
 <aside class="prd-panel" id="prdPanel" aria-label="市场手续费绑定需求说明"><div class="prd-panel-header"><strong>需求说明 · PRD</strong><span id="prdHint">点击左侧功能查看对应规则</span></div><article class="prd-content" tabindex="0" aria-label="PRD 正文"><h1>市场手续费绑定 PRD</h1>
 <h2 id="prd-section-2">1. 功能说明</h2>
-<p>在 SaaS【业务配置】中维护全平台统一的“市场与收费类型”绑定关系，限制各券商收费套餐的可选收费范围。柜台根据收费类型自定义收费项目，收费方及具体收费规则由柜台维护。</p>
-<h2 id="prd-section-3">2. 需求详细说明</h2>
-<table><thead><tr><th>需求项</th><th>规则说明</th></tr></thead><tbody><tr><td>页面入口</td><td>从 SaaS 顶部【业务配置】进入【市场手续费绑定】。页面按已确认原型展示，不增加菜单路径。</td></tr><tr><td>数据范围</td><td>展示全平台的市场与收费类型绑定记录，所有租户共用同一套适用范围，不按券商分别配置。</td></tr><tr><td>列表粒度</td><td>一条记录对应一个“市场 + 收费类型”组合。一个市场可绑定多个收费类型，一个收费类型可绑定多个市场。</td></tr><tr><td>唯一性</td><td>同一“市场 + 收费类型”不可重复，包括已停用记录；编辑时排除当前记录自身。已有停用记录应编辑或启用，不能重复新增。</td></tr><tr><td>初始状态</td><td>筛选项默认全部，展示所有绑定记录。列表展示序号、市场、收费类型、状态和操作。</td></tr><tr><td>柜台选项来源</td><td>套餐仍从该券商【配置 &gt; 系统字典 &gt; 交易收费类型】已添加的本地收费项目中选择。</td></tr><tr><td>市场约束</td><td>本地项目所属收费类型与套餐市场存在“启用”绑定时，该项目才满足市场条件；没有绑定或绑定停用时，不可作为新增收费项选择。</td></tr><tr><td>收费边界</td><td>SaaS 新增绑定不会自动创建本地收费项目，也不会自动将其加入套餐。实际是否收费及收费规则由具体套餐决定。</td></tr><tr><td>展示边界</td><td>SaaS 页面不展示收费项目、项目编码、市场编码、收费方和柜台联动预览。</td></tr></tbody></table>
-<p>例如：柜台自定义的“普通佣金”和“优惠佣金”均属于“佣金”类型。启用“港股 + 佣金”绑定后，两者均满足港股套餐的市场条件，券商自行决定加入哪个项目。</p>
-<p><strong>待确认事项：</strong>停用绑定、修改已被使用的绑定组合，以及柜台修改项目所属收费类型时，存量套餐如何处理。当前 HTML 只演示状态切换和编辑保存，不能据此认定存量收费会自动取消；正式规则需明确是否保留存量计费、是否限制编辑及如何检查影响范围。“其他”收费类型如有使用，也需确认其下所有项目能否共用同一市场范围。</p>
-<h2 id="prd-section-4">3. 页面字段说明</h2>
+<p>在 SaaS【业务配置】维护“市场 + 收费类型”的统一绑定。绑定状态为“启用”时，券商才能在柜台【配置 &gt; 系统字典 &gt; 交易收费类型】新增该收费类型。当前收费类型暂定为下方 18 种，后续新增或调整类型时，需同步更新 SaaS 与柜台的可选项及联动规则。</p>
+<h2 id="prd-section-3">2. 业务规则</h2>
+<table><thead><tr><th>规则</th><th>说明</th></tr></thead><tbody>
+<tr><td>绑定粒度</td><td>一条记录对应一个“市场 + 收费类型”组合。</td></tr>
+<tr><td>适用范围</td><td>配置对所有租户生效，所有券商共用。</td></tr>
+<tr><td>固定收费类型</td><td>当前暂定为以下 18 种：交收费、印花税、交易费、证监会交易征费、会财局交易征费、证监会规费、交易活动费、经手费、证管费、过户费、登记过户费、佣金、平台费、征税、清算指令费、交易系统使用费、中央系统结算费、其他。</td></tr>
+<tr><td>柜台联动</td><td>启用绑定项出现在柜台新增交易收费类型的可选项；停用绑定项禁止柜台新增该类型，也禁止将其他类型改选为该类型。</td></tr>
+<tr><td>停用后的柜台存量</td><td>SaaS 停用是新增准入开关，不是柜台存量配置的删除开关。柜台已添加的交易收费类型保留，原收费项目、收费方、费率及套餐关系不自动删除、停用或回滚；柜台可继续查看和维护存量记录。</td></tr>
+<tr><td>已绑定证券交易手续费</td><td>若该收费类型已经绑定到证券交易手续费，SaaS 停用不自动解除证券绑定；在柜台未另行处理前，该绑定对后续交易继续生效，已生成的交易、清算及历史数据继续按原配置留痕和重算。停用后不得新增证券交易手续费绑定；如业务要求立即停止后续计收，必须由柜台单独停用对应收费项目或解除证券绑定，并按柜台审批/生效规则执行。</td></tr>
+<tr><td>重新启用</td><td>SaaS 重新启用后，原柜台存量配置无需重新创建或重新绑定，恢复为可新增和可绑定状态。</td></tr>
+<tr><td>唯一性</td><td>同一“市场 + 收费类型”不可重复，包含已停用记录。</td></tr>
+<tr><td>配置边界</td><td>柜台维护收费项目、收费方和费率，并决定是否加入收费套餐；SaaS 不自动创建这些内容。</td></tr>
+</tbody></table>
 <h3 id="prd-query">3.1 查询条件</h3>
-<table><thead><tr><th>字段</th><th>展示及选择规则</th></tr></thead><tbody><tr><td>市场</td><td>单选，默认“全部市场”；候选为港股、美股、中华通、港股-R，与系统市场字典保持一致。</td></tr><tr><td>收费类型</td><td>单选，默认“全部收费类型”；引用与柜台一致的收费类型字典。当前原型以印花税、佣金、交易费、平台费演示，不将这四项视为正式完整枚举。</td></tr><tr><td>状态</td><td>单选，默认“全部状态”；候选为全部状态、已启用、已停用，分别对应不限、启用、停用。</td></tr></tbody></table>
+<table><thead><tr><th>字段</th><th>规则</th></tr></thead><tbody>
+<tr><td>市场</td><td>单选，默认“全部市场”；候选为港股、美股、中华通、港股-R。</td></tr>
+<tr><td>收费类型</td><td>单选，默认“全部收费类型”；候选为固定的 18 种收费类型。</td></tr>
+<tr><td>状态</td><td>单选，默认“全部状态”；候选为全部状态、已启用、已停用。</td></tr>
+</tbody></table>
 <h3 id="prd-list">3.2 绑定列表</h3>
-<table><thead><tr><th>字段</th><th>展示规则</th></tr></thead><tbody><tr><td>序号</td><td>当前页从 1 开始顺序展示，仅用于列表阅读，不作为记录标识。</td></tr><tr><td>市场</td><td>展示市场名称。</td></tr><tr><td>收费类型</td><td>展示绑定的收费类型名称。</td></tr><tr><td>状态</td><td>展示“启用”或“停用”；原型分别以绿色、灰色圆点辅助区分。</td></tr><tr><td>操作</td><td>所有记录提供【编辑】；启用记录提供【停用】，停用记录提供【启用】。</td></tr><tr><td>记录数及分页</td><td>记录数为符合查询条件的总数；每页 20 条，提供上一页、页码、下一页。原型分页按钮为展示占位，正式页面需按查询结果分页。</td></tr></tbody></table>
-<p>原型内的绑定关系和记录数量均为示例，不作为上线默认数据。</p>
+<table><thead><tr><th>字段</th><th>规则</th></tr></thead><tbody>
+<tr><td>列表字段</td><td>展示市场、收费类型、状态和操作。</td></tr>
+<tr><td>操作</td><td>所有记录可编辑；启用记录可停用，停用记录可启用。</td></tr>
+</tbody></table>
 <h3 id="prd-add">3.3 新增/编辑绑定</h3>
-<table><thead><tr><th>字段</th><th>展示及录入规则</th></tr></thead><tbody><tr><td>市场</td><td>必填、单选；新增默认未选，提示“请选择市场”；候选同查询市场，不含“全部市场”。编辑回显原值并允许修改，涉及存量引用时的限制见待确认事项。</td></tr><tr><td>收费类型</td><td>必填、单选；新增默认未选，提示“请选择收费类型”；候选同查询收费类型，不含“全部收费类型”。编辑回显原值并允许修改。</td></tr><tr><td>已绑定市场</td><td>只读。未选择类型时显示“选择收费类型后展示已绑定市场”；选择后展示该类型已保存的绑定市场及状态，例如“港股（启用）、美股（启用）”；无记录时显示“已绑定市场：暂无”。编辑当前记录时也展示其已保存状态。</td></tr><tr><td>状态</td><td>必填、单选，候选“启用”“停用”；新增默认启用，编辑回显原值。</td></tr></tbody></table>
+<table><thead><tr><th>字段</th><th>规则</th></tr></thead><tbody>
+<tr><td>市场</td><td>必填、单选；新增未选，编辑回显。</td></tr>
+<tr><td>收费类型</td><td>必填、单选，只能从固定收费类型中选择；编辑回显。</td></tr>
+<tr><td>已绑定市场</td><td>只读；选择收费类型后展示该类型已绑定的市场及状态。</td></tr>
+<tr><td>状态</td><td>必填，启用/停用；新增默认启用，编辑回显。停用前需提示该操作只限制柜台后续新增/绑定，不会自动删除柜台存量配置或解除既有证券交易手续费绑定。</td></tr>
+</tbody></table>
 <h2 id="prd-section-8">4. 交互逻辑</h2>
-<table><thead><tr><th>入口/动作</th><th>处理规则及反馈</th></tr></thead><tbody><tr><td>查询</td><td>选择条件本身不刷新列表；点击【查询】后按市场、收费类型、状态取交集，返回第 1 页，更新列表和记录数。</td></tr><tr><td>重置</td><td>将三个查询条件恢复为全部，并刷新全量列表。</td></tr><tr><td>查询无结果</td><td>表格显示“暂无匹配的绑定记录”，记录数为 0；保留筛选条件，允许调整条件后查询或重置。</td></tr><tr><td>新增绑定</td><td>打开【新增市场手续费绑定】抽屉，市场和收费类型置空，状态默认启用；不保留上一次未保存输入。</td></tr><tr><td>编辑</td><td>打开所选记录的【编辑市场手续费绑定】抽屉并回显字段。筛选后的操作仍须对应实际选中的记录。</td></tr><tr><td>切换收费类型</td><td>立即刷新该类型的“已绑定市场”，不改变当前选择的市场及状态。</td></tr><tr><td>保存</td><td>先校验必填项，再校验组合唯一性。缺少市场或收费类型时提示“请先选择市场和收费类型”；组合重复时提示“该市场已绑定此收费类型，请编辑已有记录”。校验失败保留抽屉及输入，不提交。</td></tr><tr><td>校验通过</td><td>弹出保存确认框，标题为“确认保存市场手续费绑定？”，正文见下方。提供【取消】【确认保存】。</td></tr><tr><td>确认保存</td><td>新增一条绑定或更新当前记录，关闭确认框及抽屉，提示“绑定已保存”，按当前筛选条件刷新列表及记录数；保存结果不符合筛选条件时不显示在当前列表。正式系统应持久保存，不采用 HTML 刷新恢复示例数据的行为。</td></tr><tr><td>确认框取消</td><td>仅关闭确认框，返回抽屉并保留本次输入，不保存。</td></tr><tr><td>抽屉取消/关闭</td><td>点击【取消】或右上角关闭，关闭抽屉并放弃未保存修改，不改变列表数据。</td></tr><tr><td>启用/停用</td><td>更新所选记录状态，提示“绑定已启用”或“绑定已停用”，按当前筛选条件刷新。列表快捷操作与抽屉修改状态应遵循同一业务校验；涉及存量引用的校验和确认流程见第 2 节待确认事项。</td></tr></tbody></table>
-<p>保存确认框正文：</p>
-<blockquote id="prd-confirm">该绑定会影响所有租户的收费套餐可选项。柜台套餐仅可选择本地已添加、且所属收费类型与套餐市场存在启用绑定的收费项目。</blockquote></article></aside>
+<table><thead><tr><th>操作</th><th>处理规则</th></tr></thead><tbody>
+<tr><td>查询/重置</td><td>按条件筛选；重置后恢复全部条件并刷新列表。</td></tr>
+<tr><td>新增/编辑</td><td>打开抽屉；新增清空市场和收费类型，编辑回显当前记录。</td></tr>
+<tr><td>保存</td><td>校验必填项和组合唯一性；失败时保留输入并提示原因。</td></tr>
+<tr><td id="prd-confirm">保存确认</td><td>校验通过后确认保存；确认后刷新列表，取消则返回抽屉。</td></tr>
+<tr><td>启用/停用</td><td>切换绑定状态，提示结果并刷新列表。停用确认文案需明确：柜台已添加的交易收费类型及已有证券交易手续费绑定会保留；如需停止计收，需另行在柜台处理。</td></tr>
+</tbody></table>
+</article></aside>
 </div>
 <script>
-const feeTypes={stamp:'印花税',commission:'佣金',trade:'交易费',platform:'平台费'};
+const feeTypes={settlement:'交收费',stamp:'印花税',trade:'交易费',sfcLevy:'证监会交易征费',fscLevy:'会财局交易征费',sfcFee:'证监会规费',tradingActivity:'交易活动费',handling:'经手费',sfcAdmin:'证管费',transfer:'过户费',registrationTransfer:'登记过户费',commission:'佣金',platform:'平台费',tax:'征税',clearingInstruction:'清算指令费',tradingSystem:'交易系统使用费',centralSettlement:'中央系统结算费',other:'其他'};
 const markets={HK:'港股',US:'美股',CN:'中华通','HK-R':'港股-R'};
 let records=[['HK','港股','stamp','启用'],['HK','港股','commission','启用'],['US','美股','commission','启用'],['US','美股','platform','启用'],['CN','中华通','stamp','启用'],['HK-R','港股-R','commission','停用']];
 let editingIndex=null, pendingRecord=null;
