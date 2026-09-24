@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CounterAdmin - 业务配置</title>
+<style>
+:root{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",Arial,sans-serif;color:#303133;background:#f5f6f8;--blue:#246bfd;--nav:#232324;--line:#e7e9ee;--muted:#87909e}*{box-sizing:border-box}body{margin:0;font-size:14px}.top{height:64px;background:var(--nav);display:flex;align-items:center;color:#dce2ef;padding:0 28px;gap:36px}.brand{width:226px;font-size:22px;letter-spacing:1px;color:#fff;font-weight:500}.brand b{font-weight:700}.brand i{display:inline-block;height:18px;border-left:2px solid #f04b2d;margin:0 14px -2px 12px}.nav{height:64px;display:flex;align-items:center;gap:4px}.nav>button{height:64px;background:transparent;border:0;color:#cbd0db;padding:0 22px;font-size:16px;cursor:pointer}.nav>button.active{color:#fff;border-bottom:3px solid var(--blue)}.nav>button:hover{background:#303033}.user{margin-left:auto;display:flex;align-items:center;gap:12px}.avatar{width:34px;height:34px;border-radius:4px;background:#fff;color:#222;display:grid;place-items:center;font-size:10px;font-weight:700}.page{padding:25px 38px 48px;max-width:1500px;margin:auto}.title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}.title{font-size:20px;color:#222;font-weight:500}.notice{background:#eef5ff;border:1px solid #cfe0ff;border-radius:4px;padding:11px 14px;color:#45658f;margin-bottom:15px}.filters,.panel{background:#fff;border:1px solid var(--line);border-radius:4px}.filters{padding:17px 18px 13px;display:flex;gap:14px;align-items:end;flex-wrap:wrap}.field{display:flex;flex-direction:column;gap:7px;min-width:178px}.field label{color:#606a78;font-size:13px}.field input,.field select{height:34px;border:1px solid #d8dce5;border-radius:3px;padding:0 10px;color:#3d4654;background:#fff;outline:0}.field input:focus,.field select:focus{border-color:var(--blue)}.actions{display:flex;gap:9px}.btn{height:34px;border:1px solid #d8dce5;border-radius:3px;background:#fff;color:#45505e;padding:0 16px;cursor:pointer}.btn:hover{border-color:var(--blue);color:var(--blue)}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn.danger{color:#d64a4a}.table-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 12px}.table-title{font-weight:600;color:#343c48}.table{width:100%;border-collapse:collapse}.table th{background:#fafbfc;color:#697382;font-weight:500;text-align:left;height:43px}.table td,.table th{border-bottom:1px solid var(--line);padding:0 16px;height:52px}.table tr:last-child td{border-bottom:0}.status{display:inline-flex;align-items:center;gap:5px}.status:before{content:"";width:7px;height:7px;border-radius:50%;background:#28af70}.status.off:before{background:#a7adb7}.link{color:var(--blue);cursor:pointer;margin-right:13px}.pagination{display:flex;justify-content:flex-end;align-items:center;gap:8px;padding:14px 18px;color:#77808d}.pagebtn{width:28px;height:28px;border:1px solid #dfe2e8;background:white;border-radius:3px;cursor:pointer}.pagebtn.current{color:#fff;background:var(--blue);border-color:var(--blue)}.drawer-mask,.confirm-mask{position:fixed;inset:0;background:rgba(17,25,39,.42);display:none;z-index:10}.drawer{position:absolute;right:0;top:0;width:478px;height:100%;background:white;padding:25px 28px;box-shadow:-8px 0 25px rgba(0,0,0,.12)}.drawer h2{font-size:18px;font-weight:500;margin:0 0 24px}.close{position:absolute;right:25px;top:22px;font-size:22px;color:#9aa1ad;cursor:pointer}.drawer .field{margin-bottom:19px;width:100%}.drawer .field input,.drawer .field select{height:38px}.summary{background:#f6f8fb;border:1px solid #e8ebf1;padding:11px 12px;line-height:1.8;color:#697383;border-radius:3px}.radio{display:flex;gap:22px;color:#4c5663}.radio label{cursor:pointer}.drawer-footer{position:absolute;bottom:25px;right:28px;display:flex;gap:10px}.confirm{position:absolute;width:430px;left:50%;top:50%;transform:translate(-50%,-50%);background:#fff;border-radius:5px;padding:25px 28px}.confirm h3{margin:0 0 14px;font-size:17px;font-weight:500}.confirm p{line-height:1.7;color:#697383}.confirm-footer{text-align:right;margin-top:22px}.hint{font-size:12px;color:#8993a0;line-height:1.7}.toast{position:fixed;top:82px;left:50%;transform:translateX(-50%);background:#27344b;color:white;padding:10px 18px;border-radius:3px;display:none;z-index:20}
+
+/* Prototype and PRD share one offline page; each column scrolls independently. */
+.review-layout{display:grid;grid-template-columns:minmax(790px,1fr) clamp(420px,33vw,620px);height:100vh;height:100dvh;min-width:1210px;overflow:hidden}
+.prototype-stage{min-width:0;overflow:auto;position:relative;transform:translateZ(0);background:#f5f6f8}
+.prototype-stage .top{gap:14px;padding:0 18px;overflow-x:auto;white-space:nowrap}
+.prototype-stage .brand{flex:0 0 auto;width:auto;font-size:18px;letter-spacing:0}
+.prototype-stage .brand i{margin-left:8px;margin-right:8px}
+.prototype-stage .nav{flex:0 0 auto;gap:0}
+.prototype-stage .nav>button{padding:0 12px;font-size:14px}
+.prototype-stage .user{flex:0 0 auto;gap:7px;font-size:12px}
+.prototype-stage .page{padding:25px 24px 48px}
+.prototype-stage .field{min-width:155px}
+.prototype-stage .drawer{width:min(478px,100%);overflow-y:auto;padding-bottom:88px}
+.prototype-stage .drawer-mask,.prototype-stage .confirm-mask{height:100vh;height:100dvh}
+.prd-panel{min-width:0;min-height:0;display:flex;flex-direction:column;height:100%;background:#fff;border-left:1px solid #dce1e9;color:#374151}
+.prd-panel-header{flex-shrink:0;min-height:64px;padding:16px 24px;border-bottom:1px solid #e7e9ee;display:flex;align-items:center;justify-content:space-between;background:#fafbfc}
+.prd-panel-header strong{font-size:16px;font-weight:600}
+.prd-panel-header span{font-size:12px;color:#87909e}
+.prd-content{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:23px 24px 48px;line-height:1.8;font-size:13px;scrollbar-gutter:stable}
+.prd-content h1{font-size:19px;line-height:1.5;margin:0 0 22px;color:#202b3b}
+.prd-content h2{font-size:16px;margin:27px 0 12px;padding-bottom:8px;border-bottom:1px solid #e7e9ee;color:#27344b}
+.prd-content h3{font-size:14px;margin:20px 0 10px;color:#34435a}
+.prd-content p{margin:12px 0}
+.prd-content table{width:100%;table-layout:fixed;border-collapse:collapse;margin:12px 0 18px;font-size:12px;line-height:1.85}
+.prd-content th,.prd-content td{padding:9px 10px;border:1px solid #e1e5ec;vertical-align:top;text-align:left;overflow-wrap:anywhere}
+.prd-content th{background:#f4f6f9;font-weight:600;color:#46556b}
+.prd-content th:first-child,.prd-content td:first-child{width:25%}
+.prd-content blockquote{margin:12px 0;padding:10px 13px;background:#eef5ff;border-left:3px solid #246bfd;color:#45658f}
+@media print{.review-layout{display:block;height:auto;min-width:0;overflow:visible}.prototype-stage{overflow:visible;transform:none}.prd-panel{height:auto;border-left:0}.prd-content{overflow:visible}.prd-content tr{break-inside:avoid}}
+
+.prd-panel-header span{transition:color .2s ease}.prd-panel-header span.focused{color:#246bfd;font-weight:600}
+.prd-content h2[id],.prd-content h3[id],.prd-content blockquote[id]{scroll-margin-top:16px;transition:background .2s ease,box-shadow .2s ease}
+.prd-content .prd-highlight{background:#eef5ff;box-shadow:0 0 0 5px #eef5ff;border-radius:3px}
+</style></head>
+<body>
+<div class="review-layout"><div class="prototype-stage">
+<header class="top"><div class="brand"><b>▌LINK</b><i></i>COUNTER</div><nav class="nav"><button>租户管理</button><button>客户端管理</button><button>权限管理</button><button class="active" id="businessNav">业务配置⌄</button><button>系统配置</button><button>openapi授权</button></nav><div class="user"><div class="avatar">LINK<br>ADMIN</div><span>zzz</span></div></header>
+<main class="page"><div class="title-row"><div class="title">市场手续费绑定</div><button class="btn primary" id="addBtn">＋ 新增绑定</button></div>
+<section id="binding"><div class="notice">该配置对所有租户生效。SaaS 统一维护“收费类型适用市场”；柜台根据收费类型自定义收费项目，是否收取由各自的收费套餐决定。</div><div class="filters"><div class="field"><label>市场</label><select id="marketFilter"><option>全部市场</option><option>港股</option><option>美股</option><option>中华通</option><option>港股-R</option></select></div><div class="field"><label for="typeFilter">收费类型</label><select id="typeFilter"><option>全部收费类型</option><option>印花税</option><option>佣金</option><option>交易费</option><option>平台费</option></select></div><div class="field"><label for="statusFilter">状态</label><select id="statusFilter"><option>全部状态</option><option>已启用</option><option>已停用</option></select></div><div class="actions"><button class="btn primary" id="queryBtn">查询</button><button class="btn" id="resetBtn">重置</button></div></div><div class="panel" style="margin-top:16px"><div class="table-head"><div class="table-title">绑定记录 <span style="color:#9aa1ad;font-weight:400;font-size:12px"><span id="recordCount">共 6 条</span></span></div></div><table class="table"><thead><tr><th style="width:70px">序号</th><th>市场</th><th>收费类型</th><th>状态</th><th style="width:170px">操作</th></tr></thead><tbody id="bindingRows"></tbody></table><div class="pagination"><span>每页 20 条</span><button class="pagebtn">‹</button><button class="pagebtn current">1</button><button class="pagebtn">›</button></div></div></section>
+</main>
+<div class="drawer-mask" id="drawerMask"><aside class="drawer"><span class="close" id="closeDrawer">×</span><h2 id="drawerTitle">新增市场手续费绑定</h2><div class="field"><label>市场 <b style="color:#e45656">*</b></label><select id="drawerMarket"><option value="">请选择市场</option><option value="HK">港股</option><option value="US">美股</option><option value="CN">中华通</option><option value="HK-R">港股-R</option></select></div><div class="field"><label>收费类型 <b style="color:#e45656">*</b></label><select id="drawerType"><option value="">请选择收费类型</option><option value="stamp">印花税</option><option value="commission">佣金</option><option value="trade">交易费</option><option value="platform">平台费</option></select></div><div class="summary" id="typeSummary">选择收费类型后展示已绑定市场</div><div class="field" style="margin-top:19px"><label>状态 <b style="color:#e45656">*</b></label><div class="radio"><label><input type="radio" name="status" value="启用" checked> 启用</label><label><input type="radio" name="status" value="停用"> 停用</label></div></div><div class="drawer-footer"><button class="btn" id="cancelDrawer">取消</button><button class="btn primary" id="saveBinding">保存</button></div></aside></div>
+<div class="confirm-mask" id="confirmMask"><div class="confirm"><h3>确认保存市场手续费绑定？</h3><p>该绑定会影响所有租户的收费套餐可选项。柜台套餐仅可选择本地已添加、且所属收费类型与套餐市场存在启用绑定的收费项目。</p><div class="confirm-footer"><button class="btn" id="cancelConfirm">取消</button> <button class="btn primary" id="confirmSave">确认保存</button></div></div></div><div class="toast" id="toast"></div>
+</div>
+<aside class="prd-panel" id="prdPanel" aria-label="市场手续费绑定需求说明"><div class="prd-panel-header"><strong>需求说明 · PRD</strong><span id="prdHint">点击左侧功能查看对应规则</span></div><article class="prd-content" tabindex="0" aria-label="PRD 正文"><h1>市场手续费绑定 PRD</h1>
+<h2 id="prd-section-2">1. 功能说明</h2>
+<p>在 SaaS【业务配置】中维护全平台统一的“市场与收费类型”绑定关系，限制各券商收费套餐的可选收费范围。柜台根据收费类型自定义收费项目，收费方及具体收费规则由柜台维护。</p>
+<h2 id="prd-section-3">2. 需求详细说明</h2>
+<table><thead><tr><th>需求项</th><th>规则说明</th></tr></thead><tbody><tr><td>页面入口</td><td>从 SaaS 顶部【业务配置】进入【市场手续费绑定】。页面按已确认原型展示，不增加菜单路径。</td></tr><tr><td>数据范围</td><td>展示全平台的市场与收费类型绑定记录，所有租户共用同一套适用范围，不按券商分别配置。</td></tr><tr><td>列表粒度</td><td>一条记录对应一个“市场 + 收费类型”组合。一个市场可绑定多个收费类型，一个收费类型可绑定多个市场。</td></tr><tr><td>唯一性</td><td>同一“市场 + 收费类型”不可重复，包括已停用记录；编辑时排除当前记录自身。已有停用记录应编辑或启用，不能重复新增。</td></tr><tr><td>初始状态</td><td>筛选项默认全部，展示所有绑定记录。列表展示序号、市场、收费类型、状态和操作。</td></tr><tr><td>柜台选项来源</td><td>套餐仍从该券商【配置 &gt; 系统字典 &gt; 交易收费类型】已添加的本地收费项目中选择。</td></tr><tr><td>市场约束</td><td>本地项目所属收费类型与套餐市场存在“启用”绑定时，该项目才满足市场条件；没有绑定或绑定停用时，不可作为新增收费项选择。</td></tr><tr><td>收费边界</td><td>SaaS 新增绑定不会自动创建本地收费项目，也不会自动将其加入套餐。实际是否收费及收费规则由具体套餐决定。</td></tr><tr><td>展示边界</td><td>SaaS 页面不展示收费项目、项目编码、市场编码、收费方和柜台联动预览。</td></tr></tbody></table>
+<p>例如：柜台自定义的“普通佣金”和“优惠佣金”均属于“佣金”类型。启用“港股 + 佣金”绑定后，两者均满足港股套餐的市场条件，券商自行决定加入哪个项目。</p>
+<p><strong>待确认事项：</strong>停用绑定、修改已被使用的绑定组合，以及柜台修改项目所属收费类型时，存量套餐如何处理。当前 HTML 只演示状态切换和编辑保存，不能据此认定存量收费会自动取消；正式规则需明确是否保留存量计费、是否限制编辑及如何检查影响范围。“其他”收费类型如有使用，也需确认其下所有项目能否共用同一市场范围。</p>
+<h2 id="prd-section-4">3. 页面字段说明</h2>
+<h3 id="prd-query">3.1 查询条件</h3>
+<table><thead><tr><th>字段</th><th>展示及选择规则</th></tr></thead><tbody><tr><td>市场</td><td>单选，默认“全部市场”；候选为港股、美股、中华通、港股-R，与系统市场字典保持一致。</td></tr><tr><td>收费类型</td><td>单选，默认“全部收费类型”；引用与柜台一致的收费类型字典。当前原型以印花税、佣金、交易费、平台费演示，不将这四项视为正式完整枚举。</td></tr><tr><td>状态</td><td>单选，默认“全部状态”；候选为全部状态、已启用、已停用，分别对应不限、启用、停用。</td></tr></tbody></table>
+<h3 id="prd-list">3.2 绑定列表</h3>
+<table><thead><tr><th>字段</th><th>展示规则</th></tr></thead><tbody><tr><td>序号</td><td>当前页从 1 开始顺序展示，仅用于列表阅读，不作为记录标识。</td></tr><tr><td>市场</td><td>展示市场名称。</td></tr><tr><td>收费类型</td><td>展示绑定的收费类型名称。</td></tr><tr><td>状态</td><td>展示“启用”或“停用”；原型分别以绿色、灰色圆点辅助区分。</td></tr><tr><td>操作</td><td>所有记录提供【编辑】；启用记录提供【停用】，停用记录提供【启用】。</td></tr><tr><td>记录数及分页</td><td>记录数为符合查询条件的总数；每页 20 条，提供上一页、页码、下一页。原型分页按钮为展示占位，正式页面需按查询结果分页。</td></tr></tbody></table>
+<p>原型内的绑定关系和记录数量均为示例，不作为上线默认数据。</p>
+<h3 id="prd-add">3.3 新增/编辑绑定</h3>
+<table><thead><tr><th>字段</th><th>展示及录入规则</th></tr></thead><tbody><tr><td>市场</td><td>必填、单选；新增默认未选，提示“请选择市场”；候选同查询市场，不含“全部市场”。编辑回显原值并允许修改，涉及存量引用时的限制见待确认事项。</td></tr><tr><td>收费类型</td><td>必填、单选；新增默认未选，提示“请选择收费类型”；候选同查询收费类型，不含“全部收费类型”。编辑回显原值并允许修改。</td></tr><tr><td>已绑定市场</td><td>只读。未选择类型时显示“选择收费类型后展示已绑定市场”；选择后展示该类型已保存的绑定市场及状态，例如“港股（启用）、美股（启用）”；无记录时显示“已绑定市场：暂无”。编辑当前记录时也展示其已保存状态。</td></tr><tr><td>状态</td><td>必填、单选，候选“启用”“停用”；新增默认启用，编辑回显原值。</td></tr></tbody></table>
+<h2 id="prd-section-8">4. 交互逻辑</h2>
+<table><thead><tr><th>入口/动作</th><th>处理规则及反馈</th></tr></thead><tbody><tr><td>查询</td><td>选择条件本身不刷新列表；点击【查询】后按市场、收费类型、状态取交集，返回第 1 页，更新列表和记录数。</td></tr><tr><td>重置</td><td>将三个查询条件恢复为全部，并刷新全量列表。</td></tr><tr><td>查询无结果</td><td>表格显示“暂无匹配的绑定记录”，记录数为 0；保留筛选条件，允许调整条件后查询或重置。</td></tr><tr><td>新增绑定</td><td>打开【新增市场手续费绑定】抽屉，市场和收费类型置空，状态默认启用；不保留上一次未保存输入。</td></tr><tr><td>编辑</td><td>打开所选记录的【编辑市场手续费绑定】抽屉并回显字段。筛选后的操作仍须对应实际选中的记录。</td></tr><tr><td>切换收费类型</td><td>立即刷新该类型的“已绑定市场”，不改变当前选择的市场及状态。</td></tr><tr><td>保存</td><td>先校验必填项，再校验组合唯一性。缺少市场或收费类型时提示“请先选择市场和收费类型”；组合重复时提示“该市场已绑定此收费类型，请编辑已有记录”。校验失败保留抽屉及输入，不提交。</td></tr><tr><td>校验通过</td><td>弹出保存确认框，标题为“确认保存市场手续费绑定？”，正文见下方。提供【取消】【确认保存】。</td></tr><tr><td>确认保存</td><td>新增一条绑定或更新当前记录，关闭确认框及抽屉，提示“绑定已保存”，按当前筛选条件刷新列表及记录数；保存结果不符合筛选条件时不显示在当前列表。正式系统应持久保存，不采用 HTML 刷新恢复示例数据的行为。</td></tr><tr><td>确认框取消</td><td>仅关闭确认框，返回抽屉并保留本次输入，不保存。</td></tr><tr><td>抽屉取消/关闭</td><td>点击【取消】或右上角关闭，关闭抽屉并放弃未保存修改，不改变列表数据。</td></tr><tr><td>启用/停用</td><td>更新所选记录状态，提示“绑定已启用”或“绑定已停用”，按当前筛选条件刷新。列表快捷操作与抽屉修改状态应遵循同一业务校验；涉及存量引用的校验和确认流程见第 2 节待确认事项。</td></tr></tbody></table>
+<p>保存确认框正文：</p>
+<blockquote id="prd-confirm">该绑定会影响所有租户的收费套餐可选项。柜台套餐仅可选择本地已添加、且所属收费类型与套餐市场存在启用绑定的收费项目。</blockquote></article></aside>
+</div>
+<script>
+const feeTypes={stamp:'印花税',commission:'佣金',trade:'交易费',platform:'平台费'};
+const markets={HK:'港股',US:'美股',CN:'中华通','HK-R':'港股-R'};
+let records=[['HK','港股','stamp','启用'],['HK','港股','commission','启用'],['US','美股','commission','启用'],['US','美股','platform','启用'],['CN','中华通','stamp','启用'],['HK-R','港股-R','commission','停用']];
+let editingIndex=null, pendingRecord=null;
+const $=id=>document.getElementById(id);
+function focusPrd(id,label){
+  const article=document.querySelector('.prd-content'),target=$(id),hint=$('prdHint');
+  if(!article||!target)return;
+  const a=article.getBoundingClientRect(),t=target.getBoundingClientRect();
+  article.scrollTo({top:Math.max(0,article.scrollTop+t.top-a.top-14),behavior:'smooth'});
+  document.querySelectorAll('.prd-highlight').forEach(x=>x.classList.remove('prd-highlight'));
+  target.classList.add('prd-highlight');
+  hint.textContent='当前说明：'+label;hint.classList.add('focused');
+  clearTimeout(window.__prdFocusTimer);window.__prdFocusTimer=setTimeout(()=>{target.classList.remove('prd-highlight');hint.classList.remove('focused');},2600);
+}
+
+function render(){
+  const market=$('marketFilter').value,type=$('typeFilter').value,status=$('statusFilter').value;
+  const rows=records.map((r,index)=>({r,index})).filter(({r})=>(market==='全部市场'||r[1]===market)&&(type==='全部收费类型'||feeTypes[r[2]]===type)&&(status==='全部状态'||'已'+r[3]===status));
+  $('recordCount').textContent='共 '+rows.length+' 条';
+  $('bindingRows').innerHTML=rows.map(({r,index},i)=>'<tr><td>'+(i+1)+'</td><td>'+r[1]+'</td><td>'+feeTypes[r[2]]+'</td><td><span class="status '+(r[3]==='停用'?'off':'')+'">'+r[3]+'</span></td><td><span class="link" data-edit="'+index+'">编辑</span><span class="link" data-toggle="'+index+'">'+(r[3]==='启用'?'停用':'启用')+'</span></td></tr>').join('')||'<tr><td colspan="5" style="text-align:center;color:#87909e">暂无匹配的绑定记录</td></tr>';
+  document.querySelectorAll('[data-edit]').forEach(x=>x.onclick=()=>{openDrawer(Number(x.dataset.edit));focusPrd('prd-add','新增/编辑绑定');});
+  document.querySelectorAll('[data-toggle]').forEach(x=>x.onclick=()=>{toggle(Number(x.dataset.toggle));focusPrd('prd-section-8','启用/停用');});
+}
+function openDrawer(index=null){
+  editingIndex=index;pendingRecord=null;
+  const r=index===null?null:records[index];
+  $('drawerTitle').textContent=r?'编辑市场手续费绑定':'新增市场手续费绑定';
+  $('drawerMarket').value=r?r[0]:'';$('drawerType').value=r?r[2]:'';
+  document.querySelectorAll('input[name="status"]').forEach(x=>x.checked=x.value===(r?r[3]:'启用'));
+  updateSummary();$('drawerMask').style.display='block';
+  focusPrd('prd-add',r?'编辑绑定':'新增绑定');
+}
+function toggle(i){records[i][3]=records[i][3]==='启用'?'停用':'启用';render();toast('绑定已'+records[i][3]);focusPrd('prd-section-8','启用/停用');}
+function updateSummary(){
+  const type=$('drawerType').value;
+  if(!type){$('typeSummary').textContent='选择收费类型后展示已绑定市场';return;}
+  const bound=records.filter(r=>r[2]===type).map(r=>r[1]+'（'+r[3]+'）');
+  $('typeSummary').textContent='已绑定市场：'+(bound.join('、')||'暂无');
+}
+function toast(t){$('toast').textContent=t;$('toast').style.display='block';setTimeout(()=>$('toast').style.display='none',1800);}
+$('addBtn').onclick=()=>openDrawer();
+$('closeDrawer').onclick=$('cancelDrawer').onclick=()=>$('drawerMask').style.display='none';
+$('drawerMarket').onchange=()=>focusPrd('prd-add','绑定字段');
+$('drawerType').onchange=()=>{updateSummary();focusPrd('prd-add','绑定字段');};
+$('queryBtn').onclick=()=>{render();focusPrd('prd-query','查询条件');};
+$('resetBtn').onclick=()=>{$('marketFilter').value='全部市场';$('typeFilter').value='全部收费类型';$('statusFilter').value='全部状态';render();focusPrd('prd-query','查询与重置');};
+$('saveBinding').onclick=()=>{
+  const market=$('drawerMarket').value,type=$('drawerType').value;
+  if(!market||!type){toast('请先选择市场和收费类型');focusPrd('prd-add','必填校验');return;}
+  if(records.some((r,i)=>i!==editingIndex&&r[0]===market&&r[2]===type)){toast('该市场已绑定此收费类型，请编辑已有记录');focusPrd('prd-add','重复绑定校验');return;}
+  pendingRecord=[market,markets[market],type,document.querySelector('input[name="status"]:checked').value];
+  $('confirmMask').style.display='block';
+  focusPrd('prd-confirm','保存确认');
+};
+$('cancelConfirm').onclick=()=>{$('confirmMask').style.display='none';pendingRecord=null;focusPrd('prd-confirm','取消保存确认');};
+$('confirmSave').onclick=()=>{
+  if(!pendingRecord)return;
+  if(editingIndex===null)records.push(pendingRecord);else records[editingIndex]=pendingRecord;
+  pendingRecord=null;$('confirmMask').style.display='none';$('drawerMask').style.display='none';render();toast('绑定已保存（原型演示）');focusPrd('prd-confirm','保存完成');
+};
+render();
+</script></body></html>
