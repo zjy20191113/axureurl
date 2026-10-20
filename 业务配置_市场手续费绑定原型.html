@@ -42,60 +42,57 @@
 <body>
 <div class="review-layout"><div class="prototype-stage">
 <header class="top"><div class="brand"><b>▌LINK</b><i></i>COUNTER</div><nav class="nav"><button>租户管理</button><button>客户端管理</button><button>权限管理</button><button class="active" id="businessNav">业务配置⌄</button><button>系统配置</button><button>openapi授权</button></nav><div class="user"><div class="avatar">LINK<br>ADMIN</div><span>zzz</span></div></header>
-<main class="page"><div class="title-row"><div class="title">市场手续费绑定</div><button class="btn primary" id="addBtn">＋ 新增绑定</button></div>
-<section id="binding"><div class="notice">仅状态为“启用”的 SaaS 绑定项，才会出现在柜台【配置 &gt; 系统字典 &gt; 交易收费类型】的可选收费类型中。</div><div class="filters"><div class="field"><label>市场</label><select id="marketFilter"><option>全部市场</option><option>港股</option><option>美股</option><option>中华通</option><option>港股-R</option></select></div><div class="field"><label for="typeFilter">收费类型</label><input id="typeFilter" placeholder="请输入收费类型" autocomplete="off"></div><div class="field"><label for="statusFilter">状态</label><select id="statusFilter"><option>全部状态</option><option>已启用</option><option>已停用</option></select></div><div class="actions"><button class="btn primary" id="queryBtn">查询</button><button class="btn" id="resetBtn">重置</button></div></div><div class="panel" style="margin-top:16px"><div class="table-head"><div class="table-title">绑定记录 <span style="color:#9aa1ad;font-weight:400;font-size:12px"><span id="recordCount">共 6 条</span></span></div></div><table class="table"><thead><tr><th style="width:70px">序号</th><th>市场</th><th>收费类型</th><th>状态</th><th style="width:170px">操作</th></tr></thead><tbody id="bindingRows"></tbody></table><div class="pagination"><span>每页 20 条</span><button class="pagebtn">‹</button><button class="pagebtn current">1</button><button class="pagebtn">›</button></div></div></section>
+<main class="page"><div class="title-row"><div class="title">收费类型枚举</div><button class="btn primary" id="addBtn">＋ 新增</button></div>
+<section id="binding"><div class="filters"><div class="field"><label for="typeFilter">收费类型</label><input id="typeFilter" placeholder="请输入收费类型" autocomplete="off"></div><div class="field"><label for="statusFilter">状态</label><select id="statusFilter"><option>全部状态</option><option>已启用</option><option>已停用</option></select></div><div class="actions"><button class="btn primary" id="queryBtn">查询</button><button class="btn" id="resetBtn">重置</button></div></div><div class="panel" style="margin-top:16px"><div class="table-head"><div class="table-title">收费类型枚举 <span style="color:#9aa1ad;font-weight:400;font-size:12px"><span id="recordCount">共 18 条</span></span></div></div><table class="table"><thead><tr><th style="width:70px">序号</th><th>收费类型</th><th>状态</th><th style="width:170px">操作</th></tr></thead><tbody id="bindingRows"></tbody></table><div class="pagination"><span>每页 20 条</span><button class="pagebtn">‹</button><button class="pagebtn current">1</button><button class="pagebtn">›</button></div></div></section>
 </main>
-<div class="drawer-mask" id="drawerMask"><aside class="drawer"><span class="close" id="closeDrawer">×</span><h2 id="drawerTitle">新增市场手续费绑定</h2><div class="field"><label>市场 <b style="color:#e45656">*</b></label><select id="drawerMarket"><option value="">请选择市场</option><option value="HK">港股</option><option value="US">美股</option><option value="CN">中华通</option><option value="HK-R">港股-R</option></select></div><div class="field"><label>收费类型 <b style="color:#e45656">*</b></label><input id="drawerType" placeholder="请输入收费类型" autocomplete="off"></div><div class="summary" id="typeSummary">输入收费类型后展示已绑定市场</div><div class="field" style="margin-top:19px"><label>状态 <b style="color:#e45656">*</b></label><div class="radio"><label><input type="radio" name="status" value="启用" checked> 启用</label><label><input type="radio" name="status" value="停用"> 停用</label></div></div><div class="drawer-footer"><button class="btn" id="cancelDrawer">取消</button><button class="btn primary" id="saveBinding">保存</button></div></aside></div>
-<div class="confirm-mask" id="confirmMask"><div class="confirm"><h3>确认保存市场手续费绑定？</h3><p>该绑定会影响所有租户的收费套餐可选项。柜台套餐仅可选择本地已添加、且所属收费类型与套餐市场存在启用绑定的收费项目。</p><div class="confirm-footer"><button class="btn" id="cancelConfirm">取消</button> <button class="btn primary" id="confirmSave">确认保存</button></div></div></div><div class="toast" id="toast"></div>
+<div class="drawer-mask" id="drawerMask"><aside class="drawer"><span class="close" id="closeDrawer">×</span><h2 id="drawerTitle">新增</h2><div class="field"><label>收费类型 <b style="color:#e45656">*</b></label><input id="drawerType" placeholder="请输入收费类型" autocomplete="off"></div><div class="field" style="margin-top:19px"><label>状态 <b style="color:#e45656">*</b></label><div class="radio"><label><input type="radio" name="status" value="启用" checked> 启用</label><label><input type="radio" name="status" value="停用"> 停用</label></div></div><div class="drawer-footer"><button class="btn" id="cancelDrawer">取消</button><button class="btn primary" id="saveBinding">保存</button></div></aside></div>
+<div class="confirm-mask" id="confirmMask"><div class="confirm"><h3>确认保存收费类型？</h3><p>该收费类型会影响所有租户在柜台新增交易收费类型时的可选项。</p><div class="confirm-footer"><button class="btn" id="cancelConfirm">取消</button> <button class="btn primary" id="confirmSave">确认保存</button></div></div></div><div class="toast" id="toast"></div>
 </div>
-<aside class="prd-panel" id="prdPanel" aria-label="市场手续费绑定需求说明"><div class="prd-panel-header"><strong>需求说明 · PRD</strong><span id="prdHint">点击左侧功能查看对应规则</span></div><article class="prd-content" tabindex="0" aria-label="PRD 正文"><h1>市场手续费绑定 PRD</h1>
+<aside class="prd-panel" id="prdPanel" aria-label="收费类型枚举需求说明"><div class="prd-panel-header"><strong>需求说明 · PRD</strong><span id="prdHint">点击左侧功能查看对应规则</span></div><article class="prd-content" tabindex="0" aria-label="PRD 正文"><h1>收费类型枚举 PRD</h1>
 <h2 id="prd-section-2">1. 功能说明</h2>
-<p>在 SaaS【业务配置】维护“市场 + 收费类型”的统一绑定。收费类型由 SaaS 管理员在新增绑定时直接录入；绑定状态为“启用”时，券商才能在柜台【配置 &gt; 系统字典 &gt; 交易收费类型】新增该收费类型。</p>
+<p>在 SaaS【业务配置】维护全平台统一的收费类型枚举。收费类型由 SaaS 管理员在【收费类型枚举】中直接录入；状态为“启用”时，券商才能在柜台【配置 &gt; 系统字典 &gt; 交易收费类型】新增该收费类型。市场适用范围由柜台收费项目和收费套餐按统一市场口径配置。</p>
 <h2 id="prd-section-3">2. 业务规则</h2>
 <table><thead><tr><th>规则</th><th>说明</th></tr></thead><tbody>
-<tr><td>绑定粒度</td><td>一条记录对应一个“市场 + 收费类型”组合。</td></tr>
+<tr><td>枚举粒度</td><td>一条记录对应一个收费类型枚举。</td></tr>
 <tr><td>适用范围</td><td>配置对所有租户生效，所有券商共用。</td></tr>
-<tr><td>收费类型</td><td>收费类型不是固定的 18 项。新增绑定时由 SaaS 管理员直接录入，保存后作为统一收费类型名称用于柜台联动。</td></tr>
-<tr><td>柜台联动</td><td>柜台新增交易收费类型时，候选取自 SaaS 对应市场下状态为“启用”的绑定记录。未绑定该市场或已停用的类型不可新增选择，也不可从其他类型改选为该类型。切换市场后重新加载候选，并清空不适用于新市场的已选类型；保存时再次校验市场与类型的启用绑定关系。</td></tr>
+<tr><td>收费类型</td><td>收费类型不限制为原有 18 项。新增时由 SaaS 管理员直接录入，保存后作为全平台统一收费类型名称和唯一标识供柜台联动。</td></tr>
+<tr><td>柜台联动</td><td>柜台新增交易收费类型时，候选取自 SaaS 状态为“启用”的收费类型枚举；已停用的类型不可新增。收费项目归属哪个市场，由柜台收费项目及收费套餐按统一市场字典配置。</td></tr>
 <tr><td>停用后的柜台存量</td><td>SaaS 停用是新增准入开关，不是柜台存量配置的删除开关。柜台已添加的交易收费类型保留，原收费项目、收费方、费率及套餐关系不自动删除、停用或回滚；柜台可继续查看和维护存量记录。</td></tr>
 <tr><td>已绑定证券交易手续费</td><td>若该收费类型已经绑定到证券交易手续费，SaaS 停用不自动解除证券绑定；在柜台未另行处理前，该绑定对后续交易继续生效，已生成的交易、清算及历史数据继续按原配置留痕和重算。停用后不得新增证券交易手续费绑定；如业务要求立即停止后续计收，必须由柜台单独停用对应收费项目或解除证券绑定，并按柜台审批/生效规则执行。</td></tr>
-<tr><td>绑定关系编辑</td><td>已创建的“市场 + 收费类型”绑定关系不可修改；编辑时市场和收费类型只读，仅允许修改状态。需要更换收费类型时，新增新的绑定记录，再停用原绑定。</td></tr>
-<tr><td>柜台展示与报表</td><td>本例从“港股 + 印花税”改为“港股 + 平台费”后，柜台仍展示已添加的“港股 + 印花税”；“港股 + 平台费”需由柜台另行添加。报表按柜台实际产生的收费项目统计，当前只有印花税费用时展示印花税，平台费添加并产生费用后才展示平台费。</td></tr>
+<tr><td>枚举编辑</td><td>已创建的收费类型名称和唯一标识不可修改；编辑时仅允许修改状态。需要更换收费类型时，新增新的枚举记录，再停用原记录。</td></tr>
+<tr><td>柜台展示与报表</td><td>柜台已添加的收费项目保留原收费类型；新增枚举不会自动创建柜台收费项目或加入收费套餐。报表按实际产生的收费明细展示收费类型，并按固定排序号排列。</td></tr>
+<tr><td>默认排序</td><td>按固定排序号展示：佣金、印花税、平台费、交易活动费用、交易系统使用费、交易费、证监会交易征费、证监会规费、证管费、会财局交易征费、征税、经手费、交收费、中央系统结算费、清算指令费、登记过户费、过户费、其他；新增类型排在“其他”之前，“其他”固定最后。</td></tr>
 <tr><td>重新启用</td><td>SaaS 重新启用后，原柜台存量配置无需重新创建或重新绑定，恢复为可新增和可绑定状态。</td></tr>
-<tr><td>唯一性</td><td>收费类型名称去除首尾空格后校验，空值或纯空格不可保存。同一“市场 + 收费类型名称”不可重复，包含已停用记录；同名类型可分别绑定不同市场。</td></tr>
+<tr><td>唯一性</td><td>收费类型名称去除首尾空格后校验，空值或纯空格不可保存；同一收费类型名称不可重复，包含已停用记录。</td></tr>
 <tr><td>配置边界</td><td>柜台维护收费项目、收费方和费率，并决定是否加入收费套餐；SaaS 不自动创建这些内容。</td></tr>
 </tbody></table>
 <h3 id="prd-query">3.1 查询条件</h3>
 <table><thead><tr><th>字段</th><th>规则</th></tr></thead><tbody>
-<tr><td>市场</td><td>单选，默认“全部市场”；候选为港股、美股、中华通、港股-R。</td></tr>
 <tr><td>收费类型</td><td>编辑框，默认空；去除首尾空格后按名称包含匹配，空值表示全部类型。</td></tr>
 <tr><td>状态</td><td>单选，默认“全部状态”；候选为全部状态、已启用、已停用。</td></tr>
 </tbody></table>
-<h3 id="prd-list">3.2 绑定列表</h3>
+<h3 id="prd-list">3.2 收费类型列表</h3>
 <table><thead><tr><th>字段</th><th>规则</th></tr></thead><tbody>
-<tr><td>列表字段</td><td>展示市场、收费类型、状态和操作。</td></tr>
+<tr><td>列表字段</td><td>展示序号、收费类型、状态和操作。</td></tr>
 <tr><td>操作</td><td>所有记录可编辑；启用记录可停用，停用记录可启用。</td></tr>
 </tbody></table>
-<h3 id="prd-add">3.3 新增/编辑绑定</h3>
+<h3 id="prd-add">3.3 新增/编辑收费类型</h3>
 <table><thead><tr><th>字段</th><th>规则</th></tr></thead><tbody>
-<tr><td>市场</td><td>新增时必填、单选；编辑时只读并回显原值。</td></tr>
 <tr><td>收费类型</td><td>新增时必填、编辑框，直接录入收费类型名称；编辑时只读并回显原值，保存新增记录时去除首尾空格。</td></tr>
-<tr><td>已绑定市场</td><td>只读；按输入名称去除首尾空格后精确匹配已有记录，展示同名类型已绑定的市场及状态；输入为空时提示输入，无匹配时展示“暂无”。</td></tr>
 <tr><td>状态</td><td>必填，启用/停用；新增默认启用，编辑回显。停用前需提示该操作只限制柜台后续新增/绑定，不会自动删除柜台存量配置或解除既有证券交易手续费绑定。</td></tr>
 </tbody></table>
 <h2 id="prd-section-8">4. 交互逻辑</h2>
 <table><thead><tr><th>操作</th><th>处理规则</th></tr></thead><tbody>
-<tr><td>查询/重置</td><td>按条件筛选；重置后市场、状态恢复为全部，收费类型输入清空，并刷新列表。</td></tr>
-<tr><td>新增/编辑</td><td>打开抽屉；新增清空市场和收费类型，编辑回显当前记录。编辑已有记录时市场和收费类型不可编辑，仅状态可修改。</td></tr>
-<tr><td>保存</td><td>校验必填项和组合唯一性；失败时保留输入并提示原因。</td></tr>
-<tr><td id="prd-confirm">保存确认</td><td>校验通过后确认保存；确认后刷新列表，取消则返回抽屉。编辑已有记录时只保存状态变更；如需更换市场或收费类型，应新增绑定记录后再停用旧记录。</td></tr>
-<tr><td>启用/停用</td><td>切换绑定状态，提示结果并刷新列表。停用确认文案需明确：柜台已添加的交易收费类型及已有证券交易手续费绑定会保留；如需停止计收，需另行在柜台处理。</td></tr>
+<tr><td>查询/重置</td><td>按收费类型、状态筛选；重置后状态恢复为全部，收费类型输入清空，并刷新列表。</td></tr>
+<tr><td>新增/编辑</td><td>打开抽屉；新增清空收费类型，编辑回显当前记录。编辑已有记录时收费类型不可编辑，仅状态可修改。</td></tr>
+<tr><td>保存</td><td>校验收费类型必填和唯一性；失败时保留输入并提示原因。</td></tr>
+<tr><td id="prd-confirm">保存确认</td><td>校验通过后确认保存；确认后刷新列表，取消则返回抽屉。编辑已有记录时只保存状态变更；如需更换收费类型，应新增枚举记录后再停用旧记录。</td></tr>
+<tr><td>启用/停用</td><td>切换枚举状态，提示结果并刷新列表。停用仅限制柜台后续新增或绑定，不会自动删除柜台存量配置或解除既有证券交易手续费绑定；如需停止计收，需另行在柜台处理。</td></tr>
 </tbody></table>
 </article></aside>
 </div>
 <script>
-const markets={HK:'港股',US:'美股',CN:'中华通','HK-R':'港股-R'};
-let records=[['HK','港股','印花税','启用'],['HK','港股','佣金','启用'],['US','美股','佣金','启用'],['US','美股','平台费','启用'],['CN','中华通','印花税','启用'],['HK-R','港股-R','佣金','停用']];
+let records=[['佣金','启用'],['印花税','启用'],['平台费','启用'],['交易活动费用','启用'],['交易系统使用费','启用'],['交易费','启用'],['证监会交易征费','启用'],['证监会规费','启用'],['证管费','启用'],['会财局交易征费','启用'],['征税','启用'],['经手费','启用'],['交收费','启用'],['中央系统结算费','启用'],['清算指令费','启用'],['登记过户费','启用'],['过户费','启用'],['其他','启用']];
 let editingIndex=null, pendingRecord=null;
 const $=id=>document.getElementById(id);
 const escapeHtml=value=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -111,49 +108,42 @@ function focusPrd(id,label){
 }
 
 function render(){
-  const market=$('marketFilter').value,type=$('typeFilter').value.trim(),status=$('statusFilter').value;
-  const rows=records.map((r,index)=>({r,index})).filter(({r})=>(market==='全部市场'||r[1]===market)&&(!type||r[2].includes(type))&&(status==='全部状态'||'已'+r[3]===status));
+  const type=$('typeFilter').value.trim(),status=$('statusFilter').value;
+  const rows=records.map((r,index)=>({r,index})).filter(({r})=>(!type||r[0].includes(type))&&(status==='全部状态'||'已'+r[1]===status));
   $('recordCount').textContent='共 '+rows.length+' 条';
-  $('bindingRows').innerHTML=rows.map(({r,index},i)=>'<tr><td>'+(i+1)+'</td><td>'+r[1]+'</td><td>'+escapeHtml(r[2])+'</td><td><span class="status '+(r[3]==='停用'?'off':'')+'">'+r[3]+'</span></td><td><span class="link" data-edit="'+index+'">编辑</span><span class="link" data-toggle="'+index+'">'+(r[3]==='启用'?'停用':'启用')+'</span></td></tr>').join('')||'<tr><td colspan="5" style="text-align:center;color:#87909e">暂无匹配的绑定记录</td></tr>';
+  $('bindingRows').innerHTML=rows.map(({r,index},i)=>'<tr><td>'+(i+1)+'</td><td>'+escapeHtml(r[0])+'</td><td><span class="status '+(r[1]==='停用'?'off':'')+'">'+r[1]+'</span></td><td><span class="link" data-edit="'+index+'">编辑</span><span class="link" data-toggle="'+index+'">'+(r[1]==='启用'?'停用':'启用')+'</span></td></tr>').join('')||'<tr><td colspan="4" style="text-align:center;color:#87909e">暂无匹配的收费类型</td></tr>';
   document.querySelectorAll('[data-edit]').forEach(x=>x.onclick=()=>{openDrawer(Number(x.dataset.edit));focusPrd('prd-add','新增/编辑绑定');});
   document.querySelectorAll('[data-toggle]').forEach(x=>x.onclick=()=>{toggle(Number(x.dataset.toggle));focusPrd('prd-section-8','启用/停用');});
 }
 function openDrawer(index=null){
   editingIndex=index;pendingRecord=null;
   const r=index===null?null:records[index];
-  $('drawerTitle').textContent=r?'编辑市场手续费绑定':'新增市场手续费绑定';
-  $('drawerMarket').value=r?r[0]:'';$('drawerType').value=r?r[2]:'';
-  document.querySelectorAll('input[name="status"]').forEach(x=>x.checked=x.value===(r?r[3]:'启用'));
-  updateSummary();$('drawerMask').style.display='block';
-  focusPrd('prd-add',r?'编辑绑定':'新增绑定');
+  $('drawerTitle').textContent=r?'编辑':'新增';
+  $('drawerType').value=r?r[0]:'';$('drawerType').readOnly=!!r;
+  document.querySelectorAll('input[name="status"]').forEach(x=>x.checked=x.value===(r?r[1]:'启用'));
+  $('drawerMask').style.display='block';
+  focusPrd('prd-add',r?'编辑':'新增');
 }
-function toggle(i){records[i][3]=records[i][3]==='启用'?'停用':'启用';render();toast('绑定已'+records[i][3]);focusPrd('prd-section-8','启用/停用');}
-function updateSummary(){
-  const type=$('drawerType').value.trim();
-  if(!type){$('typeSummary').textContent='输入收费类型后展示已绑定市场';return;}
-  const bound=records.filter(r=>r[2]===type).map(r=>r[1]+'（'+r[3]+'）');
-  $('typeSummary').textContent='已绑定市场：'+(bound.join('、')||'暂无');
-}
+function toggle(i){records[i][1]=records[i][1]==='启用'?'停用':'启用';render();toast('收费类型已'+records[i][1]);focusPrd('prd-section-8','启用/停用');}
 function toast(t){$('toast').textContent=t;$('toast').style.display='block';setTimeout(()=>$('toast').style.display='none',1800);}
 $('addBtn').onclick=()=>openDrawer();
 $('closeDrawer').onclick=$('cancelDrawer').onclick=()=>$('drawerMask').style.display='none';
-$('drawerMarket').onchange=()=>focusPrd('prd-add','绑定字段');
-$('drawerType').oninput=()=>{updateSummary();focusPrd('prd-add','绑定字段');};
+$('drawerType').oninput=()=>focusPrd('prd-add','收费类型字段');
 $('queryBtn').onclick=()=>{render();focusPrd('prd-query','查询条件');};
-$('resetBtn').onclick=()=>{$('marketFilter').value='全部市场';$('typeFilter').value='';$('statusFilter').value='全部状态';render();focusPrd('prd-query','查询与重置');};
+$('resetBtn').onclick=()=>{$('typeFilter').value='';$('statusFilter').value='全部状态';render();focusPrd('prd-query','查询与重置');};
 $('saveBinding').onclick=()=>{
-  const market=$('drawerMarket').value,type=$('drawerType').value.trim();
-  if(!market||!type){toast('请选择市场并输入收费类型');focusPrd('prd-add','必填校验');return;}
-  if(records.some((r,i)=>i!==editingIndex&&r[0]===market&&r[2]===type)){toast('该市场已绑定此收费类型，请勿重复添加');focusPrd('prd-add','重复绑定校验');return;}
-  pendingRecord=[market,markets[market],type,document.querySelector('input[name="status"]:checked').value];
+  const type=$('drawerType').value.trim();
+  if(!type){toast('请输入收费类型');focusPrd('prd-add','必填校验');return;}
+  if(records.some((r,i)=>i!==editingIndex&&r[0]===type)){toast('该收费类型已存在，请勿重复添加');focusPrd('prd-add','重复校验');return;}
+  pendingRecord=[type,document.querySelector('input[name="status"]:checked').value];
   $('confirmMask').style.display='block';
   focusPrd('prd-confirm','保存确认');
 };
 $('cancelConfirm').onclick=()=>{$('confirmMask').style.display='none';pendingRecord=null;focusPrd('prd-confirm','取消保存确认');};
 $('confirmSave').onclick=()=>{
   if(!pendingRecord)return;
-  if(editingIndex===null)records.push(pendingRecord);else records[editingIndex]=pendingRecord;
-  pendingRecord=null;$('confirmMask').style.display='none';$('drawerMask').style.display='none';render();toast('绑定已保存（原型演示）');focusPrd('prd-confirm','保存完成');
+  if(editingIndex===null){const otherIndex=records.findIndex(r=>r[0]==='其他');if(otherIndex<0)records.push(pendingRecord);else records.splice(otherIndex,0,pendingRecord);}else records[editingIndex]=pendingRecord;
+  pendingRecord=null;$('confirmMask').style.display='none';$('drawerMask').style.display='none';render();toast('收费类型已保存（原型演示）');focusPrd('prd-confirm','保存完成');
 };
 render();
 </script></body></html>
