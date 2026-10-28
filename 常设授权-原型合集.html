@@ -683,8 +683,8 @@
                   <div class="agreement">
                     <div class="agreement-title"><h3 id="app-agreement-heading">资金调拨协议签署</h3><span class="badge" id="app-sign-status">未签署</span><button class="text-button" id="app-transfer-document" type="button">查看协议</button></div>
                     <p class="agreement-summary" id="app-sign-summary">请阅读并完成本笔《资金调拨协议》签署后，再提交资金调拨申请。</p>
-                    <div class="optional-auth">
-                      <div class="optional-head"><strong>同时签署常设授权协议 <span class="optional" id="app-auth-tag">选填</span></strong><button class="text-button" id="app-auth-document" type="button">查看授权书</button></div>
+                    <div class="optional-auth" id="app-optional-auth">
+                      <div class="optional-head" id="app-optional-head"><strong><span id="app-auth-heading">同时签署常设授权协议</span> <span class="optional" id="app-auth-tag">选填</span></strong><button class="text-button" id="app-auth-document" type="button">查看授权书</button></div>
                       <label class="check-label" id="app-consent-row"><input type="checkbox" id="app-consent"><span>本次签名同时用于《资金划转常设授权书》</span></label>
                       <div class="app-terms-notice" id="app-terms-notice" hidden>
                         <strong>重要提示</strong>
@@ -1154,11 +1154,15 @@
         $("app-from").textContent = app.forward ? accounts[0].standard : accounts[0].derivatives;
         $("app-to").textContent = app.forward ? accounts[0].derivatives : accounts[0].standard;
         $("app-balance").textContent = `剩余可划转：${money(50000,$("app-currency").value)}`;
-        $("app-agreement-heading").textContent = exempt ? "本笔使用常设授权" : "资金调拨协议签署";
+        $("app-agreement-heading").textContent = exempt ? "本次资金调拨申请免审" : "资金调拨协议签署";
+        $("app-sign-status").hidden = exempt;
         $("app-sign-status").textContent = exempt ? "免签免审" : app.signed ? "已签署" : "未签署";
         $("app-sign-status").className = "badge " + (exempt ? "auto" : app.signed ? "active" : "");
         $("app-transfer-document").hidden = exempt;
-        $("app-sign-summary").textContent = exempt ? "授权有效期内，符合条件的本笔调拨无需再次签名及人工审核。" : app.signed ? (app.scope === "both" ? "本笔资金调拨协议及常设授权协议已共同签署，提交后分别审核。" : "本笔资金调拨协议已签署。") : "请阅读并完成本笔《资金调拨协议》签署后，再提交资金调拨申请。";
+        $("app-sign-summary").textContent = exempt ? "本次申请使用已生效的常设授权，无需再次签署协议或人工审核。" : app.signed ? (app.scope === "both" ? "本笔资金调拨协议及常设授权协议已共同签署，提交后分别审核。" : "本笔资金调拨协议已签署。") : "请阅读并完成本笔《资金调拨协议》签署后，再提交资金调拨申请。";
+        $("app-optional-auth").hidden = exempt;
+        (exempt ? $("app-agreement-heading").parentElement : $("app-optional-head")).append($("app-auth-document"));
+        $("app-auth-heading").textContent = !auth && app.forward ? "同时签署常设授权协议" : "常设授权协议";
         $("app-auth-tag").textContent = auth ? labels[auth.status] : "选填";
         $("app-consent-row").hidden = !!auth || !app.forward;
         if (auth || !app.forward) $("app-consent").checked = false;
