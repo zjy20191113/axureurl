@@ -155,10 +155,11 @@ svg.icon { width: 16px; height: 16px; flex: 0 0 16px; fill: none; stroke: curren
 .import-controls { display: flex; align-items: flex-end; gap: 12px; padding: 14px 0; }
 .file-line { display: flex; gap: 20px; color: var(--muted); font-size: 12px; }
 .file-line strong { color: var(--secondary); font-weight: 500; }
-.template-sheets { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; padding: 16px 0 4px; }
-.template-sheets > div { display: grid; align-content: start; gap: 4px; min-width: 0; padding-left: 12px; border-left: 2px solid #bfd2eb; }
-.template-sheets strong { font-size: 13px; color: #334154; }
-.template-sheets span { color: var(--muted); font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
+.import-template { min-width: 0; margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--line); }
+.import-template h3 { margin-bottom: 4px; font-size: 14px; }
+.import-template p { color: var(--muted); font-size: 12px; line-height: 1.6; }
+.import-template-table th,.import-template-table td { white-space: normal; overflow-wrap: anywhere; }
+.import-template-table tbody td:nth-child(2) { position: sticky; left: 42px; z-index: 1; min-width: 142px; background: #fbfcfe; box-shadow: 1px 0 #e3e8ef; }
 .section-actions { padding: 20px 0; }
 .preview-area { padding-top: 4px; }
 .section-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 0 10px; border-top: 1px solid var(--line); }
@@ -423,7 +424,6 @@ svg.icon { width: 16px; height: 16px; flex: 0 0 16px; fill: none; stroke: curren
   .project-actions { flex-wrap: wrap; justify-content: space-between; width: 100%; }
   .prototype-label { display: none; }
   .project-head p { line-height: 1.6; }
-  .template-sheets { grid-template-columns: 1fr; }
   .prototype-tab { padding: 9px 11px; font-size: 13px; }
   .admin-main { padding: 16px 18px 32px; }
   .customer-table .sticky-first,.customer-table .sticky-last { position: static; box-shadow: none; }
@@ -499,6 +499,7 @@ svg.icon { width: 16px; height: 16px; flex: 0 0 16px; fill: none; stroke: curren
   .export-table th,.export-table td,.export-table .export-long-text { min-width: 0; max-width: none; white-space: normal; overflow-wrap: anywhere; }
   .export-table .export-row-number,.export-table .export-column-letters th:first-child { position: static; min-width: 0; width: 16px; }
   .export-table tbody tr[data-export-row] td:nth-child(2) { position: static; min-width: 0; box-shadow: none; }
+  .import-template-table tbody td:nth-child(2) { position: static; min-width: 0; box-shadow: none; }
   .workspace-inline-content { display: block !important; }
   .row-action { background: transparent; color: #303a48; border: 1px solid #adb8c7; }
   .workspace-window-body { overflow: visible; }
@@ -630,9 +631,6 @@ svg.icon { width: 16px; height: 16px; flex: 0 0 16px; fill: none; stroke: curren
 .field input[type=file]::file-selector-button { padding: 5px 10px; }
 .file-line { align-items: baseline; flex-wrap: wrap; gap: 6px 24px; line-height: 1.6; }
 .file-line strong { color: #354257; }
-.template-sheets { gap: 20px; padding-top: 22px; }
-.template-sheets > div { padding-left: 12px; border-left-color: #c5d4e8; }
-.template-sheets span { color: #59687b; }
 .section-actions { padding: 24px 0; }
 .section-heading { flex-wrap: wrap; padding: 20px 0 14px; }
 .section-heading h3 { font-size: 14px; }
@@ -760,7 +758,6 @@ svg.icon { width: 16px; height: 16px; flex: 0 0 16px; fill: none; stroke: curren
   .import-controls > .field.grow { flex: 1 1 100%; }
   .step { padding: 8px 10px; font-size: 11px; }
   .step-line { max-width: 100%; }
-  .template-sheets { grid-template-columns: 1fr; gap: 16px; }
   .section-heading .action-row { flex-wrap: nowrap; }
   .stat { min-width: 0; gap: 6px; padding-inline: 12px; }
   .stat strong { font-size: 18px; }
@@ -871,11 +868,13 @@ svg.icon { width: 16px; height: 16px; flex: 0 0 16px; fill: none; stroke: curren
           </article>
           <article data-prd="common" hidden>
             <h3>客户共有数据导入</h3>
+            <p>上传页直接展示客户共有数据模板的五个字段及填写示例，无须先解析文件。示例中的空白保持为空，不用“-”代填；不包含一级至五级独立录入列。模板预览为原型评审辅助，下载和文件解析边界不变。</p>
             <p>单次最多 500 条。文件按顺序逐行预览；同文件重复姓名，或后序新增客户引用先序新增客户为上级时，后序行解析失败，原因“与第 X 条互斥”。其他通过行可以执行，失败行修正后重新上传。</p>
             <p>新增时空上级代表顶级；更新时空值表示不修改。执行仍须复核校验，不保证预览通过必然执行成功。</p>
           </article>
           <article data-prd="business" hidden>
             <h3>业务配置导入</h3>
+            <p>上传页随业务类型展示对应模板的完整表头及填写示例；合同业务可切换主配置与返佣/提成明细工作表，询价配置单表展示六个独立地区加点列。模板中的字段、明细类型及返佣规则跟随顶部新老名称切换，示例姓名和数值保持不变。字典值为本地示例，不代表系统真实数据；模板预览与解析校验结果分开。</p>
             <p>按客户姓名匹配已有客户；常规期权和孖展合约工作簿均分“主配置”和“返佣/提成明细”两表，两表数据行合计不超过 500。主配置重复客户时后序行提示“与第 X 条互斥”。</p>
             <p>常规期权有中间人前后端返佣、员工前后端提成四类，明细填写姓名、比例、按明细类型匹配的返佣规则和说明：中间人前端为公司加点、公司加点-交易成本、咨询费、咨询费-交易成本；中间人后端为税金、税金-交易成本；员工前端为公司加点、公司加点-交易成本、咨询费、咨询费-交易成本、咨询费-中间人咨询费返佣、咨询费-交易成本-中间人咨询费返佣、中间人加点剩余部分；员工后端为税金、税金-交易成本。孖展合约主配置仅包含群编号、归属员工和直接对接人；六类明细为中间人认购费、续期费、投资者分成返佣及员工对应三类提成，仅填写姓名、比例、说明，不设返佣规则。比例为 0-100%，最多两位小数，0 有效。所有返佣和提成明细的姓名均为手填文本，不匹配员工数据字典；同一明细类型下允许添加多个相同姓名。</p>
             <p>文件中出现的“客户＋明细类型”整组替换，未出现的类别不修改；一行无效则整组失败并保留旧值。主配置成功不受明细组失败影响。已有主配置可只导入明细；没有主配置时提示先建立。普通空白不清空旧值，清空方式待确认；停用群人工核验。</p>
@@ -942,6 +941,7 @@ svg.icon { width: 16px; height: 16px; flex: 0 0 16px; fill: none; stroke: curren
                 <div class="page-heading"><div><button class="back-link" type="button" data-go="list" data-icon="left">返回客户管理</button><h2>导入客户</h2></div><div class="step-line"><span class="step active">1 上传文件</span><span class="step">2 预览校验</span><span class="step">3 执行结果</span></div></div>
                 <div class="import-controls"><label class="field grow">上传客户共有数据文件<input type="file" accept=".xlsx" data-upload="common" aria-describedby="file-note"></label><button class="button" type="button" data-template="common" data-icon="download">下载模板</button></div>
                 <div class="file-line"><span>文件：<strong id="common-filename">客户共有数据_样例.xlsx</strong></span><span id="file-note">单次不超过 500 条；仅支持 .xlsx</span></div>
+                <section class="import-template" id="common-template" aria-label="客户共有数据模板填写示例"></section>
                 <div class="action-row section-actions"><button class="button primary" type="button" id="common-preview" data-icon="search">解析并预览</button><button class="button" type="button" data-go="list">取消</button></div>
                 <div class="preview-area" id="common-preview-area" hidden>
                   <div class="section-heading"><div><h3>校验预览</h3><p>客户共有数据 · <span id="common-preview-file">客户共有数据_样例.xlsx</span></p></div><div class="action-row"><span class="stat">总行数 <strong class="mono">5</strong></span><span class="stat pass">通过 <strong class="mono">2</strong></span><span class="stat fail">失败 <strong class="mono">3</strong></span></div></div>
@@ -957,18 +957,9 @@ svg.icon { width: 16px; height: 16px; flex: 0 0 16px; fill: none; stroke: curren
                 <div class="page-heading"><div><button class="back-link" type="button" data-go="list" data-icon="left">返回客户管理</button><h2>导入业务配置</h2></div><div class="step-line"><span class="step active">1 选择业务并上传</span><span class="step">2 预览校验</span><span class="step">3 执行结果</span></div></div>
                 <div class="import-controls"><label class="field">业务类型<select id="import-business-type"><option value="option">常规期权</option><option value="margin">孖展合约</option><option value="quote">询价配置</option></select></label><label class="field grow">上传业务配置文件<input type="file" accept=".xlsx" data-upload="business"></label><button class="button" type="button" data-template="business" data-icon="download">下载对应模板</button></div>
                 <div class="file-line">文件：<strong id="business-filename">常规期权配置_样例.xlsx</strong><span>先导入客户共有数据；单次不超过 500 条</span></div>
-                <div class="template-sheets" id="option-template" aria-label="常规期权模板工作表">
-                  <div><strong>主配置</strong><span>客户名称 · 常规期权群编号 · 归属员工 · 直接对接人 · 通道费率（%） · 税金（%）</span></div>
-                  <div><strong>返佣/提成明细</strong><span>客户名称 · 明细类型 · 姓名 · 比例（%） · 返佣规则 · 说明<br>返佣规则按明细类型匹配对应枚举</span></div>
-                </div>
-                <div class="template-sheets" id="margin-template" aria-label="孖展合约模板工作表" hidden>
-                  <div><strong>主配置</strong><span>客户名称 · 孖展合约群编号 · 归属员工 · 直接对接人</span></div>
-                  <div><strong>返佣/提成明细</strong><span>客户名称 · 明细类型 · 姓名 · 比例（%） · 说明<br>中间人：认购费返佣、续期费返佣、投资者分成返佣<br>员工：认购费提成、续期费提成、投资者分成提成</span></div>
-                </div>
-                <div class="template-sheets" id="quote-template" aria-label="询价配置模板工作表" hidden>
-                  <div><strong>询价配置</strong><span>客户名称 · 报价分类ID · 公司加点（大陆%、香港%） · 中间人加点（大陆%、香港%） · 行情额外加点（大陆%、香港%）</span></div>
-                  <div><strong>地区字段</strong><span>大陆：公司加点 · 中间人加点 · 行情额外加点<br>香港：公司加点 · 中间人加点 · 行情额外加点</span></div>
-                </div>
+                <section class="import-template" id="option-template" aria-label="常规期权模板工作表"></section>
+                <section class="import-template" id="margin-template" aria-label="孖展合约模板工作表" hidden></section>
+                <section class="import-template" id="quote-template" aria-label="询价配置模板工作表" hidden></section>
                 <div class="action-row section-actions"><button class="button primary" type="button" id="business-preview" data-icon="search">解析并预览</button><button class="button" type="button" data-go="list">取消</button></div>
                 <div class="preview-area" id="business-preview-area" hidden>
                   <div class="section-heading"><div><h3>校验预览</h3><p><span id="preview-business-name">常规期权</span> · <span id="business-preview-file"></span></p></div><div class="action-row"><span class="stat">总行数 <strong class="mono" id="business-total">8</strong></span><span class="stat pass">通过 <strong class="mono" id="business-passed">5</strong></span><span class="stat fail">失败 <strong class="mono" id="business-failed">3</strong></span></div></div>
@@ -1213,6 +1204,8 @@ svg.icon { width: 16px; height: 16px; flex: 0 0 16px; fill: none; stroke: curren
 
 入口：客户管理 → 导入客户。
 
+原型上传页直接展示“模板填写示例”，包含客户名称、授信金额、归属上级、备注、状态五列及虚构示例行，不必先解析文件。空白单元格保持为空，不以“-”充当导入值；一级至五级归属不作为独立输入列。该预览为评审辅助，不代表真实 `.xlsx` 下载或文件解析已经实现。
+
 流程：
 
 `下载模板 → 上传文件 → 解析 → 逐行预览校验 → 执行通过行 → 查看结果 → 修正失败行后重新上传`
@@ -1232,6 +1225,8 @@ svg.icon { width: 16px; height: 16px; flex: 0 0 16px; fill: none; stroke: curren
 ### 2.6 业务配置导入
 
 入口：客户管理 → 导入业务配置。
+
+原型上传页随业务类型切换对应模板，直接展示完整表头与填写示例。常规期权、孖展合约各以工作表 Tab 展示“主配置”和“返佣/提成明细”，询价配置为单表，六项地区加点分别占列。明细示例覆盖各具体类型，并保留同名多条及 `0` 比例；不把校验状态、失败原因或条数等结果列混入导入模板。模板字段、明细类型和返佣规则跟随新老名称展示切换，人员姓名、说明和数值不变；字典 ID、员工和群编号仅为本地示例。模板预览与解析后的校验预览分别展示，不改变以下校验及执行规则。
 
 流程：
 
@@ -1654,6 +1649,7 @@ svg.icon { width: 16px; height: 16px; flex: 0 0 16px; fill: none; stroke: curren
 ## 导入、文件中心与导出
 
 - 导入三步骤随预览和执行结果更新；当前步骤用文字、序号与下划线表达，已完成步骤保留序号。
+- 两个导入上传页直接展开模板填写示例，使用与导出一致的文件标识、工作表 Tab、Excel 列号和行号。客户模板展示五列；合同业务分别展示主配置及明细，询价展示八列。样例空值保留空白，主配置与结果字段不混入明细模板，预览不依赖上传或解析。模板名称切换只影响标签、类型和规则，示例人员文本与数值不变。
 - 校验预览的总数、通过数、失败数采用统一数字层次；失败行展示具体行号、明细类型及原因。
 - 部分成功结果用浅琥珀底和明确标题，全部成功用浅绿底。颜色不能替代结果文字。
 - 文件中心沿用六个批次示例及筛选、查看结果行为，长文件名自然换行。原件下载和失败文件下载仍遵循原型演示边界。
@@ -1878,6 +1874,7 @@ function syncShell() {
   const bounds = screen.getBoundingClientRect();
   $("#list-workspace-host").style.left = `${Math.max(12, Math.min(bounds.left + 12, window.innerWidth - 340))}px`;
   syncExportScroll();
+  $$(".import-template:not([hidden])").forEach(syncImportTemplateScroll);
 }
 function navigate(tab, focus = false) {
   state.active = tab;
@@ -2658,6 +2655,145 @@ $$("[data-upload]").forEach(input => input.addEventListener("change", () => {
   input.value = "";
 }));
 $$("[data-template]").forEach(button => button.addEventListener("click", () => toast("本地原型未提供实际 .xlsx 模板下载；正式字段见左侧 PRD")));
+const importTemplates = {
+  common: {
+    name: "客户共有数据_导入模板.xlsx",
+    sheets: [{
+      key: "common", name: "客户共有数据",
+      columns: ["客户名称", "授信金额", "归属上级", "备注", "状态"],
+      rows: [
+        ["示例客户甲", "150000.00", "", "长期合作客户", "正常"],
+        ["示例客户乙", "50000.00", "示例客户甲", "", "正常"]
+      ]
+    }]
+  },
+  option: {
+    name: "常规期权配置_导入模板.xlsx",
+    sheets: [{
+      key: "main", name: "主配置",
+      columns: ["客户名称", "常规期权群编号", "归属员工", "直接对接人", "通道费率（%）", "税金（%）"],
+      rows: [
+        ["示例客户甲", "OPT-201", "员工甲", "对接人甲", "1.50", "0.20"],
+        ["示例客户乙", "OPT-202", "员工甲", "对接人丙", "0.80", "0.10"]
+      ]
+    }, {
+      key: "details", name: "返佣/提成明细",
+      columns: ["客户名称", "明细类型", "姓名", "比例（%）", "返佣规则", "说明"],
+      namingColumns: [1, 4],
+      rows: [
+        ["示例客户甲", optionDetailTypes[0].label, "中间人甲", "1.50", "公司加点", "合作返佣"],
+        ["示例客户甲", optionDetailTypes[0].label, "中间人甲", "0.00", "咨询费", "另一条返佣约定"],
+        ...optionDetailTypes.slice(1).map(type => [
+          "示例客户甲", type.label, type.key.startsWith("middle") ? "中间人乙" : "员工甲", "2.00", type.rules[0], ""
+        ])
+      ]
+    }]
+  },
+  margin: {
+    name: "孖展合约配置_导入模板.xlsx",
+    sheets: [{
+      key: "main", name: "主配置",
+      columns: ["客户名称", "孖展合约群编号", "归属员工", "直接对接人"],
+      rows: [
+        ["示例客户甲", "MRG-306", "员工乙", "对接人乙"],
+        ["示例客户乙", "MRG-306", "员工甲", "对接人甲"]
+      ]
+    }, {
+      key: "details", name: "返佣/提成明细",
+      columns: ["客户名称", "明细类型", "姓名", "比例（%）", "说明"],
+      namingColumns: [1],
+      rows: [
+        ["示例客户甲", marginDetailTypes[0].label, "中间人甲", "1.50", "合作返佣"],
+        ["示例客户甲", marginDetailTypes[0].label, "中间人甲", "0.00", "另一条返佣约定"],
+        ...marginDetailTypes.slice(1).map(type => [
+          "示例客户甲", type.label, type.key.startsWith("middle") ? "中间人乙" : "员工甲", "2.00", ""
+        ])
+      ]
+    }]
+  },
+  quote: {
+    name: "询价配置_导入模板.xlsx",
+    sheets: [{
+      key: "quote", name: "询价配置",
+      columns: ["客户名称", "报价分类ID", ...quotePointFields.flatMap(field => [`${field.label}-大陆（%）`, `${field.label}-香港（%）`])],
+      rows: [
+        ["示例客户甲", "Q-DEMO-01", "0.10", "0.35", "0.20", "0.30", "0.10", "0.20"],
+        ["示例客户乙", "Q-DEMO-03", "0.40", "0.50", "0.10", "0.20", "0.30", "0.00"]
+      ]
+    }]
+  }
+};
+
+function renderImportTemplate(kind) {
+  const workbook = importTemplates[kind];
+  const root = $(`#${kind}-template`);
+  root.innerHTML = `<header class="export-file-head">
+    <div class="export-file-title"><span class="export-file-badge">XLSX</span><div><h3>模板填写示例</h3><p>${escapeHtml(workbook.name)} · ${workbook.sheets.length} 个工作表</p></div></div>
+    <span class="badge info">示例数据</span>
+  </header>
+  <div class="export-sheets" role="tablist" aria-label="导入模板工作表">${workbook.sheets.map((sheet, index) => `<button class="export-sheet-tab" type="button" id="${kind}-template-tab-${sheet.key}" role="tab" aria-controls="${kind}-template-panel-${sheet.key}" aria-selected="${index === 0}" tabindex="${index === 0 ? "0" : "-1"}" data-import-sheet="${sheet.key}">${sheet.name}</button>`).join("")}</div>
+  ${workbook.sheets.map((sheet, index) => `<div id="${kind}-template-panel-${sheet.key}" role="tabpanel" aria-labelledby="${kind}-template-tab-${sheet.key}" ${index ? "hidden" : ""}>
+    <div class="export-sheet-heading"><strong>${sheet.name}</strong><span>${sheet.rows.length} 行示例 · ${sheet.columns.length} 列</span></div>
+    <div class="export-grid" tabindex="0" role="region" aria-label="${sheet.name}模板内容">
+      <table class="data-table export-table import-template-table" aria-label="${sheet.name}模板填写示例">
+        <thead><tr class="export-column-letters"><th aria-label="行号"></th>${sheet.columns.map((_, column) => `<th scope="col">${excelColumn(column)}</th>`).join("")}</tr>
+          <tr><th class="export-row-number" scope="row">1</th>${sheet.columns.map(label => `<th scope="col">${term(label)}</th>`).join("")}</tr>
+        </thead>
+        <tbody>${sheet.rows.map((row, rowIndex) => `<tr><th class="export-row-number" scope="row">${rowIndex + 2}</th>${row.map((value, column) => `<td class="${sheet.columns[column].includes("（%）") || sheet.columns[column] === "授信金额" ? "export-numeric" : ""}" ${value === "" ? 'aria-label="空白"' : ""}>${sheet.namingColumns?.includes(column) ? term(value) : escapeHtml(value)}</td>`).join("")}</tr>`).join("")}</tbody>
+      </table>
+    </div>
+    <div class="export-sheet-scroll" data-import-scroll hidden>
+      <button class="icon-button" type="button" data-import-pan="left" aria-label="向左查看模板" title="向左查看模板">${iconSvg("left")}</button>
+      <input type="range" min="0" max="0" value="0" step="1" aria-label="模板横向位置" data-import-range>
+      <button class="icon-button" type="button" data-import-pan="right" aria-label="向右查看模板" title="向右查看模板">${iconSvg("right")}</button>
+    </div>
+  </div>`).join("")}`;
+  const selectSheet = (key, focus = false) => {
+    $$("[data-import-sheet]", root).forEach(tab => {
+      const selected = tab.dataset.importSheet === key;
+      tab.setAttribute("aria-selected", String(selected));
+      tab.tabIndex = selected ? 0 : -1;
+      $(`#${tab.getAttribute("aria-controls")}`).hidden = !selected;
+      if (selected && focus) tab.focus({ preventScroll: true });
+    });
+    requestAnimationFrame(syncShell);
+  };
+  root.addEventListener("click", event => {
+    const tab = event.target.closest("[data-import-sheet]");
+    if (tab) selectSheet(tab.dataset.importSheet);
+    const button = event.target.closest("[data-import-pan]");
+    if (button) $(".export-grid", button.closest('[role="tabpanel"]')).scrollLeft += button.dataset.importPan === "left" ? -360 : 360;
+  });
+  root.addEventListener("keydown", event => {
+    const tab = event.target.closest("[data-import-sheet]");
+    if (!tab || !["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+    event.preventDefault();
+    event.stopPropagation();
+    const tabs = $$("[data-import-sheet]", root);
+    const current = tabs.indexOf(tab);
+    const next = event.key === "Home" ? 0 : event.key === "End" ? tabs.length - 1 : (current + (event.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length;
+    selectSheet(tabs[next].dataset.importSheet, true);
+  });
+  root.addEventListener("input", event => {
+    if (!event.target.matches("[data-import-range]")) return;
+    $(".export-grid", event.target.closest('[role="tabpanel"]')).scrollLeft = Number(event.target.value);
+    syncImportTemplateScroll(root);
+  });
+  root.addEventListener("scroll", () => syncImportTemplateScroll(root), true);
+}
+
+function syncImportTemplateScroll(root) {
+  const panel = $('[role="tabpanel"]:not([hidden])', root);
+  const grid = $(".export-grid", panel);
+  const maximum = Math.max(0, grid.scrollWidth - grid.clientWidth);
+  $("[data-import-scroll]", panel).hidden = maximum <= 1;
+  const range = $("[data-import-range]", panel);
+  range.max = String(maximum);
+  range.value = String(Math.round(grid.scrollLeft));
+  $('[data-import-pan="left"]', panel).disabled = grid.scrollLeft <= 1;
+  $('[data-import-pan="right"]', panel).disabled = grid.scrollLeft >= maximum - 1;
+}
+
 const commonPreview = [
   { no: 1, excel: 2, name: "示例客户丁", parent: "-", action: "新增", result: "校验通过", reason: "-" },
   { no: 2, excel: 3, name: "示例客户戊", parent: "示例客户丁", action: "新增", result: "行解析失败", reason: "与第 1 条互斥" },
@@ -3156,6 +3292,7 @@ state.batches = sampleImportBatches();
 renderList();
 renderFiles();
 renderExport();
+Object.keys(importTemplates).forEach(renderImportTemplate);
 requestAnimationFrame(syncShell);
 
 </script>
