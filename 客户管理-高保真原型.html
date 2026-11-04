@@ -31,6 +31,21 @@ svg.icon { width: 16px; height: 16px; flex: 0 0 16px; fill: none; stroke: curren
 .project-head p { margin-top: 4px; font-size: 12px; color: var(--muted); }
 .project-actions { display: flex; gap: 12px; align-items: center; flex-shrink: 0; }
 .prototype-label { font-size: 12px; color: var(--muted); }
+.naming-switch { display: flex; flex: 0 0 auto; gap: 0; margin: 0; padding: 0; border: 0; font-size: 12px; }
+.naming-switch legend { margin-bottom: 4px; padding: 0; color: var(--muted); font-size: 11px; }
+.naming-switch label { position: relative; display: flex; cursor: pointer; }
+.naming-switch input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.naming-switch label span { display: inline-flex; align-items: center; justify-content: center; min-width: 76px; min-height: 32px; padding: 5px 10px; border: 1px solid #ccd5e1; background: white; color: var(--secondary); white-space: nowrap; }
+.naming-switch label:first-of-type span { border-radius: 4px 0 0 4px; }
+.naming-switch label:last-of-type span { border-radius: 0 4px 4px 0; border-left: 0; }
+.naming-switch input:checked + span { color: #185bb3; background: #edf4ff; font-weight: 600; }
+.naming-switch input:focus-visible + span { outline: 2px solid var(--focus); outline-offset: 2px; }
+.naming-notes { font-size: 12px; color: var(--secondary); overflow-wrap: anywhere; }
+.naming-notes summary { color: #345677; font-weight: 600; cursor: pointer; }
+.naming-notes p { margin-top: 12px; line-height: 1.7; }
+.naming-notes table { width: 100%; margin-top: 12px; border-collapse: collapse; text-align: left; }
+.naming-notes th,.naming-notes td { padding: 7px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.naming-notes th { background: #f5f7fa; font-weight: 600; }
 .layout { display: grid; grid-template-columns: minmax(380px,440px) minmax(0,1fr); align-items: start; gap: 16px; margin-top: 16px; }
 .change-log-panel,.prototype-column,.prototype-workspace { min-width: 0; }
 .change-log-panel { align-self: stretch; contain: size; min-height: 0; overflow-y: auto; scrollbar-gutter: stable; padding: 16px; background: white; border: 1px solid rgba(0,0,0,.11); border-radius: 8px; box-shadow: var(--shadow); }
@@ -105,7 +120,7 @@ svg.icon { width: 16px; height: 16px; flex: 0 0 16px; fill: none; stroke: curren
 .customer-table td:nth-child(3) { text-align: right; }
 .customer-table .remark-cell { width: 170px; }
 .customer-table .business-attribute-cell { min-width: 250px; white-space: normal; }
-.customer-table td:nth-child(10),.customer-table td:nth-child(15),.customer-table td:nth-child(18) { vertical-align: top; }
+.customer-table .business-attribute-cell { vertical-align: top; }
 .business-attribute { display: flex; flex-direction: column; gap: 3px; min-width: 218px; line-height: 1.35; white-space: normal; }
 .business-attribute span { color: #697589; }
 .business-attribute b { color: #29384d; font-weight: 600; }
@@ -404,7 +419,8 @@ svg.icon { width: 16px; height: 16px; flex: 0 0 16px; fill: none; stroke: curren
 }
 @media (max-width:720px) {
   .shell { padding: 12px; }
-  .project-head { align-items: flex-start; padding: 12px 14px; }
+  .project-head { align-items: flex-start; flex-wrap: wrap; padding: 12px 14px; }
+  .project-actions { flex-wrap: wrap; justify-content: space-between; width: 100%; }
   .prototype-label { display: none; }
   .project-head p { line-height: 1.6; }
   .template-sheets { grid-template-columns: 1fr; }
@@ -812,6 +828,7 @@ svg.icon { width: 16px; height: 16px; flex: 0 0 16px; fill: none; stroke: curren
 </style>
   
   
+  
 <style>
   .publication-document { width: min(960px,calc(100% - 32px)); max-height: calc(100dvh - 32px); padding: 0; border: 1px solid #dce1e9; border-radius: 6px; color: #263244; background: white; }
   .publication-document[open] { display: flex; flex-direction: column; }
@@ -909,12 +926,12 @@ svg.icon { width: 16px; height: 16px; flex: 0 0 16px; fill: none; stroke: curren
                 <form class="filters" id="filter-form">
                   <label class="field grow">客户姓名<input id="filter-name" type="search" placeholder="输入客户姓名"></label>
                   <label class="field">状态<select id="filter-status"><option value="">全部状态</option><option>正常</option><option>禁用</option></select></label>
-                  <label class="field">业务配置<select id="filter-business"><option value="">全部业务</option><option value="option">常规期权</option><option value="margin">孖展合约</option><option value="quote">询价配置</option><option value="none">均未配置</option></select></label>
+                  <label class="field">业务配置<select id="filter-business"><option value="">全部业务</option><option value="quote">询价配置</option><option value="option">常规期权</option><option value="margin">孖展合约</option><option value="none">均未配置</option></select></label>
                   <div class="filter-buttons"><button class="button primary" type="submit" data-icon="search">查询</button><button class="button" type="button" id="clear-filters">重置</button></div>
                   <details class="advanced"><summary>归属节点筛选</summary><div class="level-fields" id="level-fields"></div></details>
                 </form>
                 <div class="table-tools"><strong>客户列表 <span class="muted mono" id="list-count"></span></strong></div>
-                <table class="data-table customer-table" aria-label="客户列表"><thead><tr class="group-head"><th rowspan="2" class="sticky-first">客户姓名</th><th colspan="4">共有信息</th><th colspan="5" class="business-head">常规期权</th><th colspan="5" class="business-head">孖展合约</th><th colspan="3" class="business-head">询价配置</th><th rowspan="2" class="sticky-last">操作</th></tr><tr><th>状态</th><th>授信金额</th><th>备注</th><th>五级归属链路</th><th>配置</th><th>群编号</th><th>归属员工</th><th>直接对接人</th><th>业务属性</th><th>配置</th><th>群编号</th><th>归属员工</th><th>直接对接人</th><th>业务属性</th><th>配置</th><th>报价分类</th><th>加点摘要</th></tr></thead><tbody id="customer-rows"></tbody></table>
+                <table class="data-table customer-table" aria-label="客户列表"><thead><tr class="group-head"><th rowspan="2" class="sticky-first">客户姓名</th><th colspan="4">共有信息</th><th colspan="3" class="business-head">询价配置</th><th colspan="5" class="business-head">常规期权</th><th colspan="5" class="business-head">孖展合约</th><th rowspan="2" class="sticky-last">操作</th></tr><tr><th>状态</th><th>授信金额</th><th>备注</th><th>五级归属链路</th><th>配置</th><th>报价分类</th><th>加点摘要</th><th>配置</th><th>群编号</th><th>归属员工</th><th>直接对接人</th><th>业务属性</th><th>配置</th><th>群编号</th><th>归属员工</th><th>直接对接人</th><th>业务属性</th></tr></thead><tbody id="customer-rows"></tbody></table>
                 <div class="pagination"><span id="page-label"></span><div class="action-row"><button class="icon-button" type="button" id="page-prev" title="上一页" aria-label="上一页" data-icon="left"></button><button class="icon-button" type="button" id="page-next" title="下一页" aria-label="下一页" data-icon="right"></button></div></div>
               </div>
               <div id="list-workspace-host" class="business-window-host" hidden></div>
@@ -1113,13 +1130,14 @@ svg.icon { width: 16px; height: 16px; flex: 0 0 16px; fill: none; stroke: curren
 | 区域 | 默认展示 |
 |---|---|
 | 客户共有信息 | 客户姓名、状态、授信金额、备注摘要、归属链路 |
+| 询价配置摘要 | 是否配置、报价分类ID、公司/中间人/行情额外加点摘要 |
 | 常规期权摘要 | 是否配置、常规期权群编号、归属员工、直接对接人、业务属性摘要 |
 | 孖展合约摘要 | 是否配置、孖展合约群编号、归属员工、直接对接人、业务属性摘要 |
-| 询价配置摘要 | 是否配置、报价分类ID、公司/中间人/行情额外加点摘要 |
 | 操作 | 询价、常规期权详情、孖展合约详情、修改客户共有信息、删除 |
 
 列表规则：
 
+- 业务分组从左至右固定为“询价配置 → 常规期权 → 孖展合约”，位于共有信息之后、操作列之前；
 - 备注属于共有信息，默认展示摘要；空值显示“-”，点击摘要可查看完整内容，长备注不撑高列表行；
 - 一级至五级归属固定展示为五个位置，每个位置显示实际级次和名称；空节点显示“-”，不能因省略空级次而重新编号；
 - 列表不省略五级位置；长名称在格内摘要显示，完整路径可通过悬停或全局树状关系视图查看。列表工具区提供唯一的“客户关系图”入口，不在每行重复设置按钮；打开全部客户的组织结构树，不受当前列表筛选和分页限制。支持展开/收起分支；按客户姓名模糊搜索时显示匹配结果并高亮图中节点，点击结果展开祖先分支、滚动定位并展示该客户五级路径；搜索无结果时给出提示，不清空关系图。关闭后保留原列表筛选与页码；
@@ -1133,6 +1151,29 @@ svg.icon { width: 16px; height: 16px; flex: 0 0 16px; fill: none; stroke: curren
 - 客户姓名和操作列固定，其他列支持显示/隐藏和横向滚动；
 - 列表默认不因窄屏缩小到不可读，窄屏允许自然横向滚动；
 - 当前筛选、排序、分页和列设置的返回保留行为沿用现有后台规则，若现有规则不支持则在实现时补充。
+
+### 2.3.1 字段命名对比（待客户确认）
+
+原型顶部提供“字段名称 · 演示”的“原名称 / 建议名称”切换，默认原名称。该控件属于原型评审辅助，不作为正式业务配置或新增权限项。建议名称尚未定稿，本文后续既有规则继续使用原名称作为对照依据。
+
+| 原名称 | 建议名称 | 边界 |
+|---|---|---|
+| 公司加点 | 业务基础加点 | 暂定，作为员工提成计算来源，不改动原字段数据。 |
+| 中间人加点 | 渠道返佣加点 | 与渠道返佣关联，不表示全部返还渠道。 |
+| 行情额外加点 | 公司独享加点 | 收入全部归公司，不参与员工提成或渠道分佣。 |
+| 标的额外加点 | 标的专项加点 | 当前客户管理无此配置字段，仅在命名对照中展示，不新增业务字段。 |
+| 中间人前端返佣 / 后端返佣 | 渠道开仓返佣 / 行权返佣 | 表示业务阶段，不等于实际发放；行权后不保证产生返佣。 |
+| 员工前端提成 / 后端提成 | 员工开仓提成 / 行权提成 | 表示业务阶段，不等于实际发放；是否还涵盖其他结算场景待确认。 |
+| 孖展合约中间人三类返佣 | 渠道认购费返佣、渠道续期费返佣、渠道投资者分成返佣 | 仅统一主体名称，保留既有业务阶段。 |
+
+切换同步覆盖列表摘要及悬停说明、业务窗口、明细类型和规则选项、导入字段和校验信息、文件中心结果、导出示例及打印内容。切换不刷新或重建业务表单，不丢弃未保存内容、筛选、分页、当前工作表、已打开或最小化窗口。客户姓名、人员姓名、备注、说明、原始文件名、数值、内部字段和规则值保持原样；导入模板及导出文件仍为预览演示，不代表真实格式或接口已迁移。完整 PRD 与设计文档保留明确的新旧对照，不随模式覆盖原文。
+
+原型左侧提供默认收起的“命名对照与待确认项”，保留以下差异：
+
+- “标的额外”与承接报价差额的“公司额外”是否同项，待确认，不合并。
+- “中间人咨询费返佣”在材料中用于表示咨询费未返佣金额，名称与含义冲突。建议模式保留原词并标注待确认；公式应扣已返佣还是未返佣金额，未确认前不改写为“咨询费未返佣金额”或变更计算项。
+- 材料中的渠道开仓返佣以中间人加点为来源，当前原型部分规则选项为公司加点。两项只分别更名，不互换来源；规则差异待确认。
+- 计算应取合约中的实际加点，不能直接使用配置基准值。本次只做显示名称对比，不实现或变更计算。
 
 ### 2.4 群编号与业务配置
 
@@ -1587,10 +1628,18 @@ svg.icon { width: 16px; height: 16px; flex: 0 0 16px; fill: none; stroke: curren
 
 - 操作列固定保留“询价、常规期权、杠杆合约、修改、删除”五个按钮。按钮的颜色、图标、36px 高度、顺序及文字不改；“杠杆合约”仅为该处历史按钮文字，进入孖展合约 Tab。
 - 客户姓名和操作列在桌面表格内冻结；表格内部横向滚动，页头、筛选、工具栏与分页保持在页面可见宽度内。窄屏解除冻结，避免操作列遮住客户数据。
-- 表头以共有信息、常规期权、孖展合约、询价配置分组；分组用淡底与分隔线区分，不给整行铺业务颜色。
+- 表头依次以共有信息、询价配置、常规期权、孖展合约分组；分组用淡底与分隔线区分，不给整行铺业务颜色。
 - 五级链路保持 350px 最小列宽，以三格加两格展示；级次不省略，缺失显示“-”。长姓名可换行，不挤压级次。
 - 备注保留摘要和查看全文入口。常规期权独立显示通道费率与税金，两类合同显示已配置返佣/提成条数。
 - 正常、禁用、已配置、未配置均有文字。空结果不保留虚构客户数据。
+
+## 字段命名对比
+
+- 原型顶部增加“原名称 / 建议名称”分段选择，默认原名称，两个选项始终可见；属于原型演示工具，不放入业务工具栏。
+- 建议模式使用业务基础加点（暂定）、渠道返佣加点、公司独享加点，以及渠道开仓/行权返佣和员工开仓/行权提成。孖展合约只替换中间人为渠道，不改业务阶段。
+- 左侧默认收起的“命名对照与待确认项”列出对照与业务歧义；标的专项加点只列对照，不新增客户业务字段。公司额外和咨询费歧义仍待确认。
+- 列表、业务窗口、导入导出预览、提示、可访问名称及打印同步切换；客户和人员文本、备注、说明、内部规则值及草稿不变。完整文档保留原文与显式对照，不模拟规则已最终确认。
+- 切换只替换已标记的显示标签，不重建表单；原型刷新恢复原名称。窄屏控件在顶部换行，不挤压标题。
 
 ## 表单、业务窗口与反馈
 
@@ -1622,9 +1671,122 @@ svg.icon { width: 16px; height: 16px; flex: 0 0 16px; fill: none; stroke: curren
 本次不新增真实文件解析、下载、持久化、权限或后台服务。演示数据与能力边界放在原型外层说明中。询价加点数值范围及精度、批量改名、历史归属映射、导入整组清空方式等，继续保留 PRD 待评审项，不由视觉设计决定。
 </pre>
   </dialog>
+<script data-source="naming.js">
+"use strict";
+
+// Only presentation labels participate; stored values and user-entered text stay intact.
+(() => {
+  const replacements = [
+    ["中间人咨询费返佣", "中间人咨询费返佣（待确认）"],
+    ["中间人加点剩余部分", "渠道返佣加点剩余部分"],
+    ["中间人前端返佣", "渠道开仓返佣"],
+    ["中间人后端返佣", "渠道行权返佣"],
+    ["员工前端提成", "员工开仓提成"],
+    ["员工后端提成", "员工行权提成"],
+    ["中间人前后端返佣", "渠道开仓/行权返佣"],
+    ["员工前后端提成", "员工开仓/行权提成"],
+    ["中间人前端", "渠道开仓"],
+    ["中间人后端", "渠道行权"],
+    ["前端/后端", "开仓/行权"],
+    ["行情额外加点", "公司独享加点"],
+    ["标的额外加点", "标的专项加点"],
+    ["中间人加点", "渠道返佣加点"],
+    ["公司加点", "业务基础加点"],
+    ["中间人", "渠道"]
+  ];
+  const names = new Map(replacements);
+  const pattern = new RegExp(replacements.map(([name]) => name).sort((a, b) => b.length - a.length)
+    .map(name => name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|"), "g");
+  const escape = value => String(value).replace(/[&<>"]/g, character => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"
+  })[character]);
+  let mode = "original";
+  const suggested = value => String(value).replace(pattern, match => names.get(match));
+  const text = value => mode === "suggested" ? suggested(value) : String(value);
+  const markup = value => `<span data-term="${escape(value)}">${escape(text(value))}</span>`;
+  const attribute = (name, value) => `data-term-${name}="${escape(value)}" ${name}="${escape(text(value))}"`;
+  window.prototypeNaming = { text, markup, attribute };
+
+  // Mark the authored static copy before app.js inserts any customer data.
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  const authoredNodes = [];
+  while (walker.nextNode()) {
+    const node = walker.currentNode;
+    if (node.parentElement.closest("script,style,textarea,input,option,pre,[data-term]")) continue;
+    if (suggested(node.data) !== node.data) authoredNodes.push(node);
+  }
+  for (const node of authoredNodes) {
+    const span = document.createElement("span");
+    span.dataset.term = node.data;
+    span.textContent = node.data;
+    node.replaceWith(span);
+  }
+  for (const element of document.querySelectorAll("[title],[aria-label],[placeholder]")) {
+    for (const name of ["title", "aria-label", "placeholder"]) {
+      const value = element.getAttribute(name);
+      if (value && suggested(value) !== value) element.setAttribute(`data-term-${name}`, value);
+    }
+  }
+
+  const actions = document.querySelector(".project-actions");
+  actions.insertAdjacentHTML("afterbegin", `<fieldset class="naming-switch" aria-label="字段名称演示">
+    <legend>字段名称 · 演示</legend>
+    <label><input id="naming-original" type="radio" name="naming-mode" value="original" checked><span>原名称</span></label>
+    <label><input id="naming-suggested" type="radio" name="naming-mode" value="suggested"><span>建议名称</span></label>
+  </fieldset>`);
+  const reviewPairs = [
+    ["公司加点", "业务基础加点（暂定）"],
+    ["中间人加点", "渠道返佣加点"],
+    ["行情额外加点", "公司独享加点"],
+    ["标的额外加点", "标的专项加点"],
+    ["中间人前端返佣", "渠道开仓返佣"],
+    ["中间人后端返佣", "渠道行权返佣"],
+    ["员工前端提成", "员工开仓提成"],
+    ["员工后端提成", "员工行权提成"]
+  ];
+  document.querySelector(".page-prd").insertAdjacentHTML("beforebegin", `<section class="record-section naming-notes">
+    <details id="naming-review">
+      <summary>命名对照与待确认项</summary>
+      <p>建议名称用于方案比较，尚未最终确认；当前显示：<strong id="naming-current">原名称</strong>。</p>
+      <table aria-label="新老字段名称对照"><thead><tr><th>原名称</th><th>建议名称</th></tr></thead><tbody>
+        ${reviewPairs.map(([oldName, newName]) => `<tr><td>${oldName}</td><td>${newName}</td></tr>`).join("")}
+      </tbody></table>
+      <p>“公司独享加点”收入全部归公司，不参与渠道返佣或员工提成。“渠道返佣加点”与渠道返佣关联，不表示全部返给渠道。孖展合约的中间人认购费、续期费及投资者分成返佣也统一显示为渠道返佣，原业务阶段保留。</p>
+      <p>“标的专项加点”只列命名对照，当前客户管理没有该配置字段，不增加新的业务字段。“标的额外”与承接报价差额的“公司额外”是否同项，待确认。</p>
+      <p>“中间人咨询费返佣”原文用于表示咨询费未返佣金额，命名与含义不一致。建议模式保留原词并标注“待确认”；相关规则到底扣已返佣还是未返佣金额，仍待确认，不替换为已确认的计算项。</p>
+      <p>PDF 中渠道开仓返佣以中间人加点为来源，当前原型部分规则为公司加点；本次只切换名称，来源差异待确认，不互换两个加点项。</p>
+      <p>开仓、行权表示业务阶段，不等于实际发放，行权后也不保证产生返佣或提成。未来若覆盖其他终止或结算场景，阶段名称需另行确认。</p>
+      <p>实际计算应使用合约中的实际加点，配置中的基准加点不能直接替代。切换不改动金额、比例、人员文本、备注、规则值、导入结果或未保存内容。</p>
+    </details>
+  </section>`);
+
+  function apply() {
+    document.documentElement.dataset.namingMode = mode;
+    for (const element of document.querySelectorAll("[data-term]")) {
+      element.textContent = text(element.dataset.term);
+    }
+    for (const name of ["title", "aria-label", "placeholder"]) {
+      for (const element of document.querySelectorAll(`[data-term-${name}]`)) {
+        element.setAttribute(name, text(element.getAttribute(`data-term-${name}`)));
+      }
+    }
+    document.querySelector("#naming-current").textContent = mode === "original" ? "原名称" : "建议名称";
+  }
+  document.querySelectorAll('[name="naming-mode"]').forEach(input => input.addEventListener("change", () => {
+    mode = input.value;
+    apply();
+    requestAnimationFrame(() => { if (typeof syncShell === "function") syncShell(); });
+  }));
+  apply();
+})();
+
+</script>
 <script data-source="app.js">
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+const term = value => window.prototypeNaming.markup(value);
+const termText = value => window.prototypeNaming.text(value);
+const termAttribute = (name, value) => window.prototypeNaming.attribute(name, value);
 const iconPaths = {
   rotate: '<path d="M3 12a9 9 0 1 0 3-7"/><path d="M3 3v6h6"/>',
   plus: '<path d="M12 5v14M5 12h14"/>',
@@ -1681,7 +1843,7 @@ const marginDetailTypes = [
 ];
 const detailTypesFor = type => type === "option" ? optionDetailTypes : marginDetailTypes;
 const optionRulesFor = category => optionDetailTypes.find(type => type.key === category)?.rules || [];
-const optionRuleOptions = (category, selected = "") => `<option value="">请选择</option>${optionRulesFor(category).map(rule => `<option value="${escapeHtml(rule)}" ${selected === rule ? "selected" : ""}>${escapeHtml(rule)}</option>`).join("")}`;
+const optionRuleOptions = (category, selected = "") => `<option value="">请选择</option>${optionRulesFor(category).map(rule => `<option value="${escapeHtml(rule)}" data-term="${escapeHtml(rule)}" ${selected === rule ? "selected" : ""}>${escapeHtml(termText(rule))}</option>`).join("")}`;
 const levelLabels = ["一级", "二级", "三级", "四级", "五级"];
 const state = {
   customers: structuredClone(initialCustomers), batches: [], active: "list",
@@ -1815,7 +1977,8 @@ function marginAttribute(config) {
   return `<div class="business-attribute" title="已配置 ${entries.length} 条返佣/提成明细"><span>返佣/提成 <b>${entries.length} 条</b></span></div>`;
 }
 function quoteAttribute(config) {
-  return `<div class="business-attribute quote-attribute" title="公司加点 ${formatRate(config.companyCN)} / ${formatRate(config.companyHK)}；中间人加点 ${formatRate(config.middleCN)} / ${formatRate(config.middleHK)}；行情额外加点 ${formatRate(config.marketCN)} / ${formatRate(config.marketHK)}"><span>公司 <b>${formatRate(config.companyCN)} / ${formatRate(config.companyHK)}</b></span><span>中间人 <b>${formatRate(config.middleCN)} / ${formatRate(config.middleHK)}</b></span><span>行情 <b>${formatRate(config.marketCN)} / ${formatRate(config.marketHK)}</b></span></div>`;
+  const title = `公司加点 ${formatRate(config.companyCN)} / ${formatRate(config.companyHK)}；中间人加点 ${formatRate(config.middleCN)} / ${formatRate(config.middleHK)}；行情额外加点 ${formatRate(config.marketCN)} / ${formatRate(config.marketHK)}`;
+  return `<div class="business-attribute quote-attribute" ${termAttribute("title", title)}><span>${term("公司加点")} <b>${formatRate(config.companyCN)} / ${formatRate(config.companyHK)}</b></span><span>${term("中间人加点")} <b>${formatRate(config.middleCN)} / ${formatRate(config.middleHK)}</b></span><span>${term("行情额外加点")} <b>${formatRate(config.marketCN)} / ${formatRate(config.marketHK)}</b></span></div>`;
 }
 function businessCells(config, type) {
   if (!config) return `<td><span class="badge">未配置</span></td><td>-</td><td>-</td><td>-</td><td class="business-attribute-cell">-</td>`;
@@ -1843,7 +2006,7 @@ function renderList() {
       <td>${status(customer.status)}</td><td class="mono">${escapeHtml(Number(customer.credit || 0).toLocaleString("zh-CN", { minimumFractionDigits: 2, maximumFractionDigits: 2 }))}</td>
       <td class="remark-cell"><button type="button" class="remark-preview" data-remark="${customer.id}" title="${escapeHtml(remark)}" aria-label="查看${escapeHtml(customer.name)}的完整备注">${escapeHtml(remark)}</button></td>
       <td>${levelGrid(customer)}</td>
-      ${businessCells(customer.option, "option")}${businessCells(customer.margin, "margin")}${quoteCells(customer.quote)}
+      ${quoteCells(customer.quote)}${businessCells(customer.option, "option")}${businessCells(customer.margin, "margin")}
       <td class="sticky-last"><div class="customer-row-actions">
         <button type="button" class="row-action row-action-quote" data-business-open="${customer.id}:quote">${iconSvg("quote")}询价</button>
         <button type="button" class="row-action row-action-option" data-business-open="${customer.id}:option">${iconSvg("option")}常规期权</button>
@@ -2124,9 +2287,9 @@ function renderWorkspaceCustomers() {
 function workspaceFieldGroup(item, type, fields, edit) {
   return `<div class="workspace-field-grid">${fields.map(field => {
     const value = edit ? item.draft[field.name] : workspaceCustomer(item)[type]?.[field.name];
-    if (edit && field.source === "staff") return `<label class="field">${field.label}<select name="${field.name}"><option value="">请选择员工</option>${value && !demoStaff.includes(value) ? `<option selected value="${escapeHtml(value)}">${escapeHtml(value)}（当前值）</option>` : ""}${demoStaff.map(name => `<option ${name === value ? "selected" : ""}>${escapeHtml(name)}</option>`).join("")}</select></label>`;
-    if (edit) return `<label class="field">${field.label}${field.percent ? "（%）" : ""}<input name="${field.name}" value="${escapeHtml(value ?? "")}" ${field.percent ? `inputmode="decimal" placeholder="${type === "quote" ? "输入百分比" : "保留两位小数"}"` : ""}></label>`;
-    return `<div class="workspace-field"><span>${field.label}</span><strong>${field.percent ? formatRate(value) : value ? escapeHtml(value) : "-"}</strong></div>`;
+    if (edit && field.source === "staff") return `<label class="field">${term(field.label)}<select name="${field.name}"><option value="">请选择员工</option>${value && !demoStaff.includes(value) ? `<option selected value="${escapeHtml(value)}">${escapeHtml(value)}（当前值）</option>` : ""}${demoStaff.map(name => `<option ${name === value ? "selected" : ""}>${escapeHtml(name)}</option>`).join("")}</select></label>`;
+    if (edit) return `<label class="field">${term(field.label)}${field.percent ? "（%）" : ""}<input name="${field.name}" value="${escapeHtml(value ?? "")}" ${field.percent ? `inputmode="decimal" placeholder="${type === "quote" ? "输入百分比" : "保留两位小数"}"` : ""}></label>`;
+    return `<div class="workspace-field"><span>${term(field.label)}</span><strong>${field.percent ? formatRate(value) : value ? escapeHtml(value) : "-"}</strong></div>`;
   }).join("")}</div>`;
 }
 function renderQuoteConfig(item, edit) {
@@ -2147,7 +2310,7 @@ function renderWorkspaceBusinessTab(item, type) {
     <div class="workspace-main-fields"><h6>业务归属</h6>${workspaceFieldGroup(item, type, base, editing)}${rates.length ? `<h6>费率与税金</h6>${workspaceFieldGroup(item, type, rates, editing)}` : ""}</div>
     ${editing ? `<p class="workspace-error" role="alert" hidden></p><div class="workspace-section-actions"><button class="button" type="button" data-workspace-cancel="${item.key}">取消</button><button class="button primary" type="submit">保存主配置</button></div></form>` : ""}</section>`;
   const editor = item.rebateDraft ? `<form class="workspace-rebate-form workspace-inline-form" data-workspace-form="${item.key}" novalidate>
-    <h6>${item.rebateIndex === null ? "新增" : "修改"}${detailTypesFor(type).find(detailType => detailType.key === item.rebateDraft.category).label}</h6><div class="workspace-field-grid">
+    <h6>${item.rebateIndex === null ? "新增" : "修改"}${term(detailTypesFor(type).find(detailType => detailType.key === item.rebateDraft.category).label)}</h6><div class="workspace-field-grid">
     <label class="field"><span>姓名 <span class="required">*</span></span><input name="name" value="${escapeHtml(item.rebateDraft.name)}" maxlength="50" autocomplete="off"></label>
     <label class="field"><span>比例（%） <span class="required">*</span></span><input name="rate" value="${escapeHtml(item.rebateDraft.rate)}" inputmode="decimal" placeholder="0 至 100，最多两位小数"></label>
     ${type === "option" ? `<label class="field"><span>返佣规则 <span class="required">*</span></span><select name="rule">${optionRuleOptions(item.rebateDraft.category, item.rebateDraft.rule)}</select></label>` : ""}
@@ -2157,8 +2320,8 @@ function renderWorkspaceBusinessTab(item, type) {
   </form>` : "";
   const details = `<section class="workspace-field-section workspace-detail-config"><header class="workspace-section-head"><h5>返佣/提成明细</h5></header>${detailTypesFor(type).map((detailType, index) => {
     const rows = customer[type]?.details?.[detailType.key] || [];
-    const family = type === "margin" && (index === 0 || index === 3) ? `<h6 class="workspace-detail-family">${index === 0 ? "中间人返佣" : "员工提成"}</h6>` : "";
-    return `${family}<div class="workspace-detail-group" data-detail-type="${detailType.key}"><header class="workspace-detail-head"><h6>${detailType.label} <span class="muted">(${rows.length})</span></h6><button class="button" type="button" data-workspace-rebate="${item.key}" data-detail-type="${detailType.key}" aria-label="新增${detailType.label}" ${item.rebateDraft ? 'disabled title="请先保存或取消当前明细"' : ""}>${iconSvg("plus")}新增</button></header>${item.rebateDraft?.category === detailType.key ? editor : ""}${rows.length ? `<div class="workspace-rebates">${rows.map((row, rowIndex) => `<div class="workspace-rebate-row"><strong>${escapeHtml(row.name)}</strong><span>${escapeHtml(row.rate)}%</span><div class="workspace-detail-actions"><button class="icon-button" type="button" ${item.rebateDraft ? "disabled" : ""} data-workspace-detail-edit="${item.key}:${detailType.key}:${rowIndex}" title="${item.rebateDraft ? "请先保存或取消当前明细" : `修改第${rowIndex + 1}条${escapeHtml(detailType.label)}`}" aria-label="修改第${rowIndex + 1}条${escapeHtml(detailType.label)}">${iconSvg("pencil")}</button><button class="icon-button" type="button" ${item.rebateDraft ? "disabled" : ""} data-workspace-detail-delete="${item.key}:${detailType.key}:${rowIndex}" title="${item.rebateDraft ? "请先保存或取消当前明细" : `删除第${rowIndex + 1}条${escapeHtml(detailType.label)}`}" aria-label="删除第${rowIndex + 1}条${escapeHtml(detailType.label)}">${iconSvg("trash")}</button></div>${type === "option" ? `<small>${escapeHtml(row.rule)}</small>` : ""}${row.note ? `<p>${escapeHtml(row.note)}</p>` : ""}</div>`).join("")}</div>` : '<p class="muted workspace-detail-empty">暂无明细</p>'}</div>`;
+    const family = type === "margin" && (index === 0 || index === 3) ? `<h6 class="workspace-detail-family">${term(index === 0 ? "中间人返佣" : "员工提成")}</h6>` : "";
+    return `${family}<div class="workspace-detail-group" data-detail-type="${detailType.key}"><header class="workspace-detail-head"><h6>${term(detailType.label)} <span class="muted">(${rows.length})</span></h6><button class="button" type="button" data-workspace-rebate="${item.key}" data-detail-type="${detailType.key}" ${termAttribute("aria-label", `新增${detailType.label}`)} ${item.rebateDraft ? 'disabled title="请先保存或取消当前明细"' : ""}>${iconSvg("plus")}新增</button></header>${item.rebateDraft?.category === detailType.key ? editor : ""}${rows.length ? `<div class="workspace-rebates">${rows.map((row, rowIndex) => `<div class="workspace-rebate-row"><strong>${escapeHtml(row.name)}</strong><span>${escapeHtml(row.rate)}%</span><div class="workspace-detail-actions"><button class="icon-button" type="button" ${item.rebateDraft ? "disabled" : ""} data-workspace-detail-edit="${item.key}:${detailType.key}:${rowIndex}" ${termAttribute("title", item.rebateDraft ? "请先保存或取消当前明细" : `修改第${rowIndex + 1}条${detailType.label}`)} ${termAttribute("aria-label", `修改第${rowIndex + 1}条${detailType.label}`)}>${iconSvg("pencil")}</button><button class="icon-button" type="button" ${item.rebateDraft ? "disabled" : ""} data-workspace-detail-delete="${item.key}:${detailType.key}:${rowIndex}" ${termAttribute("title", item.rebateDraft ? "请先保存或取消当前明细" : `删除第${rowIndex + 1}条${detailType.label}`)} ${termAttribute("aria-label", `删除第${rowIndex + 1}条${detailType.label}`)}>${iconSvg("trash")}</button></div>${type === "option" ? `<small>${term(row.rule)}</small>` : ""}${row.note ? `<p>${escapeHtml(row.note)}</p>` : ""}</div>`).join("")}</div>` : '<p class="muted workspace-detail-empty">暂无明细</p>'}</div>`;
   }).join("")}</section>`;
   return `<div class="workspace-window-body">${main}${details}<section class="workspace-inline"><button class="workspace-inline-toggle" type="button" data-workspace-expand="${item.key}" aria-expanded="${Boolean(item.expanded)}" aria-controls="workspace-note-${item.id}">客户备注${iconSvg("down")}</button><p class="workspace-inline-content" id="workspace-note-${item.id}" ${item.expanded ? "" : "hidden"}>${escapeHtml(customer.remark || "暂无备注")}</p></section></div>
     <footer class="workspace-window-foot"><button class="button" type="button" data-workspace-close="${item.key}">关闭</button></footer>`;
@@ -2341,7 +2504,7 @@ $("#workspace-stage-title").closest(".workspace-stage").addEventListener("click"
     } else {
       workspace.pending = { key, action: { kind: "delete", category, index } };
       $("#workspace-confirm-title").textContent = "删除这条明细？";
-      $("#workspace-confirm-message").textContent = `${detailTypesFor(type).find(detail => detail.key === category).label} · 第${index + 1}条 · ${row.name} · ${row.rate}%；删除后无法恢复。`;
+      $("#workspace-confirm-message").innerHTML = `${term(detailTypesFor(type).find(detail => detail.key === category).label)} · 第${index + 1}条 · ${escapeHtml(row.name)} · ${escapeHtml(row.rate)}%；删除后无法恢复。`;
       $("#workspace-confirm-dialog [data-close]").textContent = "取消";
       $("#workspace-confirm-discard").textContent = "删除";
       $("#workspace-confirm-dialog").showModal();
@@ -2457,9 +2620,10 @@ $("#workspace-windows").addEventListener("submit", event => {
     input.setAttribute("aria-invalid", "true");
     input.focus();
     const error = event.target.querySelector(".workspace-error");
-    error.textContent = invalid.source === "staff" ? `请从员工列表选择${invalid.label}`
+    const message = invalid.source === "staff" ? `请从员工列表选择${invalid.label}`
       : type === "quote" ? invalid.name === "category" ? "请选择报价分类ID" : `${invalid.label}请输入有效的百分比数值`
       : `${invalid.label}请输入非负数，最多保留两位小数`;
+    error.innerHTML = term(message);
     error.hidden = false;
     return;
   }
@@ -2626,9 +2790,9 @@ $("#business-preview").addEventListener("click", () => {
     $("#business-failed").textContent = optionFailedRows;
     $("#option-main-preview").innerHTML = optionMainPreview.map(row => `<tr><td>第 ${row.excel} 行</td><td>${escapeHtml(row.name)}</td><td>${escapeHtml(row.group)}</td><td>${escapeHtml(previewPercent(row.channelFee))}</td><td>${escapeHtml(previewPercent(row.tax))}</td><td>${row.action}</td><td>${resultBadge("校验通过")}</td></tr>`).join("");
     $("#option-detail-preview").innerHTML = optionDetailGroups.map(group => {
-      const label = optionDetailLabel(group.type);
-      const heading = `<tr class="detail-group-row${group.valid ? "" : " is-failed"}"><td colspan="8">${escapeHtml(group.name)} · ${label} · ${group.rows.length} 条 · ${group.valid ? "整组通过，将替换旧组" : `整组失败，旧组不变；${escapeHtml(group.reason)}`}</td></tr>`;
-      return heading + group.rows.map(row => `<tr><td>第 ${row.excel} 行</td><td>${escapeHtml(group.name)}</td><td>${label}</td><td>${escapeHtml(row.name)}</td><td>${escapeHtml(row.rate)}%</td><td>${escapeHtml(row.rule)}</td><td>${escapeHtml(row.note || "-")}</td><td class="detail-reason">${resultBadge(group.valid ? "校验通过" : "整组失败")} ${escapeHtml(group.valid ? "-" : group.reason)}</td></tr>`).join("");
+      const label = term(optionDetailLabel(group.type));
+      const heading = `<tr class="detail-group-row${group.valid ? "" : " is-failed"}"><td colspan="8">${escapeHtml(group.name)} · ${label} · ${group.rows.length} 条 · ${group.valid ? "整组通过，将替换旧组" : `整组失败，旧组不变；${term(group.reason)}`}</td></tr>`;
+      return heading + group.rows.map(row => `<tr><td>第 ${row.excel} 行</td><td>${escapeHtml(group.name)}</td><td>${label}</td><td>${escapeHtml(row.name)}</td><td>${escapeHtml(row.rate)}%</td><td>${term(row.rule)}</td><td>${escapeHtml(row.note || "-")}</td><td class="detail-reason">${resultBadge(group.valid ? "校验通过" : "整组失败")} ${term(group.valid ? "-" : group.reason)}</td></tr>`).join("");
     }).join("");
     $("#business-preview-hint").textContent = "主配置 2 条、明细 2 组可执行；失败的 2 组不替换旧数据";
     $("#business-run").textContent = "执行导入（4 项）";
@@ -2638,9 +2802,9 @@ $("#business-preview").addEventListener("click", () => {
     $("#business-failed").textContent = marginFailedRows;
     $("#margin-main-preview").innerHTML = marginMainPreview.map(row => `<tr><td>第 ${row.excel} 行</td><td>${escapeHtml(row.name)}</td><td>${escapeHtml(row.group)}</td><td>${escapeHtml(row.employee)}</td><td>${escapeHtml(row.contact)}</td><td>${row.action}</td><td>${resultBadge("校验通过")}</td></tr>`).join("");
     $("#margin-detail-preview").innerHTML = marginDetailGroups.map(group => {
-      const label = marginDetailLabel(group.type);
-      const heading = `<tr class="detail-group-row${group.valid ? "" : " is-failed"}"><td colspan="7">${escapeHtml(group.name)} · ${label} · ${group.rows.length} 条 · ${group.valid ? "整组通过，将替换旧组" : `整组失败，旧组不变；${escapeHtml(group.reason)}`}</td></tr>`;
-      return heading + group.rows.map(row => `<tr><td>第 ${row.excel} 行</td><td>${escapeHtml(group.name)}</td><td>${label}</td><td>${escapeHtml(row.name)}</td><td>${escapeHtml(row.rate)}%</td><td>${escapeHtml(row.note || "-")}</td><td class="detail-reason">${resultBadge(group.valid ? "校验通过" : "整组失败")} ${escapeHtml(group.valid ? "-" : group.reason)}</td></tr>`).join("");
+      const label = term(marginDetailLabel(group.type));
+      const heading = `<tr class="detail-group-row${group.valid ? "" : " is-failed"}"><td colspan="7">${escapeHtml(group.name)} · ${label} · ${group.rows.length} 条 · ${group.valid ? "整组通过，将替换旧组" : `整组失败，旧组不变；${term(group.reason)}`}</td></tr>`;
+      return heading + group.rows.map(row => `<tr><td>第 ${row.excel} 行</td><td>${escapeHtml(group.name)}</td><td>${label}</td><td>${escapeHtml(row.name)}</td><td>${escapeHtml(row.rate)}%</td><td>${escapeHtml(row.note || "-")}</td><td class="detail-reason">${resultBadge(group.valid ? "校验通过" : "整组失败")} ${term(group.valid ? "-" : group.reason)}</td></tr>`).join("");
     }).join("");
     $("#business-preview-hint").textContent = "主配置 2 条、明细 4 组可执行；失败的 2 组不替换旧数据";
     $("#business-run").textContent = "执行导入（6 项）";
@@ -2649,7 +2813,7 @@ $("#business-preview").addEventListener("click", () => {
     $("#business-total").textContent = quotePreview.length;
     $("#business-passed").textContent = passed;
     $("#business-failed").textContent = quotePreview.length - passed;
-    $("#quote-preview-rows").innerHTML = quotePreview.map(row => `<tr><td>第 ${row.excel} 行</td><td>${escapeHtml(row.name)}</td><td>${escapeHtml(row.category)}</td>${quoteRateKeys.map(key => `<td>${escapeHtml(previewQuotePercent(row[key]))}</td>`).join("")}<td>${row.action}</td><td>${resultBadge(row.result)}</td><td class="detail-reason">${escapeHtml(row.reason)}</td></tr>`).join("");
+    $("#quote-preview-rows").innerHTML = quotePreview.map(row => `<tr><td>第 ${row.excel} 行</td><td>${escapeHtml(row.name)}</td><td>${escapeHtml(row.category)}</td>${quoteRateKeys.map(key => `<td>${escapeHtml(previewQuotePercent(row[key]))}</td>`).join("")}<td>${row.action}</td><td>${resultBadge(row.result)}</td><td class="detail-reason">${term(row.reason)}</td></tr>`).join("");
     $("#business-preview-hint").textContent = `仅对校验通过的 ${passed} 条询价配置执行新增或更新`;
     $("#business-run").textContent = `执行导入（通过 ${passed} 条）`;
   }
@@ -2796,14 +2960,14 @@ $("#file-rows").addEventListener("click", event => {
   $("#file-detail").hidden = false;
   $("#file-detail").innerHTML = `<h3>批次 ${escapeHtml(batch.id)}</h3><p>原始文件：${escapeHtml(batch.file)} · ${batch.kind}${batch.business === "-" ? "" : ` / ${batch.business}`} · ${batch.time}</p><p>总行数 ${batch.total}；通过 ${batch.passed}；失败 ${batch.failed}。</p>
     <table class="data-table" aria-label="批次逐行结果"><thead><tr><th>序号</th>${batch.results ? "<th>工作表</th>" : ""}<th>Excel 行号</th><th>客户姓名</th><th>最终结果</th><th>失败原因</th></tr></thead>
-    <tbody>${failures.map((row, index) => `<tr><td>${row.no || index + 1}</td>${batch.results ? `<td>${escapeHtml(row.sheet)}</td>` : ""}<td>第 ${row.excel} 行</td><td>${escapeHtml(row.name)}</td><td>${row.result === "校验通过" ? "导入成功" : escapeHtml(row.result)}</td><td>${escapeHtml(row.reason)}</td></tr>`).join("")}</tbody></table>`;
+    <tbody>${failures.map((row, index) => `<tr><td>${row.no || index + 1}</td>${batch.results ? `<td>${term(row.sheet)}</td>` : ""}<td>第 ${row.excel} 行</td><td>${escapeHtml(row.name)}</td><td>${row.result === "校验通过" ? "导入成功" : escapeHtml(row.result)}</td><td>${term(row.reason)}</td></tr>`).join("")}</tbody></table>`;
   requestAnimationFrame(syncShell);
 });
 
 const exportView = { sheet: "overview" };
 
 function exportWorkbook(customers) {
-  const column = (label, get, format = "文本", note = "") => ({ label, get, format, note });
+  const column = (label, get, format = "文本", note = "", naming = false) => ({ label, get, format, note, naming });
   const configured = type => customer => customer[type] ? "已配置" : "未配置";
   const mainColumns = type => [
     column("配置状态", configured(type), "文本", "未建立主配置时为“未配置”，其余业务字段为“-”。"),
@@ -2849,10 +3013,10 @@ function exportWorkbook(customers) {
     if (!overview) sheets.push({ key: `${type}-main`, name: `${businessNames[type]}配置`, columns: [common[0], ...mainColumns(type)], rows: customers, unit: "位客户" });
     const detailColumns = [
       column("客户姓名", row => row.customer.name, "文本", "关联客户共有数据；一条返佣/提成记录对应一行。"),
-      column("明细类型", row => detailTypesFor(type).find(item => item.key === row.detail.type)?.label || row.detail.type),
+      column("明细类型", row => detailTypesFor(type).find(item => item.key === row.detail.type)?.label || row.detail.type, "文本", "", true),
       column("姓名", row => row.detail.name, "文本", "手填文本；同名人员的多条规则逐行保留，不去重，也不匹配员工字典。"),
       column("比例（%）", row => row.detail.rate, "数值·两位小数", "范围 0-100%，0 有效，1.50 表示 1.50%。"),
-      ...(type === "option" ? [column("返佣规则", row => row.detail.rule, "文本", "按中间人/员工及前端/后端对应规则原文输出。")] : []),
+      ...(type === "option" ? [column("返佣规则", row => row.detail.rule, "文本", "按中间人/员工及前端/后端对应规则原文输出。", true)] : []),
       column("说明", row => row.detail.note, "长文本", "完整保留文本。")
     ];
     sheets.push({
@@ -2869,8 +3033,8 @@ function exportWorkbook(customers) {
   sheets.push({
     key: "notes", name: "字段说明", unit: "项字段",
     columns: [
-      column("工作表", row => row.sheet), column("字段", row => row.field),
-      column("数据格式", row => row.format), column("说明", row => row.note, "长文本")
+      column("工作表", row => row.sheet), column("字段", row => row.field, "文本", "", true),
+      column("数据格式", row => row.format), column("说明", row => row.note, "长文本", "", true)
     ], rows: notes
   });
   return { name: "客户业务配置明细_示例.xlsx", sheets };
@@ -2930,9 +3094,9 @@ function renderExportPreview(focus = false) {
         <table class="data-table export-table" aria-label="${sheet.name}导出内容">
           <thead><tr class="export-column-letters"><th aria-label="行号"></th>${sheet.columns.map((_, index) => `<th scope="col">${excelColumn(index)}</th>`).join("")}</tr>
             ${sheet.groups ? `<tr class="export-group-row"><th class="export-row-number" scope="row">1</th>${sheet.groups.map(group => `<th scope="colgroup" colspan="${group.columns.length}">${group.name}</th>`).join("")}</tr>` : ""}
-            <tr><th class="export-row-number" scope="row">${firstRow - 1}</th>${sheet.columns.map(field => `<th scope="col">${escapeHtml(field.label)}</th>`).join("")}</tr>
+            <tr><th class="export-row-number" scope="row">${firstRow - 1}</th>${sheet.columns.map(field => `<th scope="col">${term(field.label)}</th>`).join("")}</tr>
           </thead>
-          <tbody>${sheet.rows.length ? sheet.rows.map((row, index) => `<tr data-export-row><th class="export-row-number" scope="row">${firstRow + index}</th>${sheet.columns.map(field => `<td class="${field.format === "长文本" ? "export-long-text" : field.format === "文本" ? "" : "export-numeric"}">${escapeHtml(exportCell(field, row))}</td>`).join("")}</tr>`).join("") : `<tr><td class="empty-row" colspan="${sheet.columns.length + 1}">${escapeHtml(empty)}</td></tr>`}</tbody>
+          <tbody>${sheet.rows.length ? sheet.rows.map((row, index) => `<tr data-export-row><th class="export-row-number" scope="row">${firstRow + index}</th>${sheet.columns.map(field => `<td class="${field.format === "长文本" ? "export-long-text" : field.format === "文本" ? "" : "export-numeric"}">${field.naming ? term(exportCell(field, row)) : escapeHtml(exportCell(field, row))}</td>`).join("")}</tr>`).join("") : `<tr><td class="empty-row" colspan="${sheet.columns.length + 1}">${escapeHtml(empty)}</td></tr>`}</tbody>
         </table>
       </div>
       <div class="export-sheet-scroll" id="export-sheet-scroll" hidden>
@@ -3091,9 +3255,9 @@ requestAnimationFrame(syncShell);
     output.className = "hf-print-list";
     const groups = [
       { title: "客户共有信息", columns: [0, 1, 2, 3, 4], labels: ["客户姓名", "状态", "授信金额", "备注", "五级归属链路"] },
-      { title: "常规期权", columns: [0, 5, 6, 7, 8, 9], labels: ["客户姓名", "配置", "群编号", "归属员工", "直接对接人", "业务属性"] },
-      { title: "孖展合约", columns: [0, 10, 11, 12, 13, 14], labels: ["客户姓名", "配置", "群编号", "归属员工", "直接对接人", "业务属性"] },
-      { title: "询价配置", columns: [0, 15, 16, 17], labels: ["客户姓名", "配置", "报价分类", "加点摘要"] }
+      { title: "询价配置", columns: [0, 5, 6, 7], labels: ["客户姓名", "配置", "报价分类", "加点摘要"] },
+      { title: "常规期权", columns: [0, 8, 9, 10, 11, 12], labels: ["客户姓名", "配置", "群编号", "归属员工", "直接对接人", "业务属性"] },
+      { title: "孖展合约", columns: [0, 13, 14, 15, 16, 17], labels: ["客户姓名", "配置", "群编号", "归属员工", "直接对接人", "业务属性"] }
     ];
     const sourceRows = [...document.querySelectorAll("#customer-rows > tr")];
     for (const group of groups) {
