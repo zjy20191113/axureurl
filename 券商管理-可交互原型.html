@@ -1,0 +1,1268 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>同道项目 · 券商管理高保真原型</title>
+  <style>
+    :root {
+      --canvas:#f2f2f4; --surface:#fff; --text:#20242b; --muted:#697384;
+      --line:#e5e7eb; --focus:#4c9ffe; --primary:#16a98d; --selection:#486bd8;
+      --nav:#20292e; --nav-deep:#182025; --success:#16754b; --danger:#c9342f;
+      --subtle:#f6f7f9; --shadow:0 8px 24px rgba(0,0,0,.08);
+      --broker-ink:#29343b; --broker-secondary:#53616b; --broker-caption:#657580;
+      --broker-line:#e1e7ea; --broker-control-line:#c9d3d9; --broker-inset:#f8fafb;
+      --broker-action:#0b7864; --broker-action-hover:#076453; --broker-action-soft:#eaf6f2;
+      --broker-danger-soft:#fff0ef; --broker-neutral-soft:#f0f3f5; --broker-warning:#875c17;
+      --broker-window:#29373e; --broker-ease:cubic-bezier(.23,1,.32,1);
+    }
+    * { box-sizing:border-box; }
+    [hidden] { display:none !important; }
+    html { -webkit-text-size-adjust:100%; }
+    body { margin:0; background:var(--canvas); color:var(--text); font:400 15px/1.5 -apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",Arial,sans-serif; letter-spacing:0; -webkit-font-smoothing:antialiased; }
+    button,input,select,textarea { font:inherit; letter-spacing:0; }
+    button,a,summary { touch-action:manipulation; }
+    button { cursor:pointer; }
+    button:disabled { cursor:not-allowed; opacity:.48; }
+    button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible,[tabindex]:focus-visible { outline:2px solid var(--focus); outline-offset:2px; }
+    a { color:#2368c4; }
+    h1,h2,h3,p { margin-top:0; }
+    .shell { padding:16px; min-height:100vh; }
+    .project-head { display:flex; align-items:center; justify-content:space-between; gap:16px; min-height:58px; padding:10px 18px; background:#fff; border:1px solid rgba(0,0,0,.11); border-radius:8px; box-shadow:0 10px 32px rgba(0,0,0,.065),0 2px 8px rgba(0,0,0,.035); }
+    .project-head h1 { margin:0; font-size:18px; line-height:1.25; }
+    .project-head p { margin:4px 0 0; font-size:12px; color:var(--muted); }
+    .project-actions { display:flex; align-items:center; gap:12px; flex-shrink:0; font-size:12px; color:var(--muted); }
+    .prototype-layout { display:grid; grid-template-columns:minmax(380px,440px) minmax(0,1fr); gap:16px; align-items:start; margin-top:16px; }
+    .change-log-panel,.prototype-column,.prototype-workspace { min-width:0; }
+    .change-log-panel { align-self:stretch; contain:size; min-height:0; overflow-y:auto; scrollbar-gutter:stable; padding:16px; background:#fff; border:1px solid rgba(0,0,0,.11); border-radius:8px; box-shadow:var(--shadow); font-size:13px; }
+    .change-log-panel h2 { font-size:17px; margin:0 0 12px; }
+    .record-section + .record-section { margin-top:18px; padding-top:16px; border-top:1px solid var(--line); }
+    .record-empty { padding:10px 12px; color:var(--muted); background:var(--subtle); border:1px solid var(--line); border-radius:4px; font-size:12px; }
+    .record-section p:last-child { margin-bottom:0; }
+    .page-prd { overflow-wrap:anywhere; line-height:1.75; color:#384253; }
+    .page-prd h3 { font-size:14px; margin:18px 0 8px; }
+    .page-prd ul { padding-left:18px; }
+    .page-prd li + li { margin-top:8px; }
+    .prd-table { width:100%; table-layout:fixed; border-collapse:collapse; font-size:12px; }
+    .prd-table th,.prd-table td { border-bottom:1px solid var(--line); text-align:left; vertical-align:top; padding:9px 8px; overflow-wrap:anywhere; }
+    .prd-table th { width:90px; font-weight:500; background:var(--subtle); }
+    .boundary { color:var(--muted); font-size:12px; padding-top:14px; margin-top:18px; border-top:1px dashed var(--line); }
+    .review-note { padding:10px; margin-top:12px; background:#fff5dd; color:#77520d; border:1px solid #ead7aa; border-radius:4px; }
+    .demo-tools summary { cursor:pointer; font-weight:600; }
+    .demo-tools .field { margin-top:12px; }
+    .demo-tools small { display:block; color:var(--muted); margin-top:8px; }
+    .prototype-tabs { display:flex; gap:4px; overflow-x:auto; margin-bottom:10px; padding:0 2px; }
+    .prototype-tab { display:inline-flex; gap:8px; align-items:center; justify-content:center; min-height:44px; flex-shrink:0; border:1px solid transparent; border-radius:6px; padding:8px 14px; background:transparent; color:#677181; font-size:14px; font-weight:600; white-space:nowrap; }
+    .prototype-tab[aria-selected="true"] { color:#1760c5; background:#fff; border-color:#d7dce5; box-shadow:0 2px 4px #18203405; }
+    .prototype-screen-wrap { position:relative; height:auto; overflow:auto; border:1px solid #dedee1; border-radius:8px; background:#fff; box-shadow:var(--shadow); }
+    .prototype-pan { display:flex; align-items:center; gap:8px; margin-top:8px; }
+    .prototype-pan input { appearance:none; flex:1; min-width:0; margin:0; height:24px; background:transparent; cursor:ew-resize; }
+    .prototype-pan input::-webkit-slider-runnable-track { height:12px; border:1px solid #d4dbe5; border-radius:4px; background:#e4e9ef; }
+    .prototype-pan input::-webkit-slider-thumb { appearance:none; width:64px; height:10px; border-radius:3px; background:#74859d; }
+    .prototype-pan input::-moz-range-track { height:10px; border:1px solid #d4dbe5; border-radius:4px; background:#e4e9ef; }
+    .prototype-pan input::-moz-range-thumb { width:64px; height:10px; border:0; border-radius:3px; background:#74859d; }
+    .icon { width:16px; height:16px; flex:0 0 16px; stroke:currentColor; fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; vertical-align:middle; }
+    .icon-button { display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; flex:0 0 34px; padding:0; border:1px solid #d8dee8; border-radius:4px; color:#596576; background:#fff; position:relative; }
+    [data-tip]::after { content:attr(data-tip); position:absolute; z-index:20; top:calc(100% + 6px); right:0; width:max-content; max-width:180px; padding:5px 8px; background:#252d35; color:#fff; border-radius:3px; font-size:12px; opacity:0; pointer-events:none; }
+    [data-tip]:focus-visible::after { opacity:1; }
+    .button { display:inline-flex; align-items:center; justify-content:center; gap:6px; min-height:34px; padding:6px 12px; border:1px solid #d5d9df; border-radius:3px; background:#fff; color:#404955; font-size:13px; font-weight:500; white-space:nowrap; }
+    .button.primary { background:var(--primary); border-color:var(--primary); color:#fff; }
+    .text-button { display:inline-flex; align-items:center; gap:4px; border:0; background:transparent; color:#2674b9; padding:4px 2px; font-size:13px; }
+    .muted { color:var(--muted); }
+    .admin { min-width:1220px; display:grid; grid-template-columns:180px minmax(0,1fr); background:#f1f4f5; min-height:820px; font-size:13px; color:var(--broker-ink); }
+    .admin.brokers-page { min-width:2040px; }
+    .admin.export-page { min-width:2880px; display:block; background:#fff; }
+    .admin.export-page .admin-nav,.admin.export-page .admin-top { display:none; }
+    .admin.export-page .business-page { border:0; }
+    .export-summary { display:flex; gap:16px; align-items:baseline; margin-bottom:14px; color:#687580; }
+    .export-summary .applied { flex:1; }
+    .export-summary > span { white-space:nowrap; }
+    .export-sheet { width:100%; table-layout:fixed; border-collapse:collapse; font-size:12px; }
+    .export-sheet th,.export-sheet td { border:1px solid #dce3e1; padding:12px 10px; text-align:left; vertical-align:top; white-space:pre-wrap; overflow-wrap:anywhere; line-height:1.8; }
+    .export-sheet thead .sheet-letters th { padding:4px 6px; text-align:center; font-weight:400; color:#6d7975; background:#f0f3f2; }
+    .export-sheet thead .sheet-fields th { color:#255c4e; background:#e8f3ee; font-weight:600; vertical-align:middle; }
+    .export-sheet .sheet-row { text-align:center; font-weight:400; color:#78837e; background:#f5f7f6; padding:12px 4px; }
+    .export-sheet tbody tr:nth-child(even) td { background:#fafcfb; }
+    .export-sheet tbody td:first-of-type { font-weight:500; color:#263f36; }
+    .sheet-footer { display:flex; gap:24px; align-items:center; min-height:38px; padding:8px 12px; border:1px solid #dce3e1; border-top:0; background:#f5f7f6; color:#68776f; font-size:12px; }
+    .sheet-footer strong { color:#26705b; font-weight:500; }
+    .admin-nav { background:var(--nav); color:#98a4ac; }
+    .admin-brand { height:52px; display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:600; color:#f0f3f4; border-bottom:1px solid #354046; }
+    .profile { display:flex; align-items:center; gap:12px; padding:20px 16px; color:#fff; }
+    .avatar { width:38px; height:38px; display:grid; place-items:center; color:#8d969c; background:#e5e7e9; border-radius:50%; }
+    .profile small { display:flex; align-items:center; gap:6px; color:#c0d6cc; margin-top:4px; font-size:11px; }
+    .profile small::before { content:""; width:5px; height:5px; border-radius:50%; background:#78c8a7; }
+    .nav-group { padding:12px 16px; color:#d2d8db; background:#1d252a; display:flex; gap:8px; align-items:center; }
+    .nav-link { display:flex; align-items:center; width:100%; min-height:44px; gap:9px; padding:10px 16px; border:0; border-radius:0; background:var(--nav-deep); color:#99a8b1; text-align:left; font-size:13px; }
+    .nav-link[aria-current="page"] { background:var(--selection); color:#fff; }
+    .nav-link .icon { width:14px; height:14px; flex-basis:14px; }
+    .admin-content { min-width:0; }
+    .admin-top { display:flex; align-items:center; justify-content:space-between; height:52px; background:#fff; padding:0 18px; border-bottom:1px solid #d6dce1; }
+    .admin-path { display:flex; align-items:center; gap:10px; color:#485059; }
+    .admin-user { color:#7c858c; display:flex; align-items:center; gap:8px; }
+    .admin-main { padding:16px; }
+    .business-page { background:#fff; padding:24px 20px; border-top:2px solid #dbe4e5; }
+    .page-heading { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:24px; }
+    .page-heading h2 { font-size:20px; line-height:1.4; margin:0; font-weight:650; color:var(--broker-ink); }
+    .breadcrumbs { display:flex; gap:6px; align-items:center; color:#7f8992; font-size:12px; }
+    .filters { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px 16px; }
+    .field { display:flex; flex-direction:column; gap:6px; min-width:0; }
+    .field > label,.field-label { font-size:12px; font-weight:500; color:var(--broker-secondary); }
+    .field input,.field select,.field textarea,.filter-checks { width:100%; min-width:0; min-height:36px; border:1px solid var(--broker-control-line); border-radius:4px; padding:7px 10px; color:var(--broker-ink); background:#fff; font-size:13px; }
+    .field select { color-scheme:light; cursor:pointer; }
+    .field input:focus,.field select:focus,.field textarea:focus { border-color:var(--broker-action); background:#fff; }
+    .field input:disabled,.field select:disabled,.field textarea:disabled { background:var(--broker-neutral-soft); color:var(--broker-caption); cursor:not-allowed; }
+    .field input,.fee-rate-input,.export-sheet,.data-table { font-variant-numeric:tabular-nums; }
+    .field textarea { resize:vertical; min-height:64px; line-height:1.6; }
+    input::placeholder,textarea::placeholder { color:#9ba3aa; }
+    .filter-checks { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+    .filter-checks label,.choices label { display:inline-flex; gap:6px; align-items:center; cursor:pointer; color:var(--broker-secondary); font-size:13px; }
+    .admin .choices label,.work-window .choices label { min-height:30px; padding:3px 6px; border-radius:3px; }
+    .admin .choices label:has(input:checked),.work-window .choices label:has(input:checked) { background:var(--broker-action-soft); color:var(--broker-action); }
+    .admin .choices label:has(input[value="终止"]:checked),.work-window .choices label:has(input[value="终止"]:checked) { background:var(--broker-danger-soft); color:var(--danger); }
+    input[type="checkbox"],input[type="radio"] { accent-color:var(--primary); width:15px; height:15px; margin:0; flex:0 0 15px; }
+    .filter-footer { display:flex; align-items:center; justify-content:space-between; margin:14px 0 16px; gap:12px; }
+    .filter-footer .actions { display:flex; align-items:center; gap:8px; }
+    .advanced { margin-top:12px; }
+    .advanced summary { color:#697680; font-size:12px; cursor:pointer; width:max-content; }
+    .advanced .filters { margin-top:12px; }
+    .business-filters { display:grid; grid-template-columns:1.35fr 1fr; gap:24px; margin-top:16px; padding:20px 0 4px; border-top:1px solid var(--broker-line); }
+    .business-filter-group > legend { margin-bottom:12px; font-size:13px; font-weight:650; color:var(--broker-ink); }
+    .business-filter-group + .business-filter-group { border-left:1px solid #edf0f2; padding-left:24px; }
+    .business-filter-group .filters { grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px 14px; }
+    .business-filter-group[data-filter-business="swap"] .filters { grid-template-columns:minmax(0,1fr); }
+    .business-filter-group .choices { gap:4px 8px; min-height:36px; }
+    .business-filter-group .target-filter { grid-column:span 2; }
+    .toolbar { display:flex; gap:8px; align-items:center; margin-bottom:12px; padding-top:16px; border-top:1px solid var(--broker-line); }
+    .toolbar .count { margin-left:auto; color:var(--broker-caption); font-size:12px; font-variant-numeric:tabular-nums; }
+    .admin .button,.window-workspace .button { min-height:36px; border-radius:4px; padding:7px 12px; }
+    .admin .button.primary,.window-workspace .button.primary { background:var(--broker-action); border-color:var(--broker-action); }
+    .admin .text-button,.window-workspace .text-button { color:var(--broker-action); }
+    .admin .icon-button { width:36px; height:36px; flex-basis:36px; border-color:var(--broker-control-line); }
+    .admin .button,.admin .icon-button,.window-workspace .button,.window-workspace .icon-button { transition:transform 120ms var(--broker-ease); }
+    .applied { color:#687580; font-size:12px; min-height:20px; overflow-wrap:anywhere; }
+    .table-wrap { width:100%; overflow:auto; border:1px solid var(--broker-line); scrollbar-color:#98a8af #eff3f5; scrollbar-width:thin; }
+    .data-table { width:100%; table-layout:fixed; border-collapse:collapse; font-size:13px; }
+    .data-table th { text-align:left; height:44px; padding:10px 12px; font-weight:600; color:#505963; background:#fafbfc; border-right:1px solid #edf0f2; border-bottom:1px solid #e3e7eb; }
+    .data-table td { padding:16px 12px; vertical-align:top; border-bottom:1px solid #edf0f2; border-right:1px solid #edf0f2; color:#4d5660; }
+    .data-table tbody tr:last-child td { border-bottom:0; }
+    .data-table .operation { width:84px; text-align:center; position:sticky; right:0; background:#fff; }
+    .data-table th.operation { background:#fafbfc; }
+    .broker-table th { text-align:center; height:36px; padding:8px 6px; background:#fafbfc; font-size:12px; font-weight:500; color:var(--broker-secondary); }
+    .broker-table thead tr:first-child th { height:40px; color:var(--broker-ink); background:#f0f4f5; font-weight:650; border-bottom-color:#d8e1e5; }
+    .broker-table thead tr:first-child th:nth-child(2) { background:#edf5f2; }
+    .broker-table thead tr:first-child th:nth-child(3) { background:#f0f3f7; }
+    .broker-table thead tr:first-child th:nth-child(4) { background:#f3f4ef; }
+    .broker-table td { text-align:center; padding:16px 8px; vertical-align:middle; font-size:12px; overflow-wrap:anywhere; color:var(--broker-secondary); }
+    .broker-table .broker-name,.broker-table .fee-cell { text-align:left; }
+    .broker-table .broker-text { text-align:left; white-space:pre-wrap; vertical-align:top; line-height:1.8; }
+    .broker-table td strong { margin-bottom:2px; font-size:13px; }
+    .broker-table .tags { justify-content:center; margin-top:0; gap:3px; }
+    .broker-table .tag { padding:2px 5px; background:#edf1f3; color:#586a75; }
+    .broker-table .group-start { border-left:2px solid #dce5e8; }
+    .broker-table tbody tr:nth-child(odd of [data-broker-id]) > td { background:#f8fafb; }
+    .broker-table td.operation { border-left:1px solid var(--broker-line); }
+    .broker-table .row-actions { gap:3px; }
+    .broker-table .operation { width:auto; }
+    .data-table td strong { font-weight:600; color:#333e48; display:block; margin-bottom:4px; }
+    .data-table small { color:var(--broker-caption); display:block; margin-top:4px; line-height:1.6; }
+    .data-table .clip { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block; }
+    .data-table .summary-line { display:block; margin-top:7px; font-size:12px; color:#6e7a84; }
+    .status { display:inline-flex; align-items:center; gap:5px; padding:3px 6px; border-radius:3px; color:var(--success); background:#edf7f1; font-size:12px; line-height:1.5; white-space:nowrap; }
+    .status::before { content:""; width:5px; height:5px; flex:0 0 5px; border-radius:50%; background:currentColor; }
+    .status.terminated { color:var(--danger); background:var(--broker-danger-soft); }
+    .status.closed { color:#65717b; background:var(--broker-neutral-soft); }
+    .status.disabled { color:var(--broker-warning); background:#fff6e8; }
+    .tags { display:flex; flex-wrap:wrap; gap:4px; margin-top:8px; }
+    .tag { display:inline-block; font-size:11px; line-height:1.5; background:#f0f3f6; color:#6b7786; padding:2px 6px; border-radius:3px; }
+    .row-actions { display:flex; flex-direction:column; align-items:center; gap:10px; }
+    .row-actions .icon-button { width:28px; height:28px; flex-basis:28px; background:var(--primary); color:#fff; border-color:var(--primary); }
+    .fee-line { white-space:pre-wrap; overflow-wrap:anywhere; padding:8px 0; border-bottom:1px solid #e7eaee; font-size:12px; }
+    .fee-line:first-child { padding-top:0; }
+    .fee-line:last-child { border-bottom:0; }
+    .fee-market-group + .fee-market-group { margin-top:10px; padding-top:8px; border-top:1px solid var(--line); }
+    .fee-market-label { display:block; margin-bottom:5px; font-size:12px; color:var(--broker-caption); }
+    .fee-line b { display:block; font-weight:600; margin-bottom:4px; color:var(--broker-ink); }
+    .fee-description { color:var(--broker-secondary); line-height:1.8; }
+    .broker-table td.market-rule-cell { text-align:left; vertical-align:top; }
+    .market-rule-line { padding:6px 0; border-bottom:1px solid var(--broker-line); white-space:pre-wrap; overflow-wrap:anywhere; }
+    .market-rule-line:first-child { padding-top:0; }
+    .market-rule-line:last-child { border-bottom:0; }
+    .market-rule-line b { display:block; color:var(--broker-ink); font-weight:600; margin-bottom:3px; }
+    .fee-number { font-weight:600; font-variant-numeric:tabular-nums; color:var(--broker-ink); }
+    .list-foot { display:flex; align-items:center; justify-content:space-between; gap:12px; padding-top:16px; font-size:12px; color:#7d8892; }
+    .pagination { display:flex; gap:8px; align-items:center; }
+    .page-count { padding:4px 10px; border:1px solid #d5e1ef; color:#2674b9; background:#eef4fa; border-radius:3px; }
+    .empty { padding:44px 20px; text-align:center; color:#82909a; }
+    .empty .icon { width:28px; height:28px; margin-bottom:10px; }
+    .empty strong { display:block; font-weight:500; color:#55616d; font-size:14px; margin-bottom:6px; }
+    .empty p { font-size:12px; margin-bottom:10px; }
+    .message { color:var(--danger); font-size:12px; background:#fff4f3; border:1px solid #efcfca; border-radius:3px; padding:9px 12px; margin-bottom:12px; }
+    .message:empty { display:none; }
+    .dialog { width:min(860px,calc(100% - 32px)); max-height:calc(100dvh - 40px); padding:0; border:0; border-radius:4px; overflow:hidden; color:var(--text); background:#fff; box-shadow:0 12px 48px #18202545; }
+    .dialog.small { width:min(480px,calc(100% - 32px)); }
+    .dialog::backdrop { background:#20292e66; }
+    .dialog-frame { display:flex; flex-direction:column; max-height:calc(100dvh - 40px); }
+    .dialog-header { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-shrink:0; padding:12px 20px; background:var(--broker-window); color:#fff; }
+    .dialog-header h2 { font-size:16px; margin:0; font-weight:600; }
+    .dialog-header .icon-button { border:0; background:transparent; color:#c7d1d7; }
+    .dialog-body { padding:24px; overflow-y:auto; overscroll-behavior:contain; min-height:0; scrollbar-gutter:stable; }
+    .dialog-footer { display:flex; justify-content:flex-end; gap:8px; padding:12px 24px; background:#f8fafb; border-top:1px solid var(--broker-line); flex-shrink:0; }
+    .dialog-footer .primary { background:var(--broker-action); border-color:var(--broker-action); }
+    .form-section { padding-bottom:18px; }
+    .form-section + .form-section { padding-top:16px; border-top:1px solid var(--line); }
+    .form-section h3 { display:flex; align-items:center; gap:8px; font-size:14px; font-weight:650; margin:0 0 16px; color:var(--broker-ink); }
+    .form-section h3::before { content:""; width:3px; height:14px; background:#a9c8bd; }
+    .form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px 24px; }
+    .form-grid .wide { grid-column:1/-1; }
+    .market-rules { margin-top:22px; }
+    .market-rules h3 { font-size:14px; margin:0 0 12px; }
+    .market-rule-head,.market-rule-editor { display:grid; grid-template-columns:116px minmax(0,1fr) minmax(0,1fr); gap:16px; }
+    .market-rule-head { padding:10px 12px; background:var(--broker-inset); font-size:12px; color:var(--broker-secondary); border-bottom:1px solid var(--broker-line); }
+    .market-rule-editor { align-items:start; padding:14px 12px; border-bottom:1px solid var(--broker-line); }
+    .market-rule-editor h4 { margin:8px 0 0; font-size:13px; font-weight:600; color:var(--broker-ink); overflow-wrap:anywhere; }
+    .market-rule-editor textarea { min-height:76px; resize:vertical; }
+    .market-rule-editor .field-label { display:none; }
+    @container (max-width:640px) {
+      .market-rule-head { display:none; }
+      .market-rule-editor { grid-template-columns:minmax(0,1fr); gap:12px; padding:16px 0; }
+      .market-rule-editor .field-label { display:block; }
+    }
+    .choices { display:flex; align-items:center; flex-wrap:wrap; gap:12px 20px; min-height:34px; }
+    .choices label:has(input[value="终止"]) { color:var(--danger); }
+    fieldset { border:0; padding:0; margin:0; min-width:0; }
+    legend { padding:0; margin-bottom:6px; }
+    .required { color:var(--danger); margin-left:3px; }
+    .business-form-tabs { display:flex; gap:0; margin-top:8px; border-bottom:1px solid var(--line); margin-bottom:18px; }
+    .business-form-tabs button { min-height:44px; padding:10px 18px; border:0; border-bottom:2px solid transparent; background:transparent; color:var(--broker-caption); font-size:13px; }
+    .business-form-tabs button[aria-selected="true"] { color:var(--broker-action); border-bottom-color:var(--broker-action); background:#f4faf7; font-weight:600; }
+    .form-context { font-size:12px; color:var(--broker-caption); margin:0 0 16px; overflow-wrap:anywhere; }
+    .helper { font-size:12px; color:var(--broker-caption); margin:4px 0 0; line-height:1.7; }
+    .fee-editor { padding:14px 0 18px; border-bottom:1px solid var(--line); }
+    .fee-rule-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+    .fee-rule-head h4 { margin:0; color:#57616b; font-size:13px; font-weight:500; }
+    .fee-rule-fields { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px 16px; margin-top:16px; }
+    .fee-rate-input { display:flex; align-items:stretch; min-width:0; }
+    .fee-rate-input input { flex:1; width:0; border-radius:3px 0 0 3px; }
+    .fee-rate-input span { display:flex; align-items:center; padding:6px 10px; background:var(--broker-inset); border:1px solid var(--broker-control-line); border-left:0; border-radius:0 4px 4px 0; font-size:12px; color:var(--broker-secondary); white-space:nowrap; }
+    .fee-rate-input:focus-within span { border-color:var(--broker-action); }
+    .fee-rate-input input:disabled { background:#f4f5f6; }
+    .fee-project-picker { min-width:0; }
+    .fee-project-picker summary { display:flex; align-items:center; justify-content:space-between; gap:8px; min-height:36px; padding:7px 10px; border:1px solid var(--broker-control-line); border-radius:4px; cursor:pointer; background:#fff; overflow-wrap:anywhere; }
+    .fee-project-picker summary::after { content:""; width:6px; height:6px; border-right:1px solid currentColor; border-bottom:1px solid currentColor; transform:rotate(45deg); flex-shrink:0; }
+    .fee-project-options { margin-top:6px; padding:8px; border:1px solid var(--broker-control-line); border-radius:4px; background:#fff; }
+    .fee-project-options select { margin-top:8px; min-height:110px; height:auto; }
+    .fee-search-state { color:#8a949e; margin-top:4px; font-size:12px; }
+    .fee-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; margin:18px 0 0; }
+    .fee-heading h3 { font-size:14px; margin:0; }
+    .fee-undo { margin-top:10px; }
+    .fee-list { margin-top:14px; overflow:auto; }
+    .fee-list table { min-width:1000px; }
+    .fee-list th,.fee-list td { padding:12px 10px; font-size:12px; overflow-wrap:anywhere; vertical-align:middle; }
+    .fee-list th { background:#f1f5f6; }
+    .fee-list td:nth-child(6),.fee-list th:nth-child(6) { text-align:center; }
+    .fee-list td:nth-child(7),.fee-list th:nth-child(7) { text-align:right; font-variant-numeric:tabular-nums; }
+    .fee-list .rule-actions { display:flex; gap:8px; }
+    .fee-subpage-head { display:flex; align-items:center; gap:12px; margin:18px 0 0; padding-bottom:12px; border-bottom:1px solid var(--line); }
+    .fee-subpage-head h3 { margin:0; font-size:14px; }
+    .window-workspace { position:fixed; z-index:30; right:16px; bottom:16px; width:min(1040px,calc(100% - 500px)); padding-bottom:78px; pointer-events:none; }
+    .window-workspace:has(.window-grid.is-paired) { width:min(1760px,calc(100% - 500px)); }
+    .window-stage-head { display:flex; justify-content:flex-end; gap:10px; align-items:center; margin-bottom:8px; font-size:12px; }
+    .window-stage-head > div { display:flex; align-items:center; gap:10px; padding:5px 10px; border:1px solid #d8e0e9; border-radius:4px; background:#fff; pointer-events:auto; }
+    .window-grid { display:grid; grid-template-columns:minmax(0,1fr); gap:12px; }
+    .window-grid.is-paired { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .work-window { display:flex; flex-direction:column; height:min(780px,calc(100dvh - 180px)); min-width:0; border:1px solid #b9c9ca; border-radius:6px; overflow:hidden; background:#fff; box-shadow:0 12px 32px #182d3226; pointer-events:auto; container-type:inline-size; }
+    .work-window[data-active="true"] { border-color:#629d8e; box-shadow:0 0 0 1px #b3d2c8,0 12px 32px #182d3226; }
+    .work-window .dialog-frame { flex:1; min-height:0; max-height:none; }
+    .work-window .dialog-body { flex:1; }
+    .window-title { min-width:0; }
+    .window-title h2 { overflow-wrap:anywhere; }
+    .window-title small { display:block; margin-top:3px; color:#c7d2df; font-size:11px; }
+    .window-actions { display:flex; gap:2px; flex-shrink:0; }
+    .window-taskbar { position:fixed; bottom:16px; display:flex; gap:8px; padding:8px; border:1px solid #d8e0e9; border-radius:4px; background:#f3f5f8; overflow-x:auto; pointer-events:auto; }
+    .window-task { display:flex; flex:0 0 220px; min-width:0; height:52px; border:1px solid #cfd7e1; border-radius:4px; background:#fff; }
+    .window-task.current { border-color:#7eaf9f; background:var(--broker-action-soft); }
+    .window-task > button:first-child { display:flex; flex:1; flex-direction:column; justify-content:center; gap:2px; min-width:0; padding:5px 8px; border:0; background:transparent; text-align:left; }
+    .window-task strong,.window-task small { overflow:hidden; white-space:nowrap; text-overflow:ellipsis; font-size:12px; width:100%; }
+    .window-task small { font-size:11px; color:#73808c; }
+    .window-task .icon-button { border:0; align-self:center; }
+    .window-stage-head .button[aria-pressed="true"] { color:var(--broker-action); background:var(--broker-action-soft); border-color:#a7cbbf; }
+    @container (max-width:640px) {
+      .fee-rule-fields { grid-template-columns:1fr; }
+    }
+    @container (max-width:520px) {
+      .form-grid { grid-template-columns:1fr; }
+      .dialog-body { padding:16px; }
+    }
+    .toast { position:fixed; left:50%; bottom:24px; transform:translateX(-50%); padding:12px 20px; max-width:calc(100% - 24px); border:1px solid #bcd9ce; background:#f1faf5; color:#267151; font-size:13px; box-shadow:0 4px 16px #18202518; border-radius:4px; z-index:50; overflow-wrap:anywhere; }
+    @media (hover:hover) and (pointer:fine) {
+      .button:hover:not(:disabled),.icon-button:hover:not(:disabled) { filter:brightness(.97); }
+      .admin .button.primary:hover:not(:disabled),.window-workspace .button.primary:hover:not(:disabled) { background:var(--broker-action-hover); border-color:var(--broker-action-hover); filter:none; }
+      .admin .choices label:hover,.work-window .choices label:hover { background:#f0f5f3; }
+      .field input:hover:not(:disabled):not(:focus),.field select:hover:not(:disabled):not(:focus),.field textarea:hover:not(:disabled):not(:focus) { border-color:#8ea69e; }
+      .text-button:hover { text-decoration:underline; }
+      [data-tip]:hover::after { opacity:1; }
+      .data-table tbody tr:hover > td { background:#f0f7f4; }
+    }
+    button:active:not(:disabled) { transform:scale(.98); }
+    @media (prefers-reduced-motion:reduce) {
+      button:active:not(:disabled) { transform:none; }
+      .admin .button,.admin .icon-button,.window-workspace .button,.window-workspace .icon-button { transition:none; }
+    }
+    @media (max-width:1180px) {
+      .window-workspace,.window-workspace:has(.window-grid.is-paired) { right:12px; width:calc(100% - 24px); }
+      .prototype-layout { grid-template-columns:1fr; }
+      .prototype-column { order:1; }
+      .change-log-panel { order:2; contain:none; overflow:visible; scrollbar-gutter:auto; }
+    }
+    @media (max-width:720px) {
+      .window-workspace { bottom:12px; }
+      .window-taskbar { bottom:12px; }
+      .work-window { height:calc(100dvh - 150px); }
+      .work-window .dialog-header { padding:10px 12px; }
+      .work-window .dialog-footer { padding:10px 16px; }
+      .shell { padding:12px; }
+      .project-head { flex-wrap:wrap; padding:12px; gap:8px; }
+      .project-head h1 { font-size:17px; }
+      .project-actions { width:100%; justify-content:space-between; }
+      .prototype-layout { margin-top:12px; gap:12px; }
+      .dialog { width:calc(100% - 24px); max-height:calc(100dvh - 24px); }
+      .dialog-frame { max-height:calc(100dvh - 24px); }
+      .dialog-body { padding:16px; }
+      .form-grid { grid-template-columns:1fr; }
+      .business-form-tabs { overflow-x:auto; }
+      .business-form-tabs button { white-space:nowrap; flex-shrink:0; padding:10px 14px; }
+      .fee-rule-fields { grid-template-columns:1fr; }
+      .work-window .choices label { min-height:36px; }
+    }
+    @media print {
+      @page { size:A4 landscape; margin:10mm; }
+      body,.shell { background:#fff; padding:0; }
+      .prototype-layout { display:flex; flex-direction:column; }
+      .prototype-column { order:1; width:100%; }
+      .change-log-panel { order:2; width:100%; contain:none; overflow:visible; border:0; box-shadow:none; break-before:page; }
+      .project-actions,.prototype-tabs,.prototype-pan,.demo-tools,.toast,.admin-nav,.dialog,.window-workspace,.filter-footer,.toolbar,.list-foot { display:none !important; }
+      .prototype-screen-wrap { overflow:visible; border:0; box-shadow:none; }
+      .admin,.admin.brokers-page,.admin.export-page { min-width:0; display:block; min-height:0; background:#fff; }
+      .admin-main { padding:0; }
+      .business-page { border:0; padding:12px 0; }
+      .table-wrap { overflow:visible; }
+      .data-table { font-size:11px; }
+      .data-table th,.data-table td { padding:8px 6px; white-space:normal; overflow-wrap:anywhere; }
+      .broker-table th,.broker-table td { font-size:9px; padding:6px 3px; }
+      .broker-table td strong { font-size:10px; }
+      .broker-table .status { font-size:9px; white-space:normal; }
+      .broker-table .status { padding:1px 2px; }
+      .broker-table .status::before { display:none; }
+      .broker-table .tag { font-size:9px; padding:0 2px; }
+      .broker-table .fee-line,.broker-table small,.broker-table .text-button { font-size:9px; }
+      .export-sheet th,.export-sheet td { font-size:8px; padding:5px 2px; line-height:1.5; }
+      .export-sheet .sheet-row { padding:5px 1px; }
+      .export-summary { flex-wrap:wrap; gap:4px 12px; font-size:10px; }
+      .export-summary .applied { flex-basis:100%; font-size:10px; }
+      .data-table .clip { white-space:normal; overflow:visible; }
+      .data-table .operation { position:static; width:60px; }
+      .data-table tr { break-inside:avoid; }
+      .project-head { box-shadow:none; }
+      .filters { grid-template-columns:repeat(4,minmax(0,1fr)); }
+      .prd-table,.page-prd { overflow:visible; }
+    }
+  </style>
+</head>
+<body>
+<main class="shell">
+  <header class="project-head">
+    <div><h1>同道项目 · 券商管理</h1><p>易用性优化及功能扩充 · 高保真交互原型</p></div>
+    <div class="project-actions"><span>本地演示 · 刷新恢复初始数据</span><button class="icon-button" id="reset-demo" aria-label="重置演示" data-tip="重置演示"><i data-icon="RotateCcw"></i></button></div>
+  </header>
+  <section class="prototype-layout" data-page-key="brokers">
+    <aside class="change-log-panel" tabindex="0" aria-label="需求记录与页面 PRD，可上下滚动">
+      <section class="record-section"><h2>需求迭代记录</h2><p class="record-empty">本次未要求记录需求迭代</p></section>
+      <section class="record-section page-prd" id="page-prd"></section>
+      <section class="record-section">
+        <details class="demo-tools">
+          <summary>原型演示工具</summary>
+          <div class="field"><label for="demo-state">列表状态</label><select id="demo-state"><option value="normal">正常数据</option><option value="empty">初始无数据</option><option value="loading">加载中</option><option value="error">加载失败</option><option value="denied">无权限</option></select></div>
+          <label class="choices"><input type="checkbox" id="fail-save">下一次保存失败</label>
+          <label class="choices"><input type="checkbox" id="fail-export">下一次导出失败</label>
+          <small>仅切换本地画面；不代表已有鉴权、真实请求或生产结果。字典项目名称、券商和收费文字均为示例。</small>
+        </details>
+        <div id="review-note" class="review-note" role="status" hidden></div>
+      </section>
+      <p class="boundary">本地内存模拟，不连接演示站，不持久保存，不执行询价、行权、风控、收费或账务。未决规则保留在左侧及 PRD 中。<br><a href="../docs/券商管理_易用性优化及功能扩充_PRD.md">查看完整 PRD</a> · <a href="../docs/券商管理_高保真设计规范.md">高保真设计规范</a></p>
+    </aside>
+    <div class="prototype-column">
+      <nav class="prototype-tabs" role="tablist" aria-label="原型页面">
+        <button class="prototype-tab" id="tab-brokers" role="tab" aria-selected="true" aria-controls="product-page" data-page="brokers"><i data-icon="Layers"></i>券商管理</button>
+        <button class="prototype-tab" id="tab-dictionary" role="tab" aria-selected="false" aria-controls="product-page" data-page="dictionary" tabindex="-1"><i data-icon="FileText"></i>收费项目字典</button>
+        <button class="prototype-tab" id="tab-export" role="tab" aria-selected="false" aria-controls="product-page" data-page="export" tabindex="-1"><i data-icon="Download"></i>导出样式</button>
+      </nav>
+      <div class="prototype-workspace">
+        <div class="prototype-screen-wrap" id="canvas" role="region" tabindex="0" aria-label="原型演示区域，可左右滚动">
+          <div class="admin">
+            <nav class="admin-nav" aria-label="信息管理">
+              <div class="admin-brand">集成项目管理</div>
+              <div class="profile"><span class="avatar"><i data-icon="UserRound"></i></span><div>管理员<small>在线</small></div></div>
+              <div class="nav-group"><i data-icon="Layers"></i>信息管理</div>
+              <button class="nav-link" data-page="brokers" aria-current="page"><i data-icon="ChevronRight"></i>券商管理</button>
+              <button class="nav-link" data-page="dictionary"><i data-icon="ChevronRight"></i>收费项目字典</button>
+            </nav>
+            <div class="admin-content">
+              <header class="admin-top"><div class="admin-path">信息管理<i data-icon="ChevronRight"></i><span id="path-name">券商管理</span></div><span class="admin-user"><i data-icon="UserRound"></i>管理员</span></header>
+              <div class="admin-main"><section class="business-page" id="product-page" role="tabpanel" aria-labelledby="tab-brokers"></section></div>
+            </div>
+          </div>
+        </div>
+        <div class="prototype-pan" id="pan" role="group" aria-label="原型演示区横向滚动" hidden>
+          <button type="button" class="icon-button" id="pan-left" aria-label="向左移动原型" data-tip="向左移动原型"><i data-icon="ChevronLeft"></i></button>
+          <input type="range" id="pan-range" min="0" max="0" value="0" step="1" aria-label="原型横向滚动位置">
+          <button type="button" class="icon-button" id="pan-right" aria-label="向右移动原型" data-tip="向右移动原型"><i data-icon="ChevronRight"></i></button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<section class="window-workspace" id="window-workspace" aria-label="工作窗口" hidden>
+  <header class="window-stage-head" id="window-stage-head"><div><span id="window-count"></span><button type="button" class="button" id="window-compare" aria-pressed="true">并排查看</button></div></header>
+  <div class="window-grid" id="window-grid"></div>
+  <nav class="window-taskbar" id="window-taskbar" aria-label="已打开的工作窗口"></nav>
+</section>
+<template id="broker-template">
+<section class="work-window" id="broker-dialog" role="dialog" aria-modal="false" aria-labelledby="broker-title">
+  <form id="broker-form" class="dialog-frame" novalidate>
+    <header class="dialog-header"><div class="window-title"><h2 id="broker-title">添加券商</h2><small data-window-subtitle></small></div><div class="window-actions"><button type="button" class="icon-button" data-window-minimize aria-label="最小化券商窗口" data-tip="最小化"><i data-icon="Minus"></i></button><button type="button" class="icon-button" data-action="close-broker" aria-label="关闭券商表单" data-tip="关闭"><i data-icon="X"></i></button></div></header>
+    <div class="dialog-body">
+      <div class="message" id="broker-error" role="alert"></div>
+      <section class="form-section"><h3>基础信息</h3><div class="form-grid" id="basic-fields"></div></section>
+      <section class="form-section"><h3>收款信息与备注</h3><div class="form-grid" id="additional-fields"></div></section>
+      <section class="form-section" id="market-rules-section" aria-label="常规期权市场与板块规则"><h3>市场 / 板块规则</h3><div id="market-rule-fields"></div></section>
+      <section class="form-section" data-business-section><h3>业务配置</h3>
+      <div class="business-form-tabs" role="tablist" aria-label="券商配置">
+        <button type="button" role="tab" id="form-tab-option" aria-controls="business-fields" data-form-tab="option" aria-selected="true">常规期权</button>
+        <button type="button" role="tab" id="form-tab-margin" aria-controls="business-fields" data-form-tab="margin" aria-selected="false" tabindex="-1">孖展合约</button>
+        <button type="button" role="tab" id="form-tab-swap" aria-controls="business-fields" data-form-tab="swap" aria-selected="false" tabindex="-1">收益互换</button>
+        <button type="button" role="tab" id="form-tab-fees" aria-controls="business-fields" data-form-tab="fees" aria-selected="false" tabindex="-1">券商收费规则</button>
+      </div>
+      <p class="form-context" id="form-context"></p>
+      <section id="business-fields" role="tabpanel" aria-labelledby="form-tab-option"></section>
+      </section>
+    </div>
+    <footer class="dialog-footer" id="broker-footer"><button type="button" class="button" data-action="close-broker">取消</button><button type="submit" class="button primary" id="broker-save">保存</button></footer>
+  </form>
+</section>
+</template>
+<template id="dictionary-template">
+<section class="work-window" id="dictionary-dialog" role="dialog" aria-modal="false" aria-labelledby="dictionary-title">
+  <form id="dictionary-form" class="dialog-frame" novalidate>
+    <header class="dialog-header"><div class="window-title"><h2 id="dictionary-title">添加收费项目</h2><small data-window-subtitle></small></div><div class="window-actions"><button type="button" class="icon-button" data-window-minimize aria-label="最小化收费项目窗口" data-tip="最小化"><i data-icon="Minus"></i></button><button type="button" class="icon-button" data-action="close-dictionary" aria-label="关闭收费项目表单" data-tip="关闭"><i data-icon="X"></i></button></div></header>
+    <div class="dialog-body"><div class="message" id="dictionary-error" role="alert"></div><div class="field"><label for="dict-name">项目名称<span class="required">*</span></label><input id="dict-name" autocomplete="off"></div><fieldset style="margin-top:18px"><legend class="field-label">状态</legend><div class="choices" id="dict-status"></div></fieldset></div>
+    <footer class="dialog-footer"><button type="button" class="button" data-action="close-dictionary">取消</button><button type="submit" class="button primary" id="dictionary-save">保存</button></footer>
+  </form>
+</section>
+</template>
+<dialog class="dialog small" id="confirm-dialog" aria-labelledby="confirm-title">
+  <div class="dialog-frame"><header class="dialog-header"><h2 id="confirm-title">确认操作</h2></header><div class="dialog-body"><p id="confirm-message" style="margin:0;font-size:14px;overflow-wrap:anywhere"></p></div><footer class="dialog-footer"><button class="button" id="confirm-cancel">取消</button><button class="button primary" id="confirm-accept">确认</button></footer></div>
+</dialog>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<script>
+(() => {
+  "use strict";
+  // Reuse the Lucide nodes embedded in the reference prototype; no network dependency.
+  const nodes = {
+    RotateCcw:[["path",{d:"M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"}],["path",{d:"M3 3v5h5"}]],
+    Layers:[["path",{d:"M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"}],["path",{d:"M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"}],["path",{d:"M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"}]],
+    UserRound:[["circle",{cx:"12",cy:"8",r:"5"}],["path",{d:"M20 21a8 8 0 0 0-16 0"}]],
+    ChevronRight:[["path",{d:"m9 18 6-6-6-6"}]], ChevronLeft:[["path",{d:"m15 18-6-6 6-6"}]],
+    Plus:[["path",{d:"M5 12h14"}],["path",{d:"M12 5v14"}]],
+    Minus:[["path",{d:"M5 12h14"}]],
+    Download:[["path",{d:"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"}],["polyline",{points:"7 10 12 15 17 10"}],["line",{x1:"12",x2:"12",y1:"15",y2:"3"}]],
+    Search:[["path",{d:"m21 21-4.34-4.34"}],["circle",{cx:"11",cy:"11",r:"8"}]],
+    X:[["path",{d:"M18 6 6 18"}],["path",{d:"m6 6 12 12"}]],
+    FileText:[["path",{d:"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"}],["path",{d:"M14 2v5a1 1 0 0 0 1 1h5"}],["path",{d:"M10 9H8"}],["path",{d:"M16 13H8"}],["path",{d:"M16 17H8"}]],
+    Info:[["circle",{cx:"12",cy:"12",r:"10"}],["path",{d:"M12 16v-4"}],["path",{d:"M12 8h.01"}]]
+  };
+  let currentWindow = null;
+  const $ = id => (currentWindow?.root.dataset.control === id ? currentWindow.root : currentWindow?.root.querySelector(`[data-control="${id}"]`)) || document.getElementById(id);
+  const esc = value => String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const icon = name => `<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">${(nodes[name] || []).map(([tag,attrs]) => `<${tag} ${Object.entries(attrs).map(([key,value]) => `${key}="${esc(value)}"`).join(" ")}></${tag}>`).join("")}</svg>`;
+  function mountIcons(root = document) { root.querySelectorAll("[data-icon]").forEach(el => { el.outerHTML = icon(el.dataset.icon); }); }
+  const labels = {option:"常规期权",margin:"孖展合约",swap:"收益互换",fees:"券商收费规则"};
+  const states = ["正常","终止","注销"];
+  const quotes = ["人工","报表","系统","FIX"];
+  const optionTargets = ["A股","股指","商品","美股","港股"];
+  const swapTargets = ["A股","港股","美股"];
+  const exerciseOptions = ["T+1","T+5","T+6"];
+  const ruleMarkets = [
+    {key:"a-main",label:"A股－主板",target:"A股"},
+    {key:"a-growth",label:"A股－双创板",target:"A股"},
+    {key:"hk",label:"港股",target:"港股"},
+    {key:"us",label:"美股",target:"美股"},
+    {key:"index",label:"股指",target:"股指"},
+    {key:"commodity",label:"商品",target:"商品"}
+  ];
+  function blankMarketRules() { return Object.fromEntries(ruleMarkets.map(m => [m.key,{liquid:"",dividend:""}])); }
+  function activeRuleMarkets(option) { return ruleMarkets.filter(m => option.targets.includes(m.target)); }
+  function marketRulesText(option,field) {
+    return activeRuleMarkets(option).map(m => `${m.label}：${option.marketRules[m.key][field] || "未配置"}`).join("\n") || "未配置";
+  }
+  function marketRulesHtml(option,field) {
+    return activeRuleMarkets(option).map(m => `<div class="market-rule-line" data-market="${m.key}"><b>${esc(m.label)}</b><span>${esc(option.marketRules[m.key][field] || "未配置")}</span></div>`).join("") || '<span class="muted">未配置</span>';
+  }
+  const feeDirections = ["买入","卖出"];
+  const feeMarkets = ["A股","港股","美股"];
+  const feeMethods = ["按成交金额","按成交股数","每笔固定"];
+  const feeRoundings = ["四舍五入","向上取整","向下取整"];
+  const feeDecimals = ["0","1","2","3","4"];
+  const classes = ["正规券商","对赌券商","公司","跑路券商"];
+  function blank() { return {id:0,name:"",full:"",location:"大陆",type:"",category:"正规券商",bank:"",note:"",fees:[],option:{status:"正常",quotes:[],targets:[],exercise:"",marketRules:blankMarketRules()},margin:{status:"正常"},swap:{status:"正常",targets:[]}}; }
+  let dictionary, brokers, nextRuleId;
+  function blankFee() { return {key:"fee-" + nextRuleId++,market:[],project:"",direction:[],method:"",rounding:"",decimals:"",rate:"",minimum:"",maximum:""}; }
+  function marketsOf(row) { return Array.isArray(row.market) ? row.market : row.market ? [row.market] : []; }
+  function feeLimitText(value) { return value === "" || value == null ? "未配置" : value + " 金额"; }
+  function directionsOf(row) { return Array.isArray(row.direction) ? row.direction : row.direction ? [row.direction] : []; }
+  function seed() {
+    dictionary = [{id:1,name:"示例收费项目甲",enabled:true},{id:2,name:"示例收费项目乙",enabled:true},{id:3,name:"示例历史项目",enabled:false}];
+    brokers = [
+      {...blank(),id:1,name:"示例券商甲",full:"示例券商甲（模拟资料）",location:"香港",type:"综合券商",bank:"模拟收款资料，未填写真实账户",note:"常规期权与孖展分别维护。",option:{status:"正常",quotes:["报表"],targets:["A股","股指","港股"],exercise:"T+1",marketRules:{...blankMarketRules(),"a-main":{liquid:"连续三个收盘涨跌停，有权提前终止",dividend:"分红不调整，提前行权扣分红"},"a-growth":{liquid:"连续三个收盘涨跌停，有权提前终止",dividend:"分红不调整，提前行权扣分红"}}},margin:{status:"正常"},swap:{status:"正常",targets:["A股","港股","美股"]},fees:[{key:"fee-1",market:"港股",project:1,direction:"买入",method:"按成交金额",rounding:"四舍五入",decimals:"2",rate:"0.03"},{key:"fee-2",market:"A股",project:1,direction:"卖出",method:"按成交股数",rounding:"向上取整",decimals:"2",rate:"0.01"}]},
+      {...blank(),id:2,name:"示例券商乙",full:"示例券商乙（模拟资料）",type:"机构业务",option:{status:"终止",quotes:["人工"],targets:["港股","美股"],exercise:"T+6",marketRules:blankMarketRules()},margin:{status:"正常"},swap:{status:"终止",targets:["A股"]}},
+      {...blank(),id:3,name:"示例存量券商",full:"示例存量券商（模拟资料）",option:{status:"正常",quotes:["报表"],targets:["A股"],exercise:"T+6",marketRules:blankMarketRules()},margin:{status:"正常"},swap:{status:"正常",targets:[]},fees:[{key:"fee-3",market:"美股",project:3,direction:"卖出",method:"每笔固定",rounding:"向下取整",decimals:"0",rate:"5"}]}
+    ];
+    nextRuleId = 4;
+  }
+  seed();
+  let page = "brokers", mode = "normal", filter = {}, dictionaryFilter = {};
+  let exporting = false;
+  let brokerFilterDraft = null;
+  let draft = null, original = null, formTab = "option", removedFees = [], feeRateResets = new Set(), feeDraft = null, feeOriginal = null, feeIndex = null, editDictionaryId = null, dictionaryOriginal = "", confirmCallback = null, toastTimer;
+  const workWindows = new Map();
+  let windowSequence = 0, windowOrder = 0, compareWindows = true, taskbarMarkup = "";
+  function namespaceWindow(item) {
+    item.root.querySelectorAll("[id]").forEach(el => {
+      if (!el.dataset.control) { el.dataset.control = el.id; el.id += "--" + item.uid; }
+    });
+    if (!item.root.dataset.control) { item.root.dataset.control = item.root.id; item.root.id += "--" + item.uid; }
+    [item.root,...item.root.querySelectorAll("[for],[aria-labelledby],[aria-describedby],[aria-controls]")].forEach(el => {
+      for (const attr of ["for","aria-labelledby","aria-describedby","aria-controls"]) {
+        if (el.hasAttribute(attr)) el.setAttribute(attr,el.getAttribute(attr).split(" ").map(id => id.includes("--") ? id : id + "--" + item.uid).join(" "));
+      }
+    });
+    mountIcons(item.root);
+  }
+  function storeWindow() {
+    if (!currentWindow) return;
+    currentWindow.state = {draft,original,formTab,removedFees,feeRateResets,feeDraft,feeOriginal,feeIndex,editDictionaryId,dictionaryOriginal};
+  }
+  function useWindow(item) {
+    if (currentWindow === item) return;
+    storeWindow(); currentWindow = item;
+    ({draft,original,formTab,removedFees,feeRateResets,feeDraft,feeOriginal,feeIndex,editDictionaryId,dictionaryOriginal} = item.state);
+  }
+  function createWindow(kind,key) {
+    const item = {kind,key,uid:++windowSequence,order:++windowOrder,minimized:false,returnFocus:document.activeElement,
+      root:document.getElementById(kind + "-template").content.firstElementChild.cloneNode(true),
+      state:{draft:null,original:null,formTab:"option",removedFees:[],feeRateResets:new Set(),feeDraft:null,feeOriginal:null,feeIndex:null,editDictionaryId:null,dictionaryOriginal:""}};
+    item.root.dataset.windowKey = key;
+    workWindows.set(key,item); $("window-grid").append(item.root); namespaceWindow(item); useWindow(item);
+    return item;
+  }
+  function windowDirty(item) {
+    const s = item.state;
+    if (item.kind === "broker") return JSON.stringify(s.draft) !== JSON.stringify(s.original) || Boolean(s.feeDraft && JSON.stringify(s.feeDraft) !== JSON.stringify(s.feeOriginal));
+    const before = JSON.parse(s.dictionaryOriginal || "{}");
+    return item.root.querySelector('[data-control="dict-name"]').value !== before.name || (item.root.querySelector('[name="dict-status"]:checked')?.value === "true") !== before.enabled;
+  }
+  function windowTitle(item) {
+    return item.kind === "broker" ? item.state.draft?.name || "新增券商" : item.root.querySelector('[data-control="dict-name"]').value || "新增收费项目";
+  }
+  function refreshWindows() {
+    storeWindow();
+    const all = [...workWindows.values()];
+    const canPair = matchMedia("(min-width:1600px)").matches;
+    const visible = all.filter(w => !w.minimized).sort((a,b) => b.order - a.order).slice(0,compareWindows && canPair ? 2 : 1).reverse();
+    $("window-workspace").hidden = !all.length;
+    $("window-stage-head").hidden = !visible.length;
+    $("window-count").textContent = `已打开 ${all.length} 个`;
+    $("window-compare").disabled = !canPair || all.filter(w => !w.minimized).length < 2;
+    $("window-compare").setAttribute("aria-pressed",String(compareWindows && canPair));
+    $("window-grid").classList.toggle("is-paired",visible.length === 2);
+    all.forEach(item => {
+      item.root.hidden = !visible.includes(item);
+      item.root.style.order = item.uid;
+      item.root.dataset.active = String(currentWindow === item && !item.minimized);
+      const s = item.state, task = item.kind === "broker" ? s.feeDraft ? (s.feeIndex === null ? "新增收费规则" : "编辑收费规则") : labels[s.formTab] : "收费项目";
+      item.root.querySelector("[data-window-subtitle]").textContent = task + (windowDirty(item) ? " · 未保存" : "");
+    });
+    const markup = all.map(item => {
+      const active = currentWindow === item && visible.includes(item), dirty = windowDirty(item);
+      const position = item.minimized ? "已最小化" : visible.includes(item) ? "显示中" : "后台";
+      const task = item.kind === "broker" ? item.state.feeDraft ? "收费规则" : labels[item.state.formTab] : "收费项目";
+      return `<div class="window-task${active ? " current" : ""}"><button type="button" data-window-restore="${esc(item.key)}" aria-pressed="${active}" title="${esc(windowTitle(item))}"><strong>${esc(windowTitle(item))}</strong><small>${task} · ${dirty ? "未保存 · " : ""}${position}</small></button><button type="button" class="icon-button" data-window-close="${esc(item.key)}" aria-label="关闭${esc(windowTitle(item))}" data-tip="关闭">${icon("X")}</button></div>`;
+    }).join("");
+    // Keep task buttons mounted through field blur/change so their click is not lost.
+    if (markup !== taskbarMarkup) { $("window-taskbar").innerHTML = markup; taskbarMarkup = markup; }
+    alignTaskbar();
+  }
+  function alignTaskbar() {
+    if (!$("window-taskbar")) return;
+    const canvas = $("canvas").getBoundingClientRect();
+    const list = document.querySelector("#product-page .table-wrap,#export-results")?.getBoundingClientRect();
+    const right = Math.min(canvas.right,innerWidth - 12);
+    const left = Math.min(Math.max(canvas.left,list?.left ?? canvas.left),right - Math.min(240,canvas.width));
+    $("window-taskbar").style.left = left + "px";
+    $("window-taskbar").style.width = Math.max(0,right - left) + "px";
+  }
+  function activateWindow(item,focus = false) {
+    useWindow(item); item.minimized = false; item.order = ++windowOrder; refreshWindows();
+    if (focus) item.root.querySelector("[data-window-minimize]").focus({preventScroll:true});
+  }
+  function finishWindow(item = currentWindow) {
+    workWindows.delete(item.key); item.root.remove();
+    if (currentWindow === item) currentWindow = null;
+    const next = [...workWindows.values()].filter(w => !w.minimized).sort((a,b) => b.order - a.order)[0];
+    if (next && !currentWindow) useWindow(next);
+    refreshWindows();
+    if (item.returnFocus?.isConnected) item.returnFocus.focus({preventScroll:true});
+  }
+  function minimizeWindow(item) {
+    item.minimized = true;
+    const next = [...workWindows.values()].filter(w => !w.minimized).sort((a,b) => b.order - a.order)[0];
+    if (next) useWindow(next);
+    refreshWindows();
+    document.querySelector(`[data-window-restore="${item.key}"]`)?.focus({preventScroll:true});
+  }
+  const dialogFocus = new Map();
+  const optionText = b => b.option.exercise;
+  const projectById = id => dictionary.find(item => item.id === Number(id));
+  function status(value) { const cls = value === "终止" ? "terminated" : value === "注销" ? "closed" : ""; return `<span class="status ${cls}">${esc(value)}</span>`; }
+  function tags(values) { return values.length ? `<div class="tags">${values.map(v => `<span class="tag">${esc(v)}</span>`).join("")}</div>` : '<small>未配置</small>'; }
+  function textInput(key,label,value = "",type = "text") { return `<div class="field"><label for="${key}">${label}</label><input id="${key}" name="${key}" type="${type}" value="${esc(value)}" autocomplete="off"></div>`; }
+  function select(key,label,values,value = "",empty = "全部") { const list = values.includes(value) || !value ? values : [value,...values]; return `<div class="field"><label for="${key}">${label}</label><select id="${key}" name="${key}">${empty !== null ? `<option value="">${empty}</option>` : ""}${list.map(v => `<option value="${esc(v)}" ${value === v ? "selected" : ""}>${esc(v)}</option>`).join("")}</select></div>`; }
+  function checks(key,label,values,selected = [],required = false) { return `<fieldset class="field"><legend class="field-label">${label}${required ? '<span class="required">*</span>' : ""}</legend><div class="choices">${values.map(v => `<label><input type="checkbox" name="${key}" value="${esc(v)}" ${selected.includes(v) ? "checked" : ""}>${esc(v)}</label>`).join("")}</div></fieldset>`; }
+  function radios(key,label,values,value) { return `<fieldset class="field"><legend class="field-label">${label}</legend><div class="choices">${values.map(v => `<label><input type="radio" name="${key}" value="${esc(v)}" ${v === value ? "checked" : ""}>${esc(v)}</label>`).join("")}</div></fieldset>`; }
+  function toast(message) { clearTimeout(toastTimer); $("toast").textContent = message; $("toast").hidden = false; toastTimer = setTimeout(() => { $("toast").hidden = true; }, 4000); }
+  function showDialog(id) { dialogFocus.set(id,document.activeElement); $(id).showModal(); document.body.style.overflow = "hidden"; }
+  function reviewNote(message) { $("review-note").hidden = false; $("review-note").textContent = message; }
+  function confirmAction(title,message,callback,accept = "确认",cancel = "取消") {
+    $("confirm-title").textContent = title; $("confirm-message").textContent = message;
+    $("confirm-accept").textContent = accept; $("confirm-cancel").textContent = cancel;
+    const owner = currentWindow;
+    confirmCallback = () => { if (owner && workWindows.has(owner.key)) useWindow(owner); callback(); };
+    showDialog("confirm-dialog");
+  }
+  function renderPrd() {
+    const brokerPrd = `<h2>券商管理 · 页面 PRD</h2><p>收费规则归属于券商，按市场配置，与三类业务分开维护。收益互换仅保留状态、支持标的类型。常规期权的询价与行权统一维护，强平和分红说明按市场、板块分别填写。</p>
+      <h3>已确认</h3><ul><li>三类业务独立维护，不自动复制，不设置标的子页。</li><li>孖展合约仅保留状态；取消询价方式、支持标的、最快行权日的表单、列表列、筛选、导出及必填校验。</li><li>常规期权询价方式为人工、报表、系统、FIX，支持多选；最快行权日仅可单选 T+1、T+5、T+6，T 指成交日，筛选、表单、列表和导出一致。</li><li>常规期权是否强平、分红调整改为多行文本框，分别填写规则说明；A股分主板、双创板，港股、美股及现有股指、商品各有独立行，按支持标的显示。不再使用是 / 否枚举，不向孖展新增这些字段。</li><li>收益互换新增支持标的类型，采用多选；本稿沿用A股、港股、美股，不自动复制期权或旧孖展配置。收益互换仅保留状态、支持标的；收费规则独立于本业务，不新增标的必填约束；枚举及必填、历史数据处理由产品与开发另行约定。</li><li>三类业务状态独立，正常、终止、注销；终止显示红色，切换状态不清空配置。券商类型是共有信息，保持手输。收费字典从菜单独立进入。</li><li>收费规则不设币种字段，费用跟随实际标的币种；同一套规则不按币种拆分。</li></ul>
+      <h3>当前页面规则</h3><table class="prd-table"><tbody><tr><th>列表</th><td>同一张17列宽表，双层表头并列展示共有信息、常规期权、孖展合约、收益互换及券商收费规则，不使用业务切换 Tab。共有信息新增收款信息、备注两列，保留完整原文和换行，空值显示未配置。孖展仅状态一列，收益互换仅状态、支持标的类型两列，券商收费摘要单独一列。暂不提供展开 / 收起或行内详情，操作列仅保留编辑；完整收费规则在编辑窗口查看。</td></tr><tr><th>查询</th><td>点击搜索生效。期权、收益互换筛选同页分组，各查自身配置；孖展仅通用区状态筛选。收费市场在通用条件中，按券商是否存在该市场规则匹配，不由收益互换标的命中。不同条件取交集，同一多选项内取并集；重置清空全部条件。</td></tr><tr><th>编辑</th><td>顺序为基础信息 → 收款信息与备注 → 市场 / 板块规则 → 业务配置。市场 / 板块规则仍属于常规期权，按其支持标的显示；底部业务配置包含三类业务及券商收费规则分区。切换保留输入；任何业务状态和收益互换支持范围的变化均不清空或限制收费规则。</td></tr><tr><th>固定选项</th><td>列表、筛选及表单使用同一套选项；取消单票单议、自定义及行权日整数输入，不自动预选业务参数。</td></tr></tbody></table>
+      <h3>范围调整</h3><p>已移除新增孖展风险参数及相关展示、筛选和校验。原型不展示预警线、强平线等配置。</p>
+      <h3>市场 / 板块规则</h3><p>各行独立保存两个文本字段，不自动复制。取消某类支持标的时隐藏对应行、保留输入；恢复勾选可继续编辑。列表及导出仅展示当前支持范围内的规则，保留市场 / 板块标签和完整文字，空值显示未配置。筛选支持市场 / 板块及两项文字关键词；关键词须在同一市场 / 板块行同时命中。新增不预填、不新增必填约束。示例：“连续三个收盘涨跌停，有权提前终止”“分红不调整，提前行权扣分红”，仅用于本地展示，不是业务默认值，也不触发实际执行。</p>
+      <h3>筛选导出</h3><p>工具栏导出 CSV，Excel 可直接打开。按点击导出时已生效条件导出全部匹配券商，未搜索的输入不参与；每家一行，含共有信息、三类业务及收款备注，列名带业务前缀。券商-收费规则列按条换行，保留全部已选市场、项目、方向、计算方式、费率、舍入、小数位数、最低收费、最高收费九项及单位；收费市场条件只筛选券商，完整导出其全部市场规则，方向完整显示，不合计费率。导出仅含已保存数据，空结果、加载中、失败或无权限时不可导出；生成中禁止重复操作，失败可重试。当前仅导出本地示例数据，不证明真实鉴权或后台导出已实现。</p>
+      <h3>券商收费规则</h3><p>收费规则从收益互换抽出，归券商所有。编辑窗口从“券商收费规则”独立分区进入列表，可按市场新增多条规则。每条市场多选；本稿使用A股、港股、美股，不预选，至少一项。同一条规则对全部已选市场共用其余参数，不拆成多条；不同参数可分别新增规则。市场不从所在地、任何业务的支持标的自动带出，不按业务状态禁用；市场枚举及历史归并由产品与开发另行约定。切换市场只改变本条市场归属，保留其余参数，不新增复制、执行优先级或计费逻辑。</p><p>主列表按市场组合分组，每条仍仅展示收费项目、计算方式和带单位费率，不增加上下限、不按市场重复规则。编辑窗口列表完整展示市场、收费项目、方向、计算方式、舍入方式、小数位数、费率、最低收费、最高收费九项及操作。收费项目选择控件内提供搜索和字典项目选择，取消独立的搜索输入框，只引用启用项目，已有停用项目保留。新增或编辑进入同窗口表单，保存规则返回列表。收费方向为买入、卖出多选，至少一项，可同时选择，同一条规则参数共用，不拆成两条。取消有改动时确认放弃；规则只汇入当前券商草稿，最终点击券商“保存”统一提交。按成交金额使用百分比，按成交股数及每笔固定使用金额；舍入为四舍五入、向上取整、向下取整。切换计算方式清空费率并提示重填；市场、项目及其他参数（含最低、最高收费）保留。</p><p>新增最低收费、最高收费金额字段，本稿设计为选填非负金额，币种跟随实际标的；留空表示未配置，0为有效值。两项都填时最高收费不得低于最低收费，可相等；切换计算方式、市场和最小化均保留，保存后在规则列表及导出完整展示。原七项必填；未配置上下限不自动补0，历史数据处理另行约定。只维护配置，实际计费、舍入与上下限应用顺序留待后续需求，不试算或扣费。</p>
+      <h3>全局工作窗口</h3><p>参考客户管理的非模态工作窗口：可最小化、任务栏恢复，保留输入、错误、子页及滚动；同一对象重复打开恢复已有窗口，不重复创建。任务栏与列表内容区左边缘对齐，横向滚动时以画布内可见范围为界；窄屏确保任务按钮可访问，不随右侧编辑窗口缩进。不同对象分别保留草稿；宽屏最多并排两个，窄屏显示一个，其余从任务栏切换。关闭未保存内容须确认；确认提示仍使用短模态弹窗。刷新不保留工作窗口。</p>
+      <h3>开发另行约定</h3><p>共有字段原约束、常规期权原必填规则、旧枚举及历史数据归并由产品与开发另行约定，本次不扩展。费率录入精度、多规则执行和“每笔”粒度留待实际计费需求；本次只维护配置，不计算扣费或迁移真实数据。</p>`;
+    const dictPrd = `<h2>收费项目字典 · 页面 PRD</h2><p>独立入口：信息管理 → 收费项目字典。只维护可选收费项目，券商在独立的券商收费规则区按市场引用。</p><h3>已确认</h3><ul><li>只有收费项目，不设置收益项目。</li><li>字典与券商收费规则分开维护；每条规则引用一个项目，可配置多条，不在券商表单中新增字典项目。</li><li>费用跟随标的币种，字典和规则均不设币种字段。</li><li>沿用既有鉴权；不增加审批或新权限体系。</li></ul><h3>本稿设计</h3><table class="prd-table"><tbody><tr><th>项目名称</th><td>必填，去除首尾空格后校验重名；关联使用稳定身份，改名不切断引用。</td></tr><tr><th>状态</th><td>启用、停用。停用限制新增引用，已有券商名称及规则保留；不影响业务状态。</td></tr><tr><th>操作</th><td>支持查询、添加、编辑、启用与停用。停用前确认；本稿不提供物理删除。</td></tr></tbody></table><h3>开发另行约定</h3><p>旧文本迁移由产品与开发另行约定；费率录入精度、多条规则的执行口径不在本次配置设计展开。字典只定义项目，具体费率由各券商分别配置。</p><h3>未实现边界</h3><p>不执行计费、扣费、真实权限校验或历史费用处理。停用仅演示本地可选状态变化。</p>`;
+    const exportPrd = `<h2>导出样式 · 页面 PRD</h2><p>本 Tab 用于评审导出表格的字段排列，与券商列表共用已生效筛选和已保存数据，不增加后台业务菜单。</p>
+      <h3>表格组织</h3><table class="prd-table"><tbody><tr><th>行与列</th><td>每家券商一行，共 17 列；表头顺序及单元格内容与 CSV 一致。业务字段带前缀，不包含编辑等操作按钮。</td></tr><tr><th>市场 / 板块规则</th><td>常规期权强平、分红两个单元格分别按当前支持的市场 / 板块换行，保留标签和完整原文，空项显示未配置；A股区分主板、双创板。隐藏范围不参与，不增加券商行或列。</td></tr><tr><th>收费规则</th><td>同一单元格按条换行；完整保留券商层级的全部市场、项目、全部方向、计算方式、费率单位、舍入方式、小数位数、最低收费和最高收费，不合计、不拆成重复券商行。</td></tr><tr><th>筛选</th><td>沿用列表点击搜索后的条件，未搜索输入及未保存草稿不参与。返回列表保留筛选及未搜索的表单输入。</td></tr><tr><th>下载</th><td>点击导出下载当前匹配数据；生成中禁止重复点击，失败保留预览可重试。没有可用结果时禁用。</td></tr></tbody></table><h3>展示与文件边界</h3><p>列字母与行号仅辅助预览，不写入 CSV。底色、列宽、边框和自动换行属于本页的视觉展示；CSV 本身只保存文本数据，不携带这些样式，也未实现 XLSX。多条规则的单元格内换行保留在下载文件中，表格软件打开后是否自动换行取决于软件设置。</p><h3>状态及范围</h3><p>空态、加载、失败、无权限不展示券商数据；重试可恢复本地演示。所有内容为示例，未接生产导出、真实鉴权或账务。Excel / WPS 原生打开效果未测。</p>`;
+    $("page-prd").innerHTML = page === "brokers" ? brokerPrd : page === "dictionary" ? dictPrd : exportPrd;
+    const summaries = {
+      brokers:`<h3>本次修改点摘要</h3><table class="prd-table"><tbody>
+        <tr><th scope="row">列表与筛选</th><td>原配置及筛选未区分业务；本次改为共有信息、三类业务与券商收费规则并列的17列宽表，收款信息、备注直接显示在共有信息区，筛选明确业务归属。收费摘要只显示项目、计算方式及带单位费率；暂不提供展开 / 收起，操作列仅保留编辑，完整规则在编辑窗口查看。</td></tr>
+        <tr><th scope="row">共有信息与期权</th><td>类型、分类移至共有信息，类型仍手输；询价方式采用人工 / 报表 / 系统 / FIX 多选，最快行权日单选 T+1、T+5、T+6，两者按业务统一维护。是否强平、分红调整改为规则文本，按市场分别填写，A股区分主板、双创板；在同一编辑窗口维护，不另设标的子页，列表、筛选和导出同步调整。</td></tr>
+        <tr><th scope="row">孖展合约</th><td>按最新要求仅保留状态；删除前稿询价方式、支持标的、最快行权日的配置、展示、筛选、导出及必填校验，不新增风险参数。</td></tr>
+        <tr><th scope="row">收益互换与收费</th><td>收益互换仅保留状态、支持标的类型；收费规则移至券商层级独立维护，每条市场支持多选，新增最低、最高收费，共九字段；收费项目控件内搜索选择，不再独立展示搜索框。支持同市场多条，同一条规则跨市场共用参数。主列表独立分组、按市场展示三项摘要，编辑与导出完整保留九字段；字典统一命名“收费项目字典”，费用跟随标的币种。</td></tr>
+        <tr><th scope="row">新增、编辑与状态</th><td>表单顺序为基础信息、收款信息与备注、市场 / 板块规则、业务配置；业务配置位于最下方。支持最小化及恢复，任务栏与列表内容区左对齐。新增时终止业务可不配子项，终止显示红色；切换业务或状态保留已有输入。</td></tr>
+        <tr><th scope="row">筛选导出</th><td>在原列表上新增按已生效筛选导出全部匹配数据，共 17 列；顶部“导出样式”Tab 供预览，完整保留收费规则。</td></tr>
+      </tbody></table><p>沿用已有鉴权和状态枚举；不新增审批、下游状态控制、实际计费或账务。具体页面及字段规则如下。</p>`,
+      dictionary:`<h3>本次修改点摘要</h3><p>配合券商按市场收费配置，新增独立的收费项目字典入口，提供查询、新增、编辑及启用 / 停用；券商规则引用字典项目。改名保持关联，停用限制新引用、保留已有配置。具体规则如下。</p>`,
+      export:`<h3>本次修改点摘要</h3><p>在券商列表上新增按已生效筛选导出表格；本页为新增的导出样式预览，可查看 17 列数据并下载 CSV。多条收费规则完整保留，返回列表保留筛选与未搜索输入；本页不新增后台业务菜单。具体规则如下。</p>`
+    };
+    $("page-prd").querySelector("h2").insertAdjacentHTML("afterend",summaries[page]);
+  }
+  function renderPage() {
+    const name = page === "brokers" ? "券商管理" : page === "dictionary" ? "收费项目字典" : "券商管理导出表";
+    $("path-name").textContent = name;
+    document.querySelectorAll(".prototype-tab").forEach(button => { const on = button.dataset.page === page; button.setAttribute("aria-selected",String(on)); button.tabIndex = on ? 0 : -1; });
+    document.querySelectorAll(".nav-link").forEach(button => { if (button.dataset.page === page) button.setAttribute("aria-current","page"); else button.removeAttribute("aria-current"); });
+    document.querySelector(".prototype-layout").dataset.pageKey = page;
+    document.querySelector(".admin").classList.toggle("brokers-page",page === "brokers");
+    document.querySelector(".admin").classList.toggle("export-page",page === "export");
+    $("product-page").setAttribute("aria-labelledby","tab-" + page);
+    renderPrd();
+    if (page === "brokers") renderBrokerPage(); else if (page === "dictionary") renderDictionaryPage(); else renderExportPage();
+    mountIcons(); requestAnimationFrame(syncPan);
+  }
+  function heading(name,back = false) { return `<div class="page-heading"><h2>${name}</h2><div class="breadcrumbs">${back ? '<button class="text-button" data-page="brokers">返回券商管理</button>' : "信息管理"}${icon("ChevronRight")}<span>${name}</span></div></div>`; }
+  function renderBrokerPage() {
+    $("product-page").innerHTML = `${heading("券商管理")}<form id="filters-form">
+      <div class="filters">${textInput("name","券商简称",filter.name)}${textInput("full","券商全称",filter.full)}${select("location","所在地",["大陆","香港"],filter.location)}${textInput("type","券商类型",filter.type)}</div>
+      <details class="advanced" ${filter.category || filter.optionStatus || filter.marginStatus || filter.swapStatus || filter.feeMarket || filter.bank ? "open" : ""}><summary>更多通用条件</summary><div class="filters">${select("category","券商分类",classes,filter.category)}${select("optionStatus","常规期权状态",states,filter.optionStatus)}${select("marginStatus","孖展合约状态",states,filter.marginStatus)}${select("swapStatus","收益互换状态",states,filter.swapStatus)}${select("feeMarket","收费市场",feeMarkets,filter.feeMarket)}${textInput("bank","收款信息",filter.bank)}</div></details>
+      <div class="business-filters">
+        <fieldset class="business-filter-group" data-filter-business="option"><legend>常规期权</legend><div class="filters">${checks("optionQuote","询价方式",quotes,filter.optionQuote || [])}<div class="target-filter">${checks("optionTarget","支持标的",optionTargets,filter.optionTarget || [])}</div>${select("optionExercise","最快行权日",exerciseOptions,filter.optionExercise)}${select("optionRuleMarket","规则市场 / 板块",ruleMarkets.map(m => m.label),filter.optionRuleMarket)}${textInput("optionLiquid","是否强平（关键词）",filter.optionLiquid)}${textInput("optionDividend","分红调整（关键词）",filter.optionDividend)}</div></fieldset>
+        <fieldset class="business-filter-group" data-filter-business="swap"><legend>收益互换</legend><div class="filters">${checks("swapTarget","支持标的类型",swapTargets,filter.swapTarget || [])}</div></fieldset>
+      </div>
+      <div class="filter-footer"><div class="applied" id="applied"></div><div class="actions"><button class="button" type="button" data-action="reset-filters">${icon("RotateCcw")}重置</button><button class="button primary" type="submit">${icon("Search")}搜索</button></div></div>
+      </form><div class="toolbar"><button class="icon-button" data-action="refresh" aria-label="刷新列表" data-tip="刷新列表">${icon("RotateCcw")}</button><button class="button primary" data-action="add-broker">${icon("Plus")}添加</button><button type="button" class="button" data-action="export-brokers" aria-label="导出筛选结果">${icon("Download")}导出</button><span class="count" id="result-count"></span></div>
+      <div id="query-error" class="message" role="alert"></div><div id="export-error" class="message" role="alert"></div><section id="results" aria-label="券商配置列表"></section>`;
+    if (brokerFilterDraft) {
+      for (const input of $("filters-form").elements) {
+        if (!input.name) continue;
+        const values = brokerFilterDraft.values.filter(([key]) => key === input.name).map(([,value]) => value);
+        if (input.type === "checkbox") input.checked = values.includes(input.value);
+        else input.value = values[0] || "";
+      }
+      $("filters-form").querySelector(".advanced").open = brokerFilterDraft.advanced;
+      brokerFilterDraft = null;
+    }
+    renderBrokerRows();
+  }
+  function matches(b) {
+    for (const key of ["name","full","type","bank"]) if (filter[key] && !b[key].includes(filter[key])) return false;
+    for (const key of ["location","category"]) if (filter[key] && b[key] !== filter[key]) return false;
+    for (const key of ["option","margin","swap"]) if (filter[key + "Status"] && b[key].status !== filter[key + "Status"]) return false;
+    if (filter.feeMarket && !b.fees.some(row => marketsOf(row).includes(filter.feeMarket))) return false;
+    if (filter.optionQuote?.length && !filter.optionQuote.some(v => b.option.quotes.includes(v))) return false;
+    for (const business of ["option","swap"]) {
+      if (filter[business + "Target"]?.length && !filter[business + "Target"].some(v => b[business].targets.includes(v))) return false;
+    }
+    if (filter.optionExercise && b.option.exercise !== filter.optionExercise) return false;
+    if (filter.optionRuleMarket || filter.optionLiquid || filter.optionDividend) {
+      const candidates = activeRuleMarkets(b.option).filter(m => !filter.optionRuleMarket || m.label === filter.optionRuleMarket);
+      if (!candidates.some(m => {
+        const rule = b.option.marketRules[m.key];
+        return (!filter.optionLiquid || rule.liquid.includes(filter.optionLiquid)) && (!filter.optionDividend || rule.dividend.includes(filter.optionDividend));
+      })) return false;
+    }
+    return true;
+  }
+  function feeUnit(method) { return method === "按成交金额" ? "%" : method === "按成交股数" ? "金额/股" : method === "每笔固定" ? "金额/笔" : "—"; }
+  const exportHeaders = ["券商简称","券商全称","所在地","券商类型","券商分类",
+    "常规期权-状态","常规期权-询价方式","常规期权-支持标的","常规期权-最快行权日","常规期权-是否强平","常规期权-分红调整",
+    "孖展合约-状态",
+    "收益互换-状态","收益互换-支持标的类型","券商-收费规则","收款信息","备注"];
+  function appliedFilterText() {
+    const fieldNames = {name:"简称",full:"全称",location:"所在地",type:"券商类型",category:"券商分类",bank:"收款信息",optionStatus:"常规期权状态",marginStatus:"孖展合约状态",swapStatus:"收益互换状态",feeMarket:"收费市场",optionQuote:"常规期权询价",optionTarget:"常规期权标的",swapTarget:"收益互换标的",optionExercise:"常规期权行权日",optionRuleMarket:"常规期权规则市场 / 板块",optionLiquid:"常规期权强平关键词",optionDividend:"常规期权分红关键词"};
+    const parts = Object.entries(filter).filter(([,v]) => Array.isArray(v) ? v.length : v).map(([k,v]) => `${fieldNames[k]}：${Array.isArray(v) ? v.join(" / ") : v}`);
+    return parts.length ? "已生效：" + parts.join("；") : "当前未设置筛选条件";
+  }
+  function exportCells(b) {
+    const value = v => v || "未配置";
+    const list = values => values.join("、") || "未配置";
+    const fees = b.fees.map(row => {
+      const project = projectById(row.project);
+      return `${list(marketsOf(row))}；${project?.name || "未知项目"}${project && !project.enabled ? "（已停用）" : ""}；${list(directionsOf(row))}；${row.method}；${row.rate} ${feeUnit(row.method)}；${row.rounding}；${row.decimals} 位小数；最低收费：${feeLimitText(row.minimum)}；最高收费：${feeLimitText(row.maximum)}`;
+    }).join("\n") || "未配置";
+    return [value(b.name),value(b.full),value(b.location),value(b.type),value(b.category),
+      b.option.status,list(b.option.quotes),list(b.option.targets),value(b.option.exercise),marketRulesText(b.option,"liquid"),marketRulesText(b.option,"dividend"),
+      b.margin.status,
+      b.swap.status,list(b.swap.targets),fees,value(b.bank),value(b.note)];
+  }
+  function exportText(value) {
+    const text = String(value ?? "");
+    // Keep user text literal when a spreadsheet opens the CSV.
+    return /^[\s\u0000-\u001f]*[=+\-@]/.test(text) ? "'" + text : text;
+  }
+  function csvCell(value) { return '"' + exportText(value).replace(/"/g,'""') + '"'; }
+  function renderExportPage() {
+    const ready = mode === "normal", rows = ready ? brokers.filter(matches).map(exportCells) : [];
+    const weights = [140,210,75,110,100,90,130,165,110,320,320,90,90,165,600,220,220];
+    const total = 42 + weights.reduce((sum,value) => sum + value,0);
+    $("product-page").innerHTML = `${heading("券商管理导出表",true)}
+      <div class="toolbar"><button type="button" class="button primary" data-action="export-brokers" aria-label="导出筛选结果">${icon("Download")}导出</button><span class="count">CSV</span></div>
+      <div class="export-summary"><div class="applied" id="export-applied">${esc(appliedFilterText())}</div><span id="export-count">${ready || mode === "empty" ? `${rows.length} 家券商 · ${exportHeaders.length} 列` : "记录数暂不可用"}</span></div>
+      <div id="export-error" class="message" role="alert"></div>
+      <section id="export-results" aria-label="导出表格预览" aria-busy="${mode === "loading"}">
+        <table class="export-sheet" aria-label="券商管理导出数据"><colgroup><col style="width:${42 / total * 100}%">${weights.map(value => `<col style="width:${value / total * 100}%">`).join("")}</colgroup>
+        <thead><tr class="sheet-letters" aria-hidden="true"><th></th>${exportHeaders.map((_,index) => `<th>${String.fromCharCode(65 + index)}</th>`).join("")}</tr>
+        <tr class="sheet-fields"><th class="sheet-row" aria-label="表头行">1</th>${exportHeaders.map(text => `<th scope="col">${esc(text)}</th>`).join("")}</tr></thead>
+        <tbody>${rows.map((row,index) => `<tr data-export-row><th class="sheet-row" scope="row" aria-label="第 ${index + 1} 家券商">${index + 2}</th>${row.map(value => `<td>${esc(exportText(value))}</td>`).join("")}</tr>`).join("")}</tbody></table>
+        ${!ready || !rows.length ? stateContent(ready ? "empty" : mode,ready && Object.values(filter).some(value => Array.isArray(value) ? value.length : value)) : ""}
+      </section><div class="sheet-footer"><strong>券商管理</strong><span>${ready || mode === "empty" ? `${rows.length} 条记录` : "数据暂不可用"}</span></div>`;
+    syncExport();
+    requestAnimationFrame(syncPan);
+  }
+  function syncExport() {
+    const button = document.querySelector('[data-action="export-brokers"]');
+    if (!button) return;
+    const count = mode === "normal" ? brokers.filter(matches).length : 0;
+    button.disabled = exporting || !count;
+    button.setAttribute("aria-busy",String(exporting));
+    button.innerHTML = icon("Download") + (exporting ? "导出中…" : "导出");
+    button.title = exporting ? "正在生成文件" : !count ? mode === "normal" || mode === "empty" ? "没有可导出的记录" : "列表数据暂不可用" : `导出当前筛选的全部 ${count} 家券商（CSV）`;
+  }
+  function exportBrokers() {
+    if (exporting || !["brokers","export"].includes(page) || mode !== "normal") return;
+    const rows = brokers.filter(matches).map(exportCells);
+    if (!rows.length) { toast("没有可导出的记录"); return; }
+    const shouldFail = $("fail-export").checked;
+    $("fail-export").checked = false;
+    const time = new Date();
+    const stamp = [time.getFullYear(),... [time.getMonth()+1,time.getDate(),time.getHours(),time.getMinutes(),time.getSeconds()].map(v => String(v).padStart(2,"0"))].join("");
+    const filename = `券商管理_${stamp}.csv`;
+    $("export-error").textContent = ""; exporting = true; syncExport();
+    setTimeout(() => {
+      let url, anchor;
+      try {
+        if (shouldFail) throw new Error("demo export failure");
+        const csv = "\uFEFF" + [exportHeaders,...rows].map(row => row.map(csvCell).join(",")).join("\r\n") + "\r\n";
+        url = URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));
+        anchor = document.createElement("a"); anchor.href = url; anchor.download = filename;
+        document.body.append(anchor); anchor.click();
+        toast(`已生成 ${rows.length} 家券商的导出文件，已发起下载`);
+      } catch {
+        if ($("export-error")) $("export-error").textContent = "导出失败，未生成文件。筛选条件和列表已保留，请重试。";
+        else toast("导出失败，请返回券商管理重试");
+      } finally {
+        anchor?.remove();
+        if (url) setTimeout(() => URL.revokeObjectURL(url),1000);
+        exporting = false; syncExport();
+      }
+    },250);
+  }
+  function feesHtml(b) {
+    const markets = [...new Set(b.fees.map(row => marketsOf(row).join("、")))];
+    return b.fees.length ? markets.map(market => `<div class="fee-market-group"><strong class="fee-market-label">${esc(market || "市场未配置")}</strong>${b.fees.filter(row => marketsOf(row).join("、") === market).map(row => {
+        const p = projectById(row.project);
+        const rate = `<span class="fee-number">${esc(row.rate)} ${esc(feeUnit(row.method))}</span>`;
+        return `<div class="fee-line"><b>${esc(p?.name || "未知项目")}${p && !p.enabled ? " · 已停用" : ""}</b><span class="fee-description">${esc(row.method)} · ${rate}</span></div>`;
+      }).join("")}</div>`).join("") : '<span class="muted">未配置</span>';
+  }
+  function stateContent(currentMode,emptySearch = false) {
+    const map = {loading:["正在加载","请稍候。"],error:["列表加载失败","数据暂不可用，请重试。"],denied:["无权访问此页面","请联系系统管理员。"],empty:[emptySearch ? "没有符合条件的记录" : "暂无记录",emptySearch ? "调整筛选条件后重试。" : page === "export" ? "当前没有可导出的券商记录。" : "可通过添加维护配置。"]};
+    const [title,message] = map[currentMode] || map.empty;
+    return `<div class="empty" role="status">${icon(currentMode === "empty" ? "Search" : "Info")}<strong>${title}</strong><p>${message}</p>${currentMode === "error" ? '<button class="text-button" data-action="retry">重试</button>' : currentMode === "denied" ? '<button class="text-button" data-action="denied-back">返回</button>' : currentMode === "empty" && emptySearch ? '<button class="text-button" data-action="reset-filters">清除筛选</button>' : ""}</div>`;
+  }
+  function renderBrokerRows() {
+    const visible = mode === "empty" ? [] : brokers.filter(matches);
+    const groups = [{name:"共有信息",headers:["券商名称","所在地","券商类型","券商分类","收款信息","备注"]},{name:"常规期权",headers:["状态","询价方式","支持标的","最快行权日","是否强平","分红调整"]},{name:"孖展合约",headers:["状态"]},{name:"收益互换",headers:["状态","支持标的类型"]},{name:"券商收费规则",headers:["收费摘要"]}];
+    const colWeights = [150,64,82,76,150,150,64,90,125,90,220,220,64,64,125,220,64];
+    const totalWeight = colWeights.reduce((sum,value) => sum + value,0);
+    const dataRows = visible.map(b => {
+      let cells = `<td class="broker-name"><strong>${esc(b.name || "未命名")}</strong><small>${esc(b.full || "未配置")}</small></td><td>${esc(b.location)}</td><td>${esc(b.type || "未配置")}</td><td>${esc(b.category || "未配置")}</td>`;
+      cells += `<td class="broker-text" data-broker-field="bank">${esc(b.bank || "未配置")}</td><td class="broker-text" data-broker-field="note">${esc(b.note || "未配置")}</td>`;
+      cells += `<td class="group-start" data-business="option">${status(b.option.status)}</td><td data-business="option">${esc(b.option.quotes.join(" / ") || "未配置")}</td><td data-business="option">${tags(b.option.targets)}</td><td data-business="option">${esc(optionText(b) || "未配置")}</td><td class="market-rule-cell" data-business="option" data-rule-field="liquid">${marketRulesHtml(b.option,"liquid")}</td><td class="market-rule-cell" data-business="option" data-rule-field="dividend">${marketRulesHtml(b.option,"dividend")}</td>`;
+      cells += `<td class="group-start" data-business="margin">${status(b.margin.status)}</td><td class="group-start" data-business="swap">${status(b.swap.status)}</td><td data-business="swap" data-swap-targets>${tags(b.swap.targets)}</td><td class="fee-cell group-start" data-broker-fees>${feesHtml(b)}</td>`;
+      cells += `<td class="operation"><div class="row-actions"><button class="text-button" data-action="edit-broker" data-id="${b.id}" aria-label="编辑${esc(b.name)}">编辑</button></div></td>`;
+      return `<tr data-broker-id="${b.id}">${cells}</tr>`;
+    }).join("");
+    const ready = mode === "normal";
+    $("results").innerHTML = `<div class="table-wrap"><table class="data-table broker-table" aria-label="券商共有信息、业务配置及收费规则"><colgroup>${colWeights.map(w => `<col style="width:${w / totalWeight * 100}%">`).join("")}</colgroup><thead><tr>${groups.map((group,i) => `<th scope="colgroup" colspan="${group.headers.length}" ${i ? 'class="group-start"' : ""}>${group.name}</th>`).join("")}<th scope="col" rowspan="2" class="operation group-start">操作</th></tr><tr>${groups.map((group,i) => group.headers.map((h,j) => `<th scope="col" ${i && !j ? 'class="group-start"' : ""}>${h}</th>`).join("")).join("")}</tr></thead><tbody>${ready || mode === "empty" ? dataRows : ""}</tbody></table>${!ready || !visible.length ? stateContent(mode === "normal" ? "empty" : mode,mode === "normal" && Object.values(filter).some(v => Array.isArray(v) ? v.length : v)) : ""}</div><div class="list-foot"><span>${ready || mode === "empty" ? `共 ${visible.length} 条记录` : "记录数暂不可用"}</span><div class="pagination"><button class="icon-button" disabled aria-label="上一页">${icon("ChevronLeft")}</button><span class="page-count">1</span><button class="icon-button" disabled aria-label="下一页">${icon("ChevronRight")}</button></div></div>`;
+    $("results").setAttribute("aria-busy",String(mode === "loading"));
+    $("result-count").textContent = ready || mode === "empty" ? `${visible.length} 家券商` : "券商列表";
+    $("applied").textContent = appliedFilterText();
+    document.querySelector('[data-action="add-broker"]').disabled = mode === "denied" || mode === "loading";
+    syncExport();
+    requestAnimationFrame(syncPan);
+  }
+  function renderDictionaryPage() {
+    const rows = mode === "empty" ? [] : dictionary.filter(p => (!dictionaryFilter.name || p.name.includes(dictionaryFilter.name)) && (!dictionaryFilter.status || String(p.enabled) === dictionaryFilter.status));
+    const ready = mode === "normal";
+    $("product-page").innerHTML = `${heading("收费项目字典",true)}<form id="dictionary-filters"><div class="filters">${textInput("dictionary-query","项目名称",dictionaryFilter.name)}${select("dictionary-status","状态",["启用","停用"],dictionaryFilter.status === "true" ? "启用" : dictionaryFilter.status === "false" ? "停用" : "")}</div><div class="filter-footer"><span class="applied">${dictionaryFilter.name ? "名称：" + esc(dictionaryFilter.name) : "当前未设置名称条件"}</span><div class="actions"><button type="button" class="button" data-action="reset-dictionary">${icon("RotateCcw")}重置</button><button type="submit" class="button primary">${icon("Search")}搜索</button></div></div></form><div class="toolbar"><button class="button primary" data-action="add-dictionary" ${mode === "denied" || mode === "loading" ? "disabled" : ""}>${icon("Plus")}添加收费项目</button><span class="count">${ready || mode === "empty" ? `共 ${rows.length} 项` : "记录数暂不可用"}</span></div><div class="table-wrap"><table class="data-table"><colgroup><col style="width:48%"><col style="width:18%"><col style="width:14%"><col style="width:20%"></colgroup><thead><tr><th>项目名称</th><th>状态</th><th>引用券商</th><th>操作</th></tr></thead><tbody>${ready ? rows.map(p => `<tr><td><strong>${esc(p.name)}</strong></td><td><span class="status ${p.enabled ? "" : "disabled"}">${p.enabled ? "启用" : "停用"}</span></td><td>${brokers.filter(b => b.fees.some(f => f.project === p.id)).length}</td><td><button class="text-button" data-action="edit-dictionary" data-id="${p.id}" aria-label="编辑${esc(p.name)}">编辑</button><span class="muted"> / </span><button class="text-button" data-action="toggle-dictionary" data-id="${p.id}" aria-label="${p.enabled ? "停用" : "启用"}${esc(p.name)}">${p.enabled ? "停用" : "启用"}</button></td></tr>`).join("") : ""}</tbody></table>${!ready || !rows.length ? stateContent(mode === "normal" ? "empty" : mode,ready && Boolean(dictionaryFilter.name || dictionaryFilter.status)) : ""}</div>`;
+    requestAnimationFrame(syncPan);
+  }
+  function openBroker(id) {
+    const key = "broker:" + (id || "new");
+    if (workWindows.has(key)) { activateWindow(workWindows.get(key),true); return; }
+    createWindow("broker",key);
+    original = id ? structuredClone(brokers.find(b => b.id === id)) : blank();
+    original.fees.forEach(row => { row.direction = directionsOf(row); });
+    draft = structuredClone(original); removedFees = []; feeRateResets = new Set(); feeDraft = null; feeOriginal = null; feeIndex = null;
+    formTab = "option";
+    $("broker-title").textContent = id ? `编辑券商 · ${draft.name}` : "添加券商";
+    $("broker-error").textContent = "";
+    $("basic-fields").innerHTML = textInput("b-name","券商简称",draft.name) + textInput("b-full","券商全称",draft.full) + select("b-location","所在地",["大陆","香港"],draft.location,null) + textInput("b-type","券商类型",draft.type) + select("b-category","券商分类",classes,draft.category,null);
+    $("additional-fields").innerHTML = `<div class="field"><label for="b-bank">收款信息</label><textarea id="b-bank">${esc(draft.bank)}</textarea></div><div class="field"><label for="b-note">备注</label><textarea id="b-note">${esc(draft.note)}</textarea></div>`;
+    namespaceWindow(currentWindow); renderBusinessForm(); renderPrd(); refreshWindows();
+    $("b-name").focus({preventScroll:true});
+  }
+  function readBrokerForm() {
+    if (!draft) return;
+    for (const key of ["name","full","location","type","category","bank","note"]) draft[key] = $("b-" + key).value;
+    $("market-rule-fields").querySelectorAll("[data-market-rule]").forEach(input => {
+      draft.option.marketRules[input.dataset.marketRule][input.dataset.ruleField] = input.value;
+    });
+    const panel = $("business-fields"), key = panel.dataset.business;
+    if (!key) return;
+    if (key !== "fees") draft[key].status = panel.querySelector('[name="business-status"]:checked')?.value || draft[key].status;
+    if (key === "option" || key === "swap") {
+      for (const [field,name] of (key === "option" ? [["quotes","business-quotes"],["targets","business-targets"]] : [["targets","business-targets"]])) {
+        const selected = [...panel.querySelectorAll(`[name="${name}"]:checked`)].map(el => el.value);
+        const before = original[key][field];
+        // Checkbox display order does not make an unchanged selection dirty.
+        draft[key][field] = selected.length === before.length && before.every(value => selected.includes(value)) ? [...before] : selected;
+      }
+    }
+    if (key === "option") {
+      draft.option.exercise = $("option-exercise").value;
+    } else if (key === "fees" && feeDraft) {
+      const row = panel.querySelector(".fee-editor");
+      if (row) Object.assign(feeDraft,{project:Number(row.querySelector('[data-fee-field="project"]').value) || "",market:[...row.querySelectorAll('[data-fee-field="market"]:checked')].map(input => input.value),direction:[...row.querySelectorAll('[data-fee-field="direction"]:checked')].map(input => input.value),...Object.fromEntries(["method","rounding","decimals","rate","minimum","maximum"].map(field => [field,row.querySelector(`[data-fee-field="${field}"]`).value.trim()]))});
+    }
+  }
+  function renderBusinessForm() {
+    const feeQuery = formTab === "fees" ? $("fee-search")?.value || "" : "";
+    currentWindow.root.querySelectorAll("[data-form-tab]").forEach(button => { const on = button.dataset.formTab === formTab; button.setAttribute("aria-selected",String(on)); button.tabIndex = on ? 0 : -1; });
+    $("business-fields").setAttribute("aria-labelledby","form-tab-" + formTab);
+    $("business-fields").dataset.business = formTab;
+    $("form-context").textContent = `${draft.name || "新增券商"} · ${labels[formTab]}`;
+    let html = formTab === "fees" ? "" : radios("business-status",labels[formTab] + "状态",states,draft[formTab].status);
+    if (!draft.id && formTab !== "fees") html += '<p class="helper">本业务为终止时，可不配置子项。</p>';
+    if (formTab === "swap") html += `<div style="margin-top:18px">${checks("business-targets","支持标的类型",swapTargets,draft.swap.targets)}</div>`;
+    if (formTab === "option") html += `<div class="form-grid" style="margin-top:18px">${checks("business-quotes","询价方式",quotes,draft.option.quotes)}${checks("business-targets","支持标的类型",optionTargets,draft.option.targets)}${select("option-exercise","最快行权日",exerciseOptions,draft.option.exercise,"请选择")}</div><p class="helper" style="margin-top:12px">T 为成交日。</p>`;
+    else if (formTab === "fees" && feeDraft) html += `<div class="fee-subpage-head"><button type="button" class="text-button" data-action="cancel-fee">${icon("ChevronLeft")}返回收费规则</button><h3>${feeIndex === null ? "新增" : "编辑"}收费规则</h3></div><div id="fee-error" class="message" role="alert"></div>${feeEditor(feeDraft,feeIndex ?? draft.fees.length)}`;
+    else if (formTab === "fees") html += `<div class="fee-heading"><h3>收费规则（${draft.fees.length} 条）</h3><button type="button" class="button" data-action="add-fee">${icon("Plus")}新增规则</button></div><div class="table-wrap fee-list" role="region" aria-label="收费规则列表，可左右滚动" tabindex="0"><table class="data-table"><thead><tr>${["市场","收费项目","收费方向","计算方式","舍入方式","小数位数","收费费率","最低收费","最高收费","操作"].map(label => `<th scope="col">${label}</th>`).join("")}</tr></thead><tbody>${draft.fees.map((row,index) => {
+      const project = projectById(row.project);
+      return `<tr data-fee-row="${index}"><td>${esc(marketsOf(row).join("、") || "未配置")}</td><td>${esc(project?.name || "项目不存在")}${project && !project.enabled ? '<small>已停用</small>' : ""}</td><td>${esc(directionsOf(row).join("、"))}</td><td>${esc(row.method)}</td><td>${esc(row.rounding)}</td><td>${esc(row.decimals)}</td><td>${esc(row.rate)} ${feeUnit(row.method)}</td><td>${esc(feeLimitText(row.minimum))}</td><td>${esc(feeLimitText(row.maximum))}</td><td><div class="rule-actions"><button type="button" class="text-button" data-action="edit-fee" data-index="${index}" aria-label="编辑第${index + 1}条收费规则">编辑</button><button type="button" class="text-button" data-action="remove-fee" data-index="${index}" aria-label="移除第${index + 1}条收费规则">移除</button></div></td></tr>`;
+    }).join("")}</tbody></table>${!draft.fees.length ? '<div class="empty"><strong>暂无收费规则</strong><button type="button" class="button" data-action="add-fee">新增规则</button></div>' : ""}</div>${removedFees.length ? '<button class="text-button fee-undo" type="button" data-action="undo-fee">撤销上次移除</button>' : ""}`;
+    $("business-fields").innerHTML = html;
+    $("market-rule-fields").innerHTML = `<div class="market-rule-head" aria-hidden="true"><span>市场 / 板块（常规期权）</span><span>是否强平</span><span>分红调整</span></div>${ruleMarkets.map(m => `<section class="market-rule-editor" data-rule-market="${m.key}" ${draft.option.targets.includes(m.target) ? "" : "hidden"}><h4>${esc(m.label)}</h4>${[["liquid","是否强平"],["dividend","分红调整"]].map(([field,label]) => `<div class="field"><label class="field-label" for="market-${m.key}-${field}">${label}</label><textarea id="market-${m.key}-${field}" data-market-rule="${m.key}" data-rule-field="${field}" aria-label="${esc(m.label)}${label}" ${draft.option.targets.includes(m.target) ? "" : "disabled"}>${esc(draft.option.marketRules[m.key][field])}</textarea></div>`).join("")}</section>`).join("")}<p class="helper" data-no-market ${draft.option.targets.length ? "hidden" : ""}>常规期权暂无支持标的</p>`;
+    $("broker-footer").innerHTML = feeDraft ? '<button type="button" class="button" data-action="cancel-fee">取消</button><button type="button" class="button primary" data-action="save-fee" id="fee-save">保存规则</button>' : '<button type="button" class="button" data-action="close-broker">取消</button><button type="submit" class="button primary" id="broker-save">保存</button>';
+    namespaceWindow(currentWindow);
+    if (formTab === "fees") {
+      if ($("fee-search")) $("fee-search").value = feeQuery;
+      filterFeeProjects(feeQuery);
+    }
+    refreshWindows();
+  }
+  function feeEditor(row,index) {
+    const existing = original.fees.some(f => f.key === row.key && f.project === row.project);
+    const options = dictionary.filter(p => p.enabled || (p.id === row.project && existing));
+    const field = (key,label,values) => `<div class="field"><label for="fee-${key}-${index}">${label}<span class="required">*</span></label><select id="fee-${key}-${index}" data-fee-field="${key}"><option value="">请选择</option>${values.map(value => `<option value="${value}" ${row[key] === value ? "selected" : ""}>${value}</option>`).join("")}</select></div>`;
+    const direction = `<fieldset class="field"><legend class="field-label">收费方向<span class="required">*</span></legend><div class="choices" id="fee-direction-${index}">${feeDirections.map((value,i) => `<label><input type="checkbox" ${i === 0 ? `id="fee-direction-focus-${index}"` : ""} name="fee-direction-${index}" data-fee-field="direction" value="${value}" ${directionsOf(row).includes(value) ? "checked" : ""}>${value}</label>`).join("")}</div></fieldset>`;
+    const market = `<fieldset class="field"><legend class="field-label">市场<span class="required">*</span></legend><div class="choices">${feeMarkets.map((value,i) => `<label><input type="checkbox" ${i === 0 ? `id="fee-market-${index}"` : ""} name="fee-market-${index}" data-fee-field="market" value="${value}" ${marketsOf(row).includes(value) ? "checked" : ""}>${value}</label>`).join("")}</div></fieldset>`;
+    const project = projectById(row.project);
+    const picker = `<div class="field"><label id="fee-project-label-${index}">收费项目<span class="required">*</span></label><details class="fee-project-picker"><summary aria-labelledby="fee-project-label-${index} fee-project-value-${index}"><span id="fee-project-value-${index}">${esc(project ? project.name + (project.enabled ? "" : "（已停用）") : "请选择收费项目")}</span></summary><div class="fee-project-options"><input type="search" id="fee-search" aria-label="搜索收费项目" placeholder="搜索项目名称" autocomplete="off"><select size="4" id="fee-project-${index}" aria-labelledby="fee-project-label-${index}" data-fee-field="project"><option value="">请选择收费项目</option>${options.map(p => `<option value="${p.id}" ${p.id === row.project ? "selected" : ""}>${esc(p.name)}${p.enabled ? "" : "（已停用）"}</option>`).join("")}</select><span class="fee-search-state" role="status"></span></div></details></div>`;
+    const limit = (key,label) => `<div class="field"><label for="fee-${key}-${index}">${label}</label><div class="fee-rate-input"><input id="fee-${key}-${index}" data-fee-field="${key}" inputmode="decimal" autocomplete="off" placeholder="未配置" value="${esc(row[key] ?? "")}"><span>金额</span></div></div>`;
+    return `<section class="fee-editor" data-rule-key="${esc(row.key)}" aria-label="收费规则字段">
+      ${market}
+      <p class="helper" style="margin-top:10px">费用币种跟随标的币种</p>
+      <div class="fee-rule-fields">${picker}${direction}${field("method","计算方式",feeMethods)}${field("rounding","舍入方式",feeRoundings)}${field("decimals","小数位数",feeDecimals)}<div class="field"><label for="fee-rate-${index}">收费费率<span class="required">*</span></label><div class="fee-rate-input"><input id="fee-rate-${index}" data-fee-field="rate" inputmode="decimal" autocomplete="off" value="${esc(row.rate)}" ${!row.method ? "disabled" : ""} aria-describedby="fee-unit-${index} fee-rate-hint-${index}"><span id="fee-unit-${index}">${feeUnit(row.method)}</span></div><p class="helper" id="fee-rate-hint-${index}">${!row.method ? "请先选择计算方式" : feeRateResets.has(row.key) && !row.rate ? "计算方式已变更，请重新填写收费费率。" : ""}</p></div>${limit("minimum","最低收费")}${limit("maximum","最高收费")}</div></section>`;
+  }
+  function startFee(index = null) {
+    readBrokerForm(); feeIndex = index;
+    feeDraft = index === null ? blankFee() : {...structuredClone(draft.fees[index]),market:[...marketsOf(draft.fees[index])],minimum:draft.fees[index].minimum ?? "",maximum:draft.fees[index].maximum ?? ""};
+    feeOriginal = structuredClone(feeDraft);
+    renderBusinessForm(); currentWindow.root.querySelector(".fee-subpage-head").scrollIntoView({block:"start"});
+    $("fee-market-" + (index ?? draft.fees.length)).focus({preventScroll:true});
+  }
+  function cancelFee() {
+    readBrokerForm();
+    const back = () => { feeDraft = null; feeOriginal = null; feeIndex = null; renderBusinessForm(); $("business-fields").querySelector('[data-action="add-fee"]').focus({preventScroll:true}); };
+    if (JSON.stringify(feeDraft) !== JSON.stringify(feeOriginal)) confirmAction("放弃本条规则修改？","返回列表将丢弃本条规则尚未保存的输入，其他规则保留。",back,"放弃修改","继续编辑");
+    else back();
+  }
+  function feeValidation(row) {
+    if (!marketsOf(row).length || marketsOf(row).some(value => !feeMarkets.includes(value))) return ["market","请选择至少一个收费市场。"];
+    const project = projectById(row.project);
+    const existing = original.fees.some(f => f.key === row.key && f.project === row.project);
+    if (!project || (!project.enabled && !existing)) return ["project","请选择可用收费项目。"];
+    if (!directionsOf(row).length || directionsOf(row).some(value => !feeDirections.includes(value))) return ["direction-focus","请选择至少一个收费方向。"];
+    for (const [field,values,label] of [["method",feeMethods,"计算方式"],["rounding",feeRoundings,"舍入方式"],["decimals",feeDecimals,"小数位数"]]) {
+      if (!values.includes(row[field])) return [field,`请选择${label}。`];
+    }
+    const validAmount = value => /^\d+(?:\.\d+)?$/.test(value) && Number.isFinite(Number(value));
+    if (!validAmount(row.rate)) return ["rate","请填写有效收费费率（非负数）。"];
+    for (const [field,label] of [["minimum","最低收费"],["maximum","最高收费"]]) {
+      if (row[field] !== "" && row[field] != null && !validAmount(row[field])) return [field,`请填写有效${label}（非负金额）。`];
+    }
+    if (row.minimum !== "" && row.maximum !== "" && Number(row.minimum) > Number(row.maximum)) return ["maximum","最高收费不能低于最低收费。"];
+    return null;
+  }
+  function saveFee() {
+    readBrokerForm();
+    const error = feeValidation(feeDraft);
+    if (error) {
+      $("fee-error").textContent = error[1];
+      const field = $("fee-" + error[0] + "-" + (feeIndex ?? draft.fees.length));
+      const picker = field.closest(".fee-project-picker");
+      if (picker) picker.open = true;
+      field.focus(); refreshWindows(); return;
+    }
+    if (feeIndex === null) draft.fees.push(structuredClone(feeDraft));
+    else draft.fees[feeIndex] = structuredClone(feeDraft);
+    const index = feeIndex ?? draft.fees.length - 1;
+    feeDraft = null; feeOriginal = null; feeIndex = null;
+    renderBusinessForm(); $("business-fields").querySelector(`[data-action="edit-fee"][data-index="${index}"]`).focus({preventScroll:true});
+  }
+  function closeBroker() {
+    if ($("broker-save")?.disabled) return;
+    readBrokerForm();
+    storeWindow();
+    if (!windowDirty(currentWindow)) { finishWindow(); return; }
+    confirmAction("放弃修改？","关闭后，本次未保存的修改将丢失。",() => finishWindow(),"放弃修改","继续编辑");
+  }
+  function brokerError(message,tab,selector) {
+    formTab = tab; renderBusinessForm(); $("broker-error").textContent = message;
+    const field = selector.startsWith("#") ? $(selector.slice(1)) : $("broker-dialog").querySelector(selector);
+    field?.focus();
+    $("broker-error").scrollIntoView({block:"nearest"});
+  }
+  function saveBroker(event) {
+    event.preventDefault(); readBrokerForm();
+    if (feeDraft) { saveFee(); return; }
+    if (draft.option.exercise && !exerciseOptions.includes(draft.option.exercise)) { brokerError("请选择常规期权最快行权日的有效选项。","option","#option-exercise"); return; }
+    const feesModified = JSON.stringify(draft.fees) !== JSON.stringify(original.fees);
+    if (feesModified) {
+      for (const [index,row] of draft.fees.entries()) {
+        const error = feeValidation(row);
+        if (error) { formTab = "fees"; startFee(index); $("fee-error").textContent = `第 ${index + 1} 条规则：${error[1]}`; $("fee-" + error[0] + "-" + index).focus(); return; }
+      }
+    }
+    const pending = structuredClone(draft);
+    simulateSave($("broker-save"),$("broker-error"),() => {
+      if (pending.id) brokers[brokers.findIndex(b => b.id === pending.id)] = pending;
+      else { pending.id = Math.max(...brokers.map(b => b.id),0) + 1; brokers.unshift(pending); }
+      finishWindow(); renderPage(); toast("券商配置已保存");
+    });
+  }
+  function simulateSave(button,error,success) {
+    const owner = currentWindow, shouldFail = $("fail-save").checked;
+    const controls = [...owner.root.querySelectorAll("input,select,textarea,button")].filter(el => !el.hasAttribute("data-window-minimize")).map(el => [el,el.disabled]);
+    $("fail-save").checked = false;
+    error.textContent = ""; button.disabled = true; button.textContent = "保存中…";
+    controls.forEach(([el]) => { el.disabled = true; });
+    setTimeout(() => {
+      const previous = currentWindow;
+      useWindow(owner);
+      controls.forEach(([el,disabled]) => { el.disabled = disabled; });
+      button.disabled = false; button.textContent = "保存";
+      if (shouldFail) error.textContent = "保存失败，服务暂不可用。输入已保留，请重试。";
+      else success();
+      if (previous && workWindows.has(previous.key)) useWindow(previous);
+      refreshWindows();
+    },350);
+  }
+  function openDictionary(id) {
+    const key = "dictionary:" + (id || "new");
+    if (workWindows.has(key)) { activateWindow(workWindows.get(key),true); return; }
+    createWindow("dictionary",key);
+    editDictionaryId = id || null;
+    const project = id ? projectById(id) : {name:"",enabled:true};
+    dictionaryOriginal = JSON.stringify(project);
+    $("dictionary-title").textContent = id ? "编辑收费项目" : "添加收费项目";
+    $("dict-name").value = project.name;
+    $("dict-status").innerHTML = ["启用","停用"].map((value,i) => `<label><input type="radio" name="dict-status" value="${i === 0}" ${project.enabled === (i === 0) ? "checked" : ""}>${value}</label>`).join("");
+    $("dictionary-error").textContent = ""; refreshWindows(); $("dict-name").focus({preventScroll:true});
+  }
+  function closeDictionary() {
+    if ($("dictionary-save").disabled) return;
+    const current = {name:$("dict-name").value,enabled:currentWindow.root.querySelector('[name="dict-status"]:checked').value === "true"};
+    const previous = JSON.parse(dictionaryOriginal);
+    if (current.name === previous.name && current.enabled === previous.enabled) finishWindow();
+    else confirmAction("放弃修改？","关闭后，本次未保存的修改将丢失。",() => finishWindow(),"放弃修改","继续编辑");
+  }
+  function saveDictionary(event) {
+    event.preventDefault();
+    const name = $("dict-name").value.trim();
+    const enabled = currentWindow.root.querySelector('[name="dict-status"]:checked').value === "true";
+    if (!name) { $("dictionary-error").textContent = "请输入项目名称。"; $("dict-name").focus(); return; }
+    if (dictionary.some(p => p.id !== editDictionaryId && p.name === name)) { $("dictionary-error").textContent = "已有同名收费项目，请使用已有项目或修改名称。"; $("dict-name").focus(); return; }
+    const execute = () => simulateSave($("dictionary-save"),$("dictionary-error"),() => {
+      if (editDictionaryId) Object.assign(projectById(editDictionaryId),{name,enabled});
+      else dictionary.push({id:Math.max(...dictionary.map(p => p.id),0) + 1,name,enabled});
+      finishWindow(); renderPage(); refreshOpenFeeLists(); toast("收费项目已保存");
+    });
+    if (editDictionaryId && projectById(editDictionaryId).enabled && !enabled) confirmAction("停用收费项目？","停用后不可新增选择，已有券商配置保留。",execute,"停用");
+    else execute();
+  }
+  function switchPage(next) {
+    if (!["brokers","dictionary","export"].includes(next)) return;
+    if (page === "brokers" && next === "export") brokerFilterDraft = {values:[...new FormData($("filters-form")).entries()],advanced:$("filters-form").querySelector(".advanced").open};
+    if (next !== "export" && page !== "export") {
+      mode = "normal"; filter = {}; dictionaryFilter = {}; brokerFilterDraft = null;
+    }
+    if (next === "dictionary") brokerFilterDraft = null;
+    page = next; $("demo-state").value = mode;
+    renderPage(); $("canvas").scrollLeft = 0; document.querySelector(".change-log-panel").scrollTop = 0;
+    location.hash = next;
+  }
+  function refreshOpenFeeLists() {
+    const previous = currentWindow;
+    for (const item of workWindows.values()) {
+      if (item.kind !== "broker") continue;
+      useWindow(item);
+      if (formTab === "fees" && !feeDraft) {
+        const body = item.root.querySelector(".dialog-body"), scrollTop = body.scrollTop;
+        readBrokerForm(); renderBusinessForm(); body.scrollTop = scrollTop;
+      }
+    }
+    if (previous && workWindows.has(previous.key)) useWindow(previous);
+    refreshWindows();
+  }
+  function activateFromEvent(event) {
+    const root = event.target.closest(".work-window");
+    if (!root || currentWindow?.root === root) return;
+    const item = workWindows.get(root.dataset.windowKey);
+    if (item) activateWindow(item);
+  }
+  document.addEventListener("pointerdown",activateFromEvent,true);
+  document.addEventListener("focusin",activateFromEvent,true);
+  document.addEventListener("click",event => {
+    const button = event.target.closest("button");
+    if (!button || button.disabled) return;
+    activateFromEvent(event);
+    if (button.hasAttribute("data-window-minimize")) { minimizeWindow(currentWindow); return; }
+    if (button.dataset.windowRestore) { activateWindow(workWindows.get(button.dataset.windowRestore),true); return; }
+    if (button.dataset.windowClose) {
+      const item = workWindows.get(button.dataset.windowClose);
+      activateWindow(item);
+      item.kind === "broker" ? closeBroker() : closeDictionary();
+      return;
+    }
+    if (button.dataset.page) { switchPage(button.dataset.page); return; }
+    if (button.dataset.formTab) {
+      if (feeDraft && button.dataset.formTab !== "fees") { toast("请先保存或取消当前收费规则"); return; }
+      if ($("broker-save")?.disabled) return;
+      readBrokerForm(); formTab = button.dataset.formTab; renderBusinessForm(); return;
+    }
+    const id = Number(button.dataset.id);
+    switch (button.dataset.action) {
+      case "add-broker": openBroker(); break;
+      case "export-brokers": exportBrokers(); break;
+      case "edit-broker": openBroker(id); break;
+      case "close-broker": closeBroker(); break;
+      case "close-dictionary": closeDictionary(); break;
+      case "reset-filters": if (page === "dictionary") { dictionaryFilter = {}; renderDictionaryPage(); } else { filter = {}; brokerFilterDraft = null; mode = "normal"; $("demo-state").value = mode; page === "export" ? renderExportPage() : renderBrokerPage(); } break;
+      case "reset-dictionary": dictionaryFilter = {}; renderDictionaryPage(); break;
+      case "refresh": renderBrokerRows(); toast("列表已刷新"); break;
+      case "retry": mode = "normal"; $("demo-state").value = mode; renderPage(); break;
+      case "denied-back": switchPage(page === "brokers" ? "dictionary" : "brokers"); break;
+      case "add-fee": startFee(); break;
+      case "edit-fee": startFee(Number(button.dataset.index)); break;
+      case "save-fee": saveFee(); break;
+      case "cancel-fee": cancelFee(); break;
+      case "remove-fee": readBrokerForm(); removedFees.push({index:Number(button.dataset.index),row:draft.fees.splice(Number(button.dataset.index),1)[0]}); renderBusinessForm(); break;
+      case "undo-fee": readBrokerForm(); { const removed = removedFees.pop(); if (removed) draft.fees.splice(removed.index,0,removed.row); } renderBusinessForm(); break;
+      case "add-dictionary": openDictionary(); break;
+      case "edit-dictionary": openDictionary(id); break;
+      case "toggle-dictionary": {
+        const p = projectById(id);
+        if (p.enabled) confirmAction("停用收费项目？","停用后不可新增选择，已有券商配置保留。",() => { p.enabled = false; renderDictionaryPage(); refreshOpenFeeLists(); toast("收费项目已停用"); },"停用");
+        else { p.enabled = true; renderDictionaryPage(); refreshOpenFeeLists(); toast("收费项目已启用"); }
+        break;
+      }
+    }
+  });
+  document.addEventListener("submit",event => {
+    activateFromEvent(event);
+    if (event.target.dataset.control === "broker-form") saveBroker(event);
+    else if (event.target.dataset.control === "dictionary-form") saveDictionary(event);
+    else if (event.target.id === "filters-form") {
+      event.preventDefault();
+      const data = new FormData(event.target);
+      const multiFields = ["optionQuote","optionTarget","swapTarget"];
+      filter = Object.fromEntries([...data.entries()].filter(([key]) => !multiFields.includes(key)));
+      multiFields.forEach(key => { filter[key] = data.getAll(key); });
+      Object.keys(filter).forEach(key => { if (typeof filter[key] === "string") filter[key] = filter[key].trim(); });
+      renderBrokerRows();
+    } else if (event.target.id === "dictionary-filters") {
+      event.preventDefault();
+      dictionaryFilter = {name:$("dictionary-query").value.trim(),status:$("dictionary-status").value === "启用" ? "true" : $("dictionary-status").value === "停用" ? "false" : ""};
+      renderDictionaryPage();
+    }
+  });
+  function filterFeeProjects(query) {
+    query = query.trim();
+    currentWindow.root.querySelectorAll(".fee-editor").forEach(row => {
+      const select = row.querySelector('[data-fee-field="project"]'), selected = select.value;
+      const existing = original.fees.some(f => f.key === row.dataset.ruleKey && String(f.project) === selected);
+      const options = dictionary.filter(p => (p.enabled && p.name.includes(query)) || (String(p.id) === selected && (p.enabled || existing)));
+      select.innerHTML = '<option value="">请选择收费项目</option>' + options.map(p => `<option value="${p.id}">${esc(p.name)}${p.enabled ? "" : "（已停用）"}</option>`).join("");
+      select.value = selected;
+      row.querySelector(".fee-search-state").textContent = !dictionary.some(p => p.enabled) ? "没有启用项目，请从独立菜单维护。" : !dictionary.some(p => p.enabled && p.name.includes(query)) ? "没有匹配项目；已选项目保留。" : "";
+    });
+  }
+  document.addEventListener("input",event => {
+    activateFromEvent(event);
+    if (!event.target.closest(".work-window")) return;
+    if (event.target.dataset.control === "fee-search") filterFeeProjects(event.target.value);
+    if (currentWindow.kind === "broker") readBrokerForm();
+    refreshWindows();
+  });
+  document.addEventListener("change",event => {
+    activateFromEvent(event);
+    if (event.target.closest(".work-window") && currentWindow.kind === "broker") readBrokerForm();
+    if (event.target.dataset.feeField === "project") {
+      const picker = event.target.closest(".fee-project-picker");
+      picker.querySelector("summary span").textContent = event.target.selectedOptions[0]?.textContent || "请选择收费项目";
+      picker.open = false;
+      picker.querySelector("summary").focus({preventScroll:true});
+    }
+    if (event.target.name === "business-targets" && formTab === "option" && event.target.closest(".work-window")) {
+      ruleMarkets.forEach(m => {
+        const row = $("market-rule-fields").querySelector(`[data-rule-market="${m.key}"]`);
+        row.hidden = !draft.option.targets.includes(m.target);
+        row.querySelectorAll("textarea").forEach(input => { input.disabled = row.hidden; });
+      });
+      $("market-rule-fields").querySelector("[data-no-market]").hidden = Boolean(draft.option.targets.length);
+    }
+    if (event.target.closest(".work-window")) refreshWindows();
+    if (event.target.dataset.feeField !== "method") return;
+    const row = event.target.closest(".fee-editor");
+    const index = feeIndex ?? draft.fees.length;
+    feeDraft.rate = ""; feeRateResets.add(row.dataset.ruleKey);
+    const scrollTop = $("broker-dialog").querySelector(".dialog-body").scrollTop;
+    renderBusinessForm();
+    $("broker-dialog").querySelector(".dialog-body").scrollTop = scrollTop;
+    $("fee-method-" + index).focus({preventScroll:true});
+  });
+  $("demo-state").addEventListener("change",event => { mode = event.target.value; renderPage(); });
+  $("confirm-cancel").addEventListener("click",() => { confirmCallback = null; $("confirm-dialog").close(); });
+  $("confirm-accept").addEventListener("click",() => { const callback = confirmCallback; confirmCallback = null; $("confirm-dialog").close(); callback?.(); });
+  $("window-compare").addEventListener("click",() => { compareWindows = !compareWindows; refreshWindows(); });
+  window.addEventListener("resize",refreshWindows);
+  document.addEventListener("keydown",event => {
+    if (event.key === "Enter" && event.target.dataset.control === "fee-search") {
+      event.preventDefault();
+      event.target.closest(".fee-project-picker").querySelector("select").focus();
+      return;
+    }
+    if (event.key !== "Escape" || $("confirm-dialog").open || !currentWindow || currentWindow.minimized) return;
+    if (!event.target.closest(".work-window")) return;
+    event.preventDefault();
+    const picker = event.target.closest(".fee-project-picker[open]");
+    if (picker) { picker.open = false; picker.querySelector("summary").focus(); return; }
+    if (currentWindow.kind === "broker") { if (feeDraft) cancelFee(); else closeBroker(); }
+    else closeDictionary();
+  });
+  document.querySelectorAll("dialog").forEach(dialog => {
+    dialog.addEventListener("close",() => {
+      document.body.style.overflow = document.querySelector("dialog[open]") ? "hidden" : "";
+      const target = dialogFocus.get(dialog.id); if (target?.isConnected && target.getClientRects().length) target.focus({preventScroll:true});
+    });
+  });
+  $("reset-demo").addEventListener("click",() => {
+    confirmAction("重置本地演示？","本次本地修改将清除，恢复初始示例数据。",() => {
+      if ([...workWindows.values()].some(w => w.root.querySelector('button[type="submit"]:disabled'))) { toast("正在保存，请稍后重置"); return; }
+      workWindows.forEach(item => item.root.remove()); workWindows.clear(); currentWindow = null;
+      seed(); filter = {}; dictionaryFilter = {}; brokerFilterDraft = null; mode = "normal";
+      $("demo-state").value = mode; $("fail-save").checked = false; $("fail-export").checked = false; $("review-note").hidden = true;
+      renderPage(); refreshWindows(); toast("已恢复初始演示数据");
+    },"重置");
+  });
+  function syncPan() {
+    const canvas = $("canvas"), maximum = Math.max(0,canvas.scrollWidth - canvas.clientWidth);
+    $("pan").hidden = maximum <= 1; $("pan-range").max = maximum; $("pan-range").value = canvas.scrollLeft;
+    $("pan-range").setAttribute("aria-valuetext",`已向右移动 ${Math.round(canvas.scrollLeft)}，共 ${maximum}`);
+    $("pan-left").disabled = canvas.scrollLeft <= 1; $("pan-right").disabled = canvas.scrollLeft >= maximum - 1;
+    alignTaskbar();
+  }
+  $("canvas").addEventListener("scroll",syncPan,{passive:true});
+  $("pan-range").addEventListener("input",event => { $("canvas").scrollLeft = Number(event.target.value); syncPan(); });
+  ["left","right"].forEach((direction,index) => $("pan-" + direction).addEventListener("click",() => { $("canvas").scrollLeft += (index ? 1 : -1) * Math.max(240,$("canvas").clientWidth * .75); syncPan(); }));
+  new ResizeObserver(syncPan).observe($("canvas"));
+  document.addEventListener("keydown",event => {
+    if (!["ArrowLeft","ArrowRight","Home","End"].includes(event.key)) return;
+    const tab = event.target.closest('[role="tab"]');
+    if (!tab) return;
+    const tabs = [...tab.parentElement.querySelectorAll('[role="tab"]')];
+    let next = event.key === "Home" ? 0 : event.key === "End" ? tabs.length - 1 : (tabs.indexOf(tab) + (event.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length;
+    event.preventDefault(); tabs[next].click();
+    const target = $(tabs[next].id); target?.focus();
+  });
+  window.addEventListener("hashchange",() => { const next = location.hash.slice(1); if (next !== page && ["brokers","dictionary","export"].includes(next)) switchPage(next); });
+  page = ["dictionary","export"].includes(location.hash.slice(1)) ? location.hash.slice(1) : "brokers";
+  mountIcons(); renderPage();
+})();
+</script>
+</body>
+</html>
