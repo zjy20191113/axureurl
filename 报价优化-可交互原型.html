@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' file:; script-src 'self' file:; style-src 'self' file: 'unsafe-inline'; img-src 'self' file: data: blob:; connect-src 'none'; object-src 'none'; base-uri 'none'">
+  <title>报价优化 · 填写报价与每日报价</title>
+  <link rel="stylesheet" href="报价优化-原型.css">
+  <script defer src="报价优化-图标.js"></script>
+  <script defer src="报价优化-建仓指令.js"></script>
+  <script defer src="报价优化-原型.js"></script>
+</head>
+<body>
+  <main class="shell prototype-shell">
+    <header class="project-head">
+      <div>
+        <h1>报价优化 · 需求原型</h1>
+        <p>同道项目 · 本地模拟数据；保存、修改记录、推送及指令衔接均不连接真实系统</p>
+      </div>
+      <div class="project-actions">
+        <span class="prototype-label">可点击低保真</span>
+        <a class="icon-button" href="优化填写报价及每日报价_增量PRD.md" title="打开增量 PRD" aria-label="打开增量 PRD"><i data-lucide="file-text"></i></a>
+        <button class="icon-button" id="reset-demo" title="重置本地演示" aria-label="重置本地演示"><i data-lucide="rotate-ccw"></i></button>
+      </div>
+    </header>
+    <div class="layout prototype-layout" data-requirement-key="quotation-optimization">
+      <aside class="change-log-panel" tabindex="0" aria-label="需求记录与页面 PRD，可上下滚动">
+        <section class="record-section">
+          <h2>需求迭代记录</h2>
+          <p class="record-empty">本次未要求记录需求迭代</p>
+        </section>
+        <section class="record-section">
+          <h2>原型变动记录</h2>
+          <p class="record-empty">本次未要求记录原型变动</p>
+        </section>
+        <section class="record-section page-prd">
+          <p class="eyebrow">本轮增量需求</p>
+          <h2 id="page-prd-title">填写报价</h2>
+          <article id="embedded-prd"></article>
+        </section>
+        <section class="record-section">
+          <details id="demo-tools">
+            <summary>原型演示工具</summary>
+            <p class="boundary-note">以下开关仅构造本地演示状态，不属于正式功能。历史为预置示例或本地改值记录，不代表服务器已有日志。</p>
+            <label class="tool-check"><input type="checkbox" id="fail-save">下一次保存失败</label>
+            <label class="field"><span>建仓协作演示角色</span>
+              <select id="position-role"><option>询价员</option><option>财务</option><option>交易员</option></select>
+            </label>
+            <label class="field"><span>修改记录读取状态</span>
+              <select id="history-state">
+                <option value="normal">正常</option>
+                <option value="empty">查询成功无记录</option>
+                <option value="loading">加载中</option>
+                <option value="error">读取失败</option>
+                <option value="denied">无查看权限</option>
+              </select>
+            </label>
+            <label class="field"><span>当前列表状态</span>
+              <select id="list-state">
+                <option value="normal">正常</option>
+                <option value="loading">加载中</option>
+                <option value="error">读取失败</option>
+                <option value="denied">无访问权限</option>
+                <option value="empty">无数据</option>
+              </select>
+            </label>
+          </details>
+          <p class="boundary-note">专项加点已有来源，仅补展示；无返回按 0。建仓协作仅为本地模拟，咨询费率 0.06% 为示例；财务、冲冲冲、券商文案为建议模板。未连接真实权限、服务端日志、券商或建仓模块，刷新即重置。</p>
+        </section>
+      </aside>
+      <section class="prototype-column" aria-label="报价优化原型演示">
+        <nav class="prototype-tabs" role="tablist" aria-label="原型页面">
+          <button class="prototype-tab" id="tab-fill" data-tab="fill" role="tab" aria-controls="panel-fill" aria-selected="true">填写报价</button>
+          <button class="prototype-tab" id="tab-daily" data-tab="daily" role="tab" aria-controls="panel-daily" aria-selected="false" tabindex="-1">每日报价</button>
+        </nav>
+        <div class="prototype-workspace">
+          <div class="prototype-screen-wrap" role="region" tabindex="0" aria-label="原型演示区域，可左右滚动">
+            <section id="panel-fill" class="business-page" role="tabpanel" aria-labelledby="tab-fill">
+              <header class="business-heading">
+                <div><p class="breadcrumb">询价管理 / 填写报价</p><h2>填写报价</h2></div>
+                <button class="text-button" data-action="go-daily">每日报价<i data-lucide="arrow-right"></i></button>
+              </header>
+              <div class="fill-workspace">
+              <details class="quick-inquiry" id="quick-inquiry">
+                <summary aria-label="临时新增询价" title="展开临时新增询价"><i data-lucide="plus"></i><span class="quick-title">临时新增询价</span><i class="quick-toggle" data-lucide="chevron-left"></i></summary>
+                <form id="quick-form">
+                  <div class="quick-fields">
+                    <label class="field quick-wide"><span>客户名称 *</span><select name="client"><option>示例客户甲</option><option>示例客户乙</option><option>示例客户丙</option></select></label>
+                    <label class="field quick-wide"><span>股票名称 *</span><select name="stock"><option value="0">示例标的甲 · DEMO.001</option><option value="1">示例标的乙 · DEMO.002</option><option value="2">示例标的丙 · DEMO.003</option></select></label>
+                    <label class="field short"><span>周期（月）*</span><select name="cycle"><option>1</option><option>2</option><option>3</option><option>6</option></select></label>
+                    <label class="field short"><span>结构（%）*</span><select name="structure"><option>100</option><option>103</option><option>105</option><option>110</option><option>120</option></select></label>
+                    <label class="field short"><span>名义本金（万元）*</span><input name="principal" type="number" min="0.01" step="0.01" required></label>
+                    <label class="field short"><span>方向</span><select name="direction"><option>看涨</option><option>看跌</option></select></label>
+                    <label class="field quick-wide"><span>客户要求</span><input name="requirement"></label>
+                  </div>
+                  <fieldset class="inquiry-formats">
+                    <legend>询价格式</legend>
+                    <div class="format-options">
+                      <label><input type="radio" name="format" value="normal" checked>普通询价</label>
+                      <label><input type="radio" name="format" value="gf">广发证券</label>
+                      <label><input type="radio" name="format" value="gt">国泰海通</label>
+                      <label><input type="radio" name="format" value="ht">华泰香港</label>
+                      <label><input type="radio" name="format" value="gs">国顺证券</label>
+                      <label><input type="radio" name="format" value="topaz">topaz</label>
+                    </div>
+                  </fieldset>
+                  <div class="quick-actions"><button type="button" class="button" data-action="clear-inquiry">清空</button><button class="button query" type="submit"><i data-lucide="check"></i>确认新增</button></div>
+                  <section class="inquiry-preview" aria-labelledby="inquiry-preview-title">
+                    <div class="inquiry-preview-heading"><h3 id="inquiry-preview-title">询价文案</h3><button type="button" class="icon-button bordered" data-action="copy-inquiry" title="复制询价文案" aria-label="复制询价文案"><i data-lucide="clipboard"></i></button></div>
+                    <pre class="preformatted inquiry-preview-text" id="inquiry-preview"></pre>
+                  </section>
+                </form>
+              </details>
+              <div class="fill-list">
+              <div class="filter-band">
+                <label class="field"><span>客户 / 群编号</span><input id="fill-client" type="search" placeholder="全部客户"></label>
+                <label class="field"><span>标的名称 / 代码</span><input id="fill-stock" type="search" placeholder="全部标的"></label>
+                <label class="field short"><span>询价日期</span><input id="fill-date" type="date" value="2026-11-12"></label>
+                <label class="field short"><span>推送状态</span><select id="fill-status"><option value="">全部</option><option value="no">未推送</option><option value="yes">已推送</option></select></label>
+                <button class="button query" data-action="filter-fill"><i data-lucide="search"></i>查询</button>
+                <button class="icon-button bordered" data-action="clear-fill" aria-label="重置填写报价筛选" title="重置筛选"><i data-lucide="rotate-ccw"></i></button>
+              </div>
+              <div class="list-toolbar">
+                <div class="toolbar-group">
+                  <button class="icon-button bordered" data-action="refresh" aria-label="刷新填写报价" title="刷新列表"><i data-lucide="refresh-cw"></i></button>
+                  <button class="button" id="batch-fill" data-action="batch-fill" disabled><i data-lucide="square-pen"></i>用自动报价填入员工报价</button>
+                  <button class="button push" id="push-daily" data-action="push-daily" disabled><i data-lucide="send"></i>推送至每日报价</button>
+                </div>
+                <div class="selection-text" id="fill-count" aria-live="polite"></div>
+              </div>
+              <div id="fill-feedback" class="inline-feedback" role="status" hidden></div>
+              <div class="structure-filter" id="structure-filter" hidden>
+                <span id="structure-filter-label"></span>
+                <button class="text-button" data-action="clear-structure-group"><i data-lucide="x"></i>返回全部</button>
+              </div>
+              <div class="matrix-filter">
+                <span>券商报价</span>
+                <label>地区<select id="broker-region"><option value="">全部</option><option value="cn">境内</option><option value="hk">境外</option></select></label>
+                <label>报价分类<select id="broker-category"><option value="">全部分类</option><option value="a">分类甲</option><option value="b">分类乙</option></select></label>
+                <label>询价方式<select id="broker-method"><option value="">全部方式</option><option>人工</option><option>报表</option><option>系统</option><option>FIX</option></select></label>
+                <span class="matrix-caption">费率单位：%</span>
+              </div>
+              <div class="table-wrap" id="fill-table-wrap" tabindex="0" aria-label="填写报价及券商矩阵，可左右滚动">
+                <table class="data-table fill-table" id="fill-table"></table>
+              </div>
+              <div class="list-foot"><span id="fill-total"></span><span>已选择范围：当前查询结果</span></div>
+              </div>
+              </div>
+            </section>
+            <section id="panel-daily" class="business-page" role="tabpanel" aria-labelledby="tab-daily" hidden>
+              <header class="business-heading">
+                <div><p class="breadcrumb"><button class="breadcrumb-link" data-action="go-fill">填写报价</button> / 每日报价</p><h2>每日报价</h2></div>
+                <button class="text-button" data-action="go-fill"><i data-lucide="arrow-left"></i>返回填写报价</button>
+              </header>
+              <div class="filter-band">
+                <label class="field short"><span>报价日期</span><input id="daily-date" type="date" value="2026-11-12"></label>
+                <label class="field"><span>客户 / 群编号</span><input id="daily-client" type="search" placeholder="全部客户"></label>
+                <label class="field"><span>标的名称 / 代码</span><input id="daily-stock" type="search" placeholder="全部标的"></label>
+                <label class="field short"><span>报价状态</span><select id="daily-status"><option value="">全部</option><option value="valid">有效</option><option value="invalid">失效</option></select></label>
+                <button class="button query" data-action="filter-daily"><i data-lucide="search"></i>查询</button>
+                <button class="icon-button bordered" data-action="clear-daily" aria-label="重置每日报价筛选" title="重置筛选"><i data-lucide="rotate-ccw"></i></button>
+              </div>
+              <div class="list-toolbar">
+                <div class="toolbar-group"><button class="button image-action" id="make-image" data-action="make-image" disabled><i data-lucide="image"></i>生成图片</button><button class="button" id="open-position" data-action="open-position" disabled><i data-lucide="file-input"></i>推送建仓指令</button></div>
+                <div class="selection-text" id="daily-count" aria-live="polite"></div>
+              </div>
+              <div id="daily-feedback" class="inline-feedback" role="status" hidden></div>
+              <div class="table-wrap daily-wrap" id="daily-table-wrap" tabindex="0" aria-label="每日报价列表，可左右滚动"><table class="data-table daily-table" id="daily-table"></table></div>
+              <div class="list-foot"><span id="daily-total"></span><span>已选择范围：当前查询结果</span></div>
+            </section>
+          </div>
+          <div class="prototype-pan" id="prototype-pan" role="group" aria-label="原型演示区横向滚动" hidden>
+            <button class="icon-button bordered" id="prototype-pan-left" aria-label="向左移动原型" title="向左移动原型"><i data-lucide="chevron-left"></i></button>
+            <input type="range" id="prototype-pan-range" min="0" max="0" value="0" step="1" aria-label="原型横向滚动位置">
+            <button class="icon-button bordered" id="prototype-pan-right" aria-label="向右移动原型" title="向右移动原型"><i data-lucide="chevron-right"></i></button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <dialog id="main-dialog" aria-labelledby="dialog-title">
+    <div class="dialog-frame">
+      <header class="dialog-header">
+        <h2 id="dialog-title"></h2>
+        <div class="dialog-window-actions">
+          <button type="button" class="icon-button" id="dialog-minimize" aria-label="最小化建仓指令" title="最小化建仓指令" hidden><i data-lucide="minus" aria-hidden="true"></i></button>
+          <button type="button" class="icon-button" id="dialog-close" aria-label="关闭弹窗" title="关闭"><i data-lucide="x" aria-hidden="true"></i></button>
+        </div>
+      </header>
+      <div class="dialog-body" id="dialog-body"></div>
+      <footer class="dialog-footer" id="dialog-footer"></footer>
+    </div>
+  </dialog>
+  <nav class="position-taskbar" id="position-taskbar" aria-label="最小化的建仓指令" hidden>
+    <button type="button" class="position-task" id="position-restore" aria-controls="main-dialog" title="恢复建仓指令">
+      <i data-lucide="file-input" aria-hidden="true"></i>
+      <span><strong id="position-task-title">建仓指令</strong><small id="position-task-detail"></small></span>
+      <i data-lucide="maximize-2" aria-hidden="true"></i>
+    </button>
+  </nav>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
