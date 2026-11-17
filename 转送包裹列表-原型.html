@@ -1,0 +1,1027 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>TNEKO · 转送包裹列表 · 高保真原型</title>
+  <style>
+    :root {
+      --canvas: #f2f2f4; --surface: #fff; --text: #20242b; --muted: #697384;
+      --line: #e5e7eb; --primary: #2877ed; --focus: #4c9ffe;
+      --shadow: 0 8px 24px rgb(0 0 0 / 8%);
+      --tn-nav: #dedbcc; --tn-ink: #5a4e45; --tn-workspace: #f1f1f1;
+      --tn-line: #ebeef5; --tn-search: rgb(237 232 217 / 30%);
+      --tn-action: #34b101;
+      --tn-font: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+      --green: #28734f; --amber: #96631c; --red: #b6423b;
+    }
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
+    body { margin: 0; background: var(--canvas); color: var(--text); font: 400 15px/1.5 -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Helvetica Neue", Arial, sans-serif; letter-spacing: 0; -webkit-font-smoothing: antialiased; }
+    button, input, select { font: inherit; letter-spacing: 0; }
+    button { cursor: pointer; }
+    button, a, summary { touch-action: manipulation; }
+    button:disabled { cursor: default; opacity: .45; }
+    button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+    a { color: #2168ba; }
+    h1, h2, h3, p { margin-top: 0; }
+    .icon { width: 18px; height: 18px; flex-shrink: 0; vertical-align: middle; }
+    .prototype-shell { min-height: 100vh; padding: 16px; }
+    .project-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 58px; padding: 10px 18px; background: #fff; border: 1px solid rgb(0 0 0 / 11%); border-radius: 8px; box-shadow: 0 10px 32px rgb(0 0 0 / 6.5%), 0 2px 8px rgb(0 0 0 / 3.5%); }
+    .project-head h1 { margin: 0; font-size: 18px; line-height: 1.25; font-weight: 700; }
+    .project-head p { margin: 4px 0 0; font-size: 12px; color: var(--muted); }
+    .project-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+    .prototype-label { color: #687182; font-size: 12px; }
+    .prototype-layout { display: grid; grid-template-columns: minmax(380px, 440px) minmax(0, 1fr); gap: 16px; align-items: start; margin-top: 16px; }
+    .change-log-panel, .prototype-column, .prototype-workspace { min-width: 0; }
+    .change-log-panel { align-self: stretch; contain: size; min-height: 0; overflow-y: auto; scrollbar-gutter: stable; padding: 16px; background: #fff; border: 1px solid rgb(0 0 0 / 11%); border-radius: 8px; box-shadow: var(--shadow); }
+    .change-log-panel::-webkit-scrollbar { width: 12px; }
+    .change-log-panel::-webkit-scrollbar-track { background: #f1f3f6; border-radius: 8px; }
+    .change-log-panel::-webkit-scrollbar-thumb { background: #98a3b3; border: 3px solid #f1f3f6; border-radius: 8px; }
+    .record-section + .record-section { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); }
+    .record-section > summary { color: #4d5868; font-size: 13px; font-weight: 600; cursor: pointer; }
+    .record-empty { padding: 10px 12px; margin: 12px 0 0; color: #697384; background: #f6f6f7; border: 1px solid var(--line); border-radius: 4px; font-size: 12px; }
+    .prd-heading { margin-bottom: 20px; }
+    .prd-heading > p { margin: 0 0 5px; font-size: 11px; color: #697384; }
+    .prd-heading h2 { margin: 0; color: var(--text); font-size: 17px; line-height: 1.5; }
+    .page-prd { min-width: 0; max-height: none; overflow: visible; color: #384253; font-size: 14px; line-height: 1.75; overflow-wrap: anywhere; }
+    .prd-section + .prd-section { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line); }
+    .prd-section h3 { margin: 0 0 10px; font-size: 14px; color: #20242b; font-weight: 650; }
+    .prd-section p { margin: 0; }
+    .prd-rules { padding-left: 18px; margin: 0; }
+    .prd-rules li + li { margin-top: 9px; }
+    .prd-table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 13px; line-height: 1.75; }
+    .prd-table th, .prd-table td { text-align: left; vertical-align: top; padding: 9px 8px; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+    .prd-table thead th { color: #647084; background: #f6f7f9; font-weight: 500; }
+    .prd-table th:first-child { width: 92px; }
+    .prd-table tbody th { color: #384253; font-weight: 500; padding-left: 0; }
+    .prd-table td { padding-right: 0; }
+    .prd-boundary { margin: 20px 0 0; padding-top: 14px; border-top: 1px dashed #dce1e8; font-size: 12px; color: #697384; }
+    .prd-boundary p { margin: 0 0 8px; }
+    .demo-tools summary { font-size: 13px; cursor: pointer; }
+    .demo-tools p { font-size: 12px; color: #697384; margin: 10px 0; }
+    .demo-tools label { display: block; font-size: 12px; color: #4d5868; margin: 12px 0 5px; }
+    .demo-tools select { width: 100%; max-width: 100%; min-height: 38px; border: 1px solid #d8dee8; border-radius: 4px; background: #fff; color: #384253; padding: 6px 8px; font-size: 13px; }
+    .sample-queries { display: grid; grid-template-columns: 80px 1fr; gap: 5px 10px; margin: 12px 0 0; font-size: 12px; color: #697384; }
+    .sample-queries dt, .sample-queries dd { margin: 0; }
+    .sample-queries dt { font-family: ui-monospace, monospace; color: #384253; }
+    .prototype-toolbar { margin-bottom: 10px; }
+    .prototype-tabs { display: flex; gap: 4px; min-width: 0; overflow-x: auto; padding: 0 2px; scrollbar-width: thin; }
+    .prototype-tab { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; flex-shrink: 0; border: 1px solid transparent; border-radius: 6px; padding: 8px 14px; background: transparent; color: #677181; font-size: 14px; font-weight: 600; white-space: nowrap; }
+    .prototype-tab[aria-selected="true"] { color: #1760c5; background: #fff; border-color: #d7dce5; box-shadow: 0 2px 4px #18203405; }
+    .prototype-screen-wrap { position: relative; height: auto; overflow: auto; background: #fff; border: 1px solid #dedee1; border-radius: 8px; box-shadow: var(--shadow); }
+    .prototype-screen-wrap::-webkit-scrollbar { height: 14px; }
+    .prototype-screen-wrap::-webkit-scrollbar-track { background: #e8ecf1; border-radius: 8px; }
+    .prototype-screen-wrap::-webkit-scrollbar-thumb { background: #8492a6; border: 3px solid #e8ecf1; border-radius: 8px; }
+    .prototype-pan { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+    .icon-button { position: relative; display: inline-flex; align-items: center; justify-content: center; flex: 0 0 36px; width: 36px; height: 36px; padding: 0; background: #fff; color: #607086; border: 1px solid #d8dee8; border-radius: 4px; }
+    [data-tip]::after { content: attr(data-tip); position: absolute; right: 0; top: calc(100% + 7px); z-index: 20; width: max-content; max-width: 190px; padding: 5px 9px; border-radius: 4px; background: #24282e; color: white; font: 400 12px/1.5 -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif; opacity: 0; pointer-events: none; }
+    [data-tip]:focus-visible::after { opacity: 1; }
+    .prototype-pan input { appearance: none; display: block; flex: 1; min-width: 0; margin: 0; height: 24px; background: transparent; cursor: ew-resize; }
+    .prototype-pan input::-webkit-slider-runnable-track { height: 12px; border: 1px solid #d4dbe5; border-radius: 4px; background: #e4e9ef; }
+    .prototype-pan input::-webkit-slider-thumb { appearance: none; width: 64px; height: 10px; border-radius: 3px; background: #74859d; }
+    .prototype-pan input::-moz-range-track { height: 10px; border: 1px solid #d4dbe5; border-radius: 4px; background: #e4e9ef; }
+    .prototype-pan input::-moz-range-thumb { width: 64px; height: 10px; border: 0; border-radius: 3px; background: #74859d; }
+    .tneko-page { min-width: 1080px; background: var(--tn-workspace); color: #606266; font: 400 14px/1.5 var(--tn-font); }
+    .tn-header { height: 76px; background: var(--tn-nav); }
+    .tn-header-inner { display: flex; align-items: center; gap: 32px; max-width: 1010px; height: 100%; margin: 0 auto; }
+    .tn-brand { display: block; flex-shrink: 0; width: 104px; height: 61px; }
+    .tn-brand img { display: block; width: 104px; height: 61px; }
+    .tn-nav { display: flex; align-items: center; justify-content: space-between; flex: 1; height: 100%; gap: 8px; }
+    .tn-nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-width: 68px; height: 100%; color: var(--tn-ink); font-size: 14px; text-decoration: none; white-space: nowrap; }
+    .tn-nav-item img { display: block; width: 32px; height: 32px; }
+    .tn-nav-item[aria-current="page"] { box-shadow: inset 0 -3px #8b8174; }
+    .tn-more { position: relative; height: 100%; }
+    .tn-more > summary { list-style: none; cursor: pointer; }
+    .tn-more > summary::-webkit-details-marker { display: none; }
+    .tn-nav-label { display: flex; align-items: center; gap: 3px; }
+    .tn-nav-label .icon { width: 12px; height: 12px; }
+    .tn-menu { position: absolute; z-index: 15; top: 70px; right: -10px; width: 178px; padding: 6px 0; border: 1px solid #e0ded8; border-radius: 3px; background: #fff; box-shadow: 0 6px 18px rgb(0 0 0 / 12%); color: #555; }
+    .tn-menu span { display: block; padding: 8px 15px; }
+    .tn-menu span + span { border-top: 1px solid #f4f3ef; }
+    .tn-page-top, .tn-content { width: calc(100% - 24px); max-width: 1180px; margin: 0 auto; }
+    .tn-page-top { background: #fff; padding: 0 20px; border-bottom: 3px solid #f1f1f1; }
+    .tn-title-row { display: flex; align-items: center; justify-content: space-between; min-height: 62px; gap: 24px; }
+    .tn-page-top.search-only { background: transparent; border-bottom: 0; }
+    .tn-search-toolbar { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 620px) minmax(0, 1fr); align-items: start; gap: 16px; min-height: 66px; padding: 12px 0; }
+    .tn-search-toolbar .language-switch { grid-column: 3; justify-self: end; margin-top: 4px; }
+    .language-switch { display: inline-flex; flex-shrink: 0; height: 34px; border: 1px solid #dcdfe6; border-radius: 4px; overflow: hidden; }
+    .language-switch button { min-width: 64px; padding: 0 10px; border: 0; background: #fff; color: #606266; font-size: 13px; line-height: 32px; }
+    .language-switch button + button { border-left: 1px solid #dcdfe6; }
+    .language-switch button[aria-pressed="true"] { background: #f0f9eb; color: #28734f; font-weight: 600; }
+    .language-switch button:focus-visible { outline-offset: -3px; }
+    .tn-page-title { flex-shrink: 0; margin: 0; padding: 0; color: var(--tn-ink); font-size: 16px; line-height: 24px; font-weight: 500; }
+    .tn-content { background: #fff; }
+    .tn-search-area { padding: 20px; }
+    .tn-search-label { display: block; margin-bottom: 8px; font-size: 14px; color: #606266; }
+    .tn-search-line { display: flex; align-items: center; gap: 10px; max-width: 762px; }
+    .tn-input-wrap { position: relative; flex: 1; min-width: 0; }
+    .tn-input { width: 100%; height: 32px; padding: 0 36px 0 15px; border: 1px solid #dcdfe6; border-radius: 4px; background: white; color: #606266; font-size: 13px; line-height: 32px; }
+    .tn-input::placeholder { color: #c0c4cc; opacity: 1; }
+    .tn-input:focus { border-color: #e9ba2b; }
+    .tn-input[aria-invalid="true"] { border-color: var(--red); }
+    .clear-input { position: absolute; right: 2px; top: 2px; width: 28px; height: 28px; border: 0; color: #909399; background: #fff; padding: 6px; border-radius: 3px; }
+    .clear-input .icon { width: 16px; height: 16px; }
+    .tn-button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 34px; padding: 5px 14px; border: 1px solid #ede8d9; border-radius: 0; background: var(--tn-search); color: var(--tn-ink); font-size: 14px; font-weight: 500; line-height: 22px; text-decoration: none; white-space: nowrap; }
+    .tn-button .icon { width: 15px; height: 15px; }
+    .tn-button.search { min-width: 94px; height: 34px; }
+    .tn-button.claim { flex-shrink: 0; min-width: 150px; height: 40px; color: #fff; background: var(--tn-action); border-color: var(--tn-action); }
+    .tn-button.goods-detail { min-width: 150px; height: 40px; color: var(--tn-action); border-color: var(--tn-action); background: #f4fbef; }
+    .tn-button.link { background: transparent; border: 0; padding-left: 0; padding-right: 0; color: var(--tn-ink); }
+    .tn-header-search { grid-column: 2; width: 100%; min-width: 0; margin: 0; }
+    .tn-header-search .tn-search-line { gap: 0; max-width: none; }
+    .tn-header-search .tn-input { height: 42px; border-color: #ede8d9; border-radius: 0; font-size: 14px; line-height: 42px; }
+    .tn-header-search .tn-input::placeholder { color: #909399; }
+    .tn-header-search .tn-input:focus { border-color: #e9ba2b; }
+    .tn-header-search .tn-input[aria-invalid="true"] { border-color: var(--red); }
+    .tn-header-search .clear-input { top: 7px; }
+    .tn-header-search .tn-button.search { flex: 0 0 68px; min-width: 68px; height: 42px; margin-left: -1px; padding: 5px 12px; background: #ede8d9; font-size: 12px; font-weight: 400; }
+    .field-error { min-height: 0; color: var(--red); font-size: 12px; margin: 8px 0 0; }
+    .field-error:empty { display: none; }
+    .result-body { position: relative; padding: 32px 32px 40px; min-height: 346px; }
+    .section-title { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    .package-list { display: flex; flex-direction: column; gap: 40px; }
+    .package-card { --card-accent: #278600; display: flex; flex-direction: column; min-width: 0; border: 0; border-radius: 0; overflow-wrap: anywhere; background: transparent; }
+    .package-card.pending-card { --card-accent: #237ca7; }
+    .package-card.foreign-card { --card-accent: #a76212; }
+    .package-card.unknown-card { --card-accent: #916a12; }
+    .package-card.recalled-card { --card-accent: #687385; }
+    .package-card.rejected-card { --card-accent: #bc4c47; }
+    .package-card-head { display: flex; flex-shrink: 0; align-items: flex-start; gap: 12px; margin: 0; padding: 0 0 12px; background: #fff; border-bottom: 1px solid var(--tn-line); }
+    .package-card-title { display: flex; align-items: flex-start; gap: 10px; min-width: 0; margin: 0; color: var(--card-accent); font-size: 20px; line-height: 30px; font-weight: 600; }
+    .package-card-title .icon { width: 24px; height: 24px; margin-top: 3px; }
+    .package-card-title > span { min-width: 0; text-wrap: wrap; }
+    .ownership-badge { color: inherit; }
+    .package-tracking { display: flex; align-items: baseline; gap: 12px; min-width: 0; }
+    .package-tracking > span { flex: 0 0 140px; color: #909399; font-size: 12px; line-height: 23px; }
+    .package-tracking h4 { flex: 1; min-width: 0; max-width: 100%; margin: 0; color: #606266; font-size: 12px; line-height: 23px; font-weight: 400; }
+    .package-card-body { display: flex; flex-direction: column; align-items: stretch; gap: 16px; padding: 16px 0 0; }
+    .package-description { max-width: 960px; margin: 0; color: #606266; font-size: 12px; line-height: 23px; }
+    .package-description p { margin: 0; }
+    .package-description p + p { margin-top: 8px; }
+    .package-description ul { margin: 8px 0 0; padding-left: 20px; }
+    .package-description li + li { margin-top: 3px; }
+    .package-summary-line { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; width: 100%; max-width: 720px; }
+    .package-summary-line .package-tracking { flex: 1; }
+    .package-details { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 24px; width: 100%; max-width: 720px; }
+    .package-info { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+    .package-card-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 8px; }
+    .package-facts { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; align-content: start; min-width: 0; margin: 0; }
+    .package-facts > div { display: grid; grid-template-columns: 140px minmax(0, 1fr); column-gap: 12px; min-width: 0; line-height: 23px; }
+    .package-facts dt { margin: 0; color: #909399; font-size: 12px; }
+    .package-facts dd { min-width: 0; margin: 0; color: #606266; font-size: 12px; overflow-wrap: anywhere; }
+    .identifier { font-variant-numeric: tabular-nums; }
+    .cell-secondary { display: block; color: #909399; font-size: 12px; margin-top: 4px; }
+    .result-note { display: flex; align-items: flex-start; gap: 12px; padding: 17px 16px; border: 1px solid var(--tn-line); border-radius: 4px; margin-top: 16px; background: #f8f8f8; }
+    .result-note > .icon { margin-top: 1px; color: #778494; width: 18px; height: 18px; }
+    .result-note p { margin: 0; color: #606266; font-size: 14px; line-height: 1.5; }
+    .result-note.warning { background: #fffaf1; border-color: #eee2ca; }
+    .result-note.warning p { color: #82632f; }
+    .result-note.warning > .icon { color: #a28550; }
+    .result-note.warning .tn-button { margin-left: auto; background: transparent; }
+    .empty-state { min-height: 302px; padding: 58px 40px 46px; text-align: center; color: #777; }
+    .empty-state > .icon { width: 36px; height: 36px; margin-bottom: 15px; color: #a0a6a8; }
+    .empty-state h3 { color: #5b564e; font-size: 16px; font-weight: 500; margin-bottom: 9px; }
+    .empty-state p { margin: 0 auto 18px; max-width: 630px; font-size: 13px; overflow-wrap: anywhere; }
+    .empty-state.error > .icon { color: #b56e5e; }
+    .empty-state .tn-button + .tn-button { margin-left: 8px; }
+    .tn-footer { padding: 18px 24px 21px; color: #9b9b9b; font-size: 11px; text-align: center; }
+    .home-search { margin-top: 0; }
+    .home-search .tn-search-line { max-width: 880px; }
+    .home-main { padding: 0 24px 26px; }
+    .home-section { padding-top: 24px; }
+    .home-section + .home-section { margin-top: 24px; border-top: 1px solid var(--tn-line); }
+    .home-section h3 { margin: 0 0 16px; font-size: 15px; color: #5d5147; font-weight: 500; }
+    .home-stats { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--tn-line); border-bottom: 1px solid var(--tn-line); }
+    .home-stat { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 110px; gap: 10px; color: #888; font-size: 13px; }
+    .home-stat + .home-stat { border-left: 1px solid var(--tn-line); }
+    .home-stat strong { color: #6a6052; font-size: 22px; font-weight: 400; font-variant-numeric: tabular-nums; }
+    .home-announcement { display: flex; align-items: center; gap: 22px; min-height: 45px; border-bottom: 1px solid #f1f0eb; color: #696969; font-size: 13px; }
+    .home-announcement time { color: #999; font-variant-numeric: tabular-nums; }
+    .window-warning { margin-top: 12px; padding: 10px 12px; background: #fff8ec; color: #89652c; font-size: 13px; border: 1px solid #eddfc3; border-radius: 3px; }
+    .dialog { padding: 0; border: 1px solid var(--tn-line); border-radius: 6px; width: min(550px, calc(100% - 32px)); max-height: calc(100dvh - 48px); color: #606266; background: #fff; font: 400 14px/1.5 var(--tn-font); box-shadow: 0 16px 64px #16233a2b; overflow: hidden; }
+    .dialog::backdrop { background: rgb(27 32 38 / 38%); }
+    .dialog-frame { display: flex; flex-direction: column; max-height: calc(100dvh - 50px); }
+    .dialog-header { display: flex; flex-shrink: 0; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; padding: 14px 20px; border-bottom: 1px solid var(--tn-line); }
+    .dialog-header h2 { margin: 0; color: var(--tn-ink); font-size: 16px; font-weight: 500; }
+    .dialog-header .icon-button { flex-shrink: 0; border: 0; color: #909399; }
+    .dialog-body { min-height: 0; padding: 22px 24px; overflow-y: auto; overscroll-behavior: contain; }
+    .dialog-body p { font-size: 14px; line-height: 1.8; color: #666; margin: 0; overflow-wrap: anywhere; }
+    .dialog-body .ticket-target { margin-bottom: 10px; color: #4f5c48; font-size: 13px; }
+    .dialog-footer { display: flex; flex-shrink: 0; justify-content: flex-end; gap: 10px; padding: 12px 20px; border-top: 1px solid var(--tn-line); }
+    .tneko-page :focus-visible, .dialog :focus-visible { outline-color: #c08a13; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+    @media (hover: hover) and (pointer: fine) {
+      .prototype-tab:hover { color: #1e67cc; background: #ffffffa8; }
+      .icon-button:hover:not(:disabled) { background: #edf1f6; }
+      [data-tip]:hover::after { opacity: 1; }
+      .tn-brand:hover { opacity: .85; }
+      .tn-button:hover:not(:disabled) { background: rgb(237 232 217 / 50%); border-color: #ede8d9; }
+      .tn-button.claim:hover { color: #fff; background: var(--tn-action); border-color: var(--tn-action); filter: brightness(.96); }
+      .tn-button.goods-detail:hover { color: var(--tn-action); border-color: var(--tn-action); background: #e9f7df; }
+      .tn-button.link:hover { background: transparent; text-decoration: underline; text-underline-offset: 3px; }
+      .tn-input:hover:not(:disabled) { border-color: #c0c4cc; }
+      .tn-input:focus:hover { border-color: #e9ba2b; }
+      .clear-input:hover { background: #f0f0ee; }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .tn-button, .icon-button, .prototype-tab { transition: background-color 120ms cubic-bezier(.23, 1, .32, 1), transform 120ms cubic-bezier(.23, 1, .32, 1); }
+      .tn-button:active:not(:disabled), .icon-button:active:not(:disabled) { transform: scale(.98); }
+    }
+    @media (max-width: 1180px) {
+      .prototype-layout { grid-template-columns: minmax(0, 1fr); }
+      .prototype-column { order: 1; }
+      .change-log-panel { order: 2; contain: none; overflow: visible; scrollbar-gutter: auto; }
+    }
+    @media (max-width: 720px) {
+      .prototype-shell { padding: 12px; }
+      .project-head { align-items: flex-start; padding: 12px 14px; }
+      .project-head h1 { font-size: 17px; }
+      .project-actions .prototype-label { display: none; }
+      .project-actions { gap: 0; }
+      .prototype-tab { padding: 9px 11px; font-size: 13px; }
+      .prd-table th:first-child { width: 76px; }
+      .dialog-body { padding: 18px; }
+    }
+    @media print {
+      @page { size: A4 landscape; margin: 10mm; }
+      body { background: #fff; }
+      .prototype-shell { padding: 0; min-height: 0; }
+      .project-head { border: 0; box-shadow: none; padding: 0 0 12px; }
+      .prototype-layout { display: flex; flex-direction: column; margin: 0; gap: 0; }
+      .prototype-column { order: 0; width: 100%; }
+      .change-log-panel { order: 1; width: 100%; contain: none; overflow: visible; scrollbar-gutter: auto; padding: 0; border: 0; box-shadow: none; }
+      .change-log-panel > .record-section:not(.page-prd), .demo-tools { display: none !important; }
+      .page-prd { max-height: none; overflow: visible; margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--line); break-before: page; }
+      .project-actions, .prototype-toolbar, .prototype-pan, .dialog, .clear-input, .window-warning, .language-switch { display: none !important; }
+      .prototype-screen-wrap { overflow: visible; box-shadow: none; border: 0; border-radius: 0; }
+      .tneko-page { min-width: 0; width: 100%; }
+      .tn-header-inner { padding: 0 12px; gap: 18px; }
+      .tn-nav { gap: 0; }
+      .tn-nav-item { min-width: 60px; font-size: 11px; }
+      .tn-content, .tn-page-top { width: 100%; max-width: none; margin-left: 0; margin-right: 0; }
+      .tn-more[open] .tn-menu { display: none; }
+      .tn-search-line { max-width: 100%; }
+      .package-card, .result-note { break-inside: avoid; }
+      .package-card-head { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      .package-list { display: block; }
+      .package-card + .package-card { margin-top: 32px; }
+      .prd-table thead { display: table-header-group; }
+      .prd-table th:first-child { width: 110px; }
+      .empty-state { min-height: 180px; padding: 28px; }
+      .result-body { min-height: 0; }
+    }
+  </style>
+</head>
+<body>
+  <main class="prototype-shell">
+    <header class="project-head">
+      <div>
+        <h1>TNEKO · 转送包裹列表</h1>
+        <p>高保真可交互原型 · 数据为本地虚构示例，工单不实际提交</p>
+      </div>
+      <div class="project-actions">
+        <span class="prototype-label">1.9 · 高保真原型</span>
+        <button class="icon-button" id="reset-demo" type="button" aria-label="重置本地演示" data-tip="重置本地演示"><i data-lucide="rotate-ccw"></i></button>
+      </div>
+    </header>
+    <section class="prototype-layout" data-requirement-key="tneko-forwarding-packages" data-page-key="list">
+      <aside class="change-log-panel" tabindex="0" aria-label="需求记录与页面 PRD，可上下滚动">
+        <details class="record-section">
+          <summary>需求迭代记录</summary>
+          <p class="record-empty">本次未要求记录需求迭代</p>
+        </details>
+        <details class="record-section">
+          <summary>原型变动记录</summary>
+          <p class="record-empty">本次未要求记录原型变动</p>
+        </details>
+        <section class="record-section page-prd" aria-labelledby="page-prd-title">
+          <header class="prd-heading">
+            <p>当前页面 PRD · 2026-11-17</p>
+            <h2 id="page-prd-title">转送包裹列表</h2>
+          </header>
+          <article data-prd-page="home" hidden>
+            <section class="prd-section">
+              <h3>1. 本次修改概述</h3>
+              <p>首页增加国内运单号查询入口，模糊搜索后在新标签页打开转送包裹列表；上线时删除原“荷物到着状況照会”功能。这里只说明首页本次增量，存量账户、公告及其他业务不重做。</p>
+            </section>
+            <section class="prd-section">
+              <h3>2. 修改详细说明</h3>
+              <ol class="prd-rules">
+                <li>输入国内运单号或其片段。去掉首尾空格后为空时提示“请输入国内运单号。”，不打开新窗口。</li>
+                <li>点击查询或按 Enter，在新标签页带出查询条件。原首页保留；新页按实际登录会话重新确认归属。</li>
+                <li>通过顶部“ホーム”导航返回首页，不依赖浏览器后退历史，不另设“返回首页”按钮。若浏览器拦截开窗，保留输入并提供打开结果页链接。</li>
+                <li>旧到着照会是本次上线删除项。不明物原页面不在本次重做范围。</li>
+                <li>存量综合搜索的其他用途如何承接仍待确认；本原型只演示已明确的国内运单查询入口。</li>
+              </ol>
+            </section>
+            <section class="prd-section">
+              <h3>3. 本次字段变更</h3>
+              <table class="prd-table">
+                <thead><tr><th>字段／入口</th><th>规则</th></tr></thead>
+                <tbody>
+                  <tr><th>国内运单号</th><td>文本；允许片段检索，保留前导零及合法字母。不添加固定长度或纯数字限制。</td></tr>
+                  <tr><th>查询</th><td>有效输入后新标签页打开列表；结果页内重查则留在当前页。</td></tr>
+                  <tr><th>旧到着照会</th><td>上线时删除旧功能及其入口，本原型没有执行线上删除。</td></tr>
+                </tbody>
+              </table>
+            </section>
+            <footer class="prd-boundary">
+              <p>右侧首页仅用于定位本次查询入口，账户与公告是虚构的页面背景内容。现有日文导航保留，新业务文案使用中文供评审，正式日文用语需校对。</p>
+              <p><a href="转送包裹列表_PRD.md">查看完整 PRD</a></p>
+            </footer>
+          </article>
+          <article data-prd-page="list">
+            <section class="prd-section">
+              <h3>1. 本次修改概述</h3>
+              <p>结果按单列、无外框的开放式排版，多条自上而下展示；标题下保留细分隔线，字段与操作左对齐。本次明确复用现有不明物申请工单、商品详情及商品管理快速查询三个入口，保留六种结果、原有字段及隐私规则。</p>
+            </section>
+            <section class="prd-section">
+              <h3>2. 需求详细说明</h3>
+              <ol class="prd-rules">
+                <li>结果取消两列网格、逐条边框、圆角及固定最小高度；多条纵向排列，以 40px 留白、彩色 20px 标题、图标和标题下细线区分。说明、单号和字段沿用网站列表的 12px／23px 行高，操作按钮为 14px。不展示运单图片或“已签收／受領済”标签，签收时间按原规则保留。列表页取消可见标题，620px 搜索框居中，输入框与浅色查询按钮相接、高度 42px。不另设查询条件条或“修改查询条件”入口，搜索框下方直接显示结果。1180px 内容尺寸与固定外层布局保留。</li>
+                <li>正常本人：签收记录存在、客户一致且 zhuangtai=13。展示真实运单号、包裹 ID 和受領日時，不展示运单图片。“荷物確認”跳转至现有商品管理页面，带入当前包裹完整运单号并快速查询出该包裹，无需再次输入或手动查询；“商品明細”跳转至现有商品详情页面，展示该包裹关联的商品。</li>
+                <li>受領未確認：完整查询成功但无签收记录，提供表格中的四种可能原因和“配送状況を確認”。已确认本人商品关联时保留“商品明細”；没有关联不假定归属或生成 ID、签收时间及图片。未命中不表述为包裹不存在。表中“17K”暂按 17TRACK 设计，正式地址待确认。</li>
+                <li>其他客户：沿用此前隐私边界，不采用表格中的他人运单号和受領日時字段。日文统一提示搭配“お問い合わせ”用于工单申诉，无论是否签收、召回或拒收均不透露他人明细。只使用已生效的客户查询条件。</li>
+                <li>不明物：签收记录存在、有设置时间且无解除时间、当前无客户绑定。展示表格中的认领说明、真实运单号及已有受領日時，不显示 ID 或面单；“受領申請へ”复用现有不明物申请工单能力，关联当前不明物记录，不新增申请、材料或审核流程。已绑定或已解除时不重复认领。</li>
+                <li>召回、拒收：新增独立说明卡片，只有已确认本人时展示运单号、受領日時及对应的返送日時／受取拒否日時，不显示捆包或认领入口。说明采用表格文案，不将动作执行时间补造为查询时间。</li>
+                <li>完整运单号唯一，同一单号只对应一条当前记录，不存在同单号多个不明物。模糊查询可命中多个不同单号，各工单入口只关联所在记录。</li>
+                <li>工单示例区分归属申诉与不明物认领，不生成工单号，不显示提交成功，不改变归属。弹窗及演示工具中的说明与正式产品页面分开。</li>
+                <li>不明物、召回、拒收等标记重叠时的优先级，以及 zhuangtai≠13 等未覆盖条件仍待确认；原型以查询异常／部分读取失败承接，不自行选择一种业务结论。</li>
+              </ol>
+            </section>
+            <section class="prd-section">
+              <h3>3. 页面字段说明</h3>
+              <table class="prd-table">
+                <thead><tr><th>字段</th><th>展示规则</th></tr></thead>
+                <tbody>
+                  <tr><th>荷物番号</th><td>本人及有效不明物展示匹配单号；其他客户隐藏。受領未確認仅展示客户的查询条件。</td></tr>
+                  <tr><th>包裹 ID</th><td>正常本人卡片保留真实 ID，无值为“-”；其他客户和不明物隐藏。</td></tr>
+                  <tr><th>受領日時</th><td>取 u_ydh.cdate；缺失显示“-／未提供”，未签收不展示。时区待确认。</td></tr>
+                  <tr><th>返送／拒收</th><td>表格分别对应 recall_time、reject_time。recall_time 是否为完成返送时间仍待确认。</td></tr>
+                  <tr><th>荷物確認</th><td>跳转至现有商品管理页面，带入当前包裹完整运单号并快速查询出该包裹。</td></tr>
+                  <tr><th>商品明細</th><td>跳转至现有商品详情页面，展示当前包裹关联的商品详情。</td></tr>
+                  <tr><th>受領申請へ</th><td>复用现有不明物申请工单能力，关联当前不明物记录。</td></tr>
+                  <tr><th>お問い合わせ</th><td>进入包裹归属申诉工单入口，仅使用客户已生效的查询条件。</td></tr>
+                </tbody>
+              </table>
+            </section>
+            <section class="prd-section">
+              <h3>4. 上线准备与待确认</h3>
+              <p>表格给出 u_ydh.ydh = d_ordersub.ydh、cdate 及不明物／拒收／召回时间字段，当前只用于规则设计。状态重叠顺序、其他商品状态、召回完成时间含义、17K 目标和真实入口参数待确认；历史数据按此前决定上线前统一维护。</p>
+            </section>
+            <footer class="prd-boundary">
+              <p>原型只演示页面与关键路径。未连接真实查询、会话或工单服务；未维护生产数据，未删除线上旧功能。</p>
+              <p><a href="转送包裹列表_PRD.md">查看完整 PRD</a></p>
+            </footer>
+          </article>
+        </section>
+        <details class="record-section demo-tools" id="demo-tools">
+          <summary>本地原型演示工具</summary>
+          <p>仅用于评审。页面上的中日切换是评审辅助，不属于本次需求或正式功能验收范围。查询采用虚构运单和片段包含匹配；切换场景不会调用业务服务，刷新可恢复。</p>
+          <label for="demo-scenario">结果场景</label>
+          <select id="demo-scenario">
+            <option value="normal">正常查询 · 一条本人包裹</option>
+            <option value="two">两条结果 · 本人已签收／受領未確認</option>
+            <option value="mixed">四类结果 · 本人／非本人／不明物／未签收</option>
+            <option value="all-six">六种结果 · 含召回与拒收</option>
+            <option value="recalled">召回 · 已退回卖家</option>
+            <option value="rejected">拒收 · 退回提示</option>
+            <option value="overlap">状态重叠 · 不自行确定优先级</option>
+            <option value="foreign-exceptions">其他客户召回／拒收 · 隐藏明细</option>
+            <option value="incomplete">部分包裹信息无法读取</option>
+            <option value="missing">本人已签收 · ID／时间缺项</option>
+            <option value="claimed">历史不明物 · 现已绑定本人</option>
+            <option value="partial">部分来源读取失败</option>
+            <option value="failure">查询失败</option>
+            <option value="loading">查询加载中</option>
+            <option value="session">登录状态失效</option>
+          </select>
+          <dl class="sample-queries">
+            <dt>20261114</dt><dd>本人、非本人、不明物混合</dd>
+            <dt>SF / YT</dt><dd>本人已签收／本人未签收</dd>
+            <dt>ZT / YD</dt><dd>非本人，同一提示与申诉入口</dd>
+            <dt>JT</dt><dd>有效不明物，工单认领</dd>
+            <dt>RC / RJ</dt><dd>本人召回／拒收</dd>
+            <dt>NONE</dt><dd>查询完成无签收记录，受領未確認</dd>
+          </dl>
+        </details>
+      </aside>
+      <div class="prototype-column">
+        <div class="prototype-toolbar">
+          <nav class="prototype-tabs" role="tablist" aria-label="原型页面">
+            <button class="prototype-tab" id="tab-home" type="button" role="tab" aria-selected="false" aria-controls="panel-home" tabindex="-1" data-tab="home"><i data-lucide="house"></i>首页查询入口</button>
+            <button class="prototype-tab" id="tab-list" type="button" role="tab" aria-selected="true" aria-controls="panel-list" tabindex="0" data-tab="list"><i data-lucide="package-search"></i>转送包裹列表</button>
+          </nav>
+        </div>
+        <div class="prototype-workspace">
+          <div class="prototype-screen-wrap" id="prototype-canvas" role="region" aria-label="原型演示区域，可左右滚动" tabindex="0">
+            <section class="tneko-page" id="panel-home" role="tabpanel" aria-labelledby="tab-home" hidden>
+              <div class="tn-header-slot"></div>
+              <div class="tn-page-top">
+                <div class="tn-title-row"><h2 class="tn-page-title" data-i18n="homeTitle">首页</h2><div class="language-switch" role="group" aria-label="语言 / 言語"></div></div>
+              </div>
+              <div class="tn-content home-search">
+                <form class="tn-search-area" id="home-search-form" role="search" data-i18n-aria="homeSearchAria" aria-label="首页国内运单号查询" novalidate>
+                  <label class="tn-search-label" for="home-keyword" data-i18n="trackingLabel">国内运单号</label>
+                  <div class="tn-search-line">
+                    <div class="tn-input-wrap">
+                      <input class="tn-input" id="home-keyword" name="tracking" placeholder="输入全部或部分国内运单号" data-i18n-placeholder="inputPlaceholder" value="SF202611140001" autocomplete="off" autocapitalize="none" spellcheck="false" aria-describedby="home-error">
+                      <button class="clear-input" type="button" data-clear="home" data-i18n-aria="clearInput" data-i18n-tip="clearInput" aria-label="清空运单号" data-tip="清空运单号"><i data-lucide="x"></i></button>
+                    </div>
+                    <button class="tn-button search" type="submit" data-i18n-aria="homeSearchAria" aria-label="查询国内运单号，在新标签页打开"><i data-lucide="search"></i><span data-i18n="search">查询</span><i data-lucide="external-link"></i></button>
+                  </div>
+                  <p class="field-error" id="home-error" role="alert"></p>
+                  <div class="window-warning" id="window-warning" hidden><span data-i18n="windowBlocked">结果页未能自动打开。</span><a id="open-results-link" data-i18n="openResults" href="#" target="_blank" rel="noopener">打开转送包裹列表（新标签页）</a></div>
+                </form>
+                <div class="home-main">
+                  <section class="home-section">
+                    <h3 data-i18n="orderStatus">订单状态</h3>
+                    <div class="home-stats">
+                      <div class="home-stat"><span data-i18n="registered">已登记</span><strong>12</strong></div>
+                      <div class="home-stat"><span data-i18n="purchasePending">待购买</span><strong>0</strong></div>
+                      <div class="home-stat"><span data-i18n="packingPending">待捆包</span><strong>3</strong></div>
+                      <div class="home-stat"><span data-i18n="dispatched">已发货</span><strong>8</strong></div>
+                    </div>
+                  </section>
+                  <section class="home-section">
+                    <h3 data-i18n="announcements">公告</h3>
+                    <div class="home-announcement"><time datetime="2026-11-14">2026-11-14</time><span data-i18n="warehouseNotice">仓库营业日通知</span></div>
+                    <div class="home-announcement"><time datetime="2026-11-10">2026-11-10</time><span data-i18n="shippingNotice">配送服务通知</span></div>
+                  </section>
+                </div>
+              </div>
+              <footer class="tn-footer">TNEKO</footer>
+            </section>
+            <section class="tneko-page" id="panel-list" role="tabpanel" aria-labelledby="tab-list">
+              <div class="tn-header-slot"></div>
+              <div class="tn-page-top search-only">
+                <div class="tn-search-toolbar">
+                  <form class="tn-header-search" id="list-search-form" role="search" data-i18n-aria="listSearchAria" aria-label="转送包裹查询" novalidate>
+                    <label class="sr-only" for="list-keyword" data-i18n="trackingLabel">国内运单号</label>
+                    <div class="tn-search-line">
+                      <div class="tn-input-wrap">
+                        <input class="tn-input" id="list-keyword" name="tracking" data-i18n-placeholder="listInputPlaceholder" placeholder="请输入中国国内运单号" value="SF202611140001" autocomplete="off" autocapitalize="none" spellcheck="false" aria-describedby="list-error">
+                        <button class="clear-input" type="button" data-clear="list" data-i18n-aria="clearInput" data-i18n-tip="clearInput" aria-label="清空运单号" data-tip="清空运单号"><i data-lucide="x"></i></button>
+                      </div>
+                      <button class="tn-button search" id="list-search-button" type="submit"><span>查询</span></button>
+                    </div>
+                    <p class="field-error" id="list-error" role="alert"></p>
+                  </form>
+                  <div class="language-switch" role="group" aria-label="语言 / 言語"></div>
+                </div>
+              </div>
+              <div class="tn-content">
+                <div id="query-results" aria-live="polite" aria-atomic="true"></div>
+              </div>
+              <footer class="tn-footer">TNEKO</footer>
+            </section>
+          </div>
+          <div class="prototype-pan" id="prototype-pan" role="group" aria-label="原型演示区横向滚动" hidden>
+            <button class="icon-button" id="pan-left" type="button" aria-label="向左移动原型" data-tip="向左移动原型"><i data-lucide="chevron-left"></i></button>
+            <input type="range" id="pan-range" min="0" max="0" value="0" step="1" aria-label="原型横向滚动位置">
+            <button class="icon-button" id="pan-right" type="button" aria-label="向右移动原型" data-tip="向右移动原型"><i data-lucide="chevron-right"></i></button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <template id="tn-header-template">
+    <header class="tn-header">
+      <div class="tn-header-inner">
+        <a class="tn-brand" href="?view=home" data-view="home" data-i18n-aria="brandHome" aria-label="TNEKO 首页"><img src="转送包裹列表-assets/tneko-logo.png" alt="TNEKO" width="104" height="61"></a>
+        <nav class="tn-nav" aria-label="站点主导航" data-i18n-aria="navigation">
+          <a class="tn-nav-item tn-home-nav" href="?view=home" data-view="home"><img src="转送包裹列表-assets/nav-home.png" alt="" width="32" height="32"><span data-i18n="homeTitle">首页</span></a>
+          <span class="tn-nav-item"><img src="转送包裹列表-assets/nav-register.png" alt="" width="32" height="32"><span data-i18n="registerProduct">商品登记</span></span>
+          <span class="tn-nav-item"><img src="转送包裹列表-assets/nav-products.png" alt="" width="32" height="32"><span data-i18n="products">商品管理</span></span>
+          <span class="tn-nav-item"><img src="转送包裹列表-assets/nav-shipping.png" alt="" width="32" height="32"><span data-i18n="packing">捆包发货</span></span>
+          <span class="tn-nav-item"><img src="转送包裹列表-assets/nav-money.png" alt="" width="32" height="32"><span data-i18n="wallet">资金管理</span></span>
+          <span class="tn-nav-item"><img src="转送包裹列表-assets/nav-payment.png" alt="" width="32" height="32"><span data-i18n="payment">代付款</span></span>
+          <span class="tn-nav-item"><img src="转送包裹列表-assets/nav-estimate.png" alt="" width="32" height="32"><span data-i18n="estimate">费用估算</span></span>
+          <span class="tn-nav-item"><img src="转送包裹列表-assets/nav-contact.png" alt="" width="32" height="32"><span data-i18n="contact">联系我们</span></span>
+          <details class="tn-more">
+            <summary class="tn-nav-item"><img src="转送包裹列表-assets/nav-more.png" alt="" width="32" height="32"><span class="tn-nav-label"><span data-i18n="more">其他</span><i data-lucide="chevron-down"></i></span></summary>
+            <div class="tn-menu"><span data-i18n="memberInfo">会员资料</span><span data-i18n="memberPlan">会员方案</span><span data-i18n="forwardingAddress">专属转送地址</span><span data-i18n="deliveryAddress">收货地址管理</span><span data-i18n="profit">利润计算</span><span data-i18n="unknownMenu">不明物</span><span data-i18n="settings">设置</span><span data-i18n="help">帮助</span></div>
+          </details>
+        </nav>
+      </div>
+    </header>
+  </template>
+  <dialog class="dialog" id="ticket-dialog" aria-labelledby="ticket-title">
+    <div class="dialog-frame">
+      <header class="dialog-header"><h2 id="ticket-title">提交工单 · 入口示例</h2><button class="icon-button" type="button" data-close="ticket-dialog" data-i18n-aria="close" data-i18n-tip="close" aria-label="关闭" data-tip="关闭"><i data-lucide="x"></i></button></header>
+      <div class="dialog-body">
+        <p class="ticket-target" id="ticket-target"></p>
+        <p id="ticket-description">此处为提交工单入口示例，未实际提交。关闭后包裹仍保持未认领状态。</p>
+      </div>
+      <footer class="dialog-footer"><button class="tn-button" type="button" data-close="ticket-dialog" data-i18n="close">关闭</button></footer>
+    </div>
+  </dialog>
+  <dialog class="dialog" id="goods-dialog" aria-labelledby="goods-title">
+    <div class="dialog-frame">
+      <header class="dialog-header"><h2 id="goods-title">商品明细 · 跳转示例</h2><button class="icon-button" type="button" data-close="goods-dialog" data-i18n-aria="close" data-i18n-tip="close" aria-label="关闭" data-tip="关闭"><i data-lucide="x"></i></button></header>
+      <div class="dialog-body">
+        <p class="ticket-target" id="goods-target"></p>
+        <p id="goods-description">该入口将按包裹关联的商品标识跳转至现有商品明细页面。本地原型仅演示入口，未打开真实商品数据，也未复制现有商品明细功能。</p>
+      </div>
+      <footer class="dialog-footer"><button class="tn-button" type="button" data-close="goods-dialog" data-i18n="close">关闭</button></footer>
+    </div>
+  </dialog>
+  <script src="转送包裹列表-assets/lucide.min.js"></script>
+  <script>
+    (() => {
+      "use strict";
+      const $ = id => document.getElementById(id);
+      const safe = value => String(value ?? "").replace(/[&<>"']/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[character]));
+      const icon = name => `<i class="icon" data-lucide="${name}" aria-hidden="true"></i>`;
+      function mountIcons() {
+        lucide.createIcons({ attrs: { class: "icon", "aria-hidden": "true" } });
+      }
+      document.querySelectorAll(".tn-header-slot").forEach(slot => {
+        slot.append($("tn-header-template").content.cloneNode(true));
+      });
+      $("panel-home").querySelector(".tn-home-nav").setAttribute("aria-current", "page");
+
+      const samplePackages = [
+        { key: "own-signed", tracking: "SF202611140001", owner: "self", receipt: "signed", orderStatus: 13, id: "PKG-261114-001", received: "2026-11-14 09:26:18" },
+        { key: "own-pending", tracking: "YT202611140002", owner: "self", receipt: "pending", id: null },
+        { key: "foreign-signed", tracking: "ZT202611140003", owner: "other", receipt: "signed", orderStatus: 13, id: "FOREIGN-ID-DO-NOT-RENDER", received: "2026-11-14 08:12:42" },
+        { key: "unknown-only", tracking: "JT202611140004", owner: "unbound", receipt: "signed", source: "unknown", unknownSet: "2026-11-14 11:10:00", received: "2026-11-14 10:40:16" },
+        { key: "foreign-pending", tracking: "YD202611130005", owner: "other", receipt: "pending", id: "FOREIGN-UNSIGNED-ID" },
+        { key: "own-recalled", tracking: "RC202611140006", owner: "self", receipt: "signed", received: "2026-11-14 09:10:00", recalled: "2026-11-15 14:20:00" },
+        { key: "own-rejected", tracking: "RJ202611140007", owner: "self", receipt: "signed", received: "2026-11-14 10:00:00", rejected: "2026-11-14 10:12:00" }
+      ];
+      const defaultQuery = "SF202611140001";
+      const parameters = new URLSearchParams(location.search);
+      let language = parameters.get("lang") === "ja" ? "ja" : "zh-CN";
+      let activeView = parameters.get("view") === "home" ? "home" : "list";
+      let query = parameters.has("q") ? parameters.get("q").trim() : parameters.has("view") ? "" : defaultQuery;
+      let mode = "normal";
+      let renderedPackages = [];
+      let dialogOpener = null;
+
+      const uiCopy = {
+        homeTitle: ["首页", "ホーム"], listTitle: ["转送包裹列表", "荷物検索"],
+        search: ["查询", "検索"], searching: ["查询中", "検索中"],
+        inputPlaceholder: ["输入全部或部分国内运单号", "追跡番号の全部または一部を入力してください。"],
+        listInputPlaceholder: ["请输入中国国内运单号", "中国国内の追跡番号を入力してください。"],
+        trackingLabel: ["国内运单号", "追跡番号"], queryTracking: ["运单号（查询条件）", "追跡番号（検索条件）"],
+        tracking: ["国内运单号", "荷物番号"], parcelID: ["包裹 ID", "荷物 ID"],
+        received: ["签收时间", "受領日時"], recalled: ["退回时间", "返送日時"], rejected: ["拒收时间", "受取拒否日時"],
+        notProvided: ["未提供", "未登録"],
+        packageSearch: ["查看包裹", "荷物確認"], goodsDetail: ["商品明细", "商品明細"],
+        appeal: ["提交工单", "お問い合わせ"], claim: ["申请认领", "受領申請へ"], trackButton: ["查询物流", "配送状況を確認"],
+        resultTitle: ["查询结果", "検索結果"], resultsAria: ["转送包裹查询结果", "荷物検索結果"],
+        noQueryTitle: ["查询转送包裹", "荷物を検索"], noQueryDescription: ["请输入国内运单号或其片段。", "追跡番号の全部または一部を入力してください。"],
+        loadingDescription: ["正在读取包裹信息，请稍候。", "荷物情報を確認しています。しばらくお待ちください。"],
+        sessionTitle: ["登录状态已失效", "再ログインが必要です"],
+        sessionDescription: ["请通过顶部“首页”入口重新登录后查询。", "「ホーム」から再度ログインしてから検索してください。"],
+        sessionError: ["登录状态已失效，请重新登录后查询。", "再度ログインしてから検索してください。"],
+        failureTitle: ["查询失败", "検索できませんでした"], failureDescription: ["暂时无法读取查询结果，请稍后重试。", "しばらくしてから、もう一度お試しください。"],
+        unreadableDescription: ["暂时无法确认包裹信息，请稍后重新查询。", "荷物情報を確認できませんでした。しばらくしてから再検索してください。"],
+        partial: ["部分查询结果暂时无法读取，以下仅展示已确认的信息。未展示的记录不代表未签收或不存在。", "一部の情報を読み込めませんでした。確認できた情報のみ表示しています。非表示の記録が未受領または存在しないことを意味するものではありません。"],
+        retry: ["重新查询", "再検索"], invalidQuery: ["请输入国内运单号。", "追跡番号を入力してください。"],
+        clearInput: ["清空运单号", "追跡番号をクリア"], close: ["关闭", "閉じる"],
+        homeSearchAria: ["查询国内运单号，在新标签页打开", "追跡番号を検索（新しいタブで開く）"],
+        listSearchAria: ["转送包裹查询", "荷物検索"],
+        windowBlocked: ["结果页未能自动打开。", "検索結果を自動で開けませんでした。"],
+        openResults: ["打开转送包裹列表（新标签页）", "検索結果を開く（新しいタブ）"],
+        orderStatus: ["订单状态", "注文状況"], registered: ["已登记", "登録済"], purchasePending: ["待购买", "購入待ち"],
+        packingPending: ["待捆包", "梱包待ち"], dispatched: ["已发货", "発送済"], announcements: ["公告", "お知らせ"],
+        warehouseNotice: ["仓库营业日通知", "倉庫営業日のお知らせ"], shippingNotice: ["配送服务通知", "配送サービスのお知らせ"],
+        brandHome: ["TNEKO 首页", "TNEKO ホーム"], navigation: ["站点主导航", "メインナビゲーション"],
+        registerProduct: ["商品登记", "商品登録"], products: ["商品管理", "商品管理"], packing: ["捆包发货", "梱包発送"],
+        wallet: ["资金管理", "お金の管理"], payment: ["代付款", "支払代行"], estimate: ["费用估算", "見積り"], contact: ["联系我们", "お問合せ"],
+        more: ["其他", "その他"], memberInfo: ["会员资料", "会員情報"], memberPlan: ["会员方案", "会員プラン"],
+        forwardingAddress: ["专属转送地址", "専用転送アドレス"], deliveryAddress: ["收货地址管理", "お届け先管理"],
+        profit: ["利润计算", "利益計算"], unknownMenu: ["不明物", "不明物"], settings: ["设置", "設定"], help: ["帮助", "ヘルプ"],
+        claimTitle: ["提交工单 · 不明物认领", "受領申請 · デモ"], claimTarget: ["不明物运单号：", "不明荷物の追跡番号："],
+        claimDescription: ["此处为提交工单入口示例，未实际提交。关闭后包裹仍保持未认领状态。", "受領申請の入口デモです。実際には送信されず、閉じても荷物は未登録のままです。"],
+        appealTitle: ["提交工单 · 包裹归属申诉", "お問い合わせ · 所有者確認のデモ"],
+        appealTarget: ["申诉运单号（查询条件）：", "お問い合わせの追跡番号（検索条件）："],
+        appealDescription: ["此处为包裹归属申诉的工单入口示例，未实际提交。正式申诉通过工单核查处理，当前不会改变包裹归属。", "荷物の所有者確認に関するお問い合わせの入口デモです。実際には送信されず、荷物の登録先も変更されません。"],
+        goodsTitle: ["商品明细 · 跳转示例", "商品明細 · 遷移デモ"],
+        goodsTarget: ["国内运单号：", "追跡番号："],
+        goodsDescription: ["该入口将按包裹关联的商品标识跳转至现有商品明细页面。本地原型仅演示入口，未打开真实商品数据，也未复制现有商品明细功能。", "荷物に関連する商品IDを使い、既存の商品明細へ移動する入口のデモです。実際の商品情報は開かず、既存の明細機能も再現していません。"],
+        packageSearchTitle: ["查看包裹 · 包裹检索跳转示例", "荷物確認 · 検索画面への遷移デモ"],
+        packageSearchDescription: ["正式入口复用商品管理页面的包裹检索，并带入本卡片的完整运单号。本地原型仅演示入口，未查询真实商品；现有页面的实际传参方式仍需接入确认。", "商品管理の既存の荷物検索に、この荷物の追跡番号を引き継ぐ入口のデモです。実際の商品情報は検索しません。引き継ぎ方法は接続時に確認が必要です。"]
+      };
+      const t = key => uiCopy[key][language === "ja" ? 1 : 0];
+
+      function setFieldError(view, key = "") {
+        $(view + "-error").dataset.errorKey = key;
+        $(view + "-error").textContent = key ? t(key) : "";
+      }
+
+      function applyLanguage() {
+        document.querySelectorAll(".tneko-page, .dialog").forEach(element => { element.lang = language; });
+        document.querySelectorAll("[data-i18n]").forEach(element => { element.textContent = t(element.dataset.i18n); });
+        const attributes = { placeholder: "placeholder", aria: "aria-label", tip: "data-tip", alt: "alt" };
+        Object.entries(attributes).forEach(([key, attribute]) => {
+          document.querySelectorAll("[data-i18n-" + key + "]").forEach(element => {
+            element.setAttribute(attribute, t(element.getAttribute("data-i18n-" + key)));
+          });
+        });
+        document.querySelectorAll("[data-language]").forEach(button => { button.setAttribute("aria-pressed", String(button.dataset.language === language)); });
+        ["home", "list"].forEach(view => {
+          const key = $(view + "-error").dataset.errorKey;
+          if (key) setFieldError(view, key);
+        });
+        const link = $("open-results-link");
+        if (link.getAttribute("href") !== "#") {
+          const destination = new URL(link.href);
+          destination.searchParams.set("lang", language);
+          link.href = destination.href;
+        }
+      }
+
+      document.querySelectorAll(".language-switch").forEach(group => {
+        group.innerHTML = '<button type="button" data-language="zh-CN" lang="zh-CN" aria-pressed="true">中文</button><button type="button" data-language="ja" lang="ja" aria-pressed="false">日本語</button>';
+      });
+
+      function recordsForScenario() {
+        if (mode === "two") return samplePackages.slice(0, 2);
+        if (mode === "all-six") return samplePackages.filter(item => item.key !== "foreign-pending");
+        if (mode === "recalled") return [samplePackages[5]];
+        if (mode === "rejected") return [samplePackages[6]];
+        if (mode === "foreign-exceptions") return [
+          { ...samplePackages[5], owner: "other", id: "FOREIGN-RECALLED-ID" },
+          { ...samplePackages[6], owner: "other", id: "FOREIGN-REJECTED-ID" }
+        ];
+        if (mode === "overlap") return [
+          samplePackages[0],
+          { ...samplePackages[5], key: "overlapping", tracking: "EX202611140008", rejected: "2026-11-15 15:00:00" },
+          { ...samplePackages[0], key: "other-order-status", tracking: "EX202611140009", orderStatus: 12 }
+        ];
+        if (mode === "incomplete") return [
+          samplePackages[0],
+          { key: "self-unreadable", tracking: "SF202611140011", owner: "self", receipt: null, id: "PKG-261114-011" },
+          { key: "owner-unreadable", tracking: "EX202611140012", owner: null, receipt: "signed" },
+          { key: "unbound-pending", tracking: "EX202611140013", owner: "unbound", receipt: "pending" }
+        ];
+        if (mode === "missing") return [{ key: "self-missing", tracking: "SF202611140021", owner: "self", receipt: "signed", orderStatus: 13, id: null, received: null }];
+        if (mode === "claimed") return [{ ...samplePackages[0], key: "claimed", tracking: "SF202611140041", id: "PKG-261114-041", unknownSet: "2026-11-14 09:30:00", unknownCleared: "2026-11-14 10:00:00" }];
+        if (mode === "partial") return [samplePackages[0]];
+        const scope = mode === "mixed" ? samplePackages.slice(0, 4) : samplePackages;
+        return scope.filter(item => item.tracking.toLowerCase().includes(query.toLowerCase()));
+      }
+
+      // Metadata conflicts stay outside the six business outcomes until their precedence is confirmed.
+      function classify(item) {
+        if (!["signed", "pending"].includes(item.receipt)) return null;
+        if (item.owner === "other") return "foreign";
+        if (item.receipt === "pending") return item.recalled || item.rejected || item.unknownSet || item.owner === "unbound" ? null : "pending";
+        const activeUnknown = Boolean(item.unknownSet && !item.unknownCleared);
+        if ([activeUnknown, Boolean(item.recalled), Boolean(item.rejected)].filter(Boolean).length > 1) return null;
+        if (activeUnknown) return item.owner === "unbound" ? "unknown" : null;
+        if (item.recalled || item.rejected) return item.owner === "self" ? item.recalled ? "recalled" : "rejected" : null;
+        return item.owner === "self" && item.orderStatus === 13 ? "signed" : null;
+      }
+
+      const resultCopy = { ja: {
+        signed: { title: "お客様のアカウントに登録済みの荷物です。", icon: "circle-check", description: "<p>荷物管理ページより荷物の詳細をご確認いただけます。</p>" },
+        foreign: { title: "この荷物は他の会員様宛てとして登録されています。", icon: "shield-alert", description: "<p>追跡番号の入力間違いがないかご確認ください。</p><p>万が一、ご自身の荷物である場合は、お手数ですがお問い合わせフォームよりご連絡ください。</p>" },
+        unknown: { title: "【要確認】会員識別番号が不明な荷物として保管されています。", icon: "package-search", description: "<p>送り状に会員番号の記載がないため、持ち主様を特定できておりません。</p><p>お客様のお荷物である場合は、下記より「受領申請（荷物登録）」のお手続きをお願いいたします。</p>" },
+        pending: { title: "現在、当倉庫にてこの荷物の受領が確認できておりません。", icon: "clock-3", description: "<p>以下のいずれかの状況が考えられます。</p><ul><li>追跡番号の入力に誤りがある</li><li>出品者（ショップ）がまだ発送手続きを行っていない</li><li>中国国内でまだ配送中である</li><li>倉庫に届いているが、配送業者が配達完了（受領）スキャンを行っていない</li></ul>" },
+        recalled: { title: "この荷物は出品者（セラー）へ返送されました。", icon: "undo-2", description: "<p>発送元（セラー）からの回収依頼により返送処理が行われたため、現在当倉庫には保管されておりません。</p><p>お客様のお荷物である場合は、お手数ですが購入先のショップ・出品者へ直接お問い合わせください。</p>" },
+        rejected: { title: "この荷物は当倉庫にて受取拒否（返送）いたしました。", icon: "package-x", description: "<p>破損や水濡れ、または内容物の不足・異常が確認されたため、受取拒否しました。</p><p>お手数ですが、購入先の出品者（ショップ）へ直接お問い合わせの上、再発送や返金などのご対応をお願いいたします。</p>" }
+      }, "zh-CN": {
+        signed: { title: "该包裹已登记在您的账户下。", icon: "circle-check", description: "<p>您可以前往包裹管理页面查看包裹详情。</p>" },
+        foreign: { title: "该包裹已登记在其他会员名下。", icon: "shield-alert", description: "<p>请检查运单号是否输入正确。</p><p>如果您确认这是自己的包裹，请通过工单联系我们，申请核实包裹归属。</p>" },
+        unknown: { title: "【需确认】该包裹尚未识别到会员编号。", icon: "package-search", description: "<p>由于面单未注明会员编号，目前无法确认包裹归属，包裹作为不明物保管。</p><p>如果这是您的包裹，请点击下方“申请认领”，通过工单办理包裹登记。</p>" },
+        pending: { title: "目前尚未确认该包裹已签收。", icon: "clock-3", description: "<p>可能存在以下情况：</p><ul><li>运单号输入有误</li><li>卖家（店铺）尚未发货</li><li>包裹仍在中国境内运输途中</li><li>包裹已到达，但承运商尚未完成签收扫描</li></ul>" },
+        recalled: { title: "该包裹已退回卖家。", icon: "undo-2", description: "<p>因发件方（卖家）申请召回，包裹已办理退回，目前未在仓库保管。</p><p>如果这是您的包裹，请直接联系购买店铺或卖家确认后续处理。</p>" },
+        rejected: { title: "该包裹已被拒收并退回。", icon: "package-x", description: "<p>由于发现破损、受潮、内件缺失或异常，包裹已被拒收。</p><p>请直接联系卖家（店铺），办理重新发货、退款等后续事宜。</p>" }
+      } };
+      function dateMarkup(value) {
+        return value ? `<time class="identifier">${safe(value)}</time>` : `<span>-</span><span class="cell-secondary">${t("notProvided")}</span>`;
+      }
+      function cardsMarkup(items) {
+        const cards = items.map(item => {
+          const kind = item.kind;
+          const copy = resultCopy[language][kind];
+          const signed = kind === "signed";
+          const detailAllowed = item.owner === "self" && ["signed", "pending"].includes(kind);
+          const useQuery = kind === "pending" && item.owner !== "self";
+          const tracking = useQuery ? query : item.tracking;
+          const headingId = "result-" + item.key;
+          let actions = "";
+          if (signed) actions += `<button class="tn-button claim" type="button" data-package-search="${safe(item.key)}">${icon("package-search")}${t("packageSearch")}</button>`;
+          if (kind === "pending") actions += `<a class="tn-button claim" href="https://www.17track.net/ja?nums=${encodeURIComponent(tracking)}" target="_blank" rel="noopener noreferrer" data-tracking-link>${icon("external-link")}${t("trackButton")}</a>`;
+          if (detailAllowed) actions += `<button class="tn-button goods-detail" type="button" data-goods-detail="${safe(item.key)}" aria-label="${t("goodsDetail")} ${safe(item.tracking)}">${icon("list")}${t("goodsDetail")}</button>`;
+          if (kind === "foreign") actions += `<button class="tn-button claim" type="button" data-appeal>${icon("ticket-plus")}${t("appeal")}</button>`;
+          if (kind === "unknown") actions += `<button class="tn-button claim" type="button" data-claim="${safe(item.key)}">${icon("ticket-plus")}${t("claim")}</button>`;
+          const showTracking = kind !== "foreign";
+          const showDates = ["signed", "unknown", "recalled", "rejected"].includes(kind);
+          return `<article class="package-card ${kind}-card${!signed ? " notice-card" : ""}" data-kind="${kind}" ${item.owner === "self" ? `data-package="${safe(item.key)}"` : ""}${kind === "foreign" || kind === "unknown" ? ` data-notice="${kind}"` : ""} role="listitem" aria-labelledby="${safe(headingId)}">
+            <header class="package-card-head">
+              <h3 class="package-card-title" id="${safe(headingId)}">${icon(copy.icon)}<span${signed ? ' class="ownership-badge"' : ""}>${copy.title}</span></h3>
+            </header>
+            <div class="package-card-body">
+              <div class="package-description">${copy.description}</div>
+              ${showTracking ? `<div class="package-summary-line"><div class="package-tracking"><span>${t(useQuery ? "queryTracking" : "tracking")}</span><h4 class="identifier">${safe(tracking)}</h4></div></div>` : ""}
+              ${kind !== "foreign" ? `<div class="package-details">
+                <div class="package-info">
+                  <dl class="package-facts">
+                    ${signed || (kind === "pending" && item.owner === "self") ? `<div data-field="id"><dt>${t("parcelID")}</dt><dd class="identifier">${safe(item.id || "-")}</dd></div>` : ""}
+                    ${showDates ? `<div data-field="received"><dt>${t("received")}</dt><dd>${dateMarkup(item.received)}</dd></div>` : ""}
+                    ${kind === "recalled" ? `<div data-field="recalled"><dt>${t("recalled")}</dt><dd>${dateMarkup(item.recalled)}</dd></div>` : ""}
+                    ${kind === "rejected" ? `<div data-field="rejected"><dt>${t("rejected")}</dt><dd>${dateMarkup(item.rejected)}</dd></div>` : ""}
+                  </dl>
+                </div>
+              </div>` : ""}
+              ${actions ? `<div class="package-card-actions">${actions}</div>` : ""}
+            </div>
+          </article>`;
+        }).join("");
+        return cards;
+      }
+
+      function emptyMarkup(name, heading, description, action = "") {
+        return `<div class="empty-state${name === "circle-alert" ? " error" : ""}">${icon(name)}<h3>${heading}</h3><p>${description}</p>${action}</div>`;
+      }
+
+      function renderResults() {
+        const results = $("query-results");
+        const loading = mode === "loading";
+        const protectedState = mode === "session";
+        results.setAttribute("aria-busy", String(loading));
+        $("list-search-button").disabled = loading || protectedState;
+        $("list-search-button").querySelector("span").textContent = t(loading ? "searching" : "search");
+        $("list-keyword").disabled = loading || protectedState;
+        $("panel-list").querySelector('[data-clear="list"]').disabled = loading || protectedState;
+        $("home-keyword").disabled = protectedState;
+        $("home-search-form").querySelector('button[type="submit"]').disabled = protectedState;
+        $("panel-home").querySelector('[data-clear="home"]').disabled = protectedState;
+        if (protectedState) setFieldError("home", "sessionError");
+        else if ($("home-error").dataset.errorKey === "sessionError") setFieldError("home");
+        let body = "";
+        renderedPackages = [];
+        if (!query) {
+          body = emptyMarkup("package-search", t("noQueryTitle"), t("noQueryDescription"));
+        } else if (loading) {
+          body = emptyMarkup("hourglass", t("searching"), t("loadingDescription"));
+        } else if (protectedState) {
+          body = emptyMarkup("lock-keyhole", t("sessionTitle"), t("sessionDescription"));
+        } else if (mode === "failure") {
+          body = emptyMarkup("circle-alert", t("failureTitle"), t("failureDescription"), `<button class="tn-button" type="button" data-retry>${icon("rotate-cw")}${t("retry")}</button>`);
+        } else {
+          const records = recordsForScenario();
+          const readable = records.map(item => ({ ...item, kind: classify(item) })).filter(item => item.kind);
+          // All non-owner records collapse before any customer-facing markup is generated.
+          const visible = readable.filter(item => item.kind !== "foreign");
+          if (readable.some(item => item.kind === "foreign")) visible.splice(Math.min(1, visible.length), 0, { key: "foreign-notice", kind: "foreign" });
+          renderedPackages = readable;
+          if (readable.length && (mode === "partial" || readable.length < records.length)) body += `<div class="result-note warning" role="status">${icon("triangle-alert")}<p>${t("partial")}</p><button class="tn-button" type="button" data-retry>${t("retry")}</button></div>`;
+          if (records.length && !readable.length) {
+            body += emptyMarkup("circle-alert", t("failureTitle"), t("unreadableDescription"), `<button class="tn-button" type="button" data-retry>${icon("rotate-cw")}${t("retry")}</button>`);
+          } else {
+            body += `<h3 class="section-title">${t("resultTitle")}</h3><div class="package-list" role="list" aria-label="${t("resultsAria")}">`;
+            body += cardsMarkup(visible.length ? visible : [{ key: "not-received", kind: "pending" }]) + "</div>";
+          }
+        }
+        results.innerHTML = `<div class="result-body">${body}</div>`;
+        mountIcons();
+        syncPan();
+      }
+
+      function selectView(view, updateAddress = true) {
+        activeView = view;
+        document.querySelectorAll("[data-tab]").forEach(tab => {
+          const selected = tab.dataset.tab === view;
+          tab.setAttribute("aria-selected", String(selected));
+          tab.tabIndex = selected ? 0 : -1;
+          $("panel-" + tab.dataset.tab).hidden = !selected;
+        });
+        document.querySelectorAll("[data-prd-page]").forEach(article => { article.hidden = article.dataset.prdPage !== view; });
+        $("page-prd-title").textContent = view === "home" ? "首页查询入口 · 本次增量" : "转送包裹列表";
+        document.querySelector(".prototype-layout").dataset.pageKey = view;
+        document.querySelector(".change-log-panel").scrollTop = 0;
+        $("prototype-canvas").scrollLeft = 0;
+        document.querySelectorAll(".tn-more").forEach(menu => { menu.open = false; });
+        if (updateAddress) updateURL();
+        requestAnimationFrame(syncPan);
+      }
+
+      function updateURL() {
+        const next = new URL(location.href);
+        next.search = "";
+        next.searchParams.set("view", activeView);
+        if (activeView === "list") next.searchParams.set("q", query);
+        next.searchParams.set("lang", language);
+        history.replaceState(null, "", next);
+      }
+
+      function syncPan() {
+        const canvas = $("prototype-canvas");
+        const maximum = Math.max(0, canvas.scrollWidth - canvas.clientWidth);
+        $("prototype-pan").hidden = maximum <= 1;
+        $("pan-range").max = maximum;
+        $("pan-range").value = canvas.scrollLeft;
+        $("pan-range").setAttribute("aria-valuetext", `已向右移动 ${Math.round(canvas.scrollLeft)}，共 ${maximum}`);
+        $("pan-left").disabled = canvas.scrollLeft <= 1;
+        $("pan-right").disabled = canvas.scrollLeft >= maximum - 1;
+      }
+
+      function validateInput(view) {
+        const input = $(view + "-keyword");
+        const value = input.value.trim();
+        setFieldError(view, value ? "" : "invalidQuery");
+        input.setAttribute("aria-invalid", String(!value));
+        if (!value) input.focus();
+        return value;
+      }
+
+      function closeDialog(dialog) {
+        dialog.close();
+        document.body.style.overflow = "";
+        if (dialogOpener?.isConnected) dialogOpener.focus({ preventScroll: true });
+        dialogOpener = null;
+      }
+
+      function openDialog(dialog, opener) {
+        dialogOpener = opener;
+        dialog.showModal();
+        document.body.style.overflow = "hidden";
+      }
+
+      $("home-search-form").addEventListener("submit", event => {
+        event.preventDefault();
+        if (mode === "session") return;
+        const value = validateInput("home");
+        if (!value) return;
+        const destination = new URL(location.href);
+        destination.search = "";
+        destination.searchParams.set("view", "list");
+        destination.searchParams.set("q", value);
+        destination.searchParams.set("lang", language);
+        $("open-results-link").href = destination.href;
+        const opened = window.open(destination.href, "_blank");
+        if (opened) {
+          opened.opener = null;
+          $("window-warning").hidden = true;
+        } else {
+          $("window-warning").hidden = false;
+        }
+      });
+
+      $("list-search-form").addEventListener("submit", event => {
+        event.preventDefault();
+        if (mode === "session") return;
+        const value = validateInput("list");
+        if (!value) return;
+        query = value;
+        mode = "normal";
+        $("demo-scenario").value = "normal";
+        $("list-keyword").value = query;
+        renderResults();
+        updateURL();
+      });
+
+      ["home", "list"].forEach(view => {
+        $(view + "-keyword").addEventListener("input", () => {
+          setFieldError(view);
+          $(view + "-keyword").setAttribute("aria-invalid", "false");
+          if (view === "home") $("window-warning").hidden = true;
+        });
+      });
+
+      document.addEventListener("click", event => {
+        const languageButton = event.target.closest("[data-language]");
+        if (languageButton && language !== languageButton.dataset.language) {
+          language = languageButton.dataset.language;
+          const scrollLeft = $("prototype-canvas").scrollLeft;
+          applyLanguage();
+          renderResults();
+          updateURL();
+          $("prototype-canvas").scrollLeft = scrollLeft;
+          syncPan();
+        }
+        const tab = event.target.closest("[data-tab]");
+        if (tab) selectView(tab.dataset.tab);
+        const navigation = event.target.closest("[data-view]");
+        if (navigation) {
+          event.preventDefault();
+          selectView(navigation.dataset.view);
+        }
+        const clear = event.target.closest("[data-clear]");
+        if (clear) {
+          const view = clear.dataset.clear;
+          $(view + "-keyword").value = "";
+          $(view + "-keyword").setAttribute("aria-invalid", "false");
+          setFieldError(view);
+          $(view + "-keyword").focus();
+          if (view === "list") {
+            query = "";
+            mode = "normal";
+            $("demo-scenario").value = "normal";
+            renderResults();
+            updateURL();
+          } else $("window-warning").hidden = true;
+        }
+        const retry = event.target.closest("[data-retry]");
+        if (retry) {
+          mode = "normal";
+          $("demo-scenario").value = "normal";
+          renderResults();
+        }
+        const claim = event.target.closest("[data-claim]");
+        if (claim && mode !== "session") {
+          const item = renderedPackages.find(record => record.key === claim.dataset.claim && record.kind === "unknown");
+          if (!item) return;
+          $("ticket-title").textContent = t("claimTitle");
+          $("ticket-target").textContent = t("claimTarget") + item.tracking;
+          $("ticket-description").textContent = t("claimDescription");
+          openDialog($("ticket-dialog"), claim);
+        }
+        const appeal = event.target.closest("[data-appeal]");
+        if (appeal && mode !== "session" && $("query-results").contains(appeal)) {
+          $("ticket-title").textContent = t("appealTitle");
+          $("ticket-target").textContent = t("appealTarget") + query;
+          $("ticket-description").textContent = t("appealDescription");
+          openDialog($("ticket-dialog"), appeal);
+        }
+        const goodsDetail = event.target.closest("[data-goods-detail]");
+        if (goodsDetail && mode !== "session") {
+          const item = renderedPackages.find(record => record.key === goodsDetail.dataset.goodsDetail);
+          if (item?.owner === "self") {
+            $("goods-title").textContent = t("goodsTitle");
+            $("goods-target").textContent = t("goodsTarget") + item.tracking;
+            $("goods-description").textContent = t("goodsDescription");
+            openDialog($("goods-dialog"), goodsDetail);
+          }
+        }
+        const packageSearch = event.target.closest("[data-package-search]");
+        if (packageSearch && mode !== "session") {
+          const item = renderedPackages.find(record => record.key === packageSearch.dataset.packageSearch && record.kind === "signed");
+          if (item?.owner === "self") {
+            $("goods-title").textContent = t("packageSearchTitle");
+            $("goods-target").textContent = t("goodsTarget") + item.tracking;
+            $("goods-description").textContent = t("packageSearchDescription");
+            openDialog($("goods-dialog"), packageSearch);
+          }
+        }
+        const close = event.target.closest("[data-close]");
+        if (close) closeDialog($(close.dataset.close));
+      });
+
+      document.querySelector(".prototype-tabs").addEventListener("keydown", event => {
+        const tabs = [...document.querySelectorAll("[data-tab]")];
+        const index = tabs.indexOf(document.activeElement);
+        if (index < 0 || !["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+        event.preventDefault();
+        const next = event.key === "Home" ? 0 : event.key === "End" ? tabs.length - 1 : (index + (event.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length;
+        tabs[next].focus();
+        selectView(tabs[next].dataset.tab);
+      });
+
+      $("demo-scenario").addEventListener("change", event => {
+        mode = event.target.value;
+        query = mode === "normal" ? defaultQuery : mode === "claimed" ? "SF202611140041" : "20261114";
+        $("list-keyword").value = query;
+        setFieldError("list");
+        $("list-keyword").setAttribute("aria-invalid", "false");
+        selectView("list");
+        renderResults();
+      });
+
+      $("reset-demo").addEventListener("click", () => {
+        document.querySelectorAll("dialog[open]").forEach(dialog => closeDialog(dialog));
+        mode = "normal";
+        query = defaultQuery;
+        $("demo-scenario").value = "normal";
+        ["home", "list"].forEach(view => {
+          $(view + "-keyword").value = query;
+          $(view + "-keyword").setAttribute("aria-invalid", "false");
+          setFieldError(view);
+        });
+        $("window-warning").hidden = true;
+        selectView("list");
+        renderResults();
+      });
+
+      document.querySelectorAll("dialog").forEach(dialog => {
+        dialog.addEventListener("cancel", event => { event.preventDefault(); closeDialog(dialog); });
+      });
+      $("prototype-canvas").addEventListener("scroll", syncPan, { passive: true });
+      $("pan-range").addEventListener("input", event => { $("prototype-canvas").scrollLeft = Number(event.target.value); syncPan(); });
+      ["left", "right"].forEach((direction, index) => {
+        $("pan-" + direction).addEventListener("click", () => {
+          $("prototype-canvas").scrollBy({ left: (index ? 1 : -1) * Math.max(240, $("prototype-canvas").clientWidth * .75), behavior: "instant" });
+          syncPan();
+        });
+      });
+      new ResizeObserver(syncPan).observe($("prototype-canvas"));
+      window.addEventListener("resize", syncPan);
+      $("home-keyword").value = query;
+      $("list-keyword").value = query;
+      applyLanguage();
+      renderResults();
+      selectView(activeView, false);
+      mountIcons();
+    })();
+  </script>
+</body>
+</html>
