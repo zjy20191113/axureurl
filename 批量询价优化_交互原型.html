@@ -18,6 +18,9 @@
 .base-info{grid-column:1/-1;border-bottom:1px solid #edf0f3;padding-bottom:12px}
 .object-grid{display:grid;grid-template-columns:minmax(160px,.95fr) minmax(270px,1.55fr) minmax(160px,.85fr);gap:12px}
 .object-meta{margin-top:8px;gap:4px 12px}.object-meta output{color:#596578}
+.client-situation{display:flex;align-items:baseline;gap:10px;margin-top:10px;padding:8px 10px;border-left:2px solid #c9342f;background:#fff7f6;border-radius:3px;color:#c9342f;font-size:12px;line-height:1.7}
+.client-situation-label{flex-shrink:0;font-weight:600}
+.client-situation output{min-width:0;white-space:pre-wrap;overflow-wrap:anywhere}
 .field{gap:4px}.stock-menu{top:59px}.group-title{margin-bottom:12px}
 .parameter-grid{display:grid;gap:12px}
 .param-row{display:grid;grid-template-columns:80px minmax(0,1fr);gap:8px;align-items:start;min-width:0}
@@ -146,14 +149,38 @@ dialog{border:1px solid #dce1e8;border-radius:8px;padding:0;width:min(460px,calc
 <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true"><defs><symbol id="icon-layers" viewBox="0 0 24 24"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" /><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" /><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" /></symbol><symbol id="icon-list" viewBox="0 0 24 24"><path d="M3 5h.01" /><path d="M3 12h.01" /><path d="M3 19h.01" /><path d="M8 5h13" /><path d="M8 12h13" /><path d="M8 19h13" /></symbol><symbol id="icon-panels" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2" /><path d="M3 9h18" /><path d="M9 21V9" /></symbol><symbol id="icon-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5" /><path d="M20 21a8 8 0 0 0-16 0" /></symbol><symbol id="icon-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6" /></symbol><symbol id="icon-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" /></symbol><symbol id="icon-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></symbol><symbol id="icon-trash" viewBox="0 0 24 24"><path d="M10 11v6" /><path d="M14 11v6" /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" /><path d="M3 6h18" /><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /></symbol><symbol id="icon-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></symbol><symbol id="icon-up" viewBox="0 0 24 24"><path d="m18 15-6-6-6 6" /></symbol><symbol id="icon-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34" /><circle cx="11" cy="11" r="8" /></symbol><symbol id="icon-close" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></symbol><symbol id="icon-sliders" viewBox="0 0 24 24"><path d="M10 5H3" /><path d="M12 19H3" /><path d="M14 3v4" /><path d="M16 17v4" /><path d="M21 12h-9" /><path d="M21 19h-5" /><path d="M21 5h-7" /><path d="M8 10v4" /><path d="M8 12H3" /></symbol><symbol id="icon-plus" viewBox="0 0 24 24"><path d="M5 12h14" /><path d="M12 5v14" /></symbol><symbol id="icon-settings" viewBox="0 0 24 24"><path d="M14 17H5" /><path d="M19 7h-9" /><circle cx="17" cy="17" r="3" /><circle cx="7" cy="7" r="3" /></symbol><symbol id="icon-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="m16 9-5.5 5.5L8 12" /></symbol><symbol id="icon-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><line x1="12" x2="12" y1="8" y2="12" /><line x1="12" x2="12.01" y1="16" y2="16" /></symbol><symbol id="icon-send" viewBox="0 0 24 24"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z" /><path d="m21.854 2.147-10.94 10.939" /></symbol><symbol id="icon-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></symbol><symbol id="icon-lock" viewBox="0 0 24 24"><circle cx="12" cy="16" r="1" /><rect x="3" y="10" width="18" height="12" rx="2" /><path d="M7 10V7a5 5 0 0 1 10 0v3" /></symbol></defs></svg>
 <div class="shell">
   <header class="project-head">
-    <div><h1>同道科技 · 询价工作台优化</h1><p>批量询价 / 询价记录 / 报价列表 · 2026-11-11</p></div>
+    <div><h1>同道科技 · 询价工作台优化</h1><p>批量询价 / 询价记录 / 报价列表 · 当前迭代 B-001 · 2026-11-18</p></div>
     <div class="project-actions"><span class="prototype-label">高保真原型 · 本地演示</span><a href="批量询价优化_PRD.md">本次修改 PRD</a></div>
   </header>
   <main class="layout">
     <aside class="change-log-panel" aria-label="需求记录与页面 PRD">
       <section class="record-section">
         <h2>需求迭代记录</h2>
-        <p class="muted" style="font-size:12px;padding:10px 12px;background:#f6f6f7;border:1px solid #e5e5e7;border-radius:4px">本次未要求记录需求迭代</p>
+        <details class="change-entry" id="requirement-B001">
+          <summary>2026-11-18 · B-001 · 客户情况说明</summary>
+          <div class="change-entry-body">
+            <p><strong>归属与目标：</strong>同道科技 / 批量询价。选择客户后带出其情况说明，标红提醒，减少遗漏客户备注。</p>
+            <p><strong>本次范围：</strong>基础信息下方只读展示“情况说明（客户备注）”；客户切换同步更新，清空、无效或无配置时隐藏并清除；支持换行、复制及新增空卡。</p>
+            <p><strong>保留与边界：</strong>保留客户要求、询价格式、群主及提交规则；备注不拼入对外询价文本。不改造客户配置页，不新增历史回填，不接入真实服务。</p>
+            <p><strong>依据：</strong>用户本轮字段与标红要求及补录指令；继承现有高保真工作版本和指定外层布局。数据来源为【客户－询价配置】将配置的字段，当前使用本地示例。</p>
+            <p><strong>页面与流程：</strong>批量询价 → 选择／切换客户 → 展示对应备注；清空客户 → 隐藏备注。关联 PRD 第 1 节“客户情况说明”。</p>
+            <p><strong>留档说明：</strong>本轮首次补录记录；r00 已包含此功能，仅为补录前当前状态。客户情况说明改动前的历史原型快照缺失，不追溯补造。</p>
+            <p><a href="历史迭代/同道科技/批量询价/B-001/r01/批量询价优化_交互原型.html" target="_blank" rel="noopener">查看 HTML 快照（r01，新窗口）</a> · <a href="批量询价优化_需求迭代记录.md">完整需求记录</a></p>
+          </div>
+        </details>
+      </section>
+      <section class="record-section">
+        <h2>原型变动记录</h2>
+        <details class="change-entry" id="change-B001-C01">
+          <summary>2026-11-18 · 用户评审 · 客户情况说明标红</summary>
+          <div class="change-entry-body">
+            <p><strong>编号与归属：</strong>B-001-C01，所属需求 B-001；本次按用户明确要求补录。</p>
+            <p><strong>来源与原因：</strong>用户要求选中客户带出其自有备注并标红，便于录入询价时及时查看。</p>
+            <p><strong>变动内容：</strong>基础信息下方增加红色只读备注；随客户更新，空值隐藏且无旧值残留；保留多行、长文本换行，复制按对应客户带出，新空卡不带备注。同步独立与内嵌 PRD。</p>
+            <p><strong>影响与验收：</strong>仅涉及批量询价备注展示，保留客户要求与对外文本。5 组本地专项检查通过，真实配置读取未接入；本次补录另检查折叠、链接、快照及响应式。</p>
+            <p><a href="批量询价优化_原型变动记录.md">完整原型变动记录</a> · <a href="批量询价优化_验收与交接.md">验收与交接</a></p>
+          </div>
+        </details>
       </section>
       <section class="record-section page-prd" id="page-prd"></section>
       <section class="record-section boundary"><p><strong>本地演示：</strong>客户、聊天群、报价人、询价记录、行情及处理结果均为示例，不连接业务服务，不发出真实询价或撤销；刷新恢复初始状态。</p><p>询价记录的六种文本格式按现有页面公共模板演示；配置映射及生产接入检查见验收与交接。本原型不补写历史报价日期。</p></section>
@@ -194,6 +221,8 @@ const exampleClientGroups={'示例客户甲':'DEMO-001','示例客户乙':'DEMO-
 const exampleChatGroups={'DEMO-001':{owner:'示例群主甲'},'DEMO-002':{owner:'示例群主乙'},'DEMO-003':{owner:'示例群主丙'}};
 // 本地示例为已解析的生效值，不模拟生产系统的大陆／香港配置匹配。
 const exampleClientAdditions={'示例客户甲':[.25,.15,.10],'示例客户乙':[.30,.10,.20],'示例客户丙':[.20,.20,.15]};
+// 本地示例：对应【客户－询价配置】将配置的“情况说明”，不代表已接入配置服务。
+const exampleClientSituations={'示例客户甲':'请先确认报价有效期，确认后再安排后续沟通。','示例客户乙':'报价沟通请联系客户指定对接人。\n请保留完整沟通记录。','示例客户丙':''};
 const stocks=[
  {name:'浦发银行',code:'600000.SH',market:'上海市场',currency:'CNY',domestic:true,change:'+1.26%',cap:'1,036.8 亿',extra:.2},
  {name:'腾讯控股',code:'00700.HK',market:'香港市场',currency:'HKD',domestic:false,change:'+0.85%',cap:'38,216.4 亿',extra:.15},
@@ -272,6 +301,7 @@ function cardHTML(c){
  <div class="field stock-field"><label for="stock-${c.id}">股票名称<span class="req">*</span></label><div class="stock-input-wrap">${icon('search')}<input id="stock-${c.id}" data-id="${c.id}" data-stock-search="true" value="${esc(s?s.name+' '+s.code:c.stockQuery)}" placeholder="搜索名称 / 完整股票代码" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="stock-menu-${c.id}" ${invalid('stock')}>${s?`<button class="stock-clear" data-action="clear-stock" data-id="${c.id}" aria-label="清除标的 #${c.id}">${icon('close')}</button>`:''}</div><div class="stock-menu" id="stock-menu-${c.id}" role="listbox" aria-label="股票候选" hidden></div></div>
  <div class="field"><label for="date-${c.id}">询价日期<span class="req">*</span></label><input id="date-${c.id}" type="date" data-id="${c.id}" data-field="date" value="${esc(c.date)}" ${invalid('date')}></div>
  </div><div class="mini-data object-meta" role="group" aria-label="关联信息"><span>群编号 <output id="group-number-${c.id}" aria-label="群编号">${esc(groupNumber||'—')}</output></span><span>群主 <output id="group-owner-${c.id}" aria-label="群主">${esc(groupOwner||'—')}</output></span><span>代码 ${s?.code||'—'}</span><span>市场 ${s?.market||'—'}</span><span class="${s?'up':''}">涨跌幅 ${s?.change||'—'}</span><span>流通市值 ${s?.cap||'—'}</span><span>境内询价 <output id="domestic-${c.id}" aria-label="是否境内询价">${s?(s.domestic?'是':'否'):'—'}</output></span></div>
+ <div class="client-situation" role="group" aria-labelledby="client-situation-label-${c.id}" ${exampleClientSituations[c.client]?.trim()?'':'hidden'}><span class="client-situation-label" id="client-situation-label-${c.id}">情况说明（客户备注）</span><output id="client-situation-${c.id}" aria-label="情况说明（客户备注）">${esc(exampleClientSituations[c.client]||'')}</output></div>
  ${closed(c)?`<div class="closed-hint">${icon('clock')}${esc(s.market)}已收盘，请确认询价日期</div>`:''}${s&&demo.market==='unknown'?'<div class="field-hint">市场状态暂不可用</div>':''}</section>
  <section class="entry-form" aria-label="询价参数"><h3 class="group-title">${icon('sliders')}询价参数</h3><div class="parameter-grid">
  <div class="param-row"><span class="field-label" id="periods-label-${c.id}">周期（月）<span class="req">*</span></span><div class="param-content"><div class="param-options" role="group" aria-labelledby="periods-label-${c.id}" ${invalid('periods')}>${c.periodOptions.map(p=>chip(c,'periods',p,p+' 个月')).join('')}<button class="icon-button" data-action="toggle-period" data-id="${c.id}" data-tip="${c.customPeriod?'收起自定义周期':'自定义周期'}" aria-label="${c.customPeriod?'收起自定义周期':'展开自定义周期'} #${c.id}" aria-expanded="${c.customPeriod}" aria-controls="period-editor-${c.id}">${icon(c.customPeriod?'close':'plus')}</button></div><div class="custom-row field" id="period-editor-${c.id}" ${c.customPeriod?'':'hidden'} style="flex-direction:row"><input type="number" id="custom-period-${c.id}" data-id="${c.id}" data-draft="periodDraft" value="${esc(c.periodDraft)}" min="0" step="any" placeholder="自定义" aria-label="自定义周期 #${c.id}"><span>个月</span><button class="icon-button" data-action="custom-period" data-id="${c.id}" title="添加自定义周期" aria-label="添加自定义周期 #${c.id}">${icon('check')}</button></div></div></div>
@@ -330,12 +360,13 @@ function renderPRD(){
  if(view==='records'){$('#page-prd').innerHTML=recordsPRD();return}
  $('#page-prd').innerHTML=view==='batch'?`<h2>批量询价 · 本次修改</h2><p class="muted">仅列本次新增及调整</p><h3>修改清单</h3><table class="prd-table"><tr><th>紧凑卡片</th><td>客户、标的、日期并排；关联信息集中展示；参数与预览并列，加点两列。自定义周期按需展开，客户要求随内容增高。</td></tr><tr><th>新增收起</th><td>新增时收起全部已有卡片，保留摘要、参数和草稿；展开并定位新卡客户字段。收起卡片仍参与整批校验。</td></tr><tr><th>询价格式</th><td>六种格式三列两行常显单选，一键切换并更新预览；各卡独立，复制保留已选格式。</td></tr><tr><th>询价日期</th><td>新增必填日期，默认当日，逐卡保存；复制保留，成功后同步至报价列表对应记录。</td></tr><tr><th>收盘提醒</th><td>复用权威市场状态。当日且已收盘时提示“XX市场已收盘，请确认询价日期”；确认可继续，不强制改日。</td></tr><tr><th>最近询价</th><td>股票框无词时展示当前操作人权限内最近20条有效询价的标的，先截取再按市场＋完整代码去重，不补足20个。选择仅带入标的。</td></tr><tr><th>常用默认值</th><td>初始和新增空卡周期默认1个月、本金500，单位万元；币种随标的带出。复制及编辑不被默认值覆盖。</td></tr><tr><th>加点展示</th><td>业务基础、渠道返佣、公司独享加点复用客户询价配置；专项复用标的池。四项及合计只读展示，缺失不当零，不加入对外文本。</td></tr><tr><th>整批拒绝</th><td>任一卡片有问题则整批拒绝，保留输入，汇总原因并展开、定位问题卡片。</td></tr></table><h3>相关待确认</h3><p>旧报价缺少询价日期的处理；客户加点适用地区及专项字段、单位、合计口径；有效历史状态、业务当日及市场状态异常策略。未确认前不补造规则。</p>`:`<h2>报价列表 · 本次修改</h2><p class="muted">仅调整询价日期展示</p><h3>新增询价日期</h3><ol><li>展示对应询价卡片逐卡保存的日期，格式 YYYY-MM-DD；同批次可不同日期。</li><li>与创建时间分别展示，不用创建时间代替询价日期。</li><li>若一张卡片生成多条报价记录，各条均继承该卡片日期。</li></ol><h3>待确认</h3><p>旧报价记录没有询价日期时如何处理尚未确认，不自行用当日或创建日期回填。</p>`;
  if(view==='batch')$('#page-prd .prd-table tr').insertAdjacentHTML('afterend','<tr><th>群主展示</th><td>群编号右侧新增只读群主，按当前关联群编号从现有【聊天群】管理读取。客户或关联群变化时同步刷新；无关联群或群主为空时显示“—”，不保留上次值。</td></tr>');
+ if(view==='batch')$('#page-prd .prd-table tr').insertAdjacentHTML('afterend','<tr><th>情况说明</th><td>选中客户后，从【客户－询价配置】带出该客户的“情况说明”，在基础信息下方以红字只读展示，并注明“客户备注”。切换客户同步更新；未选择或未配置时不展示，不保留上一客户内容。多行长内容完整换行；与客户要求分开，不自动加入对外文本。</td></tr>');
 }
 function resizeRequirement(el){el.style.height='auto';el.style.height=Math.max(36,el.scrollHeight+2)+'px'}
 function refreshCardDisplay(c){
  const card=$(`#card-${c.id}`),template=document.createElement('template');template.innerHTML=cardHTML(c);
- for(const selector of ['.card-summary','.object-meta','.addition-total','.addition-grid','.preview-text']){
-  const current=card.querySelector(selector),updated=template.content.querySelector(selector);if(current&&updated)current.innerHTML=updated.innerHTML;
+ for(const selector of ['.card-summary','.object-meta','.client-situation','.addition-total','.addition-grid','.preview-text']){
+  const current=card.querySelector(selector),updated=template.content.querySelector(selector);if(current&&updated){current.innerHTML=updated.innerHTML;if(selector==='.client-situation')current.hidden=updated.hidden}
  }
  for(const selector of ['.closed-hint','.field-hint']){
   card.querySelector(selector)?.remove();const updated=template.content.querySelector(selector);if(updated)card.querySelector('.base-info').append(updated);
