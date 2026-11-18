@@ -40,6 +40,9 @@
     .record-section + .record-section { margin-top:18px; padding-top:16px; border-top:1px solid var(--line); }
     .record-empty { padding:10px 12px; color:var(--muted); background:var(--subtle); border:1px solid var(--line); border-radius:4px; font-size:12px; }
     .record-section p:last-child { margin-bottom:0; }
+    .change-entry { margin-top:10px; border:1px solid var(--line); border-radius:4px; }
+    .change-entry summary { padding:10px; cursor:pointer; font-weight:600; overflow-wrap:anywhere; }
+    .change-entry-body { padding:0 12px 12px; overflow-wrap:anywhere; }
     .page-prd { overflow-wrap:anywhere; line-height:1.75; color:#384253; }
     .page-prd h3 { font-size:14px; margin:18px 0 8px; }
     .page-prd ul { padding-left:18px; }
@@ -218,31 +221,44 @@
     .form-grid .wide { grid-column:1/-1; }
     .market-rules { margin-top:22px; }
     .market-rules h3 { font-size:14px; margin:0 0 12px; }
-    .market-rule-head,.market-rule-editor { display:grid; grid-template-columns:116px minmax(0,1fr) minmax(0,1fr); gap:16px; }
+    .market-rule-head,.market-rule-editor { display:grid; grid-template-columns:110px repeat(4,minmax(0,1fr)); gap:12px; }
     .market-rule-head { padding:10px 12px; background:var(--broker-inset); font-size:12px; color:var(--broker-secondary); border-bottom:1px solid var(--broker-line); }
     .market-rule-editor { align-items:start; padding:14px 12px; border-bottom:1px solid var(--broker-line); }
     .market-rule-editor h4 { margin:8px 0 0; font-size:13px; font-weight:600; color:var(--broker-ink); overflow-wrap:anywhere; }
     .market-rule-editor textarea { min-height:76px; resize:vertical; }
     .market-rule-editor .field-label { display:none; }
-    @container (max-width:640px) {
+    @container (max-width:760px) {
       .market-rule-head { display:none; }
-      .market-rule-editor { grid-template-columns:minmax(0,1fr); gap:12px; padding:16px 0; }
+      .market-rule-editor { grid-template-columns:repeat(2,minmax(0,1fr)); padding:16px 0; }
+      .market-rule-editor h4 { grid-column:1/-1; }
       .market-rule-editor .field-label { display:block; }
+    }
+    @container (max-width:480px) {
+      .market-rule-editor { grid-template-columns:minmax(0,1fr); }
     }
     .choices { display:flex; align-items:center; flex-wrap:wrap; gap:12px 20px; min-height:34px; }
     .choices label:has(input[value="终止"]) { color:var(--danger); }
     fieldset { border:0; padding:0; margin:0; min-width:0; }
     legend { padding:0; margin-bottom:6px; }
     .required { color:var(--danger); margin-left:3px; }
-    .business-form-tabs { display:flex; gap:0; margin-top:8px; border-bottom:1px solid var(--line); margin-bottom:18px; }
-    .business-form-tabs button { min-height:44px; padding:10px 18px; border:0; border-bottom:2px solid transparent; background:transparent; color:var(--broker-caption); font-size:13px; }
-    .business-form-tabs button[aria-selected="true"] { color:var(--broker-action); border-bottom-color:var(--broker-action); background:#f4faf7; font-weight:600; }
+    .business-form-tabs,.fee-period-tabs { display:flex; gap:0; margin-top:8px; border-bottom:1px solid var(--line); overflow-x:auto; }
+    .business-form-tabs { margin-bottom:18px; }
+    :is(.business-form-tabs,.fee-period-tabs) button { flex-shrink:0; white-space:nowrap; min-height:44px; padding:10px 18px; border:0; border-bottom:2px solid transparent; background:transparent; color:var(--broker-caption); font-size:13px; }
+    :is(.business-form-tabs,.fee-period-tabs) button[aria-selected="true"] { color:var(--broker-action); border-bottom-color:var(--broker-action); background:#f4faf7; font-weight:600; }
+    .fee-period-tabs button { min-width:96px; padding-inline:10px; font-variant-numeric:tabular-nums; }
+    .fee-period-tabs button:focus-visible { outline-offset:-3px; }
     .form-context { font-size:12px; color:var(--broker-caption); margin:0 0 16px; overflow-wrap:anywhere; }
     .helper { font-size:12px; color:var(--broker-caption); margin:4px 0 0; line-height:1.7; }
     .fee-editor { padding:14px 0 18px; border-bottom:1px solid var(--line); }
     .fee-rule-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
     .fee-rule-head h4 { margin:0; color:#57616b; font-size:13px; font-weight:500; }
     .fee-rule-fields { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px 16px; margin-top:16px; }
+    .fee-scope-fields { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+    .fee-editor h4 { font-size:13px; margin:20px 0 8px; color:var(--broker-secondary); }
+    .interest-fields { margin-top:16px; }
+    @container (max-width:640px) {
+      .fee-scope-fields { grid-template-columns:minmax(0,1fr); }
+    }
     .fee-rate-input { display:flex; align-items:stretch; min-width:0; }
     .fee-rate-input input { flex:1; width:0; border-radius:3px 0 0 3px; }
     .fee-rate-input span { display:flex; align-items:center; padding:6px 10px; background:var(--broker-inset); border:1px solid var(--broker-control-line); border-left:0; border-radius:0 4px 4px 0; font-size:12px; color:var(--broker-secondary); white-space:nowrap; }
@@ -258,11 +274,12 @@
     .fee-heading h3 { font-size:14px; margin:0; }
     .fee-undo { margin-top:10px; }
     .fee-list { margin-top:14px; overflow:auto; }
-    .fee-list table { min-width:1000px; }
+    .fee-list table { min-width:1500px; }
     .fee-list th,.fee-list td { padding:12px 10px; font-size:12px; overflow-wrap:anywhere; vertical-align:middle; }
     .fee-list th { background:#f1f5f6; }
-    .fee-list td:nth-child(6),.fee-list th:nth-child(6) { text-align:center; }
-    .fee-list td:nth-child(7),.fee-list th:nth-child(7) { text-align:right; font-variant-numeric:tabular-nums; }
+    .fee-list td:nth-child(8),.fee-list th:nth-child(8) { text-align:center; }
+    .fee-list td:nth-child(9),.fee-list th:nth-child(9) { text-align:right; font-variant-numeric:tabular-nums; }
+    .fee-list .rule-actions .text-button { white-space:nowrap; }
     .fee-list .rule-actions { display:flex; gap:8px; }
     .fee-subpage-head { display:flex; align-items:center; gap:12px; margin:18px 0 0; padding-bottom:12px; border-bottom:1px solid var(--line); }
     .fee-subpage-head h3 { margin:0; font-size:14px; }
@@ -373,12 +390,15 @@
 <body>
 <main class="shell">
   <header class="project-head">
-    <div><h1>同道项目 · 券商管理</h1><p>易用性优化及功能扩充 · 高保真交互原型</p></div>
+    <div><h1>同道项目 · 券商管理</h1><p>易用性优化及功能扩充 · B-001 · 收费、计息与行权规则</p></div>
     <div class="project-actions"><span>本地演示 · 刷新恢复初始数据</span><button class="icon-button" id="reset-demo" aria-label="重置演示" data-tip="重置演示"><i data-icon="RotateCcw"></i></button></div>
   </header>
   <section class="prototype-layout" data-page-key="brokers">
     <aside class="change-log-panel" tabindex="0" aria-label="需求记录与页面 PRD，可上下滚动">
-      <section class="record-section"><h2>需求迭代记录</h2><p class="record-empty">本次未要求记录需求迭代</p></section>
+      <section class="record-section"><h2>需求迭代记录</h2>
+        <details class="change-entry" id="requirement-B001"><summary>2026-11-18 · B-001 · 收费、计息与行权规则</summary><div class="change-entry-body"><p>收费规则按普通、大宗、人工分别维护费率。每条规则必填起止日期，按有效期内、已过期、未开始三个页签展示，支持按期间回查。券商级计息规则维护加点方式、利率或加点值、舍入、小数位数及基准天数。</p><p>常规期权的市场 / 板块规则新增默认行权规则、主动行权规则，与分红调整同层配置。A股主板与双创板分别填写。券商主列表按板块显示两项行权规则，并展示当天有效的收费摘要。</p><p>评审路径为编辑券商 → 市场 / 板块规则或收费规则 → 保存券商 → 查看主列表与导出预览。</p><p><a href="../docs/券商管理_需求变更记录.md">需求变更记录</a> · <a href="../历史迭代/同道项目/券商管理/B-001/r03-有效期必填与页签/同道项目原型/券商管理-可交互原型.html">前一工作版快照</a> · <a href="../历史迭代/同道项目/券商管理/B-001/r04-行权规则与有效收费摘要/同道项目原型/券商管理-可交互原型.html">本轮 HTML 快照</a></p></div></details>
+      </section>
+      <section class="record-section"><h2>原型变动记录</h2><details class="change-entry" id="change-B001-C01"><summary>2026-11-18 · 用户指令 · B-001-C01</summary><div class="change-entry-body"><p>收费表单新增来源和必填的有效起止日期。收费规则在三个有效期页签切换，过期记录可回查。独立计息页签提供固定利率、HIBOR加点及各项计息参数。</p><p>市场 / 板块编辑区加入两个选填的多行文本框。主表的常规期权分组增加对应两列，收费摘要只呈现有效期内的项目、计算方式和费率。20列导出包含两项行权文本、计息规则及全部期间的已保存收费规则。</p><p><a href="../docs/券商管理_原型变动记录.md">查看记录及验收状态</a></p></div></details></section>
       <section class="record-section page-prd" id="page-prd"></section>
       <section class="record-section">
         <details class="demo-tools">
@@ -443,6 +463,7 @@
         <button type="button" role="tab" id="form-tab-margin" aria-controls="business-fields" data-form-tab="margin" aria-selected="false" tabindex="-1">孖展合约</button>
         <button type="button" role="tab" id="form-tab-swap" aria-controls="business-fields" data-form-tab="swap" aria-selected="false" tabindex="-1">收益互换</button>
         <button type="button" role="tab" id="form-tab-fees" aria-controls="business-fields" data-form-tab="fees" aria-selected="false" tabindex="-1">券商收费规则</button>
+        <button type="button" role="tab" id="form-tab-interest" aria-controls="business-fields" data-form-tab="interest" aria-selected="false" tabindex="-1">计息规则</button>
       </div>
       <p class="form-context" id="form-context"></p>
       <section id="business-fields" role="tabpanel" aria-labelledby="form-tab-option"></section>
@@ -487,7 +508,7 @@
   const esc = value => String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const icon = name => `<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">${(nodes[name] || []).map(([tag,attrs]) => `<${tag} ${Object.entries(attrs).map(([key,value]) => `${key}="${esc(value)}"`).join(" ")}></${tag}>`).join("")}</svg>`;
   function mountIcons(root = document) { root.querySelectorAll("[data-icon]").forEach(el => { el.outerHTML = icon(el.dataset.icon); }); }
-  const labels = {option:"常规期权",margin:"孖展合约",swap:"收益互换",fees:"券商收费规则"};
+  const labels = {option:"常规期权",margin:"孖展合约",swap:"收益互换",fees:"券商收费规则",interest:"计息规则"};
   const states = ["正常","终止","注销"];
   const quotes = ["人工","报表","系统","FIX"];
   const optionTargets = ["A股","股指","商品","美股","港股"];
@@ -501,40 +522,96 @@
     {key:"index",label:"股指",target:"股指"},
     {key:"commodity",label:"商品",target:"商品"}
   ];
-  function blankMarketRules() { return Object.fromEntries(ruleMarkets.map(m => [m.key,{liquid:"",dividend:""}])); }
+  const marketRuleFields = [
+    ["liquid","是否强平"],
+    ["dividend","分红调整"],
+    ["defaultExercise","默认行权规则"],
+    ["activeExercise","主动行权规则"]
+  ];
+  function blankMarketRules() {
+    return Object.fromEntries(ruleMarkets.map(m => [m.key,Object.fromEntries(marketRuleFields.map(([field]) => [field,""]))]));
+  }
   function activeRuleMarkets(option) { return ruleMarkets.filter(m => option.targets.includes(m.target)); }
   function marketRulesText(option,field) {
-    return activeRuleMarkets(option).map(m => `${m.label}：${option.marketRules[m.key][field] || "未配置"}`).join("\n") || "未配置";
+    return activeRuleMarkets(option).map(m => `${m.label}：${option.marketRules[m.key]?.[field] || "未配置"}`).join("\n") || "未配置";
   }
   function marketRulesHtml(option,field) {
-    return activeRuleMarkets(option).map(m => `<div class="market-rule-line" data-market="${m.key}"><b>${esc(m.label)}</b><span>${esc(option.marketRules[m.key][field] || "未配置")}</span></div>`).join("") || '<span class="muted">未配置</span>';
+    return activeRuleMarkets(option).map(m => `<div class="market-rule-line" data-market="${m.key}"><b>${esc(m.label)}</b><span>${esc(option.marketRules[m.key]?.[field] || "未配置")}</span></div>`).join("") || '<span class="muted">未配置</span>';
   }
   const feeDirections = ["买入","卖出"];
   const feeMarkets = ["A股","港股","美股"];
   const feeMethods = ["按成交金额","按成交股数","每笔固定"];
   const feeRoundings = ["四舍五入","向上取整","向下取整"];
   const feeDecimals = ["0","1","2","3","4"];
+  const feeSources = ["普通","大宗","人工"];
+  const interestMethods = ["固定利率","HIBOR加点"];
+  const blankInterest = () => ({method:"",rate:"",rounding:"",decimals:"",basis:""});
   const classes = ["正规券商","对赌券商","公司","跑路券商"];
-  function blank() { return {id:0,name:"",full:"",location:"大陆",type:"",category:"正规券商",bank:"",note:"",fees:[],option:{status:"正常",quotes:[],targets:[],exercise:"",marketRules:blankMarketRules()},margin:{status:"正常"},swap:{status:"正常",targets:[]}}; }
+  function blank() { return {id:0,name:"",full:"",location:"大陆",type:"",category:"正规券商",bank:"",note:"",fees:[],interest:blankInterest(),option:{status:"正常",quotes:[],targets:[],exercise:"",marketRules:blankMarketRules()},margin:{status:"正常"},swap:{status:"正常",targets:[]}}; }
   let dictionary, brokers, nextRuleId;
-  function blankFee() { return {key:"fee-" + nextRuleId++,market:[],project:"",direction:[],method:"",rounding:"",decimals:"",rate:"",minimum:"",maximum:""}; }
+  function blankFee() { return {key:"fee-" + nextRuleId++,market:[],source:"",validFrom:"",validTo:"",project:"",direction:[],method:"",rounding:"",decimals:"",rate:"",minimum:"",maximum:""}; }
+  const feePeriods = [["active","有效期内"],["expired","已过期"],["future","未开始"]];
+  const feeDateFormatter = new Intl.DateTimeFormat("sv-SE",{timeZone:"Asia/Shanghai",year:"numeric",month:"2-digit",day:"2-digit"});
+  function validityText(row) { return `${row.validFrom} 至 ${row.validTo}`; }
+  function feePeriod(row,today = feeDateFormatter.format(new Date())) {
+    if (row.validFrom > today) return "future";
+    if (row.validTo < today) return "expired";
+    return "active";
+  }
+  function feePeriodsHtml(rows,selected) {
+    const today = feeDateFormatter.format(new Date());
+    const groups = {active:[],expired:[],future:[]};
+    rows.forEach((row,index) => groups[feePeriod(row,today)].push({row,index}));
+    const label = feePeriods.find(([key]) => key === selected)[1];
+    const tabs = feePeriods.map(([key,name]) => `<button type="button" role="tab" id="fee-period-${key}" data-fee-tab="${key}" aria-controls="fee-period-panel" aria-selected="${key === selected}" tabindex="${key === selected ? 0 : -1}">${name}（${groups[key].length}）</button>`).join("");
+    return `<div class="fee-period-tabs" role="tablist" aria-label="收费规则有效期">${tabs}</div><section id="fee-period-panel" role="tabpanel" aria-labelledby="fee-period-${selected}" data-fee-period="${selected}">${feeTableHtml(groups[selected],label)}${groups[selected].length ? "" : `<div class="empty"><strong>${rows.length ? `暂无${label}的收费规则` : "暂无收费规则"}</strong></div>`}</section>`;
+  }
+  function feeTableHtml(entries,label) {
+    return `<div class="table-wrap fee-list" role="region" aria-label="${label}收费规则列表，可左右滚动" tabindex="0"><table class="data-table"><thead><tr>${["市场","来源","有效期","收费项目","收费方向","计算方式","舍入方式","小数位数","收费费率","最低收费","最高收费","操作"].map(label => `<th scope="col">${label}</th>`).join("")}</tr></thead><tbody>${entries.map(({row,index}) => {
+      const project = projectById(row.project);
+      return `<tr data-fee-row="${index}"><td>${esc(marketsOf(row).join("、") || "未配置")}</td><td>${esc(row.source || "未配置")}</td><td>${esc(validityText(row))}</td><td>${esc(project?.name || "项目不存在")}${project && !project.enabled ? '<small>已停用</small>' : ""}</td><td>${esc(directionsOf(row).join("、"))}</td><td>${esc(row.method)}</td><td>${esc(row.rounding)}</td><td>${esc(row.decimals)}</td><td>${esc(row.rate)} ${feeUnit(row.method)}</td><td>${esc(feeLimitText(row.minimum))}</td><td>${esc(feeLimitText(row.maximum))}</td><td><div class="rule-actions"><button type="button" class="text-button" data-action="edit-fee" data-index="${index}" aria-label="编辑第${index + 1}条收费规则">编辑</button><button type="button" class="text-button" data-action="remove-fee" data-index="${index}" aria-label="移除第${index + 1}条收费规则">移除</button></div></td></tr>`;
+    }).join("")}</tbody></table></div>`;
+  }
+  function feeRecordText(row) {
+    const project = projectById(row.project);
+    const projectLabel = `${project?.name || "未知项目"}${project && !project.enabled ? "（已停用）" : ""}`;
+    return `${marketsOf(row).join("、") || "未配置"}；${projectLabel}；${directionsOf(row).join("、")}；${row.method}；${row.rate} ${feeUnit(row.method)}；${row.rounding}；${row.decimals} 位小数；最低收费：${feeLimitText(row.minimum)}；最高收费：${feeLimitText(row.maximum)}；来源：${row.source || "未配置"}；有效期：${validityText(row)}`;
+  }
+  function interestText(row) {
+    if (!row || !Object.values(row).some(Boolean)) return "未配置";
+    return `${row.method}；${row.method === "固定利率" ? "固定年利率" : "加点值"}：${row.rate}${row.method === "固定利率" ? "%" : " 个百分点"}；${row.rounding}；${row.decimals} 位小数；基准天数：${row.basis} 天`;
+  }
   function marketsOf(row) { return Array.isArray(row.market) ? row.market : row.market ? [row.market] : []; }
   function feeLimitText(value) { return value === "" || value == null ? "未配置" : value + " 金额"; }
   function directionsOf(row) { return Array.isArray(row.direction) ? row.direction : row.direction ? [row.direction] : []; }
   function seed() {
     dictionary = [{id:1,name:"示例收费项目甲",enabled:true},{id:2,name:"示例收费项目乙",enabled:true},{id:3,name:"示例历史项目",enabled:false}];
+    const exampleMarketRules = blankMarketRules();
+    for (const key of ["a-main","a-growth"]) {
+      Object.assign(exampleMarketRules[key],{
+        liquid:"连续三个收盘涨跌停，有权提前终止",
+        dividend:"分红不调整，提前行权扣分红",
+        defaultExercise:"示例：到期按合约约定处理",
+        activeExercise:key === "a-main" ? "示例：提交主板行权申请" : "示例：提交双创板行权申请"
+      });
+    }
     brokers = [
-      {...blank(),id:1,name:"示例券商甲",full:"示例券商甲（模拟资料）",location:"香港",type:"综合券商",bank:"模拟收款资料，未填写真实账户",note:"常规期权与孖展分别维护。",option:{status:"正常",quotes:["报表"],targets:["A股","股指","港股"],exercise:"T+1",marketRules:{...blankMarketRules(),"a-main":{liquid:"连续三个收盘涨跌停，有权提前终止",dividend:"分红不调整，提前行权扣分红"},"a-growth":{liquid:"连续三个收盘涨跌停，有权提前终止",dividend:"分红不调整，提前行权扣分红"}}},margin:{status:"正常"},swap:{status:"正常",targets:["A股","港股","美股"]},fees:[{key:"fee-1",market:"港股",project:1,direction:"买入",method:"按成交金额",rounding:"四舍五入",decimals:"2",rate:"0.03"},{key:"fee-2",market:"A股",project:1,direction:"卖出",method:"按成交股数",rounding:"向上取整",decimals:"2",rate:"0.01"}]},
+      {...blank(),id:1,name:"示例券商甲",full:"示例券商甲（模拟资料）",location:"香港",type:"综合券商",bank:"模拟收款资料，未填写真实账户",note:"常规期权与孖展分别维护。",option:{status:"正常",quotes:["报表"],targets:["A股","股指","港股"],exercise:"T+1",marketRules:exampleMarketRules},margin:{status:"正常"},swap:{status:"正常",targets:["A股","港股","美股"]},fees:[{key:"fee-1",market:"港股",project:1,direction:"买入",method:"按成交金额",rounding:"四舍五入",decimals:"2",rate:"0.03"},{key:"fee-2",market:"A股",project:1,direction:"卖出",method:"按成交股数",rounding:"向上取整",decimals:"2",rate:"0.01"}]},
       {...blank(),id:2,name:"示例券商乙",full:"示例券商乙（模拟资料）",type:"机构业务",option:{status:"终止",quotes:["人工"],targets:["港股","美股"],exercise:"T+6",marketRules:blankMarketRules()},margin:{status:"正常"},swap:{status:"终止",targets:["A股"]}},
       {...blank(),id:3,name:"示例存量券商",full:"示例存量券商（模拟资料）",option:{status:"正常",quotes:["报表"],targets:["A股"],exercise:"T+6",marketRules:blankMarketRules()},margin:{status:"正常"},swap:{status:"正常",targets:[]},fees:[{key:"fee-3",market:"美股",project:3,direction:"卖出",method:"每笔固定",rounding:"向下取整",decimals:"0",rate:"5"}]}
     ];
+    // Fixed dates belong to the demo fixtures, not a backfill rule.
+    for (const broker of brokers) for (const row of broker.fees) {
+      row.validFrom = "2025-01-01";
+      row.validTo = "2029-12-31";
+    }
     nextRuleId = 4;
   }
   seed();
   let page = "brokers", mode = "normal", filter = {}, dictionaryFilter = {};
   let exporting = false;
   let brokerFilterDraft = null;
-  let draft = null, original = null, formTab = "option", removedFees = [], feeRateResets = new Set(), feeDraft = null, feeOriginal = null, feeIndex = null, editDictionaryId = null, dictionaryOriginal = "", confirmCallback = null, toastTimer;
+  let draft = null, original = null, formTab = "option", feeTab = "active", removedFees = [], feeRateResets = new Set(), feeDraft = null, feeOriginal = null, feeIndex = null, editDictionaryId = null, dictionaryOriginal = "", confirmCallback = null, toastTimer;
   const workWindows = new Map();
   let windowSequence = 0, windowOrder = 0, compareWindows = true, taskbarMarkup = "";
   function namespaceWindow(item) {
@@ -551,17 +628,17 @@
   }
   function storeWindow() {
     if (!currentWindow) return;
-    currentWindow.state = {draft,original,formTab,removedFees,feeRateResets,feeDraft,feeOriginal,feeIndex,editDictionaryId,dictionaryOriginal};
+    currentWindow.state = {draft,original,formTab,feeTab,removedFees,feeRateResets,feeDraft,feeOriginal,feeIndex,editDictionaryId,dictionaryOriginal};
   }
   function useWindow(item) {
     if (currentWindow === item) return;
     storeWindow(); currentWindow = item;
-    ({draft,original,formTab,removedFees,feeRateResets,feeDraft,feeOriginal,feeIndex,editDictionaryId,dictionaryOriginal} = item.state);
+    ({draft,original,formTab,feeTab,removedFees,feeRateResets,feeDraft,feeOriginal,feeIndex,editDictionaryId,dictionaryOriginal} = item.state);
   }
   function createWindow(kind,key) {
     const item = {kind,key,uid:++windowSequence,order:++windowOrder,minimized:false,returnFocus:document.activeElement,
       root:document.getElementById(kind + "-template").content.firstElementChild.cloneNode(true),
-      state:{draft:null,original:null,formTab:"option",removedFees:[],feeRateResets:new Set(),feeDraft:null,feeOriginal:null,feeIndex:null,editDictionaryId:null,dictionaryOriginal:""}};
+      state:{draft:null,original:null,formTab:"option",feeTab:"active",removedFees:[],feeRateResets:new Set(),feeDraft:null,feeOriginal:null,feeIndex:null,editDictionaryId:null,dictionaryOriginal:""}};
     item.root.dataset.windowKey = key;
     workWindows.set(key,item); $("window-grid").append(item.root); namespaceWindow(item); useWindow(item);
     return item;
@@ -651,32 +728,16 @@
     showDialog("confirm-dialog");
   }
   function renderPrd() {
-    const brokerPrd = `<h2>券商管理 · 页面 PRD</h2><p>收费规则归属于券商，按市场配置，与三类业务分开维护。收益互换仅保留状态、支持标的类型。常规期权的询价与行权统一维护，强平和分红说明按市场、板块分别填写。</p>
-      <h3>已确认</h3><ul><li>三类业务独立维护，不自动复制，不设置标的子页。</li><li>孖展合约仅保留状态；取消询价方式、支持标的、最快行权日的表单、列表列、筛选、导出及必填校验。</li><li>常规期权询价方式为人工、报表、系统、FIX，支持多选；最快行权日仅可单选 T+1、T+5、T+6，T 指成交日，筛选、表单、列表和导出一致。</li><li>常规期权是否强平、分红调整改为多行文本框，分别填写规则说明；A股分主板、双创板，港股、美股及现有股指、商品各有独立行，按支持标的显示。不再使用是 / 否枚举，不向孖展新增这些字段。</li><li>收益互换新增支持标的类型，采用多选；本稿沿用A股、港股、美股，不自动复制期权或旧孖展配置。收益互换仅保留状态、支持标的；收费规则独立于本业务，不新增标的必填约束；枚举及必填、历史数据处理由产品与开发另行约定。</li><li>三类业务状态独立，正常、终止、注销；终止显示红色，切换状态不清空配置。券商类型是共有信息，保持手输。收费字典从菜单独立进入。</li><li>收费规则不设币种字段，费用跟随实际标的币种；同一套规则不按币种拆分。</li></ul>
-      <h3>当前页面规则</h3><table class="prd-table"><tbody><tr><th>列表</th><td>同一张17列宽表，双层表头并列展示共有信息、常规期权、孖展合约、收益互换及券商收费规则，不使用业务切换 Tab。共有信息新增收款信息、备注两列，保留完整原文和换行，空值显示未配置。孖展仅状态一列，收益互换仅状态、支持标的类型两列，券商收费摘要单独一列。暂不提供展开 / 收起或行内详情，操作列仅保留编辑；完整收费规则在编辑窗口查看。</td></tr><tr><th>查询</th><td>点击搜索生效。期权、收益互换筛选同页分组，各查自身配置；孖展仅通用区状态筛选。收费市场在通用条件中，按券商是否存在该市场规则匹配，不由收益互换标的命中。不同条件取交集，同一多选项内取并集；重置清空全部条件。</td></tr><tr><th>编辑</th><td>顺序为基础信息 → 收款信息与备注 → 市场 / 板块规则 → 业务配置。市场 / 板块规则仍属于常规期权，按其支持标的显示；底部业务配置包含三类业务及券商收费规则分区。切换保留输入；任何业务状态和收益互换支持范围的变化均不清空或限制收费规则。</td></tr><tr><th>固定选项</th><td>列表、筛选及表单使用同一套选项；取消单票单议、自定义及行权日整数输入，不自动预选业务参数。</td></tr></tbody></table>
-      <h3>范围调整</h3><p>已移除新增孖展风险参数及相关展示、筛选和校验。原型不展示预警线、强平线等配置。</p>
-      <h3>市场 / 板块规则</h3><p>各行独立保存两个文本字段，不自动复制。取消某类支持标的时隐藏对应行、保留输入；恢复勾选可继续编辑。列表及导出仅展示当前支持范围内的规则，保留市场 / 板块标签和完整文字，空值显示未配置。筛选支持市场 / 板块及两项文字关键词；关键词须在同一市场 / 板块行同时命中。新增不预填、不新增必填约束。示例：“连续三个收盘涨跌停，有权提前终止”“分红不调整，提前行权扣分红”，仅用于本地展示，不是业务默认值，也不触发实际执行。</p>
-      <h3>筛选导出</h3><p>工具栏导出 CSV，Excel 可直接打开。按点击导出时已生效条件导出全部匹配券商，未搜索的输入不参与；每家一行，含共有信息、三类业务及收款备注，列名带业务前缀。券商-收费规则列按条换行，保留全部已选市场、项目、方向、计算方式、费率、舍入、小数位数、最低收费、最高收费九项及单位；收费市场条件只筛选券商，完整导出其全部市场规则，方向完整显示，不合计费率。导出仅含已保存数据，空结果、加载中、失败或无权限时不可导出；生成中禁止重复操作，失败可重试。当前仅导出本地示例数据，不证明真实鉴权或后台导出已实现。</p>
-      <h3>券商收费规则</h3><p>收费规则从收益互换抽出，归券商所有。编辑窗口从“券商收费规则”独立分区进入列表，可按市场新增多条规则。每条市场多选；本稿使用A股、港股、美股，不预选，至少一项。同一条规则对全部已选市场共用其余参数，不拆成多条；不同参数可分别新增规则。市场不从所在地、任何业务的支持标的自动带出，不按业务状态禁用；市场枚举及历史归并由产品与开发另行约定。切换市场只改变本条市场归属，保留其余参数，不新增复制、执行优先级或计费逻辑。</p><p>主列表按市场组合分组，每条仍仅展示收费项目、计算方式和带单位费率，不增加上下限、不按市场重复规则。编辑窗口列表完整展示市场、收费项目、方向、计算方式、舍入方式、小数位数、费率、最低收费、最高收费九项及操作。收费项目选择控件内提供搜索和字典项目选择，取消独立的搜索输入框，只引用启用项目，已有停用项目保留。新增或编辑进入同窗口表单，保存规则返回列表。收费方向为买入、卖出多选，至少一项，可同时选择，同一条规则参数共用，不拆成两条。取消有改动时确认放弃；规则只汇入当前券商草稿，最终点击券商“保存”统一提交。按成交金额使用百分比，按成交股数及每笔固定使用金额；舍入为四舍五入、向上取整、向下取整。切换计算方式清空费率并提示重填；市场、项目及其他参数（含最低、最高收费）保留。</p><p>新增最低收费、最高收费金额字段，本稿设计为选填非负金额，币种跟随实际标的；留空表示未配置，0为有效值。两项都填时最高收费不得低于最低收费，可相等；切换计算方式、市场和最小化均保留，保存后在规则列表及导出完整展示。原七项必填；未配置上下限不自动补0，历史数据处理另行约定。只维护配置，实际计费、舍入与上下限应用顺序留待后续需求，不试算或扣费。</p>
-      <h3>全局工作窗口</h3><p>参考客户管理的非模态工作窗口：可最小化、任务栏恢复，保留输入、错误、子页及滚动；同一对象重复打开恢复已有窗口，不重复创建。任务栏与列表内容区左边缘对齐，横向滚动时以画布内可见范围为界；窄屏确保任务按钮可访问，不随右侧编辑窗口缩进。不同对象分别保留草稿；宽屏最多并排两个，窄屏显示一个，其余从任务栏切换。关闭未保存内容须确认；确认提示仍使用短模态弹窗。刷新不保留工作窗口。</p>
-      <h3>开发另行约定</h3><p>共有字段原约束、常规期权原必填规则、旧枚举及历史数据归并由产品与开发另行约定，本次不扩展。费率录入精度、多规则执行和“每笔”粒度留待实际计费需求；本次只维护配置，不计算扣费或迁移真实数据。</p>`;
     const dictPrd = `<h2>收费项目字典 · 页面 PRD</h2><p>独立入口：信息管理 → 收费项目字典。只维护可选收费项目，券商在独立的券商收费规则区按市场引用。</p><h3>已确认</h3><ul><li>只有收费项目，不设置收益项目。</li><li>字典与券商收费规则分开维护；每条规则引用一个项目，可配置多条，不在券商表单中新增字典项目。</li><li>费用跟随标的币种，字典和规则均不设币种字段。</li><li>沿用既有鉴权；不增加审批或新权限体系。</li></ul><h3>本稿设计</h3><table class="prd-table"><tbody><tr><th>项目名称</th><td>必填，去除首尾空格后校验重名；关联使用稳定身份，改名不切断引用。</td></tr><tr><th>状态</th><td>启用、停用。停用限制新增引用，已有券商名称及规则保留；不影响业务状态。</td></tr><tr><th>操作</th><td>支持查询、添加、编辑、启用与停用。停用前确认；本稿不提供物理删除。</td></tr></tbody></table><h3>开发另行约定</h3><p>旧文本迁移由产品与开发另行约定；费率录入精度、多条规则的执行口径不在本次配置设计展开。字典只定义项目，具体费率由各券商分别配置。</p><h3>未实现边界</h3><p>不执行计费、扣费、真实权限校验或历史费用处理。停用仅演示本地可选状态变化。</p>`;
-    const exportPrd = `<h2>导出样式 · 页面 PRD</h2><p>本 Tab 用于评审导出表格的字段排列，与券商列表共用已生效筛选和已保存数据，不增加后台业务菜单。</p>
-      <h3>表格组织</h3><table class="prd-table"><tbody><tr><th>行与列</th><td>每家券商一行，共 17 列；表头顺序及单元格内容与 CSV 一致。业务字段带前缀，不包含编辑等操作按钮。</td></tr><tr><th>市场 / 板块规则</th><td>常规期权强平、分红两个单元格分别按当前支持的市场 / 板块换行，保留标签和完整原文，空项显示未配置；A股区分主板、双创板。隐藏范围不参与，不增加券商行或列。</td></tr><tr><th>收费规则</th><td>同一单元格按条换行；完整保留券商层级的全部市场、项目、全部方向、计算方式、费率单位、舍入方式、小数位数、最低收费和最高收费，不合计、不拆成重复券商行。</td></tr><tr><th>筛选</th><td>沿用列表点击搜索后的条件，未搜索输入及未保存草稿不参与。返回列表保留筛选及未搜索的表单输入。</td></tr><tr><th>下载</th><td>点击导出下载当前匹配数据；生成中禁止重复点击，失败保留预览可重试。没有可用结果时禁用。</td></tr></tbody></table><h3>展示与文件边界</h3><p>列字母与行号仅辅助预览，不写入 CSV。底色、列宽、边框和自动换行属于本页的视觉展示；CSV 本身只保存文本数据，不携带这些样式，也未实现 XLSX。多条规则的单元格内换行保留在下载文件中，表格软件打开后是否自动换行取决于软件设置。</p><h3>状态及范围</h3><p>空态、加载、失败、无权限不展示券商数据；重试可恢复本地演示。所有内容为示例，未接生产导出、真实鉴权或账务。Excel / WPS 原生打开效果未测。</p>`;
-    $("page-prd").innerHTML = page === "brokers" ? brokerPrd : page === "dictionary" ? dictPrd : exportPrd;
-    const summaries = {
-      brokers:`<h3>本次修改点摘要</h3><table class="prd-table"><tbody>
-        <tr><th scope="row">列表与筛选</th><td>原配置及筛选未区分业务；本次改为共有信息、三类业务与券商收费规则并列的17列宽表，收款信息、备注直接显示在共有信息区，筛选明确业务归属。收费摘要只显示项目、计算方式及带单位费率；暂不提供展开 / 收起，操作列仅保留编辑，完整规则在编辑窗口查看。</td></tr>
-        <tr><th scope="row">共有信息与期权</th><td>类型、分类移至共有信息，类型仍手输；询价方式采用人工 / 报表 / 系统 / FIX 多选，最快行权日单选 T+1、T+5、T+6，两者按业务统一维护。是否强平、分红调整改为规则文本，按市场分别填写，A股区分主板、双创板；在同一编辑窗口维护，不另设标的子页，列表、筛选和导出同步调整。</td></tr>
-        <tr><th scope="row">孖展合约</th><td>按最新要求仅保留状态；删除前稿询价方式、支持标的、最快行权日的配置、展示、筛选、导出及必填校验，不新增风险参数。</td></tr>
-        <tr><th scope="row">收益互换与收费</th><td>收益互换仅保留状态、支持标的类型；收费规则移至券商层级独立维护，每条市场支持多选，新增最低、最高收费，共九字段；收费项目控件内搜索选择，不再独立展示搜索框。支持同市场多条，同一条规则跨市场共用参数。主列表独立分组、按市场展示三项摘要，编辑与导出完整保留九字段；字典统一命名“收费项目字典”，费用跟随标的币种。</td></tr>
-        <tr><th scope="row">新增、编辑与状态</th><td>表单顺序为基础信息、收款信息与备注、市场 / 板块规则、业务配置；业务配置位于最下方。支持最小化及恢复，任务栏与列表内容区左对齐。新增时终止业务可不配子项，终止显示红色；切换业务或状态保留已有输入。</td></tr>
-        <tr><th scope="row">筛选导出</th><td>在原列表上新增按已生效筛选导出全部匹配数据，共 17 列；顶部“导出样式”Tab 供预览，完整保留收费规则。</td></tr>
-      </tbody></table><p>沿用已有鉴权和状态枚举；不新增审批、下游状态控制、实际计费或账务。具体页面及字段规则如下。</p>`,
-      dictionary:`<h3>本次修改点摘要</h3><p>配合券商按市场收费配置，新增独立的收费项目字典入口，提供查询、新增、编辑及启用 / 停用；券商规则引用字典项目。改名保持关联，停用限制新引用、保留已有配置。具体规则如下。</p>`,
-      export:`<h3>本次修改点摘要</h3><p>在券商列表上新增按已生效筛选导出表格；本页为新增的导出样式预览，可查看 17 列数据并下载 CSV。多条收费规则完整保留，返回列表保留筛选与未搜索输入；本页不新增后台业务菜单。具体规则如下。</p>`
-    };
-    $("page-prd").querySelector("h2").insertAdjacentHTML("afterend",summaries[page]);
+    const currentBrokerPrd = `<h2>券商管理 · 页面 PRD</h2><h3>本次修改概述 · 2026-11-18</h3><p>常规期权按市场 / 板块新增默认行权规则和主动行权规则，两项在主列表分列展示。收费规则增加来源和必填起止日期，详情按有效期切换页签，主列表仅摘要展示当天有效且收费项目已启用的规则。券商层级增加计息规则。</p>
+      <h3>市场 / 板块规则</h3><p>两项行权规则与分红调整同层，为选填的多行文本。按常规期权支持范围提供设置，A股主板、双创板分别保存。取消勾选某类标的时隐藏相应文本，恢复勾选后回显。券商保存后，主列表与导出按板块标签换行，空值显示未配置。</p>
+      <h3>收费来源与有效期</h3><table class="prd-table"><tbody><tr><th>来源</th><td>单选普通、大宗、人工，按来源分别配置费率。新增时由用户选择来源。</td></tr><tr><th>有效期</th><td>有效开始日期和有效结束日期均必填。结束日期等于或晚于开始日期。</td></tr><tr><th>列表及导出</th><td>主列表仅展示当天有效且收费项目已启用的规则，按市场展示收费项目、计算方式、费率。没有符合条件的规则时显示“暂无有效收费规则”。收费市场筛选和导出读取已保存规则，涵盖各有效期。停用项目的已有引用可在详情和导出中回查。</td></tr><tr><th>有效期页签</th><td>有效期内、已过期、未开始各有一个页签和条数，默认有效期内。按上海当天判断，包含开始和结束当天。结束早于当天为已过期，开始晚于当天为未开始。过期规则可从页签回查。保存规则后切到对应的页签，券商保存成功后更新主列表。</td></tr></tbody></table>
+      <h3>计息规则</h3><p>本稿将入口放在券商编辑窗口底部，与收费规则并列；每券商一份、可不配置，不放到收益互换内，不影响三类业务状态。填写任一项后需补齐整组。切换页签、最小化保留草稿，券商保存后回显；清空配置需确认。未引入计算、试算、行情或扣息。</p><table class="prd-table"><tbody><tr><th>加点方式</th><td>固定利率、HIBOR加点单选，不预选。</td></tr><tr><th>利率 / 加点值</th><td>本稿补充条件字段：固定利率填写非负固定年利率（%）；HIBOR加点填写加点值（百分点，可正、负或0）。切换方式只清空该值，舍入、精度及基准天数保留；不拉取HIBOR、不计算实际年利率。</td></tr><tr><th>舍入方式</th><td>沿用四舍五入、向上取整、向下取整。</td></tr><tr><th>小数位数</th><td>沿用0、1、2、3、4。</td></tr><tr><th>基准天数</th><td>正整数，不预填；360、365仅是可录入示例，不锁定枚举。</td></tr></tbody></table>
+      <h3>直接影响与待确认</h3><p>主列表共19列。导出共20列，两项行权规则追加到现有计息列之后。</p><p>缺日期的存量规则如何补齐由产品与开发另行约定。实际计费的日期匹配、端点及重叠处理待确认。计息暂按券商统一配置，年化口径、HIBOR期限与取值日、利差单位及允许负值、舍入对象与顺序、基准天数口径待确认。</p>`;
+    const currentExportPrd = `<h2>导出样式 · 页面 PRD</h2><h3>本次修改概述 · 2026-11-18</h3><p>收费规则单元格包含来源及有效期，券商计息规则后追加默认行权规则、主动行权规则，共20列。</p><h3>修改详细说明</h3><p>每家券商一行。四项市场 / 板块规则在各自单元格中按当前支持范围换行。收费明细按条换行，涵盖全部已保存的有效期，包含市场、来源、起止日期、项目、方向、计算方式、舍入、精度、费率和上下限。计息列包含加点方式、利率或加点值及单位、舍入、小数位数、基准天数。空配置显示未配置。</p><p>导出使用已生效筛选和已保存配置，预览与CSV数据一致。</p>`;
+    $("page-prd").innerHTML = page === "brokers" ? currentBrokerPrd : page === "dictionary" ? dictPrd : currentExportPrd;
+    if (page === "brokers") $("page-prd").insertAdjacentHTML("beforeend",`<h3>相关配置</h3><p>收费规则移至券商层级，收费规则不设币种字段，币种跟随标的。主列表暂不提供展开 / 收起。孖展合约仅保留状态，收益互换配置状态及支持标的。常规期权支持人工、报表、系统、FIX多选，最快行权日支持T+1、T+5、T+6。</p>`);
+    if (page === "export") $("page-prd").insertAdjacentHTML("beforeend",`<p>CSV 本身只保存文本数据。</p>`);
   }
   function renderPage() {
     const name = page === "brokers" ? "券商管理" : page === "dictionary" ? "收费项目字典" : "券商管理导出表";
@@ -738,7 +799,7 @@
   const exportHeaders = ["券商简称","券商全称","所在地","券商类型","券商分类",
     "常规期权-状态","常规期权-询价方式","常规期权-支持标的","常规期权-最快行权日","常规期权-是否强平","常规期权-分红调整",
     "孖展合约-状态",
-    "收益互换-状态","收益互换-支持标的类型","券商-收费规则","收款信息","备注"];
+    "收益互换-状态","收益互换-支持标的类型","券商-收费规则","收款信息","备注","券商-计息规则","常规期权-默认行权规则","常规期权-主动行权规则"];
   function appliedFilterText() {
     const fieldNames = {name:"简称",full:"全称",location:"所在地",type:"券商类型",category:"券商分类",bank:"收款信息",optionStatus:"常规期权状态",marginStatus:"孖展合约状态",swapStatus:"收益互换状态",feeMarket:"收费市场",optionQuote:"常规期权询价",optionTarget:"常规期权标的",swapTarget:"收益互换标的",optionExercise:"常规期权行权日",optionRuleMarket:"常规期权规则市场 / 板块",optionLiquid:"常规期权强平关键词",optionDividend:"常规期权分红关键词"};
     const parts = Object.entries(filter).filter(([,v]) => Array.isArray(v) ? v.length : v).map(([k,v]) => `${fieldNames[k]}：${Array.isArray(v) ? v.join(" / ") : v}`);
@@ -747,14 +808,12 @@
   function exportCells(b) {
     const value = v => v || "未配置";
     const list = values => values.join("、") || "未配置";
-    const fees = b.fees.map(row => {
-      const project = projectById(row.project);
-      return `${list(marketsOf(row))}；${project?.name || "未知项目"}${project && !project.enabled ? "（已停用）" : ""}；${list(directionsOf(row))}；${row.method}；${row.rate} ${feeUnit(row.method)}；${row.rounding}；${row.decimals} 位小数；最低收费：${feeLimitText(row.minimum)}；最高收费：${feeLimitText(row.maximum)}`;
-    }).join("\n") || "未配置";
+    const fees = b.fees.map(feeRecordText).join("\n") || "未配置";
     return [value(b.name),value(b.full),value(b.location),value(b.type),value(b.category),
       b.option.status,list(b.option.quotes),list(b.option.targets),value(b.option.exercise),marketRulesText(b.option,"liquid"),marketRulesText(b.option,"dividend"),
       b.margin.status,
-      b.swap.status,list(b.swap.targets),fees,value(b.bank),value(b.note)];
+      b.swap.status,list(b.swap.targets),fees,value(b.bank),value(b.note),interestText(b.interest),
+      marketRulesText(b.option,"defaultExercise"),marketRulesText(b.option,"activeExercise")];
   }
   function exportText(value) {
     const text = String(value ?? "");
@@ -764,7 +823,7 @@
   function csvCell(value) { return '"' + exportText(value).replace(/"/g,'""') + '"'; }
   function renderExportPage() {
     const ready = mode === "normal", rows = ready ? brokers.filter(matches).map(exportCells) : [];
-    const weights = [140,210,75,110,100,90,130,165,110,320,320,90,90,165,600,220,220];
+    const weights = [140,210,75,110,100,90,130,165,110,320,320,90,90,165,600,220,220,320,320,320];
     const total = 42 + weights.reduce((sum,value) => sum + value,0);
     $("product-page").innerHTML = `${heading("券商管理导出表",true)}
       <div class="toolbar"><button type="button" class="button primary" data-action="export-brokers" aria-label="导出筛选结果">${icon("Download")}导出</button><span class="count">CSV</span></div>
@@ -818,13 +877,16 @@
       }
     },250);
   }
-  function feesHtml(b) {
-    const markets = [...new Set(b.fees.map(row => marketsOf(row).join("、")))];
-    return b.fees.length ? markets.map(market => `<div class="fee-market-group"><strong class="fee-market-label">${esc(market || "市场未配置")}</strong>${b.fees.filter(row => marketsOf(row).join("、") === market).map(row => {
-        const p = projectById(row.project);
+  function feesHtml(b,today) {
+    const activeFees = b.fees.filter(row => row.validFrom && row.validTo &&
+      feePeriod(row,today) === "active" && projectById(row.project)?.enabled);
+    if (!activeFees.length) return '<span class="muted">暂无有效收费规则</span>';
+    const markets = [...new Set(activeFees.map(row => marketsOf(row).join("、")))];
+    return markets.map(market => `<div class="fee-market-group"><strong class="fee-market-label">${esc(market || "市场未配置")}</strong>${activeFees.filter(row => marketsOf(row).join("、") === market).map(row => {
+        const projectName = projectById(row.project).name;
         const rate = `<span class="fee-number">${esc(row.rate)} ${esc(feeUnit(row.method))}</span>`;
-        return `<div class="fee-line"><b>${esc(p?.name || "未知项目")}${p && !p.enabled ? " · 已停用" : ""}</b><span class="fee-description">${esc(row.method)} · ${rate}</span></div>`;
-      }).join("")}</div>`).join("") : '<span class="muted">未配置</span>';
+        return `<div class="fee-line"><b>${esc(projectName)}</b><span class="fee-description">${esc(row.method)} · ${rate}</span></div>`;
+      }).join("")}</div>`).join("");
   }
   function stateContent(currentMode,emptySearch = false) {
     const map = {loading:["正在加载","请稍候。"],error:["列表加载失败","数据暂不可用，请重试。"],denied:["无权访问此页面","请联系系统管理员。"],empty:[emptySearch ? "没有符合条件的记录" : "暂无记录",emptySearch ? "调整筛选条件后重试。" : page === "export" ? "当前没有可导出的券商记录。" : "可通过添加维护配置。"]};
@@ -833,14 +895,16 @@
   }
   function renderBrokerRows() {
     const visible = mode === "empty" ? [] : brokers.filter(matches);
-    const groups = [{name:"共有信息",headers:["券商名称","所在地","券商类型","券商分类","收款信息","备注"]},{name:"常规期权",headers:["状态","询价方式","支持标的","最快行权日","是否强平","分红调整"]},{name:"孖展合约",headers:["状态"]},{name:"收益互换",headers:["状态","支持标的类型"]},{name:"券商收费规则",headers:["收费摘要"]}];
-    const colWeights = [150,64,82,76,150,150,64,90,125,90,220,220,64,64,125,220,64];
+    const today = feeDateFormatter.format(new Date());
+    const groups = [{name:"共有信息",headers:["券商名称","所在地","券商类型","券商分类","收款信息","备注"]},{name:"常规期权",headers:["状态","询价方式","支持标的","最快行权日",...marketRuleFields.map(([,label]) => label)]},{name:"孖展合约",headers:["状态"]},{name:"收益互换",headers:["状态","支持标的类型"]},{name:"券商收费规则",headers:["有效期内收费摘要"]}];
+    const colWeights = [150,64,82,76,150,150,64,90,125,90,200,200,200,200,64,64,125,220,64];
     const totalWeight = colWeights.reduce((sum,value) => sum + value,0);
     const dataRows = visible.map(b => {
       let cells = `<td class="broker-name"><strong>${esc(b.name || "未命名")}</strong><small>${esc(b.full || "未配置")}</small></td><td>${esc(b.location)}</td><td>${esc(b.type || "未配置")}</td><td>${esc(b.category || "未配置")}</td>`;
       cells += `<td class="broker-text" data-broker-field="bank">${esc(b.bank || "未配置")}</td><td class="broker-text" data-broker-field="note">${esc(b.note || "未配置")}</td>`;
-      cells += `<td class="group-start" data-business="option">${status(b.option.status)}</td><td data-business="option">${esc(b.option.quotes.join(" / ") || "未配置")}</td><td data-business="option">${tags(b.option.targets)}</td><td data-business="option">${esc(optionText(b) || "未配置")}</td><td class="market-rule-cell" data-business="option" data-rule-field="liquid">${marketRulesHtml(b.option,"liquid")}</td><td class="market-rule-cell" data-business="option" data-rule-field="dividend">${marketRulesHtml(b.option,"dividend")}</td>`;
-      cells += `<td class="group-start" data-business="margin">${status(b.margin.status)}</td><td class="group-start" data-business="swap">${status(b.swap.status)}</td><td data-business="swap" data-swap-targets>${tags(b.swap.targets)}</td><td class="fee-cell group-start" data-broker-fees>${feesHtml(b)}</td>`;
+      cells += `<td class="group-start" data-business="option">${status(b.option.status)}</td><td data-business="option">${esc(b.option.quotes.join(" / ") || "未配置")}</td><td data-business="option">${tags(b.option.targets)}</td><td data-business="option">${esc(optionText(b) || "未配置")}</td>`;
+      cells += marketRuleFields.map(([field]) => `<td class="market-rule-cell" data-business="option" data-rule-field="${field}">${marketRulesHtml(b.option,field)}</td>`).join("");
+      cells += `<td class="group-start" data-business="margin">${status(b.margin.status)}</td><td class="group-start" data-business="swap">${status(b.swap.status)}</td><td data-business="swap" data-swap-targets>${tags(b.swap.targets)}</td><td class="fee-cell group-start" data-broker-fees>${feesHtml(b,today)}</td>`;
       cells += `<td class="operation"><div class="row-actions"><button class="text-button" data-action="edit-broker" data-id="${b.id}" aria-label="编辑${esc(b.name)}">编辑</button></div></td>`;
       return `<tr data-broker-id="${b.id}">${cells}</tr>`;
     }).join("");
@@ -865,6 +929,10 @@
     createWindow("broker",key);
     original = id ? structuredClone(brokers.find(b => b.id === id)) : blank();
     original.fees.forEach(row => { row.direction = directionsOf(row); });
+    const defaults = blankMarketRules();
+    for (const m of ruleMarkets) {
+      original.option.marketRules[m.key] = {...defaults[m.key],...original.option.marketRules[m.key]};
+    }
     draft = structuredClone(original); removedFees = []; feeRateResets = new Set(); feeDraft = null; feeOriginal = null; feeIndex = null;
     formTab = "option";
     $("broker-title").textContent = id ? `编辑券商 · ${draft.name}` : "添加券商";
@@ -882,7 +950,7 @@
     });
     const panel = $("business-fields"), key = panel.dataset.business;
     if (!key) return;
-    if (key !== "fees") draft[key].status = panel.querySelector('[name="business-status"]:checked')?.value || draft[key].status;
+    if (["option","margin","swap"].includes(key)) draft[key].status = panel.querySelector('[name="business-status"]:checked')?.value || draft[key].status;
     if (key === "option" || key === "swap") {
       for (const [field,name] of (key === "option" ? [["quotes","business-quotes"],["targets","business-targets"]] : [["targets","business-targets"]])) {
         const selected = [...panel.querySelectorAll(`[name="${name}"]:checked`)].map(el => el.value);
@@ -895,7 +963,9 @@
       draft.option.exercise = $("option-exercise").value;
     } else if (key === "fees" && feeDraft) {
       const row = panel.querySelector(".fee-editor");
-      if (row) Object.assign(feeDraft,{project:Number(row.querySelector('[data-fee-field="project"]').value) || "",market:[...row.querySelectorAll('[data-fee-field="market"]:checked')].map(input => input.value),direction:[...row.querySelectorAll('[data-fee-field="direction"]:checked')].map(input => input.value),...Object.fromEntries(["method","rounding","decimals","rate","minimum","maximum"].map(field => [field,row.querySelector(`[data-fee-field="${field}"]`).value.trim()]))});
+      if (row) Object.assign(feeDraft,{project:Number(row.querySelector('[data-fee-field="project"]').value) || "",market:[...row.querySelectorAll('[data-fee-field="market"]:checked')].map(input => input.value),direction:[...row.querySelectorAll('[data-fee-field="direction"]:checked')].map(input => input.value),...Object.fromEntries(["source","validFrom","validTo","method","rounding","decimals","rate","minimum","maximum"].map(field => [field,row.querySelector(`[data-fee-field="${field}"]`).value.trim()]))});
+    } else if (key === "interest") {
+      draft.interest = Object.fromEntries(["method","rate","rounding","decimals","basis"].map(field => [field,$("interest-" + field).value.trim()]));
     }
   }
   function renderBusinessForm() {
@@ -904,17 +974,21 @@
     $("business-fields").setAttribute("aria-labelledby","form-tab-" + formTab);
     $("business-fields").dataset.business = formTab;
     $("form-context").textContent = `${draft.name || "新增券商"} · ${labels[formTab]}`;
-    let html = formTab === "fees" ? "" : radios("business-status",labels[formTab] + "状态",states,draft[formTab].status);
-    if (!draft.id && formTab !== "fees") html += '<p class="helper">本业务为终止时，可不配置子项。</p>';
+    let html = ["fees","interest"].includes(formTab) ? "" : radios("business-status",labels[formTab] + "状态",states,draft[formTab].status);
+    if (!draft.id && !["fees","interest"].includes(formTab)) html += '<p class="helper">本业务为终止时，可不配置子项。</p>';
+    if (formTab === "interest") html += interestEditor(draft.interest);
     if (formTab === "swap") html += `<div style="margin-top:18px">${checks("business-targets","支持标的类型",swapTargets,draft.swap.targets)}</div>`;
     if (formTab === "option") html += `<div class="form-grid" style="margin-top:18px">${checks("business-quotes","询价方式",quotes,draft.option.quotes)}${checks("business-targets","支持标的类型",optionTargets,draft.option.targets)}${select("option-exercise","最快行权日",exerciseOptions,draft.option.exercise,"请选择")}</div><p class="helper" style="margin-top:12px">T 为成交日。</p>`;
     else if (formTab === "fees" && feeDraft) html += `<div class="fee-subpage-head"><button type="button" class="text-button" data-action="cancel-fee">${icon("ChevronLeft")}返回收费规则</button><h3>${feeIndex === null ? "新增" : "编辑"}收费规则</h3></div><div id="fee-error" class="message" role="alert"></div>${feeEditor(feeDraft,feeIndex ?? draft.fees.length)}`;
-    else if (formTab === "fees") html += `<div class="fee-heading"><h3>收费规则（${draft.fees.length} 条）</h3><button type="button" class="button" data-action="add-fee">${icon("Plus")}新增规则</button></div><div class="table-wrap fee-list" role="region" aria-label="收费规则列表，可左右滚动" tabindex="0"><table class="data-table"><thead><tr>${["市场","收费项目","收费方向","计算方式","舍入方式","小数位数","收费费率","最低收费","最高收费","操作"].map(label => `<th scope="col">${label}</th>`).join("")}</tr></thead><tbody>${draft.fees.map((row,index) => {
-      const project = projectById(row.project);
-      return `<tr data-fee-row="${index}"><td>${esc(marketsOf(row).join("、") || "未配置")}</td><td>${esc(project?.name || "项目不存在")}${project && !project.enabled ? '<small>已停用</small>' : ""}</td><td>${esc(directionsOf(row).join("、"))}</td><td>${esc(row.method)}</td><td>${esc(row.rounding)}</td><td>${esc(row.decimals)}</td><td>${esc(row.rate)} ${feeUnit(row.method)}</td><td>${esc(feeLimitText(row.minimum))}</td><td>${esc(feeLimitText(row.maximum))}</td><td><div class="rule-actions"><button type="button" class="text-button" data-action="edit-fee" data-index="${index}" aria-label="编辑第${index + 1}条收费规则">编辑</button><button type="button" class="text-button" data-action="remove-fee" data-index="${index}" aria-label="移除第${index + 1}条收费规则">移除</button></div></td></tr>`;
-    }).join("")}</tbody></table>${!draft.fees.length ? '<div class="empty"><strong>暂无收费规则</strong><button type="button" class="button" data-action="add-fee">新增规则</button></div>' : ""}</div>${removedFees.length ? '<button class="text-button fee-undo" type="button" data-action="undo-fee">撤销上次移除</button>' : ""}`;
+    else if (formTab === "fees") html += `<div class="fee-heading"><h3>收费规则（${draft.fees.length} 条）</h3><button type="button" class="button" data-action="add-fee">${icon("Plus")}新增规则</button></div>${feePeriodsHtml(draft.fees,feeTab)}${removedFees.length ? '<button class="text-button fee-undo" type="button" data-action="undo-fee">撤销上次移除</button>' : ""}`;
     $("business-fields").innerHTML = html;
-    $("market-rule-fields").innerHTML = `<div class="market-rule-head" aria-hidden="true"><span>市场 / 板块（常规期权）</span><span>是否强平</span><span>分红调整</span></div>${ruleMarkets.map(m => `<section class="market-rule-editor" data-rule-market="${m.key}" ${draft.option.targets.includes(m.target) ? "" : "hidden"}><h4>${esc(m.label)}</h4>${[["liquid","是否强平"],["dividend","分红调整"]].map(([field,label]) => `<div class="field"><label class="field-label" for="market-${m.key}-${field}">${label}</label><textarea id="market-${m.key}-${field}" data-market-rule="${m.key}" data-rule-field="${field}" aria-label="${esc(m.label)}${label}" ${draft.option.targets.includes(m.target) ? "" : "disabled"}>${esc(draft.option.marketRules[m.key][field])}</textarea></div>`).join("")}</section>`).join("")}<p class="helper" data-no-market ${draft.option.targets.length ? "hidden" : ""}>常规期权暂无支持标的</p>`;
+    const marketRuleHead = marketRuleFields.map(([,label]) => `<span>${label}</span>`).join("");
+    const marketRuleRows = ruleMarkets.map(m => {
+      const supported = draft.option.targets.includes(m.target);
+      const fields = marketRuleFields.map(([field,label]) => `<div class="field"><label class="field-label" for="market-${m.key}-${field}">${label}</label><textarea id="market-${m.key}-${field}" data-market-rule="${m.key}" data-rule-field="${field}" aria-label="${esc(m.label)}${label}" ${supported ? "" : "disabled"}>${esc(draft.option.marketRules[m.key][field])}</textarea></div>`).join("");
+      return `<section class="market-rule-editor" data-rule-market="${m.key}" ${supported ? "" : "hidden"}><h4>${esc(m.label)}</h4>${fields}</section>`;
+    }).join("");
+    $("market-rule-fields").innerHTML = `<div class="market-rule-head" aria-hidden="true"><span>市场 / 板块（常规期权）</span>${marketRuleHead}</div>${marketRuleRows}<p class="helper" data-no-market ${draft.option.targets.length ? "hidden" : ""}>常规期权暂无支持标的</p>`;
     $("broker-footer").innerHTML = feeDraft ? '<button type="button" class="button" data-action="cancel-fee">取消</button><button type="button" class="button primary" data-action="save-fee" id="fee-save">保存规则</button>' : '<button type="button" class="button" data-action="close-broker">取消</button><button type="submit" class="button primary" id="broker-save">保存</button>';
     namespaceWindow(currentWindow);
     if (formTab === "fees") {
@@ -922,6 +996,16 @@
       filterFeeProjects(feeQuery);
     }
     refreshWindows();
+  }
+  function interestEditor(row) {
+    const hibor = row.method === "HIBOR加点";
+    return `<div class="fee-heading"><h3>计息规则</h3><button type="button" class="text-button" data-action="clear-interest">清空配置</button></div><div class="form-grid interest-fields">
+      ${select("interest-method","加点方式",interestMethods,row.method,"请选择")}
+      <div class="field"><label for="interest-rate">${hibor ? "加点值" : "固定年利率"}</label><div class="fee-rate-input"><input id="interest-rate" inputmode="decimal" value="${esc(row.rate)}" ${row.method ? "" : "disabled"} aria-describedby="interest-rate-unit"><span id="interest-rate-unit">${hibor ? "百分点" : "%"}</span></div></div>
+      ${select("interest-rounding","舍入方式",feeRoundings,row.rounding,"请选择")}
+      ${select("interest-decimals","小数位数",feeDecimals,row.decimals,"请选择")}
+      ${textInput("interest-basis","基准天数（天）",row.basis,"number")}
+      </div>`;
   }
   function feeEditor(row,index) {
     const existing = original.fees.some(f => f.key === row.key && f.project === row.project);
@@ -932,14 +1016,16 @@
     const project = projectById(row.project);
     const picker = `<div class="field"><label id="fee-project-label-${index}">收费项目<span class="required">*</span></label><details class="fee-project-picker"><summary aria-labelledby="fee-project-label-${index} fee-project-value-${index}"><span id="fee-project-value-${index}">${esc(project ? project.name + (project.enabled ? "" : "（已停用）") : "请选择收费项目")}</span></summary><div class="fee-project-options"><input type="search" id="fee-search" aria-label="搜索收费项目" placeholder="搜索项目名称" autocomplete="off"><select size="4" id="fee-project-${index}" aria-labelledby="fee-project-label-${index}" data-fee-field="project"><option value="">请选择收费项目</option>${options.map(p => `<option value="${p.id}" ${p.id === row.project ? "selected" : ""}>${esc(p.name)}${p.enabled ? "" : "（已停用）"}</option>`).join("")}</select><span class="fee-search-state" role="status"></span></div></details></div>`;
     const limit = (key,label) => `<div class="field"><label for="fee-${key}-${index}">${label}</label><div class="fee-rate-input"><input id="fee-${key}-${index}" data-fee-field="${key}" inputmode="decimal" autocomplete="off" placeholder="未配置" value="${esc(row[key] ?? "")}"><span>金额</span></div></div>`;
+    const date = (key,label) => `<div class="field"><label for="fee-${key}-${index}">${label}<span class="required">*</span></label><input type="date" id="fee-${key}-${index}" data-fee-field="${key}" value="${esc(row[key] || "")}" required></div>`;
     return `<section class="fee-editor" data-rule-key="${esc(row.key)}" aria-label="收费规则字段">
-      ${market}
+      <h4>适用范围与有效期</h4><div class="fee-scope-fields">${market}${field("source","来源",feeSources)}${date("validFrom","有效开始日期")}${date("validTo","有效结束日期")}</div>
       <p class="helper" style="margin-top:10px">费用币种跟随标的币种</p>
+      <h4>收费参数</h4>
       <div class="fee-rule-fields">${picker}${direction}${field("method","计算方式",feeMethods)}${field("rounding","舍入方式",feeRoundings)}${field("decimals","小数位数",feeDecimals)}<div class="field"><label for="fee-rate-${index}">收费费率<span class="required">*</span></label><div class="fee-rate-input"><input id="fee-rate-${index}" data-fee-field="rate" inputmode="decimal" autocomplete="off" value="${esc(row.rate)}" ${!row.method ? "disabled" : ""} aria-describedby="fee-unit-${index} fee-rate-hint-${index}"><span id="fee-unit-${index}">${feeUnit(row.method)}</span></div><p class="helper" id="fee-rate-hint-${index}">${!row.method ? "请先选择计算方式" : feeRateResets.has(row.key) && !row.rate ? "计算方式已变更，请重新填写收费费率。" : ""}</p></div>${limit("minimum","最低收费")}${limit("maximum","最高收费")}</div></section>`;
   }
   function startFee(index = null) {
     readBrokerForm(); feeIndex = index;
-    feeDraft = index === null ? blankFee() : {...structuredClone(draft.fees[index]),market:[...marketsOf(draft.fees[index])],minimum:draft.fees[index].minimum ?? "",maximum:draft.fees[index].maximum ?? ""};
+    feeDraft = index === null ? blankFee() : {...structuredClone(draft.fees[index]),market:[...marketsOf(draft.fees[index])],source:draft.fees[index].source ?? "",validFrom:draft.fees[index].validFrom ?? "",validTo:draft.fees[index].validTo ?? "",minimum:draft.fees[index].minimum ?? "",maximum:draft.fees[index].maximum ?? ""};
     feeOriginal = structuredClone(feeDraft);
     renderBusinessForm(); currentWindow.root.querySelector(".fee-subpage-head").scrollIntoView({block:"start"});
     $("fee-market-" + (index ?? draft.fees.length)).focus({preventScroll:true});
@@ -965,6 +1051,10 @@
       if (row[field] !== "" && row[field] != null && !validAmount(row[field])) return [field,`请填写有效${label}（非负金额）。`];
     }
     if (row.minimum !== "" && row.maximum !== "" && Number(row.minimum) > Number(row.maximum)) return ["maximum","最高收费不能低于最低收费。"];
+    if (!feeSources.includes(row.source)) return ["source","请选择收费来源。"];
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(row.validFrom || "")) return ["validFrom","请选择有效开始日期。"];
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(row.validTo || "")) return ["validTo","请选择有效结束日期。"];
+    if (row.validTo < row.validFrom) return ["validTo","有效结束日期不能早于开始日期。"];
     return null;
   }
   function saveFee() {
@@ -979,9 +1069,10 @@
     }
     if (feeIndex === null) draft.fees.push(structuredClone(feeDraft));
     else draft.fees[feeIndex] = structuredClone(feeDraft);
-    const index = feeIndex ?? draft.fees.length - 1;
+    feeTab = feePeriod(feeDraft);
     feeDraft = null; feeOriginal = null; feeIndex = null;
-    renderBusinessForm(); $("business-fields").querySelector(`[data-action="edit-fee"][data-index="${index}"]`).focus({preventScroll:true});
+    renderBusinessForm();
+    $("fee-period-" + feeTab).focus();
   }
   function closeBroker() {
     if ($("broker-save")?.disabled) return;
@@ -1003,16 +1094,29 @@
     const feesModified = JSON.stringify(draft.fees) !== JSON.stringify(original.fees);
     if (feesModified) {
       for (const [index,row] of draft.fees.entries()) {
+        const before = original.fees.find(f => f.key === row.key);
+        if (JSON.stringify(row) === JSON.stringify(before)) continue;
         const error = feeValidation(row);
         if (error) { formTab = "fees"; startFee(index); $("fee-error").textContent = `第 ${index + 1} 条规则：${error[1]}`; $("fee-" + error[0] + "-" + index).focus(); return; }
       }
     }
+    const interestError = interestValidation(draft.interest);
+    if (interestError) { brokerError(interestError[1],"interest","#interest-" + interestError[0]); return; }
     const pending = structuredClone(draft);
     simulateSave($("broker-save"),$("broker-error"),() => {
       if (pending.id) brokers[brokers.findIndex(b => b.id === pending.id)] = pending;
       else { pending.id = Math.max(...brokers.map(b => b.id),0) + 1; brokers.unshift(pending); }
       finishWindow(); renderPage(); toast("券商配置已保存");
     });
+  }
+  function interestValidation(row) {
+    if (!Object.values(row).some(Boolean)) return null;
+    if (!interestMethods.includes(row.method)) return ["method","请选择计息加点方式。"];
+    if (!/^[+-]?\d+(?:\.\d+)?$/.test(row.rate) || !Number.isFinite(Number(row.rate)) || (row.method === "固定利率" && Number(row.rate) < 0)) return ["rate",row.method === "固定利率" ? "请填写非负固定年利率。" : "请填写有效加点值，可填写正数、负数或0。"];
+    if (!feeRoundings.includes(row.rounding)) return ["rounding","请选择计息舍入方式。"];
+    if (!feeDecimals.includes(row.decimals)) return ["decimals","请选择计息小数位数。"];
+    if (!/^\d+$/.test(row.basis) || !Number.isSafeInteger(Number(row.basis)) || Number(row.basis) <= 0) return ["basis","基准天数须为正整数。"];
+    return null;
   }
   function simulateSave(button,error,success) {
     const owner = currentWindow, shouldFail = $("fail-save").checked;
@@ -1114,6 +1218,11 @@
       if ($("broker-save")?.disabled) return;
       readBrokerForm(); formTab = button.dataset.formTab; renderBusinessForm(); return;
     }
+    if (button.dataset.feeTab) {
+      if (feeTab === button.dataset.feeTab) return;
+      readBrokerForm(); feeTab = button.dataset.feeTab; renderBusinessForm();
+      $("fee-period-" + feeTab).focus({preventScroll:true}); return;
+    }
     const id = Number(button.dataset.id);
     switch (button.dataset.action) {
       case "add-broker": openBroker(); break;
@@ -1131,7 +1240,8 @@
       case "save-fee": saveFee(); break;
       case "cancel-fee": cancelFee(); break;
       case "remove-fee": readBrokerForm(); removedFees.push({index:Number(button.dataset.index),row:draft.fees.splice(Number(button.dataset.index),1)[0]}); renderBusinessForm(); break;
-      case "undo-fee": readBrokerForm(); { const removed = removedFees.pop(); if (removed) draft.fees.splice(removed.index,0,removed.row); } renderBusinessForm(); break;
+      case "undo-fee": readBrokerForm(); { const removed = removedFees.pop(); if (removed) { draft.fees.splice(removed.index,0,removed.row); feeTab = feePeriod(removed.row); } } renderBusinessForm(); break;
+      case "clear-interest": readBrokerForm(); confirmAction("清空计息配置？","将清空当前券商草稿中的计息配置，点击券商保存后生效。",() => { draft.interest = blankInterest(); renderBusinessForm(); },"清空"); break;
       case "add-dictionary": openDictionary(); break;
       case "edit-dictionary": openDictionary(id); break;
       case "toggle-dictionary": {
@@ -1196,6 +1306,11 @@
       $("market-rule-fields").querySelector("[data-no-market]").hidden = Boolean(draft.option.targets.length);
     }
     if (event.target.closest(".work-window")) refreshWindows();
+    if (event.target.dataset.control === "interest-method") {
+      draft.interest.rate = "";
+      renderBusinessForm(); $("interest-method").focus({preventScroll:true});
+      return;
+    }
     if (event.target.dataset.feeField !== "method") return;
     const row = event.target.closest(".fee-editor");
     const index = feeIndex ?? draft.fees.length;
