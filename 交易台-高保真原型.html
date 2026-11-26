@@ -1363,6 +1363,9 @@ dialog.position-dialog { width:min(1480px,calc(100% - 32px)); }
 .mi-base textarea { width:100%; }
 .mi-section-title { font-size:13px; font-weight:600; margin:18px 0 12px; padding-bottom:7px; border-bottom:1px solid var(--line); }
 .mi-side > .mi-section-title:first-child { margin-top:0; }
+.mi-hedge { margin-top:16px; padding:12px 14px; background:#f2f7fd; border-inline-start:3px solid #568ac6; }
+.mi-hedge .mi-section-title { margin:0 0 10px; padding:0; border:0; color:#234b79; }
+.mi-hedge-fields { grid-template-columns:repeat(2,minmax(0,1fr)); }
 .mi-theory { display:inline; margin-left:8px; color:#8a9099; font-size:11px; font-weight:400; }
 .mi-deal-wide { grid-column:span 2; min-width:0; }
 .mi-deal { padding:0; border:0; min-width:0; margin:0; }
@@ -1401,6 +1404,7 @@ dialog.position-dialog { width:min(1480px,calc(100% - 32px)); }
   .position-taskbar,.dialog-header-actions,#dialog-minimize,.pi-footer-actions,.pi-exceptions,.mi-actions,.mi-copy { display:none !important; }
   dialog.position-dialog,dialog.margin-instruction-dialog { width:100% !important; max-width:none; }
   .pi-layout,.mi-layout { display:block; }
+  .mi-hedge { break-inside:avoid; }
   .pi-side,.mi-side { border:0; padding:12px 0; }
   .pi-main,.pi-context { padding:12px 0; }
   .pi-steps { display:none; }
@@ -2120,13 +2124,14 @@ dialog.position-dialog { width:min(1480px,calc(100% - 32px)); }
     <!-- GENERATED PRD START -->
 <section aria-label="首版上线 PRD" id="launch-prd-content">
 <h2 data-prd-group="首版上线" data-prd-outline id="launch-scope" tabindex="-1">首版上线范围</h2>
-<p>财务线下分配对冲名本。两类业务沿用各自的建仓指令、建仓信息和订单推送，在建仓信息或存续订单上维护跨业务关联。本节、旧系统变更对照及下方评审表为本次开发和验收依据。</p>
+<p>期权客户开仓的跨业务对冲安排由财务线下交接。孖展客户开仓在孖展建仓指令中确认两类对冲名本，期权渠道依旧独立走现有流程。两类业务在建仓信息或存续订单上维护跨业务关联。本节、旧系统变更对照及下方评审表为本次开发和验收依据。</p>
 <p>本次范围包含「结构配置」，供期权建仓信息的接单券商分录选用。</p>
 <p><strong>新增记录展示。</strong> 询报价、期权建仓指令、建仓信息和主订单等列表，按记录实际进入该列表的顺序优先展示最新记录。分页列表在生成新记录后回到第 1 页，保留已选页签和筛选条件，符合条件的新记录显示在首行。业务日期、成交时间、保存修改和状态变化均不改变记录的新增顺序。期权和孖展主订单展开后，按子单编号末尾的数字升序展示，同一主单下新子单接在原子单之后。期权「存续期交易」弹窗的对冲持仓区沿用此顺序。</p>
 <p><strong>孖展交易台列表。</strong> 较旧系统仅新增「交易动作」和「合约类型」两列，其余字段、字段名称与取值、筛选、排序分页、成交状态和进度，以及列表操作均沿用旧系统。</p>
-<p><strong>开仓买入任务。</strong> 「开仓买入」只接收孖展建仓指令推送的任务，合约类型显示「孖展合约」。常规期权开仓不生成交易台任务；仅孖展对冲或混合对冲的正股渠道，均在期权建仓信息中关联已生成的孖展子单，或成单后补绑。该限制只适用于开仓买入，行权卖出和存续期买卖仍按各自的任务规则展示。</p>
+<p><strong>开仓买入任务。</strong> 「开仓买入」只接收有正股对冲名本的孖展建仓指令，合约类型显示「孖展合约」。常规期权开仓不生成交易台任务；仅孖展对冲或混合对冲的正股渠道，均在期权建仓信息中关联已生成的孖展子单，或成单后补绑。该限制只适用于开仓买入，行权卖出和存续期买卖仍按各自的任务规则展示。</p>
 <p><strong>交易弹窗的成交要求。</strong> 开仓买入取推送任务时已确认的孖展建仓指令，改单确认成功后展示最新生效值。行权卖出取行权流程下发给本次正股卖出任务的成交要求。存续期买入或卖出取发起该笔交易时保存的成交要求。来源缺值显示「—」。原指令名本、结构、周期、保证金和分成比例在来源记录中查阅。逐笔 FIX 委托在交易弹窗查看。</p>
-<p><strong>交易弹窗的预交易名本。</strong> 取本次任务已记录的正股交易名本。若渠道名本仅在线下通知，弹窗显示「—」。示例中客户建仓 500 万元，任务明确记录正股名本 300 万元时显示 300 万元。理论股数、待委托数量及 FIX 默认委托量沿用旧系统取值和口径。</p>
+<p><strong>孖展建仓指令。</strong> 沿用旧弹窗双栏布局、原客户条款、成交要求、指令文案、改单记录及操作日志。在基础信息下方、「可编辑信息」上方设置独立的「对冲要求」区，集中展示「孖展对冲名本（万元）」和「期权对冲名本（万元）」。客户总名义本金和其他客户下单字段放在「可编辑信息」。新指令默认孖展对冲名本等于客户总名义本金、期权对冲名本为 0。两项按非负整数万元录入。修改任一渠道名本时，用客户总名本减去该值带出另一渠道名本。修改总名本时，保留期权侧已填值并重算孖展侧。单渠道超额、缺值或两项未配平均拦截确认和推送。二次确认同时展示客户总名本和两笔对冲名本。确认后按孖展对冲名本分流。孖展对冲名本为 0 时，按钮显示「推送建仓信息」，成功后按原指令生成一条孖展建仓信息，预填期权对冲名本并提供「查看建仓信息」入口。该笔业务跳过孖展交易台，后续在建仓信息录入、绑定期权子单或办理撤单和驳回。孖展对冲名本大于 0 时，按钮显示「推送交易平台」，由孖展交易员完成正股交易及交接后再生成孖展建仓信息。推送后指令金额只读，同一指令重复提交复用原记录。正式系统如何处理存量指令及已派单后的分配调整待确认。</p>
+<p><strong>交易弹窗的预交易名本。</strong> 孖展开仓取推送时确认的孖展对冲名本，保留原指令关联。客户总名本仍写入客户建仓信息。其他交易任务取本次任务已记录的正股交易名本，缺值时显示「—」。理论股数、待委托数量及 FIX 默认委托量沿用旧系统取值和口径。</p>
 <p>批量询价沿用客户询价入口，取消手选来源和来源孖展指令。无仓订单从存续期交易发起期权询价时，自动关联原期权订单。填写报价统一展示「询价要求」并取消询价来源列和筛选。普通询价展示要求正文，存续期询价在正文上方显示「存续期对冲 · 原订单号」，沿用内部报价的加点规则。</p>
 <p>期权建仓信息保留旧系统单列表、原列（含「接单券商」）、搜索及工具。存续期补做期权的记录可走统一列表或从原订单进入。弹窗同时展示「接单券商」和「孖展对冲」，期权交易员按实际交易填写。系统按有效分录识别对冲方式。两侧均空时，推送前须确认整单不对冲。已填写的分录须通过字段校验及名本配平。保存后按草稿回显，推送后只读。</p>
 <ul>
@@ -2141,15 +2146,15 @@ dialog.position-dialog { width:min(1480px,calc(100% - 32px)); }
 <li><strong>交易台按账户维护订单数据。</strong> 将「委托交易」下方的分账户表单改为同一张表，每个上手券商账户一行。人工补录保存成功或 FIX 委托提交成功后生成对应账户行，同账户多笔记录归到原行。仅有委托时显示「待成交」。出现有效成交后预填数值。成交股数、上手成交价和上手净价只读。孖展交易员可在行内编辑客户成交价及成交名本（万元），逐行自动计算及保存订单数据。</li>
 <li><strong>自动计算。</strong> 点击后按该账户当前有效成交重新计算。成交股数 = 有效成交股数之和。上手成交价 = 有效成交金额之和 ÷ 成交股数，保留四位小数。上手净价取现有上手净价口径，原型按逐笔已提供的净价做股数加权，数据不齐时显示横杠。原型以该账户的成交均价、成交金额（换算为万元）预填客户成交价和成交名义本金，交易员核对后可修改。客户侧自动计算及上手净价的正式取数口径待确认。自动计算更新当前组草稿，由交易员再次保存。已保存组收到新成交后，提示重新计算、核对及保存。</li>
 <li><strong>新成交提醒。</strong> 已计算的账户收到新成交后，订单数据表高亮「成交已更新」，表格上方及弹窗底部显示待重算账户数。点击「推送建仓信息」时，如仍有待重算账户，弹窗列出相关账户及重算前后的股数，默认聚焦「返回核对」。点击「确认重新计算」按最新成交重算待处理账户，更新该行草稿中的股数、价格及名本。交易员核对并逐行点击「保存订单数据」，再推送建仓信息。已重算但尚未保存时，推送操作提示需要保存的账户。</li>
-<li><strong>交易台推送。</strong> 正股成交任务须处理完在途 FIX 委托，并保存所有实际成交账户的最新数据。孖展开仓推送成功后仅生成孖展建仓信息，每个有成交的券商账户对应一条孖展分录，不向期权建仓信息自动回传。推送成功后任务更新为「已完成」。孖展开仓仅期权对冲时，若无正股成交且无在途委托，交易员可直接点「推送建仓信息」，确认后生成无孖展分录的建仓信息。重复提交按同一交易任务定位原建仓信息。</li>
+<li><strong>交易台推送。</strong> 孖展对冲名本大于 0 时，有正股实际成交、无在途 FIX 委托且已保存所有成交账户的最新数据后，点击「推送建仓信息」。推送成功后，生成一条孖展建仓信息，每个有成交的券商账户对应一条孖展分录，交易台任务更新为「已完成」。同一任务重复提交时定位原建仓信息。孖展对冲名本为 0 时，由建仓指令直接推送建仓信息，接单券商账户区显示「无需正股成交」，只维护期权对冲分录。</li>
 <li><strong>建仓信息列表。</strong> 沿用旧系统的主列、索引、查询及工具。新增记录优先，成交进度一格内区分期权及孖展成交名本。记录生成及保存草稿时维护分录，成功推送孖展订单时根据最终有效分录确定对冲方式。</li>
-<li><strong>建仓信息弹窗。</strong> 左侧保留客户条款和操作按钮，右侧依次显示行情、进度及操作记录、「接单券商账户」、「期权对冲」和成交话术。两张分录表左对齐。「接单券商账户」默认带入交易台推送的账户、成交股数和下单名本。推送孖展订单前可新增、修改或删除分录，账户可从【券商账户】选择，股数和下单名本可行内编辑。修改保存在建仓信息，交易台仍保留原始逐笔成交。</li>
-<li><strong>期权子单候选。</strong> 按「跨业务子单绑定」规则展示同标的、未到期且未被绑定的有效期权持仓子单。选中后回显券商账户、结构、期权费率、期初价、到期日和券商订单编号。无候选时提示「暂无可绑定的期权子单」，仍可填写归属名本，待成单后补绑。系统内渠道子单号与券商订单编号分别记录。</li>
-<li><strong>推送孖展订单。</strong> 根据实际填写的两类分录识别渠道。各渠道下单名本与最终客户名义本金按元配平。有交易台有效正股成交时，正股分录股数合计须等于有效成交股数，允许调整账户间的分配。差额不影响保存草稿。已填写的期权归属名本参与配平。两侧均空时需确认整单不对冲。推送成功后生成一张孖展主单和对应子单，正股按有效券商账户汇总股数和名本，期权按有效对冲分录生成。整单不对冲仅生成主单。</li>
+<li><strong>建仓信息弹窗。</strong> 左侧保留客户条款和操作按钮，右侧依次显示行情、进度及操作记录、「接单券商账户」、「期权对冲」和成交话术。两张分录表左对齐。有正股对冲时，「接单券商账户」默认带入交易台推送的账户、成交股数和下单名本。推送孖展订单前可新增、修改或删除正股分录，账户可从【券商账户】选择，股数和下单名本可行内编辑。修改保存在建仓信息，交易台仍保留原始逐笔成交。</li>
+<li><strong>期权子单候选。</strong> 建仓信息带入指令确认的期权对冲名本。非零时预填一笔归属名本，允许拆为多笔。按「跨业务子单绑定」规则展示同标的、未到期且未被绑定的有效期权持仓子单。选中后回显券商账户、结构、期权费率、期初价、到期日和券商订单编号。无候选时提示「暂无可绑定的期权子单」，仍可填写归属名本，待成单后补绑。系统内渠道子单号与券商订单编号分别记录。</li>
+<li><strong>推送孖展订单。</strong> 根据有效分录识别渠道。各渠道下单名本与最终客户名义本金按元配平。有建仓指令分配的记录，期权分录归属名本之和同时须等于指令确认的期权对冲名本，待补绑分录也计入校验。有交易台有效正股成交时，正股分录股数合计须等于有效成交股数，允许调整账户间的分配。差额可保存为草稿，推送时拦截。无指令分配记录的原建仓信息沿用整单不对冲的确认入口。推送成功后生成一张孖展主单和对应子单，正股按有效券商账户汇总股数和名本，期权按有效对冲分录生成。</li>
 <li><strong>孖展建仓信息修订后再次推送。</strong> 交易员保存修订后可主动再次推送，经确认同步已有孖展母单和建仓子单。有效的原分录沿用原子单编号，新分录延续该母单的最大已用序号。孖展子单已被期权子单绑定时，再次推送须保留该子单对应的正股账户分录，避免丢失对冲关联。对应母单只要已有行权或卖出生成的结果子单，再次推送即拦截，部分行权和部分卖出同样适用。界面提示具体原因，提交时重新检查，拦截时保留订单数据。保存建仓信息和同步订单分别执行，同一提交的重试去重。</li>
 <li><strong>成交进度。</strong> 正股按分录已分配名本汇总，期权按已关联渠道子单的分录归属名本汇总。两者合计除以最终客户名义本金。待补绑名本参与配平，关联前暂不计入成交进度。补绑后，孖展建仓信息回显已关联的渠道子单号。正股实际成交股数、金额和未完量沿用交易台数据，成交进度与推送资格分别校验。</li>
 </ul>
-<div class="prd-reader-table" role="region" aria-label="首版上线范围" tabindex="0"><table>
+<div class="prd-reader-table"  role="region" aria-label="首版上线范围" tabindex="0"><table>
 <thead>
 <tr>
 <th>环节</th>
@@ -2159,8 +2164,8 @@ dialog.position-dialog { width:min(1480px,calc(100% - 32px)); }
 </thead>
 <tbody><tr>
 <td>开仓</td>
-<td>财务线下分配，各业务独立执行，取消跨业务自动派单及成交回传。</td>
-<td><strong>中</strong>。两类建仓信息按统一条件选择对方业务的渠道子单并一对一关联，录入本客户归属。混合开仓须在订单推送前配平各渠道下单名本，渠道子单号可事后补绑。</td>
+<td>两类业务独立执行，跨业务安排仍由线下交接。</td>
+<td><strong>中</strong>。孖展建仓指令确认两类对冲名本。仅期权对冲直接推送孖展建仓信息，有正股对冲名本的指令经孖展交易台交接。两类建仓信息按统一条件关联对方业务的渠道子单并录入本客户归属。混合开仓须在订单推送前配平名本，渠道子单号可事后补绑。</td>
 </tr>
 <tr>
 <td>订单</td>
@@ -2175,7 +2180,7 @@ dialog.position-dialog { width:min(1480px,calc(100% - 32px)); }
 </tbody></table>
 </div>
 <h2 data-prd-group="首版上线" data-prd-outline id="launch-delta" tabindex="-1">较旧系统的变更</h2>
-<div class="prd-reader-table" role="region" aria-label="较旧系统的变更" tabindex="0"><table>
+<div class="prd-reader-table"  role="region" aria-label="较旧系统的变更" tabindex="0"><table>
 <thead>
 <tr>
 <th>页面</th>
@@ -2236,17 +2241,17 @@ dialog.position-dialog { width:min(1480px,calc(100% - 32px)); }
 <tr>
 <td>孖展交易台 · 账户数据与交接</td>
 <td>旧交易弹窗只有一组客户成交价、上手价、上手净价、成交股数及名本，已有保存、推送、撤单和驳回。</td>
-<td>按上手券商账户分行计算、维护并保存。新成交后提示重算及二次确认，推送前核对在途 FIX 和各账户最新数据。仅期权对冲允许零正股成交、无在途时确认交接。存续期成交归集后由交易员明确推送。存续期正股卖出推送前弹窗确认，可修改回写名本和期末价格。终止与来源联动，有成交或在途 FIX 时二次确认。</td>
+<td>按上手券商账户分行计算、维护并保存。新成交后提示重算及二次确认，推送前核对在途 FIX 和各账户最新数据。仅期权对冲从孖展建仓指令直接推送建仓信息，跳过交易台。存续期成交归集后由交易员明确推送。存续期正股卖出推送前弹窗确认，可修改回写名本和期末价格。终止与来源联动，有成交或在途 FIX 时二次确认。</td>
 </tr>
 <tr>
 <td>孖展建仓信息</td>
 <td>保留原列表工具、客户条款、接单券商三列和增删修改、保存与再次推送。</td>
-<td>接单券商按交易台的已保存账户预填。增加期权子单关联及双方成交名本，期权子单同样按同标的、未到期且未被绑定过滤。推送前增加渠道名本配平，有正股成交时继续校验股数。修订后允许同步原订单，母单一旦形成行权或卖出结果子单即拦截。</td>
+<td>接单券商按交易台的已保存账户预填，期权对冲带入指令确认的名本，可绑定同标的、未到期且未被绑定的期权子单。推送前校验渠道名本配平及期权侧与指令一致，有正股成交时继续校验股数。修订后允许同步原订单，母单一旦形成行权或卖出结果子单即拦截。</td>
 </tr>
 <tr>
 <td>孖展建仓指令</td>
-<td>原系统。</td>
-<td>无改动。</td>
+<td>原列表及双栏弹窗。原有客户条款、成交要求、指令文案、日志及确认、推送操作。</td>
+<td>在原弹窗新增独立的「对冲要求」区，集中录入孖展及期权两笔对冲名本。默认全额孖展对冲，按总名本联动和校验。确认及推送时显示分配。孖展名本为 0 时直接推送建仓信息，大于 0 时按孖展名本推送交易平台。</td>
 </tr>
 <tr>
 <td>孖展订单</td>
@@ -2347,18 +2352,18 @@ dialog.position-dialog { width:min(1480px,calc(100% - 32px)); }
 <td>取消从孖展指令带参询价和保存成交后自动回显原孖展建仓信息。</td>
 </tr>
 <tr>
-<td>3.2B 孖展侧 → 孖展建仓指令／孖展交易台</td>
-<td>建仓指令原处理角色、孖展交易员</td>
-<td>沿用原指令的「确认」和「推送交易平台」。孖展交易员核对无正股成交、无在途 FIX 委托，点击「推送建仓信息」并确认。</td>
-<td>生成无孖展分录的建仓信息，交易台任务已完成。</td>
-<td>孖展建仓指令沿用现有功能。交易台支持零正股成交时确认交接。</td>
+<td>3.2B 孖展侧 → 孖展建仓指令／孖展建仓信息</td>
+<td>建仓指令原处理角色</td>
+<td>指令填期权 500 万元、孖展 0 万元。确认指令后点击「推送建仓信息」并确认，再点「查看建仓信息」。</td>
+<td>直接生成一条孖展建仓信息，预填期权归属名本 500 万元。</td>
+<td>取消仅期权对冲的零名本交易任务及交易员交接。</td>
 </tr>
 <tr>
 <td>3.3 孖展侧 → 孖展建仓信息／推送孖展订单</td>
 <td>孖展交易员</td>
-<td>按原业务录入客户条款，在「期权对冲」表填写本客户下单名本，可选同标的、未到期且未被绑定的期权渠道子单。孖展分录留空。</td>
+<td>核对指令带入的 500 万元，选择同标的、未到期且未被绑定的期权子单。拆为多笔时保持期权归属名本合计 500 万元。</td>
 <td>生成一张孖展主单，每条有效期权对冲分录生成一条孖展子单，记录已关联渠道子单号或待补绑状态。</td>
-<td>弹窗同时显示两类分录，根据实际填写识别对冲。</td>
+<td>期权分录带入指令名本，推送校验期权侧合计。</td>
 </tr>
 <tr>
 <td>4.1 孖展开仓 · 混合对冲 → 线下交接</td>
@@ -2376,17 +2381,17 @@ dialog.position-dialog { width:min(1480px,calc(100% - 32px)); }
 </tr>
 <tr>
 <td>4.2B 孖展侧 → 孖展建仓指令／孖展交易台</td>
-<td>孖展交易员</td>
-<td>办理 300 万元正股买入，按券商账户核对自动计算结果并逐组点「保存订单数据」。在途委托全部结束后，点击「推送建仓信息」。</td>
-<td>生成一条孖展建仓信息及各账户对应的孖展分录。</td>
-<td>增加分账户自动计算和保存，明确交易员交接节点。</td>
+<td>建仓指令原处理角色、孖展交易员</td>
+<td>在 500 万元指令填期权 200 万元，孖展自动带出 300 万元。确认并推送后，交易员办理 300 万元正股买入，逐账户保存成交数据，处理完在途委托后推送建仓信息。</td>
+<td>交易台接收 300 万元正股名本。建仓信息保留 500 万元客户总名本和 200 万元期权对冲名本。</td>
+<td>新增指令名本联动和下游取值，保留分账户保存及交接。</td>
 </tr>
 <tr>
 <td>4.3 孖展侧 → 孖展建仓信息／推送孖展订单</td>
 <td>孖展交易员</td>
-<td>在「接单券商账户」核对交易台带入值，按需要增删分录或修改账户、成交股数和下单名本。在「期权对冲」填写渠道归属名本，选择同标的、未到期且未被绑定的期权子单，或在成单后补绑。</td>
-<td>股数、名本配平后生成一张 500 万元孖展主单。若正股分给两个账户、期权填写一笔分录，则按先正股后期权生成三条孖展子单。</td>
-<td>保留原接单券商维护，右侧增加期权子单绑定，订单子单按渠道名本初始化客户费用。</td>
+<td>核对接单券商账户分录和预填的期权归属名本，选择期权子单。期权归属名本合计须为指令确认的 200 万元，全部渠道名本须合计 500 万元。成单后可补绑。</td>
+<td>股数、名本通过校验后生成一张 500 万元孖展主单。若正股两个账户、期权一笔分录，按先正股后期权生成三条孖展子单。</td>
+<td>保留原接单券商维护，增加指令期权名本核对与期权子单绑定。</td>
 </tr>
 <tr>
 <td>5.1 首次绑定或事后补绑 → 期权订单</td>
@@ -2492,8 +2497,8 @@ dialog.position-dialog { width:min(1480px,calc(100% - 32px)); }
 <li><code>结算金额 = MAX(0, 本次确认名本 ÷ 主单期初价 × (确认期末价格 − 主单期初价))</code>，以元计并保留两位小数。期权存续期正股卖出（做 T）生成的结果子单，税金在回写时默认记为 0，实际结算等于结算金额。客户行权的税金按行权流程处理。</li>
 </ul>
 <p><strong>评审核对。</strong> 孖展渠道子单持有 100,000 股，期权持仓子单 <code>EX-STK-1</code> 归属 60,000 股、总名义本金 500 万元。计划卖出 20,000 股、对应 166.6667 万元，最终成交 15,000 股、均价 22 元。确认窗默认回写名本 125 万元、期末价 22 元。主单期初价为 20 元时，按默认值推送后原子单名本降至 375 万元，结算金额与实际结算均为 125,000 元。若确认名本改为 120 万元、期末价改为 21.5 元，原子单名本降至 380 万元，新结果子单按修改值记录，结算金额和实际结算均为 90,000 元。两种情况下税金均为 0，原期权子单剩 45,000 股，孖展渠道剩 85,000 股。核对返回取消、超额、在途委托拦截、重复提交和部分成交均按上述规则处理。</p>
-<p><strong>孖展建仓验收。</strong> <code>MG-OPT</code> 从孖展建仓指令推送到交易台，确认零正股成交后推送建仓信息，绑定 <code>EX-OPT-1</code>，推送孖展订单后生成一条孖展子单。混合对冲以客户 500 万元为例，期权分录 200 万元加孖展分录合计 300 万元可推送。核对同账户合并、两个账户独立保存、仅有 FIX 委托时不计成交、新成交后重新计算、推送后按账户回显股数。期权分录改为 199 或 201 万元时，检查差额拦截。两个正股账户加一笔期权分录推送后，核对三条连续编号、各子单按本渠道名本计算的保证金和支付金额、两种渠道编号及备注。编辑任一子单备注后核对母单及其他子单，重复推送核对子单条数。存量建仓信息保留原记录，历史是否补录账户订单数据待确认。</p>
-<p><strong>交易台列表验收。</strong> 对照旧系统，核对列表仅新增「交易动作」和「合约类型」两列，其余列及查询、排序分页、状态、进度和操作沿用原样。开仓买入任务的合约类型显示「孖展合约」。验证孖展建仓指令可正常推送交易台，期权建仓指令只推送期权建仓信息，常规期权存续期正股任务及原有行权卖出沿用各自流程。</p>
+<p><strong>孖展建仓验收。</strong> 核对默认全额孖展、修改任意一侧自动配平、超额或缺值拦截、确认面板内三笔金额正确。用 <code>MG-500</code> 验证客户总名本 500 万元、期权 200 万元、孖展 300 万元。交易台须显示预交易名本 300 万元，建仓信息须保留客户 500 万元并预填期权 200 万元。用 <code>MG-OPT</code> 验证孖展名本为 0 时，指令直接生成一条建仓信息并预填期权名本，交易台查不到此指令的开仓任务。重复提交复用原建仓信息，绑定 <code>EX-OPT-1</code> 后生成一条孖展子单。核对同账户合并、两个账户独立保存、仅有 FIX 委托时不计成交、新成交后重新计算和股数回显。期权归属名本为 199 或 201 万元时须拦截，即使调整正股分录令两边合计仍为 500 万元。两个正股账户加一笔期权分录推送后，核对三条连续编号及各子单按本渠道名本计算的费用。存量建仓信息保留原记录，历史是否补录账户订单数据待确认。</p>
+<p><strong>交易台列表验收。</strong> 对照旧系统，核对列表仅新增「交易动作」和「合约类型」两列，其余列及查询、排序分页、状态、进度和操作沿用原样。开仓买入任务的合约类型显示「孖展合约」。验证有正股名本的孖展建仓指令正常推送交易台，孖展仅期权对冲跳过交易台。期权建仓指令只推送期权建仓信息。常规期权存续期正股任务及原有行权卖出沿用各自流程。</p>
 <p><strong>建仓信息验收。</strong> 期权列表设定交易起始日范围后，核对索引包含全部分页。切索引局部状态时列表行和勾选保持原样。默认日期样例应为两项自动生成、两项休市待配置、三项日历未覆盖。部分保存后只更新有效项目，休市原候选日仍可查。孖展建仓信息首次推送，修订后再次推送并核对沿用原母单及相应子单号。分别用已有部分行权结果、已有部分卖出结果的母单验证拦截，订单数据保留。</p>
 <p><strong>跨业务绑定验收。</strong> 两个方向分别用不同客户的同标的未到期子单测试。不同标的、已到期、已绑定均不出现在候选中。验证同弹窗重复选择被拦截、两个草稿拟选同一渠道时只有先推送者可绑定，以及订单补绑应用相同校验。孖展再次推送时核对原期权关联及子单编号保留。</p>
 <p><strong>待确认。</strong> 存量订单的渠道关联及归属字段是否需要集中补录、哪些订单需要补录，以及已有的一对多关联如何处理，由业务确认。当前评审使用样例数据。</p>
@@ -4045,12 +4050,12 @@ dialog.position-dialog { width:min(1480px,calc(100% - 32px)); }
       const readerLink = (id, label) => `<a href="#${id}" data-prd-target="${id}" aria-haspopup="dialog">${label}</a>`;
       const fullPrd = `<p><button type="button" class="button prd-entry" data-prd-target="launch-scope" aria-haspopup="dialog">${I('FileText')}阅读完整 PRD</button></p>`;
       const launchNotes={
-        'tasks':['孖展交易台','列表仅新增「交易动作」和「合约类型」两列，其余沿用旧系统。「开仓买入」只接收孖展建仓指令，合约类型为「孖展合约」。常规期权开仓在期权建仓信息绑定孖展子单，不生成交易台开仓任务。开仓买入按券商账户计算并保存订单数据。有新成交待重算时，点击「推送建仓信息」先弹出重算确认。核对并保存最新数据后再推送。对冲卖出沿用原归属和可卖股数限额。'],
+        'tasks':['孖展交易台','列表仅新增「交易动作」和「合约类型」两列，其余沿用旧系统。「开仓买入」只接收有正股对冲名本的孖展建仓指令，合约类型为「孖展合约」。常规期权开仓在期权建仓信息绑定孖展子单，不生成交易台开仓任务。开仓买入按券商账户计算并保存订单数据。有新成交待重算时，点击「推送建仓信息」先弹出重算确认。核对并保存最新数据后再推送。对冲卖出沿用原归属和可卖股数限额。'],
         'create':['期权建仓指令','财务线下通知各渠道名本。沿用现有客户确认、财务确认和建仓信息推送。'],
-        'margin-instructions':['孖展建仓指令','沿用现有列表、弹窗和操作流程。客户确认后，按原操作推送交易平台。'],
+        'margin-instructions':['孖展建仓指令','在独立的「对冲要求」区录入孖展与期权对冲名本，合计须等于客户总名义本金。确认后，孖展对冲名本为 0 时直接推送建仓信息，大于 0 时按孖展名本推送交易平台。'],
         'option-building':['期权建仓信息','日期匹配配置和索引位于建仓信息列表上方。索引统计当前筛选下的全部记录。弹窗同时展示接单券商和孖展对冲，接单券商的结构下拉读取已保存的结构配置。已填写的渠道名本配平后可推送。'],
         'structure-config':['结构配置','维护结构名称、行权价、参与率和备注。期权建仓信息打开时读取已保存的结构作为接单券商分录的候选，已保存的业务分录按原值回显。批量询价中的「结构」选项也读取「结构配置」中已保存的配置。'],
-        'margin-building':['孖展建仓信息','券商账户及成交股数取交易台已推送的账户数据。各渠道名本配平后可推送孖展订单。保存修订后可再次推送，母单已有行权或卖出结果子单时停止同步。'],
+        'margin-building':['孖展建仓信息','仅期权对冲由孖展建仓指令直接生成。存在孖展对冲时，券商账户及成交股数取交易台推送的账户数据。期权归属名本取指令确认值。推送孖展订单前校验期权分录合计及全部渠道名本配平。保存修订后可再次推送，母单已有行权或卖出结果子单时停止同步。'],
         'option-orders':['期权订单','已到期页按到期子单平铺，可独立查询。存续期卖出推送后生成结果子单，并扣减原持仓名本和股数。'],
         'margin-orders':['孖展订单','推送孖展订单成功后，按正股账户和期权对冲分录生成子单，先正股、后期权，编号从母单号后缀 -1 起。保证金和支付金额按各渠道的下单名本计算。子单备注默认取母单备注，可独立编辑。正股卖出确认后，更新对应孖展子单的持仓和卖出回报。'],
         'hx-instruction':['行权指令','本页为前版行权流程演示。'],
@@ -7806,9 +7811,11 @@ dialog.position-dialog { width:min(1480px,calc(100% - 32px)); }
       const selling=t.purpose!=='建仓',direction=selling?'卖出':'买入',budget=deskAmount(t);
       const summary=stockSummary(t),clientLocked=(!selling&&!!(t.contract||t.stockOpeningHandoff))||t.sync==='结果待核对',stopped=stockTaskStopped(t),locked=clientLocked||stopped,orders=t.orders||[],pending=orders.filter(stockOrderPending),cancelled=orders.filter(o=>o.status==='已撤单');
       const marginOpening=!!t.marginParent&&!selling;
+      const zeroStock=marginOpening&&budget===0;
+      const tradingLocked=locked||zeroStock;
       const openingHandoff=stockOpeningUsesAccounts(t);
       const handedOff=t.stockOpeningHandoff||t.contract;
-      const handoffStatus=openingHandoff&&(handedOff?'已完成':pending.length?'有在途委托':summary.qty>0?'成交待推送':'未成交');
+      const handoffStatus=openingHandoff&&(handedOff?'已完成':pending.length?'有在途委托':summary.qty>0?'成交待推送':zeroStock?'无需正股买入':'未成交');
       const canPush=openingHandoff&&!handedOff&&!locked&&state.role==='execution'&&state.read==='normal'&&(marginOpening||summary.qty>0)&&!pending.length;
       const handoffButton=openingHandoff&&!handedOff?action(marginOpening?'push-margin-opening':'push-opening-stock','推送建仓信息','Send',`data-id="${esc(t.id)}" ${canPush?'':'disabled'}`,'button primary'):'';
       const pendingQty=pending.reduce((sum,o)=>sum+stockOrderRemainder(t,o),0),cancelledQty=cancelled.reduce((sum,o)=>sum+stockOrderRemainder(t,o),0);
@@ -7826,14 +7833,14 @@ dialog.position-dialog { width:min(1480px,calc(100% - 32px)); }
       modal('正股交易平台 · '+t.instruction,orderContext(t,'正股对冲')+`<div class="order-layout"><div><div class="buy-label">${direction}</div>
         <section class="section-block"><div class="form-grid">${field('orderId','订单编号',t.id,'readonly')}${field('stockName','标的名称',t.stock,'readonly')}${field('stockCode','标的代码',t.code,'readonly')}${field('pretrade','本次预交易名本（万元）',budget==null?'—':fmt(budget/10000,4),'readonly')}${field('pending','在途股数',fmt(pendingQty),'readonly')}${field('remaining','待委托股数',quantityText,'readonly')}</div></section>
         ${stockCommands(t,locked)}
-        <section class="section-block"><h3 class="section-title">委托交易</h3><form id="stock-order-form" data-locked="${locked}" novalidate><div class="form-grid">${selectField('direction','交易方向',[direction],direction)}${field('hedgeRatio','对冲率（%）',t.hedgeRatio??100,'type="number" min="0.01" step="0.01" required')}${accountField}${field('qty','委托数量（股）',available??'','type="number" min="1" step="1" required')}${stockPriceFields()}</div><div class="mini-actions">${action('submit-stock-order','提交','Send',`data-id="${t.id}" ${locked?'disabled':''}`,'button primary')}</div></form></section>
+        <section class="section-block"><h3 class="section-title">委托交易</h3><form id="stock-order-form" data-locked="${tradingLocked}" novalidate><div class="form-grid">${selectField('direction','交易方向',[direction],direction)}${field('hedgeRatio','对冲率（%）',t.hedgeRatio??100,'type="number" min="0.01" step="0.01" required')}${accountField}${field('qty','委托数量（股）',available??'','type="number" min="1" step="1" required')}${stockPriceFields()}</div><div class="mini-actions">${action('submit-stock-order','提交','Send',`data-id="${t.id}" ${tradingLocked?'disabled':''}`,'button primary')}</div></form></section>
         ${openingHandoff?marginAccountOrders(t,locked):''}</div><div>${holdingTable('客户持仓情况',true)}${selling?'<section class="section-block"><h3 class="section-title">原对冲持仓</h3>'+hedgePositionTable(getContract(t.contract))+'</section>':holdingTable('订单持仓情况',false)}
-        <section class="section-block" id="stock-manual-trades"><h3 class="section-title"><span>人工录单</span>${action('stock-record','录单','Plus',locked?'disabled':'','button small')}</h3><div id="stock-manual-entry" class="manual-entry" hidden><form id="stock-fill-form" novalidate><div class="form-grid">${manualStockFields(direction)}</div><div class="mini-actions">${action('save-stock-fill','保存实际成交','Save',`data-id="${t.id}"`,'button primary')}</div></form></div>${manualStockTable(t.fills.filter(f=>f.source==='manual'),direction)}</section>
+        <section class="section-block" id="stock-manual-trades"><h3 class="section-title"><span>人工录单</span>${action('stock-record','录单','Plus',tradingLocked?'disabled':'','button small')}</h3><div id="stock-manual-entry" class="manual-entry" hidden><form id="stock-fill-form" novalidate><div class="form-grid">${manualStockFields(direction)}</div><div class="mini-actions">${action('save-stock-fill','保存实际成交','Save',`data-id="${t.id}"`,'button primary')}</div></form></div>${manualStockTable(t.fills.filter(f=>f.source==='manual'),direction)}</section>
         <section class="section-block"><h3 class="section-title">成交汇总</h3><div class="table-wrap"><table class="data-table"><thead><tr><th>状态</th><th class="numeric">股数</th><th class="numeric">实际成交金额（元）</th></tr></thead><tbody><tr><td>委托中</td><td class="numeric">${fmt(pendingQty)}</td><td class="numeric">未成交</td></tr><tr><td>已成交</td><td class="numeric">${fmt(summary.qty)}</td><td class="numeric">${fmt(summary.amount,2)}</td></tr><tr><td>已撤单</td><td class="numeric">${fmt(cancelledQty)}</td><td class="numeric">不计入成交</td></tr></tbody></table></div></section>
         <section class="section-block"><h3 class="section-title"><span>成交进度</span><small>${budget?'累计成交市值 ÷ 本次预交易名本 = '+fmt(summary.amount/budget*100,2)+'%':'未取得预交易名本'}</small></h3><div class="table-wrap"><table class="data-table"><thead><tr><th>操作</th><th>订单状态</th><th>方向</th><th>委托情况</th><th>成交情况</th><th>上手账户</th></tr></thead><tbody>${orderRows||'<tr><td colspan="6" class="muted">暂无委托记录</td></tr>'}</tbody></table></div></section>
         </div></div>`,`<span class="footer-state">${stopped?badge(sourceStopStatus(t),'red'):handoffStatus?badge(handoffStatus,handoffStatus==='已完成'?'green':''):''}${!marginOpening||handedOff?action(selling?'customer-exercise-info':'building',selling?'查看行权信息':'查看建仓信息','',`data-id="${esc(t.id)}"`):''}<span id="stock-account-footer">${openingHandoff&&!locked?marginAccountFooter(t):''}</span></span>${action('close-dialog','关闭')}${handoffButton}${!selling&&t.source==='margin'&&!marginOpening?action('next-building','回填孖展仓位','ArrowRight',`data-id="${t.id}" ${summary.qty<=0||stopped?'disabled':''}`,'button primary'):''}`,'work-dialog','stock');
       updateStockOrderFields();
-      if(locked)document.querySelectorAll('#stock-order-form input,#stock-order-form select,#stock-fill-form input,#stock-fill-form select,#stock-fill-form button').forEach(input=>input.disabled=true);
+      if(tradingLocked)document.querySelectorAll('#stock-order-form input,#stock-order-form select,#stock-fill-form input,#stock-fill-form select,#stock-fill-form button').forEach(input=>input.disabled=true);
     }
     function refreshStock(t,completed){
       const dirty=new Set(state.stockDirty||[]);dirty.delete(completed);
@@ -8279,7 +8286,7 @@ dialog.position-dialog { width:min(1480px,calc(100% - 32px)); }
       Object.assign(mixed.terms,{principal:'500'});mixed.saved=structuredClone(mixed.terms);
       const optionOnly=structuredClone(first),channel=getContract('EX-OPT');
       Object.assign(optionOnly.source,{id:'DEMO-Q-MG-OPT',instruction:'MG-OPT',stock:channel.stock,code:channel.code,principal:'500万元'});
-      optionOnly.terms.principal='500';
+      Object.assign(optionOnly.terms,{principal:'500',stockHedgeWan:'0',optionHedgeWan:'500'});
       optionOnly.saved=structuredClone(optionOnly.terms);
       return [mixed,first,second,optionOnly];
     }
@@ -8288,16 +8295,25 @@ dialog.position-dialog { width:min(1480px,calc(100% - 32px)); }
     function tradeSource(id){
       return getContract(id)||state.tasks.find(t=>t.marginOpening&&t.marginContext?.id===id)?.marginContext;
     }
+    const marginInstructionStockWan=terms=>Number(terms.stockHedgeWan??terms.principal);
     function dispatchMargin(m){
       if(m.task)return m.task;
-      const id=quoteInstructionTask(m.source,m.saved,'stock',m.source.instruction),t=getTask(id);
+      const stockNominal=marginInstructionStockWan(m.saved)*10000;
+      const optionNominal=Number(m.saved.optionHedgeWan??0)*10000;
+      const id=quoteInstructionTask(m.source,m.saved,stockNominal?'stock':'discount',m.source.instruction),t=getTask(id);
       t.marginOpening=true;
-      t.plan=[{way:'stock',amount:t.nominal}];
+      t.hedgeAllocation={stockNominal,optionNominal};
+      t.plan=stockNominal?[{way:'stock',amount:stockNominal}]:[];
       t.launch={rows:[]};
       t.buildingRecord.orderSource=m.source.orderSource||'tongdao';
       t.marketQuote=marginQuotes[t.code];
       t.customerTerms.instant=Number(m.saved.instant);
-      const leg={...structuredClone(t),id:`${id}-stock`,marginOpening:false,marginParent:id,plan:undefined};
+      if(stockNominal===0){
+        createMarginBuildingRecord(t,lifeNow(),'示例操作员');
+        return id;
+      }
+      const leg={...structuredClone(t),id:`${id}-stock`,marginOpening:false,marginParent:id,plan:undefined,
+        nominal:stockNominal,instructionNominal:stockNominal,stockBudget:stockNominal};
       t.stockLegId=leg.id;
       state.tasks.push(leg);
       return id;
@@ -8310,11 +8326,16 @@ dialog.position-dialog { width:min(1480px,calc(100% - 32px)); }
       t.stockAllocations=accounts.map(row=>({...row,nominal:row.customerNominal}));
       if(!accounts.length)t.plan=[];
       if(accounts.length===1)t.customerTerms.initial=accounts[0].customerPrice;
-      const sequence=1+Math.max(0,...state.tasks.filter(row=>row.marginOpening).map(row=>Number(row.buildingRecord.seq)||0));
-      Object.assign(t.buildingRecord,{seq:String(sequence).padStart(3,'0'),confirmedAt:stock.stockOpeningHandoff.at});
-      t.createdOrder=++recordSequence;
-      recordBusinessEvent(t,'建立建仓信息','孖展交易员');
+      createMarginBuildingRecord(t,stock.stockOpeningHandoff.at,'孖展交易员');
       recordBusinessEvent(stock,'推送建仓信息','孖展交易员');
+    }
+    function createMarginBuildingRecord(t,at,actor){
+      if(t.buildingRecord.confirmedAt)return;
+      if(t.hedgeAllocation?.optionNominal&&!t.launch.rows.length)t.launch.rows=[{nominal:t.hedgeAllocation.optionNominal}];
+      const sequence=1+Math.max(0,...state.tasks.filter(row=>row.marginOpening).map(row=>Number(row.buildingRecord.seq)||0));
+      Object.assign(t.buildingRecord,{seq:String(sequence).padStart(3,'0'),confirmedAt:at});
+      t.createdOrder=++recordSequence;
+      recordBusinessEvent(t,'建立建仓信息',actor);
     }
     function marginStockExecution(t){
       const shares=stockSummary(t).qty;
@@ -8358,6 +8379,9 @@ dialog.position-dialog { width:min(1480px,calc(100% - 32px)); }
       const stockNominal=allocated.reduce((sum,row)=>sum+row.nominal,0);
       const optionNominal=rows.filter(row=>row.way!=='stock').reduce((sum,row)=>sum+row.ordered,0);
       const linkedNominal=(t.launch?.rows??[]).reduce((sum,row)=>sum+row.nominal,0);
+      if(t.hedgeAllocation&&linkedNominal!==t.hedgeAllocation.optionNominal){
+        return `期权归属名本合计 ${optionWan(linkedNominal)}，须等于建仓指令确认的期权对冲名本 ${optionWan(t.hedgeAllocation.optionNominal)}。`;
+      }
       const sum=stockNominal+optionNominal+linkedNominal,diff=sum-t.nominal;
       if((allocated.length||optionNominal||linkedNominal)&&diff)return `渠道下单名本合计 ${optionWan(sum)}，较客户名本${diff>0?'多':'少'} ${optionWan(Math.abs(diff))}。`;
       return '';
@@ -8403,19 +8427,20 @@ dialog.position-dialog { width:min(1480px,calc(100% - 32px)); }
     }
     function marginChannelPanel(t,locked){
       const stock=getTask(t.stockLegId??null),allocations=stockAllocations(t),rows=t.launch?.rows??[];
+      const stockLocked=locked||t.hedgeAllocation?.stockNominal===0&&!stock;
       const totals=stock?.stockOpeningHandoff&&stockSummary(stock.stockOpeningHandoff);
-      const stockHeaders=['券商账户名称','成交股数','下单名本（万元）',...(locked?[]:['操作'])];
-      return `<section class="mg-panel mg-channel" id="mg-stock-entries"><div class="mg-panel-title"><h3>接单券商账户</h3>${locked?'':`<button type="button" class="button small mg-add" data-mg-stock-add>${I('Plus')}增加</button>`}</div>
+      const stockHeaders=['券商账户名称','成交股数','下单名本（万元）',...(stockLocked?[]:['操作'])];
+      return `<section class="mg-panel mg-channel" id="mg-stock-entries"><div class="mg-panel-title"><h3>接单券商账户</h3>${stockLocked?'':`<button type="button" class="button small mg-add" data-mg-stock-add>${I('Plus')}增加</button>`}</div>
           <div class="table-wrap" role="region" aria-label="孖展对冲分录" tabindex="0">
           <table class="data-table mg-alloc mg-stock-alloc" aria-label="孖展对冲"><colgroup>${stockHeaders.map(()=>'<col>').join('')}</colgroup><thead><tr>${stockHeaders.map(label=>`<th scope="col">${label}</th>`).join('')}</tr></thead><tbody id="mg-allocations">
-            ${allocations.map(row=>marginStockRow(row,locked)).join('')}<tr class="mg-stock-empty"><td colspan="${stockHeaders.length}">暂无正股成交</td></tr>
+            ${allocations.map(row=>marginStockRow(row,stockLocked)).join('')}<tr class="mg-stock-empty"><td colspan="${stockHeaders.length}">${t.hedgeAllocation?.stockNominal===0&&!stock?'无需正股成交':'暂无正股成交'}</td></tr>
           </tbody></table></div>
           <p class="mg-total" id="mg-stock-share-total" aria-live="polite" ${!allocations.length&&!totals?.qty?'hidden':''}><span>已分配 <b id="mg-assigned-shares"></b> / 有效成交 ${totals?.qty?fmt(totals.qty):'—'} 股</span></p>
         </section>
         <section class="mg-panel mg-channel" id="mg-option-entries" data-launch-source="margin">
           <div class="mg-panel-title"><h3>期权对冲</h3>${locked?'':`<button type="button" class="button small mg-add" data-launch-add>${I('Plus')}增加</button>`}</div>
           ${optionChannelTable(launchChannels(t),rows.length||locked?rows:[{}],locked,true,t)}
-          <p class="mg-total" aria-live="polite"><span>孖展下单名本 <b id="mg-stock-total"></b></span><span>期权下单名本 <b id="mg-option-total"></b></span>
+          <p class="mg-total" aria-live="polite">${t.hedgeAllocation?`<span>指令期权对冲名本 <b>${optionWan(t.hedgeAllocation.optionNominal)}</b></span>`:''}<span>孖展下单名本 <b id="mg-stock-total"></b></span><span>期权下单名本 <b id="mg-option-total"></b></span>
             <span>渠道下单名本合计 <b id="mg-total"></b></span><output id="mg-balance"></output></p>
         </section>`;
     }
@@ -8426,7 +8451,7 @@ dialog.position-dialog { width:min(1480px,calc(100% - 32px)); }
       optionTask.launch={mode:'mixed',rows:[{nominal:3000000}]};
       optionTask.customerTerms.initial=20;
       optionTask.fills.push({id:'DEMO-23-F1',broker:'示例券商甲',account:'示例券商甲 · A001',qty:2000000,price:20,rate:4,structure:'100% Call'});
-      const m=initialMarginInstruction();m.terms.principal='500';m.saved=structuredClone(m.terms);
+      const m=initialMarginInstruction();Object.assign(m.terms,{principal:'500',stockHedgeWan:'300',optionHedgeWan:'200'});m.saved=structuredClone(m.terms);
       Object.assign(m.source,{instruction:'DEMO-43',stock:source.stock,code:source.code,orderSource:'manual'});
       const t=getTask(dispatchMargin(m)),stock=getTask(t.stockLegId);
       t.customerTerms.initial=20;t.launch={rows:[{nominal:2000000}]};
@@ -8903,22 +8928,41 @@ dialog.position-dialog { width:min(1480px,calc(100% - 32px)); }
     }
     function marginInstructionError(text){
       marginInstruction.message=text;
-      const box=$('mi-feedback');if(box){box.textContent=text;box.hidden=false;box.focus()}
+      const box=$('mi-feedback');
+      if(!box)return;
+      box.textContent=text;
+      box.hidden=!text;
+      if(text)box.focus();
     }
     const marginInstructionPayment=t=>t.principal===''?'—':fmt(Number(t.principal)*(Number(t.margin)+Number(t.instant)+Number(t.subscription))/100,2);
+    const marginInstructionWan=value=>/^\d+$/.test(value)&&Number.isSafeInteger(Number(value)*10000);
+    function updateMarginInstructionAllocation(terms,key){
+      const anchor=key==='stockHedgeWan'?'stockHedgeWan':'optionHedgeWan';
+      const remainder=anchor==='stockHedgeWan'?'optionHedgeWan':'stockHedgeWan';
+      const valid=marginInstructionWan(terms.principal)&&marginInstructionWan(terms[anchor]);
+      const difference=Number(terms.principal)-Number(terms[anchor]);
+      terms[remainder]=valid&&difference>=0?String(difference):'';
+    }
     function renderMarginInstruction(){
       const m=marginInstruction,s=m.source,t=m.terms,locked=marginInstructionLocked(m),canConfirm=marginInstructionCanConfirm(m);
+      for(const terms of [t,m.saved]){
+        terms.stockHedgeWan??=terms.principal;
+        terms.optionHedgeWan??='0';
+      }
       const readonly=locked||(!canConfirm&&!m.editing);
+      const direct=marginInstructionStockWan(m.saved)===0;
       let commands='';
       if(!locked){
-        if(m.editing)commands=action('mi-save','保存改单','Save','','button primary')+action('mi-amend-back','取消改单');
+        if(direct&&m.task)commands=action('mi-view-building','查看建仓信息','FileText','','button primary');
+        else if(m.editing)commands=action('mi-save','保存改单','Save','','button primary')+action('mi-amend-back','取消改单');
         else if(canConfirm)commands=action('mi-save','保存','Save')+action('mi-confirm','确认','CircleCheck','','button primary');
         else commands=action('mi-amend','改单','Pencil');
-        if(m.status==='confirmed_unpushed'&&!m.editing)commands+=action('mi-push','推送交易平台','Send','','button primary');
+        if(m.status==='confirmed_unpushed'&&!m.editing)commands+=action('mi-push',direct?'推送建仓信息':'推送交易平台','Send','','button primary');
         if(!m.editing&&!m.task)commands+=action('mi-reject','驳回','CornerUpLeft','','button warning');
-        if(!m.editing)commands+=action('mi-cancel','撤单','X','','button danger');
+        if(!m.editing&&!(direct&&m.task))commands+=action('mi-cancel','撤单','X','','button danger');
       }
-      const miField=(key,label,opts={})=>`<label class="field"><span>${label}${opts.theory?`<small class="mi-theory">理论值：${opts.theory}</small>`:''}</span><input data-mi-field="${key}" ${key==='client'&&!readonly?'list="mi-customers"':''} value="${esc(t[key])}" ${opts.readonly||readonly?'readonly':''} ${opts.numeric?'type="number" step="0.01" min="0"':''}></label>`;
+      const miField=(key,label,opts={})=>`<label class="field"><span>${label}${opts.theory?`<small class="mi-theory">理论值：${opts.theory}</small>`:''}</span><input data-mi-field="${key}" ${key==='client'&&!readonly?'list="mi-customers"':''} value="${esc(t[key])}" ${opts.readonly||readonly?'readonly':''} ${opts.numeric?`type="number" step="${opts.step??'0.01'}" min="0"`:''}></label>`;
+      const allocationField=(key,label)=>miField(key,label,{numeric:true,step:1,readonly:!!m.task});
       const base=(label,value)=>`<label class="field"><span>${label}</span><textarea readonly rows="1">${esc(value)}</textarea></label>`;
       const deal=t.deal;
       const dealForm=`<fieldset class="mi-deal" ${readonly?'disabled':''}><legend>成交要求</legend><div class="pi-segment">${[['market','市价'],['limit','限价'],['average','均价'],['custom','自定义']].map(([value,label])=>`<label><input type="radio" name="mi-deal-mode" data-mi-deal="mode" value="${value}" ${deal.mode===value?'checked':''}><span>${label}</span></label>`).join('')}</div>
@@ -8934,8 +8978,17 @@ dialog.position-dialog { width:min(1480px,calc(100% - 32px)); }
         <h3 class="mi-title">建仓指令 ${esc(s.instruction)} ${esc(s.stock)} ${esc(s.code)} ${esc(s.structure)} ${esc(s.cycle)} ${esc(t.principal)}万元 ${esc(t.group)} ${esc(t.client)}</h3>
         <p id="mi-feedback" class="feedback error" role="alert" tabindex="-1" ${m.message?'':'hidden'}>${esc(m.message)}</p>
         <div class="mi-grid mi-base">${base('建仓日期',s.opened)}${base('标的名称',s.stock)}${base('标的代码',s.code)}${base('结构',s.structure)}${base('周期',s.cycle)}${base('最快行权日',s.fastest)}${base('分红情况',s.dividend)}${base('追保要求',s.marginCall)}${base('强制平仓条件',s.liquidation)}</div>
+        <section class="mi-hedge" aria-labelledby="mi-hedge-title">
+          <h3 class="mi-section-title" id="mi-hedge-title">对冲要求</h3>
+          <div class="mi-grid mi-hedge-fields">
+            ${allocationField('stockHedgeWan','孖展对冲名本（万元）')}
+            ${allocationField('optionHedgeWan','期权对冲名本（万元）')}
+          </div>
+        </section>
         <h3 class="mi-section-title">可编辑信息</h3>
-        <div class="mi-grid">${miField('share','分成比例（%）',{numeric:true,theory:'70.00%'})}${miField('margin','初始保证金率（%）',{readonly:true})}${miField('instant','本次成交即刻追保（%）',{numeric:true})}${miField('principal','名义本金（万元）',{numeric:true})}${miField('subscription','认购费率（%）',{numeric:true,theory:'1.80%'})}${miField('extension','展期费率（%/月）',{numeric:true,theory:'1.20%'})}
+        <div class="mi-grid">${miField('share','分成比例（%）',{numeric:true,theory:'70.00%'})}${miField('margin','初始保证金率（%）',{readonly:true})}${miField('instant','本次成交即刻追保（%）',{numeric:true})}
+        ${allocationField('principal','名义本金（万元）')}
+        ${miField('subscription','认购费率（%）',{numeric:true,theory:'1.80%'})}${miField('extension','展期费率（%/月）',{numeric:true,theory:'1.20%'})}
         <label class="field"><span>合计支付（万元）</span><input id="mi-total" readonly value="${marginInstructionPayment(t)}"></label><div class="mi-deal-wide">${dealForm}<p class="mi-quote" aria-label="标的行情">${quoteLine}</p></div></div>
         <div class="mi-client-grid">${miField('client','客户姓名')}${miField('group','群编号')}<small>管理员：${esc(s.groupOwner)}</small></div>${readonly?'':`<datalist id="mi-customers">${[...new Set(marginInstructions.map(row=>row.source.client))].map(name=>`<option value="${esc(name)}"></option>`).join('')}</datalist>`}
         <div class="mi-actions">${commands}</div>
@@ -8962,7 +9015,13 @@ dialog.position-dialog { width:min(1480px,calc(100% - 32px)); }
     function validateMarginInstruction(complete){
       const {terms:t,source}=marginInstruction;
       if(complete&&(!t.client.trim()||!t.group.trim()))return '请填写客户姓名和群编号。';
-      if((complete||t.principal!=='')&&(!/^\d+$/.test(t.principal)||Number(t.principal)<=0))return '名义本金按万元填写正整数。';
+      if((complete||t.principal!=='')&&(!marginInstructionWan(t.principal)||Number(t.principal)<=0))return '名义本金按万元填写正整数。';
+      if(complete){
+        const splits=[t.stockHedgeWan,t.optionHedgeWan];
+        if(splits.some(value=>Number(value)>Number(t.principal)))return '单个渠道的对冲名本不能超过总名义本金。';
+        if(!splits.every(marginInstructionWan))return '两项对冲名本均须填写非负整数（万元）。';
+        if(splits.reduce((total,value)=>total+Number(value),0)!==Number(t.principal))return '孖展对冲名本和期权对冲名本之和须等于总名义本金。';
+      }
       if(complete&&(t.share===''||t.subscription===''))return '请填写分成比例和认购费率。';
       if(['share','instant','subscription','extension'].some(key=>t[key]!==''&&(!Number.isFinite(Number(t[key]))||Number(t[key])<0))||Number(t.share)>100)return '请填写有效的比例和费率。';
       if(t.deal.mode==='limit'&&(complete||t.deal.limit!=='')){
@@ -8976,6 +9035,12 @@ dialog.position-dialog { width:min(1480px,calc(100% - 32px)); }
     }
     async function marginInstructionAction(key,el){
       const m=marginInstruction;
+      const direct=marginInstructionStockWan(m.saved)===0;
+      if(key==='mi-view-building'){
+        const building=getTask(m.task??null);
+        if(building?.buildingRecord.confirmedAt)openMarginAggregate(building);
+        return;
+      }
       if(key==='mi-template'){m.template=el.dataset.template;renderMarginInstruction();return}
       if(key==='mi-copy'||key==='mi-copy-amendments'){
         const copyingInstruction=key==='mi-copy';
@@ -8988,6 +9053,7 @@ dialog.position-dialog { width:min(1480px,calc(100% - 32px)); }
         return;
       }
       if(marginInstructionLocked(m))return;
+      if(direct&&m.task)return;
       if(key==='mi-amend'){m.editing=true;renderMarginInstruction();return}
       if(key==='mi-amend-back'){m.terms=structuredClone(m.saved);m.editing=false;m.message='';renderMarginInstruction();return}
       const operation={'mi-save':'save','mi-confirm':'confirm','mi-push':'push','mi-cancel':'cancel','mi-reject':'reject'}[key];
@@ -8995,18 +9061,22 @@ dialog.position-dialog { width:min(1480px,calc(100% - 32px)); }
       if(operation==='push'&&(m.status!=='confirmed_unpushed'||m.editing||m.task))return;
       if(operation==='confirm'&&!marginInstructionCanConfirm(m))return;
       if(operation==='reject'&&m.task)return;
-      if(operation==='save'||operation==='confirm'){
-        const issue=validateMarginInstruction(operation==='confirm'||m.editing);
+      if(['save','confirm','push'].includes(operation)){
+        const issue=validateMarginInstruction(operation!=='save'||m.editing);
         if(issue){marginInstructionError(issue);return}
       }
       const [label,message]={
         save:[m.editing?'保存改单':'保存指令','保存当前填写的客户条款和成交要求。'],
         confirm:['建仓指令','客户是否确认指令无误？'],
-        push:['推送交易平台','确认推送到孖展交易台？'],
+        push:direct?['推送建仓信息','确认生成孖展建仓信息？']:['推送交易平台','确认推送到孖展交易台？'],
         cancel:['撤单',m.task?'撤单申请将交由交易员反馈。':'该建仓指令将变为已撤单。'],
         reject:['驳回','该建仓指令将变为已驳回。']
       }[operation];
-      if(!await confirmInstruction(label,message,[['指令编号',m.source.instruction],['客户名本',m.terms.principal+' 万元']],['cancel','reject'].includes(operation)))return;
+      const facts=[['指令编号',m.source.instruction],['客户名本',m.terms.principal+' 万元']];
+      if(operation==='confirm'||operation==='push'){
+        facts.push(['孖展对冲名本',m.terms.stockHedgeWan+' 万元'],['期权对冲名本',m.terms.optionHedgeWan+' 万元']);
+      }
+      if(!await confirmInstruction(label,message,facts,['cancel','reject'].includes(operation)))return;
       if(!await instructionWrite(marginInstructionError))return;
       const amending=m.editing&&operation==='save';
       if(operation==='save'||operation==='confirm'){
@@ -9017,7 +9087,7 @@ dialog.position-dialog { width:min(1480px,calc(100% - 32px)); }
           if(text!==marginDealText(m.saved.deal)||(!changed.length&&last?.status==='rejected'&&last.text===text))requestStockAmendment(stockTask,text);
         }
         if(amending&&changed.length){
-          const labels={principal:'名义本金',share:'分成比例',instant:'即刻追保',subscription:'认购费率',extension:'展期费率',client:'客户姓名',group:'群编号',deal:'成交要求'};
+          const labels={principal:'名义本金',stockHedgeWan:'孖展对冲名本（万元）',optionHedgeWan:'期权对冲名本（万元）',share:'分成比例',instant:'即刻追保',subscription:'认购费率',extension:'展期费率',client:'客户姓名',group:'群编号',deal:'成交要求'};
           const display=(terms,key)=>key==='deal'?marginDealText(terms.deal):terms[key]||'—';
           m.amendments.push(...changed.map(key=>labels[key]+'：'+display(m.saved,key)+' → '+display(m.terms,key)));
         }
@@ -9027,16 +9097,26 @@ dialog.position-dialog { width:min(1480px,calc(100% - 32px)); }
         m.task=dispatchMargin(m);m.status='confirmed_pushed';
       }else if(operation==='cancel')m.status=m.task?'cancelling':'cancelled';
       else if(operation==='reject')m.status='rejected';
-      m.logs.push({actor:'示例操作员',at:new Date().toLocaleString('sv-SE',{timeZone:'Asia/Shanghai'}),type:{save:amending?'改单':'保存',confirm:'客户已确认',push:'推送交易平台',cancel:'申请撤单',reject:'驳回'}[operation]});
+      m.logs.push({actor:'示例操作员',at:new Date().toLocaleString('sv-SE',{timeZone:'Asia/Shanghai'}),type:{save:amending?'改单':'保存',confirm:'客户已确认',push:label,cancel:'申请撤单',reject:'驳回'}[operation]});
       m.message='';
       if(state.view==='margin-instructions')renderMarginInstructionList();
       renderMarginInstruction();
-      toast({save:amending?'改单已保存':'指令已保存',confirm:'已确认建仓指令',push:'已推送交易平台',cancel:m.task?'撤单申请已记录，等待交易员反馈':'指令已撤单',reject:'指令已驳回'}[operation]);
+      toast({save:amending?'改单已保存':'指令已保存',confirm:'已确认建仓指令',push:direct?'孖展建仓信息已生成':'已推送交易平台',cancel:m.task?'撤单申请已记录，等待交易员反馈':'指令已撤单',reject:'指令已驳回'}[operation]);
     }
     document.addEventListener('input',event=>{
       const input=event.target,m=marginInstruction;
       if(!input.closest('#margin-instruction'))return;
-      if(input.dataset.miField&&!input.readOnly)m.terms[input.dataset.miField]=input.value;
+      const fieldKey=input.dataset.miField;
+      if(fieldKey&&!input.readOnly){
+        m.terms[fieldKey]=input.value;
+        if(['principal','stockHedgeWan','optionHedgeWan'].includes(fieldKey)){
+          updateMarginInstructionAllocation(m.terms,fieldKey);
+          for(const key of ['stockHedgeWan','optionHedgeWan']){
+            if(key!==fieldKey)document.querySelector(`[data-mi-field="${key}"]`).value=m.terms[key];
+          }
+          if(m.message)marginInstructionError('');
+        }
+      }
       if(input.dataset.miDeal){m.terms.deal[input.dataset.miDeal]=input.value;if(['mode','window'].includes(input.dataset.miDeal)){renderMarginInstruction();return}}
       $('mi-total').value=marginInstructionPayment(m.terms);
       $('mi-template-text').textContent=marginInstructionText();
@@ -9358,6 +9438,8 @@ dialog.position-dialog { width:min(1480px,calc(100% - 32px)); }
         if(state.stockDirty?.size)return dialogError('请先处理未提交的委托或补录输入。');
         if(t.orders?.some(stockOrderPending))return dialogError('请先处理所有在途 FIX 委托。');
         const accounts=marginOpeningAccounts(t).filter(account=>account.shares>0);
+        if(t.stockBudget>0&&!accounts.length)return dialogError('本任务有孖展对冲名本，请先完成正股成交并保存订单数据。');
+        if(t.stockBudget===0&&accounts.length)return dialogError('本任务的孖展对冲名本为 0，请先核对已有正股成交。');
         const stale=marginAccountsNeedingCalculation(t,accounts);
         if(stale.length)return confirmMarginAccountRecalculation(t,stale);
         const accountIssue=stockAccountSaveIssue(t,accounts);
