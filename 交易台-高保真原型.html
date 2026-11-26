@@ -1993,7 +1993,18 @@ dialog.position-dialog { width:min(1480px,calc(100% - 32px)); }
     <div class="prototype-layout">
       <aside class="change-log-panel" tabindex="0" aria-label="需求迭代记录与当前页面 PRD，可上下滚动">
         <section class="record-section"><h2>需求迭代记录</h2><details class="change-entry" id="requirement-b001"><summary>2026-11-24 · B-001 · 交易台首版上线</summary><div class="change-entry-body"><p>财务线下安排名本，两类业务独立执行。建仓信息维护渠道子单，存续期正股走孖展交易台，客户行权沿用原流程。</p><a href="历史迭代/同道科技/交易台/B-001/r00-首版调整前/交易台-高保真原型.html">查看调整前 HTML 快照</a></div></details></section>
-        <section class="record-section"><h2>原型变动记录</h2><details class="change-entry" id="requirement-b001-c01"><summary>2026-11-24 · B-001-C01 · 混合开仓名本配平</summary><div class="change-entry-body"><p>评审确认 2.3、4.3 各渠道下单名本合计等于客户名本才可推送。期权沿用接单券商录入。渠道子单号可事后补绑。</p></div></details></section>
+        <section class="record-section">
+          <h2>原型变动记录</h2>
+          <details class="change-entry" id="requirement-b001-c01"><summary>2026-11-24 · B-001-C01 · 混合开仓名本配平</summary><div class="change-entry-body"><p>评审确认 2.3、4.3 各渠道下单名本合计等于客户名本才可推送。期权沿用接单券商录入。渠道子单号可事后补绑。</p></div></details>
+          <details class="change-entry" id="requirement-b001-c02">
+            <summary>2026-11-26 · B-001-C02 · 用户评审 · 孖展建仓指令指定对冲名本</summary>
+            <div class="change-entry-body">
+              <p>归属 B-001 首版上线。明确孖展订单开仓时两类对冲各自的名本及交接路径。</p>
+              <p>在孖展建仓指令弹窗新增独立的「对冲要求」区，以万元填写孖展和期权对冲名本。默认孖展等于客户总名本，期权为 0。两项联动，合计必须等于客户总名本才可确认和推送。</p>
+              <p>孖展对冲名本为 0 时，指令直接推送孖展建仓信息，由建仓信息预填期权归属名本并绑定期权子单。孖展对冲名本大于 0 时，仅将孖展侧名本推送至交易台，正股成交并交接后生成孖展建仓信息。</p>
+            </div>
+          </details>
+        </section>
         <section class="record-section page-prd" id="page-prd" aria-live="polite"></section>
         <section class="record-section">
           <details id="demo-tools">
